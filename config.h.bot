@@ -1,0 +1,7 @@
+/* $Id: config.h.bot,v 1.2 1998/03/02 08:33:14 tudor Exp $ */
+/* See the file PROBLEMS for details on this.  */
+#ifdef HAVE_LINUX
+#undef HAVE_LSTAT
+#define HAVE_LSTAT 1
+#endif
+

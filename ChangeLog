@@ -1,0 +1,85 @@
+1999-10-07  Tudor Hulubei  <tudor@cs.unh.edu>
+
+	* doc/texinfo.tex: Updated to version 1999-10-01.07.
+
+1999-10-01  Tudor Hulubei  <tudor@cs.unh.edu>
+
+	* configure.in: Added `-ansi' when --enable-gcc-warnings is given.
+
+1999-05-11  Tudor Hulubei  <tudor@cs.unh.edu>
+
+	* configure.in (--enable-smp): New option (Linux only).  If given,
+ 	make will attempt to spawn a number of compilations equal to the
+ 	number of processors + 1.
+
+1999-04-25  Tudor Hulubei  <tudor@cs.unh.edu>
+
+	* git.spec.in: Updated to reflect the new directory structure.
+
+	* The entire configuration system has been changed to use
+ 	automake.
+
+1998-03-05  Tudor Hulubei  <tudor@cs.unh.edu>
+
+	* Makefile.in (ps): New rule.
+
+1997-09-27  Tudor Hulubei  <tudor@cs.unh.edu>
+
+	* config.h.in: Added NDEBUG.
+
+1997-09-16  Tudor Hulubei  <tudor@cs.unh.edu>
+
+	* configure.in (efence): Added --enable-efence.
+
+Sat Jan  4 17:45:35 1997  Tudor Hulubei  <tudor@hal.cs.unh.edu>
+
+	* configure.in (HOST): Bug fix: $host_os is `linux-gnu' now.
+
+Mon Dec  2 19:32:31 1996  Tudor Hulubei  <tudor@hal.cs.unh.edu>
+
+	* configure.in: Added code after AC_OUTPUT() to create hard links
+	to the prefix file.
+
+	* configure.in: Regenerated with autoconf 2.12.
+
+Fri Nov 22 17:10:49 1996  Tudor Hulubei  <tudor@hal.cs.unh.edu>
+
+	* Makefile.in (prefix-change): Rule to take care of prefix
+	changes.
+
+Sat Nov  9 21:42:29 1996  Tudor Hulubei  <tudor@kaa.cs.unh.edu>
+
+	* configure.in: Now checks for off_t as well.
+
+Sun Oct 13 14:26:09 1996  Tudor Hulubei  <tudor@kaa.cs.unh.edu>
+
+	* git.spec: New file.  RPM package specification.
+
+	* Makefile.in (distdone): Corrected permissions.
+
+	* configure.in (HOST): HAVE_HPUX test removed.  The `cut' utility
+	should not be used in configure as it appears to be missing on
+	some systems (m68k-next-nextstep3).
+
+Tue Sep 24 02:05:34 1996  Tudor Hulubei  <tudor@kaa.unh.edu>
+
+	* config.guess: Added support for AT&T 3B2 systems, thanks to
+	Gaylen Miller.
+
+	* configure.in: -Wall is no longer automatically appended to
+	CFLAGS when gcc is detected.  Use --enable-gcc-warnings to get
+	the complete set of warnings.
+
+	* configure.in: Added a check for the presence of the sys/wait.h
+	header file.  Gaylen Miller <gaylen@proaxis.com> reported that
+	this header is missing on the AT&T 3B2 systems (we32k-att-sysv3).
+
+Wed Aug 21 11:20:40 1996  Tudor Hulubei  <tudor@chang.pub.ro>
+
+	* version.h.in: TERMDIR removed and appended to DEFS.  This way
+	make prefix=... will no longer fail.
+
+Thu Jun  6 10:21:38 1996  Tudor Hulubei  <tudor@chang.pub.ro>
+
+	* Makefile.in: 	install_strip renamed to install-strip.
+	install now depends on all and on install-only.

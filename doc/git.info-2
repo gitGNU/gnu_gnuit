@@ -1,0 +1,1303 @@
+This is git.info, produced by Makeinfo version 3.12h from git.texinfo.
+
+START-INFO-DIR-ENTRY
+* GIT: (git).         GNU Interactive Tools
+END-INFO-DIR-ENTRY
+
+   GIT: A set of interactive tools, by Tudor Hulubei and Andrei Pitis.
+
+   This file documents the GNU Interactive Tools package.
+
+   Copyright (C) 1993-1998 Free Software Foundation, Inc.
+
+   Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+   Permission is granted to copy and distribute modified versions of
+this manual under the conditions for verbatim copying, provided that the
+entire resulting derived work is distributed under the terms of a
+permission notice identical to this one.
+
+   Permission is granted to copy and distribute translations of this
+manual into another language, under the above conditions for modified
+versions, except that this permission notice may be stated in a
+translation approved by the Foundation.
+
+
+File: git.info,  Node: Hot Keys,  Prev: Dirs History,  Up: Directories
+
+Hot Keys
+........
+
+   `git' provides default key bindings for switching to a number of
+important directories as "/", "..", "$HOME", etc.
+
+`ESC /'
+     Go to the `/' directory (`ROOT-DIR').
+
+`ESC .'
+     Go to the `..' directory (`up-one-dir').
+
+`ESC h'
+     Go to the `~' ($HOME) directory (`HOME-DIR').
+
+`ESC i'
+     Go to the `/usr/include' directory (`INCLUDE-DIR').
+
+`ESC ESC 1'
+     Go to the `/mnt/fd0' directory (`FIRST-FLOPPY-DIR').
+
+`ESC ESC 2'
+     Go to the `/mnt/fd1' directory (`SECOND-FLOPPY-DIR').
+
+
+File: git.info,  Node: Compiling,  Next: Mail,  Prev: Directories,  Up: git
+
+Compiling programs
+------------------
+
+`F9', `ESC 9', `^X m'
+     Run the `make' command in the current directory.  Use -k as the
+     default option (`MAKE').
+
+`^X b m'
+     Run the `make' command in background in the current directory
+     (`B-MAKE').
+   *Note gitaction::, for more information.
+
+
+File: git.info,  Node: Mail,  Next: Shell,  Prev: Compiling,  Up: git
+
+Sending/receiving ascii/binary mail
+-----------------------------------
+
+`^C 2 a'
+     Send the current current ascii file by mail to an user supplied email
+     address (`ASCII-MAIL').
+
+`^C b 2 a'
+     The same as `ASCII-MAIL', the only difference being that the
+     command runs in background (`B-ASCII-MAIL').
+
+`^C 2 b'
+     Send the current current binary file by mail to an user supplied list of
+     email addresses.  The file is uuencoded first (`BINARY-MAIL').
+
+`^C b 2 b'
+     The same as `BINARY-MAIL', the only difference being that the
+     command runs in background (`B-BINARY-MAIL').
+
+`^C 2 m'
+     Send the current current binary file by mail to an user supplied list of
+     email addresses.  The file is encoded with mpack first
+     (`MIME-MAIL').
+
+`^C b 2 m'
+     The same as `MIME-MAIL', the only difference being that the command
+     runs in background (`B-MIME-MAIL').
+
+`ESC x r m'
+     Run the `emacs -f rmail' command.  This will start the Emacs's
+     `rmail' function so that you can read your mail (`READ-MAIL').
+
+
+File: git.info,  Node: Shell,  Next: Grep,  Prev: Mail,  Up: git
+
+Starting a sub-shell
+--------------------
+
+`^X z'
+     Call a sub-shell as specified by the $GIT_SHELL environment
+     variable (`SUB-SHELL').
+   *Note Environment Variables::, for more information.
+
+
+File: git.info,  Node: Grep,  Next: Locking,  Prev: Shell,  Up: git
+
+Using grep and recursive grep
+-----------------------------
+
+`^X g'
+     Search using `grep' all the selected files for a given pattern
+     (`GREP').
+
+`^X g'
+     Search recursively using `gitrgrep' all the user specified files
+     and directories for a given pattern (`RECURSIVE-GREP').
+   *Note gitrgrep::, for more information.
+
+
+File: git.info,  Node: Locking,  Next: Refreshing,  Prev: Grep,  Up: git
+
+Locking your console
+--------------------
+
+   Having a lock feature might be a good idea and, since not all the
+`UNIX' systems provide one, `git' tries to get around the problem ...
+
+`^X p'
+     Prompt the user for a password and locks the console until the same
+     password is reinserted (`lock').
+
+
+File: git.info,  Node: Refreshing,  Next: Reseting,  Prev: Locking,  Up: git
+
+Refreshing the screen contents
+------------------------------
+
+   Sometimes your screen needs to be refreshed.  Just think about what
+happens when somebody wants to talk with you and the talk daemon writes
+something like this
+
+     Message from Talk_Daemon@galei.cs.vu.nl at 12:15 ...
+     talk: connection requested by andrei@galei.cs.vu.nl.
+     talk: respond with:  talk andrei@galei.cs.vu.nl
+
+on your screen.  And sometimes you might also want to re-read the
+current directories.  `git' provides a built-in command for refreshing
+the screen contents.
+
+`^L'
+     Re-read the directories contents and refresh the screen (`refresh').
+
+
+File: git.info,  Node: Reseting,  Next: Mounting,  Prev: Refreshing,  Up: git
+
+Reseting your terminal
+----------------------
+
+`^X ^L'
+     Call `reset' in order to reset the terminal to its default
+     settings (`TTY-RESET').
+
+
+File: git.info,  Node: Mounting,  Next: Sysinfo,  Prev: Reseting,  Up: git
+
+Mounting/unmounting file systems
+--------------------------------
+
+   People dealing with lots of files usually need to save/restore/copy
+files from/to other file systems.  In order to be more efficient, `git'
+provides a set of key bindings for mounting and unmounting file
+systems.  *Note gitmount::, for more information.
+
+   The default key bindings set has been designed to work under
+`Linux', but it can be easily changed for other `UNIX' systems with
+different device names.  Reading the configuration file `.gitrc.common'
+should be enough.  *Note Hot Keys::, for more information.
+
+   As a convention, the `/mnt' directory is used to store an empty
+subdirectory for each mountable file system.  Each file system is
+actually mounted in its counterpart `/mnt' subdirectory.  Try to follow
+this convention since the `gitmount' script is heavily based on it.
+*Note Customization::, for more information.
+
+`ESC m a'
+     Call `mount'(1) in order to mount the first floppy
+     (`/dev/fd0') in the `/mnt/fd0' directory (`MOUNT-A').
+
+`ESC m b'
+     Call `mount'(1) in order to mount the second floppy
+     (`/dev/fd1') in the `/mnt/fd1' directory (`MOUNT-B').
+
+`ESC m c'
+     Call `mount'(1) in order to mount the cdrom
+     (`/dev/cdrom') in the `/mnt/cdrom' directory (`MOUNT-CDROM').
+
+`ESC m f'
+     Call `mount'(1) in order to mount the first floppy
+     (`/dev/fd0') in the `/mnt/floppy' directory (`MOUNT-FLOPPY').
+
+`ESC m z'
+     Call `mount'(1) in order to mount the zip drive
+     (`/dev/zip') in the `/mnt/zip' directory (`MOUNT-ZIP').
+
+`ESC m j'
+     Call `mount'(1) in order to mount the jaz drive
+     (`/dev/jaz') in the `/mnt/jaz' directory (`MOUNT-JAZ').
+
+`ESC m t'
+     Call `mount'(1) in order to mount the file systems corresponding to
+     the selected subdirectories.  For example, if you are in the `/mnt'
+     directory and the `cdrom' and `zip' subdirectories are
+     selected, the cdrom and the zip disk will be mounted (`MOUNT-THESE').
+
+`ESC r a'
+     Call `umount'(1) in order to remove (unmount) the first floppy
+     (`/dev/fd0') (`UMOUNT-A').
+
+`ESC r b'
+     Call `umount'(1) in order to remove (unmount) the second floppy
+     (`/dev/fd1') (`UMOUNT-B').
+
+`ESC r c'
+     Call `umount'(1) in order to remove (unmount) the cdrom
+     (`/dev/cdrom') (`UMOUNT-CDROM').
+   findex UMOUNT-CDROM
+
+`ESC r f'
+     Call `umount'(1) in order to remove (unmount) the first floppy
+     (`/dev/fd0') (`UMOUNT-FLOPPY').
+
+`ESC r z'
+     Call `umount'(1) in order to remove (unmount) the zip drive
+     (`/dev/zip') (`UMOUNT-ZIP').
+
+`ESC r j'
+     Call `umount'(1) in order to remove (unmount) the jaz drive
+     (`/dev/jaz') (`UMOUNT-JAZ').
+
+`ESC r t'
+     Call `umount'(1) in order to remove (unmount) the file systems
+     mounted into the selected subdirectories.  For example, if the current
+     directory is `/mnt' and the `cdrom' and `zip'
+     subdirectories are selected, the cdrom and the zip disk will be
+     unmounted (`UMOUNT-THESE').
+
+
+File: git.info,  Node: Sysinfo,  Next: Environment,  Prev: Mounting,  Up: git
+
+Getting some useful system information
+--------------------------------------
+
+`^X T'
+     Call `date'(1) in order to display the current time/date
+     (`DATE').
+
+`ESC S f'
+     Call `finger'(1) in order to display information about local and
+     remote users  (`FINGER').
+
+`ESC S m'
+     Call `mount'(1) in order to display a list of the currently
+     mounted file systems (`MOUNTED-FILE-SYSTEMS').
+
+`ESC S q'
+     Call `quota'(1) in order to display a user file system disk quota
+     and quota (`QUOTA').
+
+`ESC S s'
+     Call `df'(1) in order to get the status of the currently mounted
+     file systems (`DISK-FREE-SPACE').
+
+`ESC S u'
+     Call `users'(1) in order to get the name of the currently logged in
+     users (`USERS').
+
+`ESC S v'
+     Call `$GIT_VMSTAT'(1) in order to get the current virtual memory
+     status.  This is very system dependent, `Linux' uses `free',
+     other systems use `vmstat', so the $GIT_VMSTAT variable is
+     used to deal with this (`VIRTUAL-MEMORY-STATUS').
+   *Note Environment Variables::, for more information.
+
+`ESC S w'
+     Call `who'(1) in order to find out who is on the system
+     (`WHO').
+
+
+File: git.info,  Node: Environment,  Next: Processes,  Prev: Sysinfo,  Up: git
+
+How to look at the environment variables
+----------------------------------------
+
+`^X E'
+     Call `env'(1) in order to display the current environment
+     (`ENV').
+
+`^X H'
+     Call `xhost'(1) in order to add/remove hosts names to the list
+     allowed to make connection to the X server (`XHOST').
+
+
+File: git.info,  Node: Processes,  Next: Sync,  Prev: Environment,  Up: git
+
+Viewing/killing processes
+-------------------------
+
+   There are at least two kinds of `ps'(1) utilities.  One that accepts
+(more or less) combinations of the 'a', 'u', and 'x' flags and another
+that accepts combinations of 'e', 'f' and 'l' flags.  Since is quite
+difficult to test which one works fine on a given `UNIX' system, `git'
+provides key bindings for both of them.  Anyway, if your `ps'(1) fails
+to accept the predefined combinations, please take a look in its manual
+and then modify the `.gitrc.TERM' file as needed.
+
+   Since the number of possible combinations of flags in the `ps'
+command line is quite big and *very* system dependent, there is no real
+reason to display them all here.  We are only interested in giving you
+a starting point in your search through the `.gitrc.TERM' file.
+
+   Note also that you can display a list of processes using `ps'(1) or
+browse through a list of them (killing as needed) using `gitps'.  As a
+convention, we have used the same key sequence for a given set of
+`ps'(1) flags for both `ps'(1) and `gitps', the only difference being
+that `ps'(1) keys end in an uppercase letter.  *Note gitps::, for more
+information.
+
+   Under Linux it is possible to see a tree of processes using
+`pstree'(1).
+
+   Here there are the default key bindings for the 'e', 'f' and 'l'
+`ps'(1) flags combinations:
+
+`ESC P b', `ESC P c', `ESC P e'
+     Call `gitps' or `ps'(1) in order to browse through or display
+     a list of currently running processes (`GITPS', `PS').
+
+... and the default key bindings for the 'a', 'u' and 'x' `ps'(1) flags
+combinations:
+
+`ESC P a', `ESC P l', `ESC P u' `ESC P x', `ESC P y'
+     Call `gitps' or `ps'(1) in order to browse through or display
+     a list of currently running processes (`GITPS', `PS').
+
+`ESC P T'
+     Call `pstree'(1) in order to displat the tree of currently running
+     processes (`PSTREE').
+
+`^X k'
+     Call `kill'(1) in order to kill a user specified process with a
+     given signal (`KILL').
+
+
+File: git.info,  Node: Sync,  Next: Documentation,  Prev: Processes,  Up: git
+
+Synchronizing the file systems
+------------------------------
+
+`^X S'
+     Call `sync'(1) in order to synchronize all the file systems
+     (`SYNC').
+
+
+File: git.info,  Node: Documentation,  Next: Exit,  Prev: Sync,  Up: git
+
+Reading the documentation
+-------------------------
+
+`^X q'
+     Read a manual page.  The user is prompted for its name (`MAN').
+
+`F1', `ESC 1', `^X i'
+     Read an info documentation.  The user is prompted for the documentation
+     name (`INFO').
+
+`^X h'
+     Read the html documentation using the viewer specified in
+     GIT_BROWSER, or with lynx if GIT_BROWSER is not set
+     (`HTML').
+
+
+File: git.info,  Node: Exit,  Prev: Documentation,  Up: git
+
+Exiting GNU Interactive Tools
+-----------------------------
+
+`F10', `ESC 0', `^X ^C', `^X c'
+     Exit GNU Interactive Tools (`exit').
+
+
+File: git.info,  Node: gitps,  Next: gitview,  Prev: git,  Up: Description
+
+The GIT process viewer/killer
+=============================
+
+   `gitps' is an interactive process viewer/killer.  It calls
+internally the `ps'(1) utility.  This is a brief description of the
+command line arguments.
+
+`-h'         print this help message
+
+`-v'         print the version number
+
+`-i'         print the installation directory
+
+`-c'         use ANSI colors
+
+`-b'         don't use ANSI colors
+
+`-l'         don't use the last screen character
+
+`-p'         pass the remaining arguments to ps(1)
+
+   Running `gitps' it is self explanatory.  Use the `arrows', `PageUp',
+`PageDown', `Home', `End', `^N', `^P', `^V', `ESC v', `Space' and
+`Backspace' to move in the list, `^L' to refresh it, `Enter' to change
+the default signal and `F10', `q' or `^X ^C' to leave.
+
+   You can change these keys, just read the GITPS-Setup, GITPS-Color,
+GITPS-Monochrome and GITPS-Keys sections in the configuration files
+`.gitrc.TERM'.
+
+
+File: git.info,  Node: gitview,  Next: gitkeys,  Prev: gitps,  Up: Description
+
+The GIT ASCII/HEX file viewer
+=============================
+
+   `gitview' is an ASCII/HEX file viewer.  Use the `arrows', `PageUp',
+`PageDown', `Home', `End', `^N', `^P', `^V', `ESC v', `Space' and
+`Backspace' to move in the file, `^L' to refresh the screen and `F10',
+`q' or `^X ^C' to leave.
+
+   You can change these keys, just read the GITVIEW-Setup,
+GITVIEW-Color, GITVIEW-Monochrome and GITVIEW-Keys sections in the
+configuration files `.gitrc.TERM'.
+
+   Here is a brief description of the command line arguments:
+
+`-h'         print this help message
+
+`-v'         print the version number
+
+`-i'         print the installation directory
+
+`-c'         use ANSI colors
+
+`-b'         don't use ANSI colors
+
+`-l'         don't use the last screen character
+
+
+File: git.info,  Node: gitkeys,  Next: gitwipe,  Prev: gitview,  Up: Description
+
+The GIT key sequences display utility
+=====================================
+
+   `gitkeys' is a program that displays the key sequence sent by the
+pressed key.  This is the key sequence received by `GIT' tools, so this
+program is useful when setting up the `.gitrc.TERM' configuration files.
+
+
+File: git.info,  Node: gitwipe,  Next: gitmount,  Prev: gitkeys,  Up: Description
+
+The GIT wipe file utility
+=========================
+
+   `gitwipe' is an utility for wiping files.  It overwrites the file
+contents with a random sequence of numbers and then calls `sync'().
+
+   Note that `gitwipe' does *not* remove the wiped file since (under
+`Linux' at least) the `sync'() system call might return before actually
+writing the new file contents to disk.  Removing the file might be
+dangerous because some file systems can detect that the blocks in the
+removed wiped file are no longer used and never write them back to disk
+in order to improve performance.  It is up to you to remove the file(s)
+at a later moment.
+
+
+File: git.info,  Node: gitmount,  Next: gitaction,  Prev: gitwipe,  Up: Description
+
+The GIT mount utility
+=====================
+
+   `gitmount' is a script that allows you to mount a list of block
+devices (specified in the command line), without specifying the file
+system type.  With a command like `gitmount fd0 cdrom' the first floppy
+will be mounted in `/mnt/fd0' and the cdrom will be mounted in
+`/mnt/cdrom'.  Make sure your `/etc/fstab' settings are correct.
+
+   You don't need to know the file system type anymore.  If you want to
+use `gitmount' with the block device `/dev/xxx' then the directory
+`/mnt/xxx' is created if it doesn't exist.  `gitmount' will attempt to
+create the necessary directories, but root permissions might be
+required.
+
+
+File: git.info,  Node: gitaction,  Next: gitunpack,  Prev: gitmount,  Up: Description
+
+The GIT per file type action script
+===================================
+
+   `gitaction' is a script that executes a different action for each
+file type specified.  It is called by the `git' program when pressing
+`F2', `ESC 2' or `^Xa'.
+
+   The first parameter is the current directory name and the second one
+is the file name to be matched against the default patterns.  The
+matching is done using the shell 'case' statement.
+
+   If you press `F2', `ESC 2' or `^Xa' on a `*.c' file, `git' will
+compile it, if you press `F2', `ESC 2' or `^Xa' on a `*.tar.gz' file,
+`git' will list the tar archive contents, if you press the same keys on
+a `*.gz' file, `git' will display its uncompressed contents on the
+screen, etc ...
+
+   If you want to find out what the default action for each file type is
+(or if you want to modify it), just read/modify the `gitaction' script.
+If no pattern is found, the file is displayed using `more'.
+
+   If you press `F2', `ESC 2' or `^Xa' on a `*.gif' file or `*.jpg'
+file and you have the `zgv' utility installed, you will be able to see
+it.  If you want to change the gif/jpeg viewer, all you need to do is
+to change its name in the `gitaction' script.
+
+   Also, you can add a `.gitaction' shell script in your home directory
+and/or in any other directory.  Before trying to match a file name,
+`gitaction' will attempt to execute `./.gitaction'.  If that one fails
+to match the file name against its patterns, it backs up to
+`$HOME/.gitaction'.  When this one fails too the patterns in
+`gitaction' are tried.  For an example of how to write .gitaction
+scripts take a look at the `.gitaction' shell script provided as part
+of the distribution and installed in the `$(prefix)/bin' directory.
+
+
+File: git.info,  Node: gitunpack,  Next: gitrgrep,  Prev: gitaction,  Up: Description
+
+Unified archive unpacking
+=========================
+
+   `gitunpack' is a shell script that accepts a directory and a set of
+archives as its command line parameters, and then attempts to unpack
+those archives in the given directory, selecting the utility used to
+unpack the archives based on the archive extensions.
+
+
+File: git.info,  Node: gitrgrep,  Prev: gitunpack,  Up: Description
+
+The GIT recursive grep script
+=============================
+
+   `gitrgrep' is a very small script that calls `grep' recursively.  It
+accepts `grep' like options / parameters, the only difference being
+that file specifications should be quoted:
+
+     	`gitrgrep' main '*.c'
+     
+     or
+     
+     	`gitrgrep' errno '*.c *.h'
+
+   `gitregrep' and `gitrfgrep' are recursive versions of the egrep and
+fgrep programs.
+
+
+File: git.info,  Node: Customization,  Next: Limitations,  Prev: Description,  Up: Top
+
+Customizing GNU Interactive Tools
+*********************************
+
+* Menu:
+
+* Environment Variables::       Environment variables used by GIT
+* Configuration Files::         GIT's configuration files
+
+
+File: git.info,  Node: Environment Variables,  Next: Configuration Files,  Up: Customization
+
+Environment Variables
+=====================
+
+   The configuration files use shell environment variables to call the
+shell, editor, mail reader, html viewer, compress and virtual memory
+status utility.  That means that if you set GIT_SHELL, GIT_EDITOR,
+GIT_RMAIL, GIT_BROWSER, or GIT_VMSTAT to some value, that value will be
+used instead of the default one.  The defaults are:
+
+     	GIT_SHELL='/bin/sh'
+     	GIT_EDITOR='vi'
+     	GIT_RMAIL='emacs -f rmail'
+     	GIT_PAGER='more'
+     	GIT_VMSTAT='free'
+     	GIT_BROWSER='lynx'
+
+   If SHELL is defined, GIT_SHELL will be set to that value.  If EDITOR
+is defined, GIT_EDITOR will be set to that value.  If you want to
+change the default settings, put something like this into your
+`.profile':
+
+     	export GIT_SHELL='/usr/local/bin/bash'
+     	export GIT_EDITOR='emacs'
+     	export GIT_RMAIL='elm'
+     	export GIT_PAGER='less'
+     	export GIT_VMSTAT='vmstat'
+     	export GIT_BROWSER='netscape'
+
+
+File: git.info,  Node: Configuration Files,  Prev: Environment Variables,  Up: Customization
+
+Configuration Files
+===================
+
+   There is one configuration file per terminal type in `GIT'.  The
+configuration file(s) reside in the user's home directory or (the
+default versions) in the directory `$(prefix)/lib' (usually
+`/usr/local/lib').
+
+   Their generic name is `.gitrc.TERM'.  `GIT' allows each terminal
+type to have its own configuration file (TERM is the value of the TERM
+environment variable (e.g `vt102'); for the `Linux' console the
+configuration file is `.gitrc.console').
+
+   Since most of the key bindings are common to all the terminal types,
+a configuration file called `.gitrc.common' is parsed before parsing
+the normal `.gitrc.TERM' configuration file, the later one defining
+only those keys that are terminal specific.  However, if a key binding
+is redefined in the `.gitrc.TERM' file, that binding will be used.
+
+   If the `GIT' package have been compiled without passing the
+`--enable-terminfo' option to the `configure' script and your system
+has a huge `termcap' database (`/etc/termcap'), you can copy the
+termcap definition(s) of your terminal(s) in a file called, lets say
+`.termcap' and put it in your home directory.  After that, set your
+TERMCAP environment variable to point to it.  You should add something
+like this to your `.profile':
+
+     TERMCAP=`/home/mike/.termcap'
+
+   The interactive programs in the `GIT' package can run without such a
+file, but on systems with huge `termcap' databases, copying the
+definitions of the most used terminals in a local `.termcap' file will
+lead to a faster start.
+
+   The `.gitrc.TERM' it is first time searched in the home directory
+then, if not found, in the directory `$(prefix)/lib' (usually
+`/usr/local/lib').  The configuration file is structured on sections,
+each section containing variables in the following format:
+
+     	`variable-name' = `first-field';`second-field'; ...
+
+   After the `variable-name' at least one space or tab is required.
+All characters after a `#' are ignored and if you comment a section
+name, the whole section is ignored.
+
+   Section names are enclosed in rectangular brackets (`[' and `]').
+Note that this manual don't include them while refering to section
+names.
+
+   The `GIT' package contains three major programs: `git', `gitps' and
+`gitview'.  Each one has its own sections in the configuration files.
+There is also a global setup section called `Setup' that is used by all
+these programs.
+
+* Menu:
+
+* Key Sequences::               How to write a key sequence.
+
+* Setup::                       The global setup section.
+
+* git Sections::                git's sections.
+* gitps Sections::              gitps's Sections.
+* gitview Sections::            gitview's Sections.
+
+
+File: git.info,  Node: Key Sequences,  Next: Setup,  Up: Configuration Files
+
+Writing key sequences
+---------------------
+
+   `GIT' contains three interactive programs.  Their names are: `git'
+(this is the file system browser), `gitps' (this is the process
+viewer/killer and `gitview' (this is the ASCII/HEX file viewer).  Each
+one of these programs has its own set of key bindings.
+
+   The convention used in describing key bindings are very simple.  Here
+there are some examples that will help you to understand them.  The
+corresponding `Emacs' conventions will help you even more.
+
+   `^A' means keeping the Ctrl key down and pressing the `a' key
+(`C-a').
+
+   The `ESC' character is represented as `^[' so that you can use the
+meta character (`M-' ) where available (or the `ESC' key):
+
+   `^[a' corresponds to `M-a' (pressing the `ESC' key and then `a').
+
+   The `^' character is represented as `^^'.
+
+   The `backspace' character is represented as `^_'.
+
+   The `Ctrl-SPACE' character (`C-SPC') is represented as `^$'.
+
+   The space (`SPC') character is represented as `^@'.
+
+   Note that the key bindings notation described here is only used in
+the configuration files.  For the sake of readability this manual uses
+`ESC' for the `ESC' key, `SPC' for the `SPACE' key and `RET' for the
+`RETURN' (`ENTER') key.
+
+
+File: git.info,  Node: Setup,  Next: git Sections,  Prev: Key Sequences,  Up: Configuration Files
+
+The global setup section
+------------------------
+
+   In this section the variables have only one field.
+
+`AnsiColors'
+
+   This variable should be set to `ON' if the terminal supports
+standard `ANSI' color sequences.  Otherwise it should be `OFF'.  If
+`AnsiColors' is `ON', `GITxxx-Color' sections will be used in the
+configuration files `.gitrc.TERM'.  Otherwise, `GIT' interactive
+programs will use the `GITxxx-Monochrome' sections.
+
+`UseLastScreenChar'
+
+   This variable is used for terminals that can't write on the last
+character of the screen without scrolling the entire screen.  If your
+terminal has no problem writing there (`Linux' console, vt100, vt102,
+xterm, ...)  set it to `ON'.  Otherwise (hpterm), it should be `OFF'.
+
+`StartupScrollStep'
+
+   This variable specifies the scroll step initial value for both
+panels.
+
+
+File: git.info,  Node: git Sections,  Next: gitps Sections,  Prev: Setup,  Up: Configuration Files
+
+git Sections
+------------
+
+* Menu:
+
+* GIT-Setup::                   git's setup section.
+* GIT-Color::                   git's color section.
+* GIT-Monochrome::              git's monochrome section.
+* GIT-Keys::                    git's keys section.
+* GIT-FTI::                     git's file type information section.
+
+
+File: git.info,  Node: GIT-Setup,  Next: GIT-Color,  Up: git Sections
+
+git Setup
+.........
+
+   In this section the variables have only one field.
+
+`StartupFileDisplayMode'
+
+   This variable specifies the file specific information displayed at
+startup.  It can be any of `OwnerGroup', `DateTime', `Size', `Mode' or
+`FullName'.  Its value initially affects both panels but it can be
+changed separately afterward.
+
+`StartupFileSortMethod'
+
+   This variable specifies the startup sort method.  It can be any of
+`Name', `Extension', `Size', `Date', `Mode', `OwnerId', `GroupId',
+`OwnerName' or `GroupName'.  Its value initially affects both panels
+but it can be changed separately afterward.
+
+`ConfirmOnExit'
+
+   If this variable is `ON', the user is prompted for confirmation at
+exit.
+
+`HistoryFile'
+
+   This variable specifies the history file name.  The default value is
+`~/.githistory'.
+
+`InfoDisplay'
+
+   If this variable is `OFF', auxiliary file informations are not
+displayed.  This can be useful if you are using a very slow terminal.
+
+`LeadingDotMatch'
+
+   If this variable is `OFF' when matching files for
+select-files-matching-pattern / unselect-files-matching-pattern then the
+leading '.' in the file name is matched only explicitly.
+
+`TypeSensitivity'
+
+   If this variable is `OFF', colors are not used when displaying
+files.  Normally, the information in the `GIT-FTI' section is used to
+display files with different colors, depending on their types.  Note
+that `TypeSensitivity' is automatically set to `OFF' when `AnsiColors'
+is `OFF'.  *Note GIT-FTI::, for mor information.
+
+`NormalModeHelp'
+
+`CommandLineModeHelp'
+
+   These variables describe the status bar contents for each `git' mode
+when no errors occurred.  `git' can display on the status bar a help
+string and/or some system information (system type, hostname, machine
+type and the current date) using escape characters:
+
+     	\s      ->      the system type
+     	\h      ->      the host name
+     	\m      ->      the machine type
+     	\d      ->      the current date
+   *Note Modes::, for more information.
+
+
+File: git.info,  Node: GIT-Color,  Next: GIT-Monochrome,  Prev: GIT-Setup,  Up: git Sections
+
+Using git on colors displays
+............................
+
+   In this sections the variables have only one field.
+
+   These section allows you to customize the colors of `git'.  Reading
+the `.gitrc.TERM' configuration file is self explanatory.
+
+
+File: git.info,  Node: GIT-Monochrome,  Next: GIT-Keys,  Prev: GIT-Color,  Up: git Sections
+
+Using git on monochrome displays
+................................
+
+   In this sections the variables have only one field.
+
+   These section allows you to customize the appearance of `git' on
+monochrome displays.  Reading the `.gitrc.TERM' configuration file is
+self explanatory.
+
+
+File: git.info,  Node: GIT-Keys,  Next: GIT-FTI,  Prev: GIT-Monochrome,  Up: git Sections
+
+Defining keys
+.............
+
+   These section describes the actions `git' takes when a specified key
+is pressed.  A variable can have up to 6 fields separated by ';'.  Each
+line in this section looks like:
+
+     `key-sequence' = `command-name';`formatted-command';`new-dir';
+     	       `save-screen';`pause';`hide'
+
+   Note that you can't continue the variable fields description on the
+next line.
+
+* Menu:
+
+* key-sequence::                The key-sequence field.
+* command-name::                The command-name field.
+* formatted-command::           The formatted-command field.
+* new-dir::                     The new-dir field.
+* save-screen::                 The save-screen field.
+* pause::                       The pause field.
+* hide::                        The hide field.
+
+
+File: git.info,  Node: key-sequence,  Next: command-name,  Up: GIT-Keys
+
+The key-sequence field
+......................
+
+   `key-sequence' is the key sequence associated with the given
+command.  You can use any key sequence that doesn't start with an ascii
+character (0x20 to 0x7e).
+
+   Symbolic key names (`F0', `F1', `F2', ... `F10', `UP', `DOWN',
+`RIGHT', `LEFT', `INS', `DEL', `HOME', `END', `PGUP' and `PGDOWN') can
+be used instead of the key sequence.  If some keys don't have a
+`termcap'/ `terminfo' description (like the `F11'/`F12' keys on the
+`Linux' console) you can specify the key sequence in the usual way.
+
+
+File: git.info,  Node: command-name,  Next: formatted-command,  Prev: key-sequence,  Up: GIT-Keys
+
+The command-name field
+......................
+
+   `command-name' is a command generic name.  Even if it is not always
+used, the `command-name' must be present (if a command is associated
+with a `key-sequence').  If it is not, no action will be taken when
+pressing `key-sequence'.
+
+   There are two types of commands in `git': built-in commands and user
+defined commands.  If the `command-name' section contains a built-in
+command specification, the other fields are ignored.
+
+   Note that by convention built-in command names contain only lower
+case letters while user defined command names contain only upper case
+letters.
+
+
+File: git.info,  Node: formatted-command,  Next: new-dir,  Prev: command-name,  Up: GIT-Keys
+
+The formatted-command field
+...........................
+
+   - `formatted-command' is a shell command which can contain some
+scanf like format specifiers.  They are used to get the current entry
+name, owner, group, mode, etc.
+
+   Note that using uppercase `format specifiers' you will be able to
+access the other panel path, file and directory names, etc.
+
+   These are the available `format specifiers':
+
+* Menu:
+
+* %s::                          The %s format specifier.
+* %f::                          The %f format specifier.
+* %d::                          The %d format specifier.
+* %l::                          The %l format specifier.
+* %t::                          The %t format specifier.
+* %z::                          The %z format specifier.
+* %a::                          The %a format specifier.
+* %m::                          The %m format specifier.
+* %g::                          The %g format specifier.
+* %o::                          The %o format specifier.
+* %p::                          The %p format specifier.
+* %b::                          The %b format specifier.
+* %i::                          The %i format specifier.
+* %?::                          The %? format specifier.
+
+
+File: git.info,  Node: %s,  Next: %f,  Up: formatted-command
+
+The %s format specifier
+.......................
+
+   The format of %s is:  %s{question,default_answer}.
+
+   When `git' encounters a %s in the `formatted-command' it asks the
+user the question `question' whose default answer is `default_answer'
+and replaces the `%s{ , }' with the user's answer.  Both `question' and
+`default_answer' can contain any other `format specifiers' except %s.
+
+   Note that there should be no spaces between %s and '{'.
+
+
+File: git.info,  Node: %f,  Next: %d,  Prev: %s,  Up: formatted-command
+
+The %f format specifier
+.......................
+
+   `git' will replace %f with the current directory entry name only if
+it is a file (not a directory).
+
+
+File: git.info,  Node: %d,  Next: %l,  Prev: %f,  Up: formatted-command
+
+The %d format specifier
+.......................
+
+   `git' will replace %d with the current directory entry name only if
+it is a directory (not a file).
+
+
+File: git.info,  Node: %l,  Next: %t,  Prev: %d,  Up: formatted-command
+
+The %l format specifier
+.......................
+
+   `git' will replace %l with the current directory entry name only if
+it is a symbolic link with no target.
+
+
+File: git.info,  Node: %t,  Next: %z,  Prev: %l,  Up: formatted-command
+
+The %t format specifier
+.......................
+
+   `git' will replace %t with the current directory entry name only if
+it is a named pipe.
+
+
+File: git.info,  Node: %z,  Next: %a,  Prev: %t,  Up: formatted-command
+
+The %z format specifier
+.......................
+
+   `git' will replace %z with the current directory entry name only if
+it is a socket.
+
+
+File: git.info,  Node: %a,  Next: %m,  Prev: %z,  Up: formatted-command
+
+The %a format specifier
+.......................
+
+   `git' will always replace %a with the current directory entry name.
+
+
+File: git.info,  Node: %m,  Next: %g,  Prev: %a,  Up: formatted-command
+
+The %m format specifier
+.......................
+
+   `git' will always replace %m with the current file mode.
+
+
+File: git.info,  Node: %g,  Next: %o,  Prev: %m,  Up: formatted-command
+
+The %g format specifier
+.......................
+
+   `git' will always replace %g with the current file group.
+
+
+File: git.info,  Node: %o,  Next: %p,  Prev: %g,  Up: formatted-command
+
+The %o format specifier
+.......................
+
+   `git' will always replace %o with the current file owner.
+
+
+File: git.info,  Node: %p,  Next: %b,  Prev: %o,  Up: formatted-command
+
+The %p format specifier
+.......................
+
+   `git' will always replace %p with the current panel path.
+
+
+File: git.info,  Node: %b,  Next: %i,  Prev: %p,  Up: formatted-command
+
+The %b format specifier
+.......................
+
+   `git' will always replace %b with the current panel directory name.
+
+
+File: git.info,  Node: %i,  Next: %?,  Prev: %b,  Up: formatted-command
+
+The %i format specifier
+.......................
+
+   `git' will always replace %i with all the current panel selected
+entry names.
+
+
+File: git.info,  Node: %?,  Prev: %i,  Up: formatted-command
+
+The %? format specifier
+.......................
+
+   The format of %? is: %?{confirmation}.
+
+   `git' uses this format specifier only to ask for confirmation before
+expanding / executing the current command.  The `confirmation' string
+is displayed and, if the user doesn't confirm, the command is aborted.
+Otherwise, %?{confirmation} expands to a null string and the command is
+expanded / executed normally.
+
+
+File: git.info,  Node: new-dir,  Next: save-screen,  Prev: formatted-command,  Up: GIT-Keys
+
+The new-dir field
+.................
+
+   If the `formatted-command' successfully exits (exit code = 0) or it
+has no body and this field is present then `new-dir' will become the
+current panel directory.
+
+   The character '~' used at the beginning of the `new-dir' field is
+replaced by the user's home directory.
+
+
+File: git.info,  Node: save-screen,  Next: pause,  Prev: new-dir,  Up: GIT-Keys
+
+The save-screen field
+.....................
+
+   This field is a character (usually 'y' or 'n') that tells `git' to
+save ('y') or not to save ('n') the terminal's screen after executing
+the `formatted-command'.  Saving the screen is not necessary while
+editing or viewing a file because the information left after the editor
+or the viewer exits is not important.  Saving the screen means that that
+screen will be restored before the execution of the next command.
+Currently this field is used only if you are working as a super user
+under `Linux' on a virtual console.  Its default value is 'y'.
+
+
+File: git.info,  Node: pause,  Next: hide,  Prev: save-screen,  Up: GIT-Keys
+
+The pause field
+...............
+
+   Users may wish to read some commands's results before repainting the
+panels.  If this field is present git will wait for a key to be pressed
+before restoring the panels.  Its default value is 'n'.
+
+
+File: git.info,  Node: hide,  Prev: pause,  Up: GIT-Keys
+
+The hide field
+..............
+
+   Some commands that don't displaying any useful information if
+successfully complete their execution: `mount', `chmod', `chown',
+`chgrp', `sync' ... and, if an error occurs, a line or two are sent to
+stderr.  If this option is 'y', the stdout and stderr will be
+redirected to some files (`git.1.pid' and `git.2.pid', where pid is
+`git''s pid) and only if the command's exit code is not 0, the
+`git.2.pid' file will be displayed, line by line, onto the status bar.
+This way the panels will not be deleted and then repainted and the
+command appears to be built-in.  `git.1.pid' and `git.2.pid' are
+created in the temporary directory specified in the `TMPDIR'
+environment variable (or "/tmp" if `TMPDIR' is not defined).  The
+default value of the `hide' field is 'n'.
+
+
+File: git.info,  Node: GIT-FTI,  Prev: GIT-Keys,  Up: git Sections
+
+Setting up colors for different file types
+------------------------------------------
+
+   This sections contains entries of the form:
+
+     `pattern' = `foreground'; `background'; `brightness'
+
+where `pattern' is a file name matching pattern, `foreground',
+`background' and `brightness' are the color specification to be used
+when a file whose name match the given `pattern' is displayed in a
+panel.  Colors can be turned off using the `TypeSensitivity' variable
+in the `GIT-Setup' seection.
+
+
+File: git.info,  Node: gitps Sections,  Next: gitview Sections,  Prev: git Sections,  Up: Configuration Files
+
+gitps Sections
+--------------
+
+* Menu:
+
+* GITPS-Setup::                 gitps's setup section.
+* GITPS-Color::                 gitps's color section.
+* GITPS-Monochrome::            gitps's monochrome section.
+* GITPS-Keys::                  gitps's keys section.
+
+
+File: git.info,  Node: GITPS-Setup,  Next: GITPS-Color,  Up: gitps Sections
+
+gitps Setup
+...........
+
+   In this section the variables have only one field.
+
+`Help'
+
+   This variable describe `gitps''s status bar contents.
+
+
+File: git.info,  Node: GITPS-Color,  Next: GITPS-Monochrome,  Prev: GITPS-Setup,  Up: gitps Sections
+
+Using gitps on color displays
+.............................
+
+   In this sections the variables have only one field.
+
+   These section allows you to customize the colors of `gitps'.
+Reading the `.gitrc.TERM' configuration file is self explanatory.
+
+
+File: git.info,  Node: GITPS-Monochrome,  Next: GITPS-Keys,  Prev: GITPS-Color,  Up: gitps Sections
+
+Using gitps on monochrome displays
+..................................
+
+   In this sections the variables have only one field.
+
+   These section allows you to customize the appearance of `gitps' on
+monochrome displays.  Reading the `.gitrc.TERM' configuration file is
+self explanatory.
+
+
+File: git.info,  Node: GITPS-Keys,  Prev: GITPS-Monochrome,  Up: gitps Sections
+
+Defining keys
+.............
+
+
+File: git.info,  Node: gitview Sections,  Prev: gitps Sections,  Up: Configuration Files
+
+gitview Sections
+----------------
+
+* Menu:
+
+* GITVIEW-Setup::               gitview's setup section.
+* GITVIEW-Color::               gitview's color section.
+* GITVIEW-Monochrome::          gitview's monochrome section.
+* GITVIEW-Keys::                gitview's keys section.
+
+
+File: git.info,  Node: GITVIEW-Setup,  Next: GITVIEW-Color,  Up: gitview Sections
+
+gitview Setup
+.............
+
+   In this section the variables have only one field.
+
+`Help'
+
+   This variable describe `gitps''s status bar contents.
+
+
+File: git.info,  Node: GITVIEW-Color,  Next: GITVIEW-Monochrome,  Prev: GITVIEW-Setup,  Up: gitview Sections
+
+Using gitview on color displays
+...............................
+
+   In this sections the variables have only one field.
+
+   These section allows you to customize the colors of `gitview'.
+Reading the `.gitrc.TERM' configuration file is self explanatory.
+
+
+File: git.info,  Node: GITVIEW-Monochrome,  Next: GITVIEW-Keys,  Prev: GITVIEW-Color,  Up: gitview Sections
+
+Using gitview on monochrome displays
+....................................
+
+   In this sections the variables have only one field.
+
+   These section allows you to customize the appearance of `gitview' on
+monochrome displays.  Reading the `.gitrc.TERM' configuration file is
+self explanatory.
+
+
+File: git.info,  Node: GITVIEW-Keys,  Prev: GITVIEW-Monochrome,  Up: gitview Sections
+
+Defining keys
+.............
+
+
+File: git.info,  Node: Limitations,  Next: Bugs,  Prev: Customization,  Up: Top
+
+GNU Interactive Tools limitations
+*********************************
+
+   Background commands (& terminated)can be specified in the
+configuration file but their result (stdout and stderr redirection),
+will be overwritten by the result of newer commands and, if an error
+occurs, it will not be seen.
+
+   When `git' is compiled for `Linux', the default built-in color
+descriptions are for color monitors, so you can't (decently) run `git'
+on a b/w monitor without the `.gitrc.TERM' file correctly configured.
+`.gitrc.TERM' should be configured with `AnsiColors' = OFF.
+
+   Job support is implemented only in `git'.
+
+   Due to the fact that the ';' character is used as a field separator
+in the configuration files, you can't write something like that in the
+`.gitrc.TERM' files:
+
+   ^AAA = SHOW-USERS-AND-GROUPS; more /etc/passwd; more /etc/group
+
+because 'more /etc/group' will be considered as a directory to switch
+to.  You must write a small script instead:
+
+   #! /bin/sh
+
+   more /etc/passwd more /etc/group
+
+   Supposing the script name is `show_ug', the `.gitrc.TERM' line will
+look like this:
+
+   ^AAA = SHOW-USERS-AND-GROUPS; show_ug
+
+   There is no support for appearance modes on magic-cookie terminals.
+
+
+File: git.info,  Node: Bugs,  Prev: Limitations,  Up: Top
+
+GNU Interactive Tools bugs
+**************************
+
+   Any questions, comments, or bug reports, should be emailed to `Tudor
+Hulubei <tudor@cs.unh.edu>'.  Please include the version number.
+

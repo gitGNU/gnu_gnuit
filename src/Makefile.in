@@ -1,0 +1,419 @@
+# Makefile.in generated automatically by automake 1.4 from Makefile.am
+
+# Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+# $Id: Makefile.am,v 1.7 1999/05/31 03:44:29 tudor Exp $
+
+
+SHELL = @SHELL@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+
+DESTDIR =
+
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+
+top_builddir = ..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@ $(AM_INSTALL_PROGRAM_FLAGS)
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+transform = @program_transform_name@
+
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+host_alias = @host_alias@
+host_triplet = @host@
+CC = @CC@
+CFLAGS = @CFLAGS@
+CLEANFILES = @CLEANFILES@
+CPP = @CPP@
+DEFS = @DEFS@
+HOST = @HOST@
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+LDFLAGS = @LDFLAGS@
+LIBOBJS = @LIBOBJS@
+LIBS = @LIBS@
+MAKE = @MAKE@
+MAKEINFO = @MAKEINFO@
+PACKAGE = @PACKAGE@
+PRODUCT = @PRODUCT@
+VERSION = @VERSION@
+
+EXTRA_DIST = gitaction gitmkdirs gitmount gitrgrep gitunpack gitxgrep 	     .gitaction .gdbinit
+
+
+bin_PROGRAMS = git gitps gitview gitwipe gitkeys gitwhich
+bin_SCRIPTS = gitaction gitmkdirs gitmount gitrgrep gitunpack gitxgrep 	      .gitaction
+
+# We're not including tilde.c & tilde.h here because they are
+# automagically detected (configure.in includes them in LIBOBJS).
+EXTRA_git_SOURCES = ansi_stdlib.h file.h stat.h stdc.h xtime.h 		    tilde.h history.h
+
+git_SOURCES = git.c tty.c tty.h window.c window.h inputline.c inputline.h 	      status.c status.h panel.c panel.h title.c title.h 	      configure.c configure.h misc.c misc.h signals.c signals.h 	      xmalloc.c xmalloc.h xstring.c xstring.h xio.c xio.h 	      xid.c xid.h xstack.c xstack.h system.c system.h 	      fsusage.c fsusage.h getopt.c getopt.h fnmatch.c fnmatch.h
+
+gitps_SOURCES = gitps.c tty.c tty.h window.c window.h misc.c misc.h 		configure.c configure.h signals.c signals.h xio.c xio.h 		xmalloc.c xmalloc.h xstring.c xstring.h getopt.c getopt.h
+
+gitview_SOURCES = gitview.c tty.c tty.h window.c window.h misc.c misc.h 		  configure.c configure.h signals.c signals.h xio.c xio.h 		  xmalloc.c xmalloc.h xstring.c xstring.h getopt.c getopt.h
+
+gitwipe_SOURCES = gitwipe.c
+gitkeys_SOURCES = gitkeys.c
+gitwhich_SOURCES = gitwhich.c xmalloc.c xmalloc.h
+
+git_LDADD = @LIBOBJS@
+gitps_LDADD = @LIBOBJS@
+gitview_LDADD = @LIBOBJS@
+
+INCLUDES = -I$(srcdir)/.. -I..
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+CONFIG_HEADER = ../config.h
+CONFIG_CLEAN_FILES = 
+PROGRAMS =  $(bin_PROGRAMS)
+
+CPPFLAGS = @CPPFLAGS@
+git_OBJECTS =  git.o tty.o window.o inputline.o status.o panel.o title.o \
+configure.o misc.o signals.o xmalloc.o xstring.o xio.o xid.o xstack.o \
+system.o fsusage.o getopt.o fnmatch.o
+git_DEPENDENCIES =  @LIBOBJS@
+git_LDFLAGS = 
+gitps_OBJECTS =  gitps.o tty.o window.o misc.o configure.o signals.o \
+xio.o xmalloc.o xstring.o getopt.o
+gitps_DEPENDENCIES =  @LIBOBJS@
+gitps_LDFLAGS = 
+gitview_OBJECTS =  gitview.o tty.o window.o misc.o configure.o signals.o \
+xio.o xmalloc.o xstring.o getopt.o
+gitview_DEPENDENCIES =  @LIBOBJS@
+gitview_LDFLAGS = 
+gitwipe_OBJECTS =  gitwipe.o
+gitwipe_LDADD = $(LDADD)
+gitwipe_DEPENDENCIES = 
+gitwipe_LDFLAGS = 
+gitkeys_OBJECTS =  gitkeys.o
+gitkeys_LDADD = $(LDADD)
+gitkeys_DEPENDENCIES = 
+gitkeys_LDFLAGS = 
+gitwhich_OBJECTS =  gitwhich.o xmalloc.o
+gitwhich_LDADD = $(LDADD)
+gitwhich_DEPENDENCIES = 
+gitwhich_LDFLAGS = 
+SCRIPTS =  $(bin_SCRIPTS)
+
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
+DIST_COMMON =  ChangeLog Makefile.am Makefile.in history.c tilde.c
+
+
+DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+
+TAR = gtar
+GZIP_ENV = --best
+SOURCES = $(git_SOURCES) $(EXTRA_git_SOURCES) $(gitps_SOURCES) $(gitview_SOURCES) $(gitwipe_SOURCES) $(gitkeys_SOURCES) $(gitwhich_SOURCES)
+OBJECTS = $(git_OBJECTS) $(gitps_OBJECTS) $(gitview_OBJECTS) $(gitwipe_OBJECTS) $(gitkeys_OBJECTS) $(gitwhich_OBJECTS)
+
+all: all-redirect
+.SUFFIXES:
+.SUFFIXES: .S .c .o .s
+$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+	cd $(top_srcdir) && $(AUTOMAKE) --gnu --include-deps src/Makefile
+
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+
+mostlyclean-binPROGRAMS:
+
+clean-binPROGRAMS:
+	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
+
+distclean-binPROGRAMS:
+
+maintainer-clean-binPROGRAMS:
+
+install-binPROGRAMS: $(bin_PROGRAMS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(bindir)
+	@list='$(bin_PROGRAMS)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    echo "  $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`"; \
+	     $(INSTALL_PROGRAM) $$p $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`; \
+	  else :; fi; \
+	done
+
+uninstall-binPROGRAMS:
+	@$(NORMAL_UNINSTALL)
+	list='$(bin_PROGRAMS)'; for p in $$list; do \
+	  rm -f $(DESTDIR)$(bindir)/`echo $$p|sed 's/$(EXEEXT)$$//'|sed '$(transform)'|sed 's/$$/$(EXEEXT)/'`; \
+	done
+
+.c.o:
+	$(COMPILE) -c $<
+
+.s.o:
+	$(COMPILE) -c $<
+
+.S.o:
+	$(COMPILE) -c $<
+
+mostlyclean-compile:
+	-rm -f *.o core *.core
+
+clean-compile:
+
+distclean-compile:
+	-rm -f *.tab.c
+
+maintainer-clean-compile:
+
+git: $(git_OBJECTS) $(git_DEPENDENCIES)
+	@rm -f git
+	$(LINK) $(git_LDFLAGS) $(git_OBJECTS) $(git_LDADD) $(LIBS)
+
+gitps: $(gitps_OBJECTS) $(gitps_DEPENDENCIES)
+	@rm -f gitps
+	$(LINK) $(gitps_LDFLAGS) $(gitps_OBJECTS) $(gitps_LDADD) $(LIBS)
+
+gitview: $(gitview_OBJECTS) $(gitview_DEPENDENCIES)
+	@rm -f gitview
+	$(LINK) $(gitview_LDFLAGS) $(gitview_OBJECTS) $(gitview_LDADD) $(LIBS)
+
+gitwipe: $(gitwipe_OBJECTS) $(gitwipe_DEPENDENCIES)
+	@rm -f gitwipe
+	$(LINK) $(gitwipe_LDFLAGS) $(gitwipe_OBJECTS) $(gitwipe_LDADD) $(LIBS)
+
+gitkeys: $(gitkeys_OBJECTS) $(gitkeys_DEPENDENCIES)
+	@rm -f gitkeys
+	$(LINK) $(gitkeys_LDFLAGS) $(gitkeys_OBJECTS) $(gitkeys_LDADD) $(LIBS)
+
+gitwhich: $(gitwhich_OBJECTS) $(gitwhich_DEPENDENCIES)
+	@rm -f gitwhich
+	$(LINK) $(gitwhich_LDFLAGS) $(gitwhich_OBJECTS) $(gitwhich_LDADD) $(LIBS)
+
+install-binSCRIPTS: $(bin_SCRIPTS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(bindir)
+	@list='$(bin_SCRIPTS)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    echo " $(INSTALL_SCRIPT) $$p $(DESTDIR)$(bindir)/`echo $$p|sed '$(transform)'`"; \
+	    $(INSTALL_SCRIPT) $$p $(DESTDIR)$(bindir)/`echo $$p|sed '$(transform)'`; \
+	  else if test -f $(srcdir)/$$p; then \
+	    echo " $(INSTALL_SCRIPT) $(srcdir)/$$p $(DESTDIR)$(bindir)/`echo $$p|sed '$(transform)'`"; \
+	    $(INSTALL_SCRIPT) $(srcdir)/$$p $(DESTDIR)$(bindir)/`echo $$p|sed '$(transform)'`; \
+	  else :; fi; fi; \
+	done
+
+uninstall-binSCRIPTS:
+	@$(NORMAL_UNINSTALL)
+	list='$(bin_SCRIPTS)'; for p in $$list; do \
+	  rm -f $(DESTDIR)$(bindir)/`echo $$p|sed '$(transform)'`; \
+	done
+
+tags: TAGS
+
+ID: $(HEADERS) $(SOURCES) $(LISP)
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	here=`pwd` && cd $(srcdir) \
+	  && mkid -f$$here/ID $$unique $(LISP)
+
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
+	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $$unique $(LISP) -o $$here/TAGS)
+
+mostlyclean-tags:
+
+clean-tags:
+
+distclean-tags:
+	-rm -f TAGS ID
+
+maintainer-clean-tags:
+
+distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
+
+subdir = src
+
+distdir: $(DISTFILES)
+	@for file in $(DISTFILES); do \
+	  d=$(srcdir); \
+	  if test -d $$d/$$file; then \
+	    cp -pr $$/$$file $(distdir)/$$file; \
+	  else \
+	    test -f $(distdir)/$$file \
+	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	    || cp -p $$d/$$file $(distdir)/$$file || :; \
+	  fi; \
+	done
+configure.o: configure.c ../config.h ../version.h file.h xstring.h \
+	stdc.h tty.h window.h configure.h misc.h xtime.h
+fnmatch.o: fnmatch.c ../config.h ../version.h fnmatch.h
+fsusage.o: fsusage.c ../config.h ../version.h xio.h stat.h stdc.h \
+	fsusage.h
+getopt.o: getopt.c ../config.h ../version.h
+gitkeys.o: gitkeys.c ../config.h ../version.h stdc.h xio.h stat.h
+git.o: git.c ../config.h ../version.h file.h stdc.h xstring.h xmalloc.h \
+	getopt.h xio.h stat.h tty.h window.h inputline.h status.h \
+	title.h panel.h xstack.h configure.h signals.h system.h \
+	history.h tilde.h misc.h xtime.h
+gitps.o: gitps.c ../config.h ../version.h file.h stdc.h xstring.h \
+	xmalloc.h getopt.h tty.h window.h configure.h tilde.h signals.h \
+	misc.h xtime.h
+gitview.o: gitview.c ../config.h ../version.h file.h stdc.h xstring.h \
+	xmalloc.h getopt.h xio.h stat.h window.h signals.h configure.h \
+	tty.h misc.h xtime.h tilde.h
+gitwhich.o: gitwhich.c ../config.h ../version.h xmalloc.h stdc.h \
+	xstring.h
+gitwipe.o: gitwipe.c ../config.h ../version.h xtime.h file.h
+inputline.o: inputline.c ../config.h ../version.h xstring.h stdc.h \
+	xmalloc.h configure.h history.h tty.h window.h inputline.h \
+	tilde.h misc.h xtime.h
+misc.o: misc.c ../config.h ../version.h xstring.h stdc.h xmalloc.h \
+	configure.h file.h tty.h window.h misc.h xtime.h
+panel.o: panel.c ../config.h ../version.h file.h xtime.h stdc.h \
+	xstring.h xmalloc.h xio.h stat.h xid.h fsusage.h window.h \
+	status.h signals.h tty.h inputline.h panel.h xstack.h tilde.h \
+	fnmatch.h configure.h system.h misc.h
+signals.o: signals.c ../config.h ../version.h signals.h stdc.h tty.h \
+	window.h misc.h xtime.h
+status.o: status.c ../config.h ../version.h xtime.h xstring.h stdc.h \
+	xmalloc.h window.h status.h configure.h tty.h misc.h
+system.o: system.c ../config.h ../version.h xmalloc.h stdc.h xstring.h \
+	xio.h stat.h tty.h window.h signals.h inputline.h system.h \
+	misc.h xtime.h
+title.o: title.c ../config.h ../version.h window.h stdc.h xmalloc.h \
+	xstring.h tty.h title.h misc.h xtime.h
+tty.o: tty.c ../config.h ../version.h file.h stdc.h xstring.h xmalloc.h \
+	xio.h stat.h tty.h window.h signals.h misc.h xtime.h
+window.o: window.c ../config.h ../version.h window.h stdc.h xmalloc.h \
+	tty.h
+xid.o: xid.c ../config.h ../version.h xstring.h stdc.h xmalloc.h misc.h \
+	xtime.h xid.h
+xio.o: xio.c ../config.h ../version.h xmalloc.h stdc.h xstring.h xio.h \
+	stat.h
+xmalloc.o: xmalloc.c ../config.h ../version.h xmalloc.h stdc.h
+xstack.o: xstack.c ../config.h ../version.h xmalloc.h stdc.h xstring.h \
+	xstack.h
+xstring.o: xstring.c ../config.h ../version.h xmalloc.h stdc.h xstring.h
+
+info-am:
+info: info-am
+dvi-am:
+dvi: dvi-am
+check-am: all-am
+check: check-am
+installcheck-am:
+installcheck: installcheck-am
+install-exec-am: install-binPROGRAMS install-binSCRIPTS
+install-exec: install-exec-am
+
+install-data-am:
+install-data: install-data-am
+
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+install: install-am
+uninstall-am: uninstall-binPROGRAMS uninstall-binSCRIPTS
+uninstall: uninstall-am
+all-am: Makefile $(PROGRAMS) $(SCRIPTS)
+all-redirect: all-am
+install-strip:
+	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
+installdirs:
+	$(mkinstalldirs)  $(DESTDIR)$(bindir) $(DESTDIR)$(bindir)
+
+
+mostlyclean-generic:
+
+clean-generic:
+	-test -z "$(CLEANFILES)" || rm -f $(CLEANFILES)
+
+distclean-generic:
+	-rm -f Makefile $(CONFIG_CLEAN_FILES)
+	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+
+maintainer-clean-generic:
+mostlyclean-am:  mostlyclean-binPROGRAMS mostlyclean-compile \
+		mostlyclean-tags mostlyclean-generic
+
+mostlyclean: mostlyclean-am
+
+clean-am:  clean-binPROGRAMS clean-compile clean-tags clean-generic \
+		mostlyclean-am
+
+clean: clean-am
+
+distclean-am:  distclean-binPROGRAMS distclean-compile distclean-tags \
+		distclean-generic clean-am
+
+distclean: distclean-am
+
+maintainer-clean-am:  maintainer-clean-binPROGRAMS \
+		maintainer-clean-compile maintainer-clean-tags \
+		maintainer-clean-generic distclean-am
+	@echo "This command is intended for maintainers to use;"
+	@echo "it deletes files that may require special tools to rebuild."
+
+maintainer-clean: maintainer-clean-am
+
+.PHONY: mostlyclean-binPROGRAMS distclean-binPROGRAMS clean-binPROGRAMS \
+maintainer-clean-binPROGRAMS uninstall-binPROGRAMS install-binPROGRAMS \
+mostlyclean-compile distclean-compile clean-compile \
+maintainer-clean-compile uninstall-binSCRIPTS install-binSCRIPTS tags \
+mostlyclean-tags distclean-tags clean-tags maintainer-clean-tags \
+distdir info-am info dvi-am dvi check check-am installcheck-am \
+installcheck install-exec-am install-exec install-data-am install-data \
+install-am install uninstall-am uninstall all-redirect all-am all \
+installdirs mostlyclean-generic distclean-generic clean-generic \
+maintainer-clean-generic clean mostlyclean distclean maintainer-clean
+
+
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:

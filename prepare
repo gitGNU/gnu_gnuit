@@ -1,0 +1,13 @@
+#! /bin/sh
+
+# Prepare a freshly checked out copy of
+# the CVS tree for compilation.
+
+# $Id: prepare,v 1.2 1999/12/19 23:05:22 tudor Exp $
+
+rm -f config.cache && echo -n "." &&
+autoheader && echo -n "." &&
+aclocal && echo -n "." &&
+automake && echo -n "." &&
+autoconf && echo -n "." &&
+echo

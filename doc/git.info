@@ -1,0 +1,163 @@
+This is git.info, produced by Makeinfo version 3.12h from git.texinfo.
+
+START-INFO-DIR-ENTRY
+* GIT: (git).         GNU Interactive Tools
+END-INFO-DIR-ENTRY
+
+   GIT: A set of interactive tools, by Tudor Hulubei and Andrei Pitis.
+
+   This file documents the GNU Interactive Tools package.
+
+   Copyright (C) 1993-1998 Free Software Foundation, Inc.
+
+   Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+   Permission is granted to copy and distribute modified versions of
+this manual under the conditions for verbatim copying, provided that the
+entire resulting derived work is distributed under the terms of a
+permission notice identical to this one.
+
+   Permission is granted to copy and distribute translations of this
+manual into another language, under the above conditions for modified
+versions, except that this permission notice may be stated in a
+translation approved by the Foundation.
+
+
+Indirect:
+git.info-1: 1007
+git.info-2: 50765
+git.info-3: 92769
+
+Tag Table:
+(Indirect)
+Node: Top1007
+Node: Introduction1879
+Node: Distrib3190
+Node: Description4863
+Node: git5709
+Node: Conventions8222
+Node: Command line10100
+Node: Modes11183
+Node: Sorting13426
+Node: Moving14672
+Node: Selecting16232
+Node: Isearch17606
+Node: Input Line18696
+Node: Inserting Text19784
+Node: Moving Point20670
+Node: Erasing21231
+Node: Case Changes22458
+Node: History22867
+Node: Setting Mark23583
+Node: Yanking23894
+Node: Selecting Files24147
+Node: Files25049
+Node: Copying Files26699
+Node: Moving Files27043
+Node: Creating Files27408
+Node: Deleting Files27752
+Node: Linking Files28074
+Node: Renaming Files28699
+Node: Splitting Files29258
+Node: Packing Files29738
+Node: Inode31282
+Node: Editing Files32906
+Node: Viewing Files33606
+Node: Compressing Files33967
+Node: Encoding Files35318
+Node: Encrypting Files36217
+Node: Comparing Files36484
+Node: Spell Checking Files37122
+Node: Printing Files37357
+Node: Wiping Files37796
+Node: Searching Files38110
+Node: Archive Files38621
+Node: RPM Packages40403
+Node: File Types41749
+Node: MSDOS Files41945
+Node: Actions43972
+Node: Directories44880
+Node: Creating Dirs45627
+Node: Copying Dirs45881
+Node: Deleting Dirs46337
+Node: Moving Dirs46750
+Node: Renaming Dirs47203
+Node: Comparing Dirs47620
+Node: Dirs Usage48819
+Node: Changing Dirs49072
+Node: Dirs History49722
+Node: Hot Keys50765
+Node: Compiling51353
+Node: Mail51731
+Node: Shell52848
+Node: Grep53117
+Node: Locking53522
+Node: Refreshing53900
+Node: Reseting54616
+Node: Mounting54846
+Node: Sysinfo57888
+Node: Environment59115
+Node: Processes59500
+Node: Sync61563
+Node: Documentation61795
+Node: Exit62264
+Node: gitps62463
+Node: gitview63468
+Node: gitkeys64310
+Node: gitwipe64686
+Node: gitmount65404
+Node: gitaction66158
+Node: gitunpack67966
+Node: gitrgrep68371
+Node: Customization68857
+Node: Environment Variables69150
+Node: Configuration Files70197
+Node: Key Sequences72993
+Node: Setup74311
+Node: git Sections75244
+Node: GIT-Setup75668
+Node: GIT-Color77755
+Node: GIT-Monochrome78096
+Node: GIT-Keys78471
+Node: key-sequence79351
+Node: command-name79974
+Node: formatted-command80700
+Node: %s82009
+Node: %f82519
+Node: %d82747
+Node: %l82975
+Node: %t83209
+Node: %z83425
+Node: %a83637
+Node: %m83833
+Node: %g84018
+Node: %o84204
+Node: %p84390
+Node: %b84576
+Node: %i84772
+Node: %?84978
+Node: new-dir85450
+Node: save-screen85857
+Node: pause86536
+Node: hide86850
+Node: GIT-FTI87709
+Node: gitps Sections88272
+Node: GITPS-Setup88650
+Node: GITPS-Color88875
+Node: GITPS-Monochrome89227
+Node: GITPS-Keys89616
+Node: gitview Sections89728
+Node: GITVIEW-Setup90097
+Node: GITVIEW-Color90332
+Node: GITVIEW-Monochrome90698
+Node: GITVIEW-Keys91101
+Node: Limitations91219
+Node: Bugs92515
+Node: Key Index92769
+Node: Command Index106214
+Node: Variable Index119190
+Node: Concept Index120448
+
+End Tag Table

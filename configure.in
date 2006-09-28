@@ -1,0 +1,580 @@
+dnl
+
+dnl ###########################################################################
+dnl # 	          Autoconf input file for GNU Interactive Tools	              #
+dnl #         Copyright (C) 1993-1999 Free Software Foundation, Inc.	      #
+dnl ###########################################################################
+
+
+dnl Initialize the autoconf & automake stuff.
+AC_REVISION($Revision: 1.23 $)
+AC_INIT(src/git.c)
+PRODUCT="GNU Interactive Tools"
+AM_INIT_AUTOMAKE("git", `cat $srcdir/version`)
+AC_PROG_MAKE_SET
+AM_SANITY_CHECK
+AM_CONFIG_HEADER(config.h)
+AC_CONFIG_AUX_DIR
+AC_PREREQ(2.10)
+AC_PROG_INSTALL
+AC_CANONICAL_HOST
+AC_PROG_CC
+AC_REQUIRE_CPP
+HOST=$host
+
+dnl Check the command line arguments.
+AC_ARG_WITH(terminfo,
+	[  --with-terminfo         use terminfo insted of termcap],
+	TERMINFO="$withval",
+	TERMINFO=no)
+
+dnl Check for SMP compilation.
+AC_ARG_ENABLE(smp,
+	[  --enable-smp            enable parallel compilation (Linux only)],
+	SMP="$enableval",
+	SMP=no)
+
+dnl Check the system type.  We are especially looking for Linux.
+MAKE="make"
+if test "$host_os" = "linux-gnu"; then
+    AC_DEFINE(HAVE_LINUX)
+
+    if test "$SMP" = "yes"; then
+	AC_MSG_CHECKING([for Linux SMP machine])
+	AC_CACHE_VAL(ac_cv_processors,
+		ac_cv_processors="1"
+		if test -f /proc/cpuinfo; then
+		    ac_cv_processors=`cat /proc/cpuinfo|grep processor|\
+				wc -l|sed 's/ //g'`
+		fi)
+	if test "$ac_cv_processors" -ge 2; then
+	    AC_MSG_RESULT($ac_cv_processors processors)
+	    MAKE="make -j`expr $ac_cv_processors + 1`"
+	else
+	    AC_MSG_RESULT($ac_cv_processors processor)
+	fi
+    fi
+fi
+
+AC_ARG_ENABLE(gcc-warnings,
+	[  --enable-gcc-warnings   more gcc warnings for debugging purposes],
+	GCC_WARNINGS="$enableval",
+	GCC_WARNINGS=no)
+
+AC_ARG_ENABLE(efence,
+	[  --enable-efence         link against the Electric Fence library],
+	EFENCE="$enableval",
+	EFENCE=no)
+
+dnl Increase the warnings level if using GNU C.
+if test "$CC" = "gcc"; then
+    AC_DEFINE(HAVE_GCC)
+    if test "$GCC_WARNINGS" = "yes"; then
+	CFLAGS="$CFLAGS -W -Wall -ansi \
+-Waggregate-return -Wbad-function-cast -fstrict-aliasing \
+-Wtraditional -Winline -Wpointer-arith -Wcast-qual"
+    else
+	AC_DEFINE(NDEBUG)
+    fi
+else
+    AC_DEFINE(NDEBUG)
+fi
+
+dnl Use the Electric Fence library for debugging purposes.
+if test "$EFENCE" = "yes"; then
+    LIBS="$LIBS -lefence"
+fi
+
+dnl Check for some UNIX variants.  These ones need special treatement
+dnl due to exceptional oddities in their header files or libraries.
+AC_AIX
+AC_ISC_POSIX
+AC_MINIX
+AC_CHECK_LIB(sun, getpwnam)
+
+
+dnl Check for standard C header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS(unistd.h stdlib.h string.h memory.h values.h)
+
+dnl Check for system dependent header files.
+AC_CHECK_HEADERS(sys/param.h sys/mount.h sys/vfs.h sys/filsys.h fcntl.h)
+AC_CHECK_HEADERS(sys/statfs.h sys/dustat.h sys/statvfs.h sys/sioctl.h stddef.h)
+
+dnl Unisys has a broken sys/filsys.h.  We don't want to include it,
+dnl considering the fact that other methods are available.
+AC_MSG_CHECKING([for broken sys/filsys.h])
+AC_CACHE_VAL(ac_cv_broken_sys_filsys_h,
+    [AC_TRY_LINK([
+#include <sys/types.h>
+#ifdef HAVE_SYS_FILSYS_H
+#include <sys/filsys.h>
+#endif],
+		[{}],
+		ac_cv_broken_sys_filsys_h=no,
+		AC_DEFINE(BROKEN_SYS_FILSYS_H)
+		ac_cv_broken_sys_filsys_h=yes)])
+AC_MSG_RESULT($ac_cv_broken_sys_filsys_h)
+
+dnl Check for system specific directory functions declarations.
+AC_HEADER_DIRENT
+
+dnl Check whether the C compiler do support the 'const' keyword.
+AC_C_CONST
+
+dnl Check for predefined C types.  Fix them if necessary...
+AC_TYPE_SIGNAL
+AC_TYPE_MODE_T
+AC_TYPE_OFF_T
+AC_TYPE_PID_T
+AC_TYPE_SIZE_T
+AC_TYPE_UID_T
+
+dnl Check how to include time.h and sys/time.h.
+AC_CHECK_HEADERS(sys/time.h)
+AC_HEADER_TIME
+
+dnl Check whether the system supports long file names.  GIT will issue
+dnl a warning at run time if long file names are not supported.  Really!?
+AC_SYS_LONG_FILE_NAMES
+
+dnl Check the sys/stat.h macros.
+AC_HEADER_STAT
+
+dnl Check for a POSIX.1 compatible sys/wait.h.
+AC_HEADER_SYS_WAIT
+
+dnl Check for the existence of various functions.
+AC_CHECK_FUNCS(lstat sigaction strerror strcasecmp strncasecmp strstr\
+	       memmove putenv setenv getcwd rename readlink)
+
+dnl This configure.in code has been stolen from GNU fileutils-3.12.
+dnl Its purpose is detecting a method to get file system information.
+AC_CHECKING(how to get filesystem space usage)
+space=no
+
+# Here we'll compromise a little (and perform only the link test)
+# since it seems there are no variants of the statvfs function.
+if test $space = no; then
+  # SVR4
+  AC_CHECK_FUNCS(statvfs)
+  if test $ac_cv_func_statvfs = yes; then
+    space=yes
+    AC_DEFINE(STAT_STATVFS)
+  fi
+fi
+
+if test $space = no; then
+  # DEC Alpha running OSF/1
+  AC_MSG_CHECKING([for 3-argument statfs function (DEC OSF/1)])
+  AC_CACHE_VAL(fu_cv_sys_stat_statfs3_osf1,
+  [AC_TRY_RUN([
+#ifdef HAVE_SYS_PARAM_H
+#include <sys/param.h>
+#endif
+#include <sys/types.h>
+#ifdef HAVE_SYS_MOUNT_H
+#include <sys/mount.h>
+#endif
+  main ()
+  {
+    struct statfs fsd;
+    fsd.f_fsize = 0;
+    exit (statfs (".", &fsd, sizeof (struct statfs)));
+  }],
+  fu_cv_sys_stat_statfs3_osf1=yes,
+  fu_cv_sys_stat_statfs3_osf1=no,
+  fu_cv_sys_stat_statfs3_osf1=no)])
+  AC_MSG_RESULT($fu_cv_sys_stat_statfs3_osf1)
+  if test $fu_cv_sys_stat_statfs3_osf1 = yes; then
+    space=yes
+    AC_DEFINE(STAT_STATFS3_OSF1)
+  fi
+fi
+
+if test $space = no; then
+# AIX
+  AC_MSG_CHECKING([for two-argument statfs with statfs.bsize dnl
+member (AIX, 4.3BSD)])
+  AC_CACHE_VAL(fu_cv_sys_stat_statfs2_bsize,
+  [AC_TRY_RUN([
+#ifdef HAVE_SYS_PARAM_H
+#include <sys/param.h>
+#endif
+#ifdef HAVE_SYS_MOUNT_H
+#include <sys/mount.h>
+#endif
+#ifdef HAVE_SYS_VFS_H
+#include <sys/vfs.h>
+#endif
+  main ()
+  {
+    struct statfs fsd;
+    fsd.f_bsize = 0;
+    exit (statfs (".", &fsd));
+  }],
+  fu_cv_sys_stat_statfs2_bsize=yes,
+  fu_cv_sys_stat_statfs2_bsize=no,
+  fu_cv_sys_stat_statfs2_bsize=no)])
+  AC_MSG_RESULT($fu_cv_sys_stat_statfs2_bsize)
+  if test $fu_cv_sys_stat_statfs2_bsize = yes; then
+    space=yes
+    AC_DEFINE(STAT_STATFS2_BSIZE)
+  fi
+fi
+
+if test $space = no; then
+# SVR3
+  AC_MSG_CHECKING([for four-argument statfs (AIX-3.2.5, SVR3)])
+  AC_CACHE_VAL(fu_cv_sys_stat_statfs4,
+  [AC_TRY_RUN([
+#include <sys/types.h>
+#ifdef HAVE_SYS_STATFS_H
+#include <sys/statfs.h>
+#endif
+  main ()
+  {
+    struct statfs fsd;
+    exit (statfs (".", &fsd, sizeof fsd, 0));
+  }],
+    fu_cv_sys_stat_statfs4=yes,
+    fu_cv_sys_stat_statfs4=no,
+    fu_cv_sys_stat_statfs4=no)])
+  AC_MSG_RESULT($fu_cv_sys_stat_statfs4)
+  if test $fu_cv_sys_stat_statfs4 = yes; then
+    space=yes
+    AC_DEFINE(STAT_STATFS4)
+  fi
+fi
+
+if test $space = no; then
+# 4.4BSD and NetBSD
+  AC_MSG_CHECKING([for two-argument statfs with statfs.fsize dnl
+member (4.4BSD and NetBSD)])
+  AC_CACHE_VAL(fu_cv_sys_stat_statfs2_fsize,
+  [AC_TRY_RUN([
+#include <sys/types.h>
+#ifdef HAVE_SYS_PARAM_H
+#include <sys/param.h>
+#endif
+#ifdef HAVE_SYS_MOUNT_H
+#include <sys/mount.h>
+#endif
+  main ()
+  {
+    struct statfs fsd;
+    fsd.f_fsize = 0;
+    exit (statfs (".", &fsd));
+  }],
+  fu_cv_sys_stat_statfs2_fsize=yes,
+  fu_cv_sys_stat_statfs2_fsize=no,
+  fu_cv_sys_stat_statfs2_fsize=no)])
+  AC_MSG_RESULT($fu_cv_sys_stat_statfs2_fsize)
+  if test $fu_cv_sys_stat_statfs2_fsize = yes; then
+    space=yes
+    AC_DEFINE(STAT_STATFS2_FSIZE)
+  fi
+fi
+
+if test $space = no; then
+  # Ultrix
+  AC_MSG_CHECKING([for two-argument statfs with struct fs_data (Ultrix)])
+  AC_CACHE_VAL(fu_cv_sys_stat_fs_data,
+  [AC_TRY_RUN([
+#include <sys/types.h>
+#ifdef HAVE_SYS_PARAM_H
+#include <sys/param.h>
+#endif
+#ifdef HAVE_SYS_MOUNT_H
+#include <sys/mount.h>
+#endif
+#ifdef HAVE_SYS_FS_TYPES_H
+#include <sys/fs_types.h>
+#endif
+  main ()
+  {
+    struct fs_data fsd;
+    /* Ultrix's statfs returns 1 for success,
+       0 for not mounted, -1 for failure.  */
+    exit (statfs (".", &fsd) != 1);
+  }],
+  fu_cv_sys_stat_fs_data=yes,
+  fu_cv_sys_stat_fs_data=no,
+  fu_cv_sys_stat_fs_data=no)])
+  AC_MSG_RESULT($fu_cv_sys_stat_fs_data)
+  if test $fu_cv_sys_stat_fs_data = yes; then
+    space=yes
+    AC_DEFINE(STAT_STATFS2_FS_DATA)
+  fi
+fi
+
+dnl Not supported
+dnl if test $space = no; then
+dnl # SVR2
+dnl AC_TRY_CPP([#include <sys/filsys.h>],
+dnl   AC_DEFINE(STAT_READ_FILSYS) space=yes)
+dnl fi
+
+
+dnl If the GNU readline library is installed on the system, we will use
+dnl its tilde_expand() and history functions.  Otherwise, we have to use
+dnl the versions of tilde.c and history.c included in the package.  These
+dnl files belong to the GNU readline library version 2.0.1.
+AC_CHECK_LIB(readline, tilde_expand)
+AC_CHECK_FUNC(tilde_expand,,
+	LIBOBJS="$LIBOBJS tilde.o")
+AC_CHECK_FUNC(using_history,,
+	LIBOBJS="$LIBOBJS history.o")
+
+dnl Check for compilers that do not support constructs combinations
+dnl of ANSI C like prototypes & K&R definitions.  B.O.S. systems.
+AC_MSG_CHECKING([for dumb C compiler])
+
+AC_CACHE_VAL(git_cv_dumb_cc,
+    AC_TRY_LINK(
+	[void tst(char);
+	 void tst(i)
+	     char i;
+	 {}],
+	[{
+	    tst('A');
+	}],
+	git_cv_dumb_cc=no,
+	git_cv_dumb_cc=yes)
+)
+
+if test "$git_cv_dumb_cc" = "yes"; then
+    AC_DEFINE(HAVE_DUMB_CC)
+fi
+
+AC_MSG_RESULT([$git_cv_dumb_cc])
+
+dnl Check if struct utsname is available.
+AC_MSG_CHECKING([for struct utsname])
+
+AC_CACHE_VAL(git_cv_struct_utsname,
+    AC_TRY_LINK([
+#include <sys/utsname.h>],
+	[{
+	    char *ptr;
+	    struct utsname u;
+
+	    uname(&u);
+	    ptr = u.nodename;
+	    ptr = u.sysname;
+	    ptr = u.machine;
+	}],
+	git_cv_struct_utsname=yes,
+	git_cv_struct_utsname=no)
+)
+
+if test "$git_cv_struct_utsname" = "yes"; then
+    AC_DEFINE(HAVE_UTSNAME)
+fi
+
+AC_MSG_RESULT([$git_cv_struct_utsname])
+
+dnl Check for POSIX compatible terminal interface.
+AC_MSG_CHECKING([for POSIX compatible terminal interface])
+
+AC_CACHE_VAL(git_cv_sys_posix_tty,
+    AC_TRY_LINK([
+#include <termios.h>],
+	[{
+	    struct termios term;
+
+	    tcgetattr(0, &term);
+	}],
+	git_cv_sys_posix_tty=yes,
+	git_cv_sys_posix_tty=no)
+)
+
+if test "$git_cv_sys_posix_tty" = "yes"; then
+    AC_DEFINE(HAVE_POSIX_TTY)
+fi
+
+AC_MSG_RESULT([$git_cv_sys_posix_tty])
+
+dnl Check for System V compatible terminal interface.
+AC_MSG_CHECKING([for System V compatible terminal interface])
+
+AC_CACHE_VAL(git_cv_sys_systemv_tty,
+    AC_TRY_LINK([
+#include <termio.h>],
+	[{
+	    struct termio term;
+
+	    ioctl(0, TCGETA, &term);
+	}],
+	git_cv_sys_systemv_tty=yes,
+	git_cv_sys_systemv_tty=no)
+)
+
+if test "$git_cv_sys_systemv_tty" = "yes"; then
+    AC_DEFINE(HAVE_SYSTEMV_TTY)
+fi
+
+AC_MSG_RESULT([$git_cv_sys_systemv_tty])
+
+dnl Check for BSD compatible terminal interface.
+AC_MSG_CHECKING([for BSD compatible terminal interface])
+
+AC_CACHE_VAL(git_cv_sys_bsd_tty,
+    AC_TRY_LINK([
+#include <sgtty.h>],
+	[{
+	    struct sgttyb arg;
+	    struct tchars targ;
+	    struct ltchars ltarg;
+
+	    ioctl(0, TIOCGETP,&arg);
+	    ioctl(0, TIOCGETC,&targ);
+	    ioctl(0, TIOCGLTC,&ltarg);
+	}],
+	git_cv_sys_bsd_tty=yes,
+	git_cv_sys_bsd_tty=no
+    )
+)
+
+if test "$git_cv_sys_bsd_tty" = "yes"; then
+    AC_DEFINE(HAVE_BSD_TTY)
+fi
+
+AC_MSG_RESULT([$git_cv_sys_bsd_tty])
+
+dnl Check if ioctl(1, TIOCGWINSZ, &winsz) works.
+AC_MSG_CHECKING([for struct winsz])
+
+AC_CACHE_VAL(git_cv_struct_winsz,
+    AC_TRY_LINK([
+#include <sys/types.h>
+#include <sys/ioctl.h>
+#ifdef HAVE_POSIX_TTY
+#include <termios.h>
+#else
+#ifdef HAVE_SYSTEMV_TTY
+#include <termio.h>
+#else
+#include <sgtty.h>
+#endif /* HAVE_SYSTEMV_TTY */
+#endif /* HAVE_POSIX_TTY */
+#if defined TIOCGSIZE && !defined TIOCGWINSZ
+#define TIOCGWINSZ TIOCGSIZE
+#endif],
+	[{
+	    struct winsize winsz;
+	    ioctl(1, TIOCGWINSZ, &winsz);
+	    winsz.ws_col = winsz.ws_row;
+	}],
+	git_cv_struct_winsz=yes,
+	git_cv_struct_winsz=no)
+)
+
+if test "$git_cv_struct_winsz" = "yes"; then
+    AC_DEFINE(HAVE_WINSZ)
+fi
+
+AC_MSG_RESULT([$git_cv_struct_winsz])
+
+dnl Check the terminal capabilities library to use.
+define(git_TERMINFO_LIBRARY,
+[    AC_CHECK_LIB(ncurses, tgetent, AC_DEFINE(HAVE_LIBTERMINFO)
+				 LIBS="$LIBS -lncurses"
+				 TERMLIB_FOUND=yes,
+	AC_CHECK_LIB(termlib, tgetent, AC_DEFINE(HAVE_LIBTERMINFO)
+				    LIBS="$LIBS -ltermlib"
+				    TERMLIB_FOUND=yes,
+	    AC_CHECK_LIB(curses, tgetent, AC_DEFINE(HAVE_LIBTERMINFO)
+				       LIBS="$LIBS -lcurses"
+				       TERMLIB_FOUND=yes,
+		AC_CHECK_LIB(tinfo, tgetent, AC_DEFINE(HAVE_LIBTERMINFO)
+					  LIBS="$LIBS -ltinfo"
+					  TERMLIB_FOUND=yes,
+		    AC_CHECK_LIB(terminfo, tgetent, AC_DEFINE(HAVE_LIBTERMINFO)
+						 LIBS="$LIBS -lterminfo"
+						 TERMLIB_FOUND=yes,
+			TERMLIB_FOUND=no
+		    )
+		)
+	    )
+	)
+    )
+]
+)dnl
+
+if test "$TERMINFO" = "yes"; then
+    git_TERMINFO_LIBRARY
+    if test "$TERMLIB_FOUND" = "no"; then
+	AC_CHECK_LIB(termcap, tgetent,
+		     AC_DEFINE(HAVE_LIBTERMCAP)
+		     LIBS="$LIBS -ltermcap"
+		     TERMLIB_FOUND="yes")
+    fi
+else
+    AC_CHECK_LIB(termcap, tgetent,
+		 AC_DEFINE(HAVE_LIBTERMCAP)
+		 LIBS="$LIBS -ltermcap"
+		 TERMLIB_FOUND="yes",
+		 git_TERMINFO_LIBRARY)
+fi
+
+if test "$TERMLIB_FOUND" = "no"; then
+    AC_MSG_ERROR([no library for handling terminal capabilities])
+fi
+
+dnl Check for the presence of the makeinfo utility.  If we can't find
+dnl it, we can't build the info documentation.
+AC_PROGRAM_CHECK(MAKEINFO, makeinfo, makeinfo, false)
+if test "$MAKEINFO" = "false"; then
+    AC_MSG_WARN(***** makeinfo utility not found *****)
+fi
+
+dnl Check for the presence of the texi2dvi utility.  If we can't find
+dnl it, we can't build the dvi documentation.
+AC_PROGRAM_CHECK(TEXI2DVI, texi2dvi, texi2dvi, false)
+if test "$TEXI2DVI" = "false"; then
+    AC_MSG_WARN(***** texi2dvi utility not found *****)
+fi
+
+dnl Check for the presence of the texi2html utility.  If we can't find
+dnl it, we can't build the html documentation.
+AC_PROGRAM_CHECK(TEXI2HTML, texi2html, texi2html, false)
+if test "$TEXI2HTML" = "false"; then
+    AC_MSG_WARN(***** texi2html utility not found *****)
+fi
+
+dnl According to Joachim Baumann, for Solaris 2.3 & Solaris 2.4 (at least)
+dnl -lucb should be included after -ltermcap.  This hasn't been tested!
+if test "$TERMINFO" = "no"; then
+    if test "$host_os" = "solaris2.3" || test "$host_os" = "solaris2.4"; then
+	AC_CHECK_LIB(ucb, tgetent, , , $LIBS)
+    fi
+fi
+
+CLEANFILES="core tutu gogu *.out t tt mwatch.log mtrace.log"
+
+dnl Make final variable substitutions.
+AC_SUBST(PRODUCT)dnl
+AC_SUBST(HOST)dnl
+AC_SUBST(MAKE)dnl
+AC_SUBST(INSTALL)dnl
+AC_SUBST(INSTALL_PROGRAM)dnl
+AC_SUBST(INSTALL_DATA)dnl
+AC_SUBST(CFLAGS)dnl
+AC_SUBST(CPP)dnl
+AC_SUBST(DEFS)dnl
+AC_SUBST(LIBS)dnl
+AC_SUBST(LDFLAGS)dnl
+AC_SUBST(INCLUDES)dnl
+AC_SUBST(CLEANFILES)dnl
+AC_SUBST(LIBOBJS)dnl
+
+dnl Generate the Makefiles.
+AC_OUTPUT(version.h
+	  Makefile
+	  src/Makefile
+	  term/Makefile
+	  term/.gitrc.common
+	  doc/Makefile
+	  git.spec
+	  LSM)

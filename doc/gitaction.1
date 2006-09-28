@@ -1,0 +1,156 @@
+.\" +----------
+.\" |
+.\" |			      GITACTION man page
+.\" |
+.\" |	      Copyright 1993-1999 Free Software Foundation, Inc.
+.\" |
+.\" |	This file is part of GIT (GNU Interactive Tools)
+.\" |
+.\" |	GIT is free software; you can redistribute it and/or modify it under
+.\" | the terms of the GNU General Public License as published by the Free
+.\" | Software Foundation; either version 2, or (at your option) any later
+.\" | version.
+.\" |
+.\" | GIT is distributed in the hope that it will be useful, but WITHOUT ANY
+.\" | WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+.\" | FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+.\" | details.
+.\" |
+.\" | You should have received a copy of the GNU General Public License along
+.\" | with GIT; see the file COPYING. If not, write to the Free Software
+.\" | Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+.\" |
+.\" | $Id: gitaction.1,v 1.1 1999/01/16 22:32:55 tudor Exp $
+.TH gitaction 1
+.SH NAME
+gitaction \- GNU Interactive Tools - per file type action script
+.SH SYNTAX
+.I gitaction
+.I directory, file
+.br
+.I .gitaction directory, file
+
+.SH DESCRIPTION
+.I gitaction
+is a script that executes a different action for each file type
+specified. It is called by the
+.I git
+program when pressing
+.B F2
+or
+.B ^Xa
+(see the
+.B .gitrc.TERM
+configuration files in the
+.I git
+manual). The first parameter is the current directory name and the second
+one is the file name to be matched against the default patterns. The
+matching is done using the shell 'case' statement
+If you press
+.B F2
+or
+.B ^Xa
+on a
+.B "*.c"
+file,
+.I git
+will compile it, if you press
+.B F2
+or
+.B ^Xa
+on a
+.B "*.tar.gz"
+file,
+.I git
+will list the tar archive contents, if you press the same keys on a
+.B "*.gz"
+file,
+.I git
+will display its uncompressed contents on the screen, etc ...
+By default
+.I gitaction
+checks for the following patterns:
+
+"*.cc" "*.c" "*.l" "*.y" "*.h" "*.s" "*.S" "*.o" "*.a" "*.sa"
+"Makefile" "makefile"
+"*.tar.gz" "*.tgz" "*.tar.z" "*.tar.Z" "*.taz" "*.tar" "*.gz"
+"*.z" "*.Z"
+"*.zip" "*.arj" "*.rar"
+"*.doc" "*.txt" "*.lsm"
+"*.gif" "*.jpg" "*.jpeg" "*.tif" "*.bmp"
+"*.mpg"
+"*.mod" "*.s3m" "*.voc" "*.wav"
+"*.ps" "*.dvi" "*.tex"
+compressed/uncompressed manual pages
+
+and acts as appropriate. If  no  pattern is found, the file is displayed
+using more. Feel free to change this. If you want to find out what the
+default action for each file type is (or if you want to modify it), just
+read/modify the
+.I gitaction
+script.
+
+If you press
+.B F2
+or
+.B ^Xa
+on a
+.B "*.gif"
+file or
+.B "*.jpg"
+file and you have the
+.I zgv
+utility installed, you will be able to see it. If you want to change
+the gif/jpeg viewer, all you need to do is to change its name in the
+.I gitaction
+script. I don't know a
+.B "*.bmp"
+or
+.B "*.tif"
+viewer. Feel free to add one in the
+.I gitaction
+script.
+
+The script can be easy enhanced. Just read it.
+
+The
+.I .gitaction
+script is a local version of the
+.I gitaction
+script. When started,
+.I gitaction
+tries to search a script called
+.B .gitaction
+in the current directory and, if it finds it, it starts it. If
+.IR .gitaction 's
+exit code is 0 (
+.I .gitaction
+couldn't find a matching pattern),
+.I gitaction
+starts its own case statement trying to match the current file name (the
+second parameter) against its default patterns.
+
+The
+.I .gitaction
+script *must* be executable. An example of
+.I .gitaction
+can be fount in
+.BR /usr/local/lib .
+You should copy the example in the current directory and then modify it.
+
+
+.SH BUGS
+These manual page is incomplete.  Only the GIT's info documentation is
+being updated.
+
+Please send bug reports to:
+.br
+.I Tudor Hulubei <tudor@cs.unh.edu>
+
+.SH SEE ALSO
+git(1) gitps(1) gitview(1) gitmount(1) gitkeys(1) gitrgrep(1) gitunpack(1)
+
+.SH AUTHORS
+.I Tudor Hulubei <tudor@cs.unh.edu>
+.br
+.I Andrei Pitis <pink@pub.ro>
