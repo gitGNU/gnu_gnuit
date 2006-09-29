@@ -19,7 +19,7 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: xmalloc.c,v 1.5 1999/08/14 19:08:26 tudor Exp $ */
+/* $Id: xmalloc.c,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

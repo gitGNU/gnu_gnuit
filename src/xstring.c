@@ -18,7 +18,7 @@
 
 /* Written by Tudor Hulubei and Andrei Pitis.  strcasecmp() and strncasecmp()
    have been stolen from the GNU C library.  */
-/* $Id: xstring.c,v 1.4 1999/01/16 22:37:24 tudor Exp $ */
+/* $Id: xstring.c,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

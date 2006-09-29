@@ -1,6 +1,6 @@
 #! /bin/sh
 
-# $Id: gitxgrep,v 1.2 1998/03/02 08:33:16 tudor Exp $
+# $Id: gitxgrep,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $
 
 cd "$1"
 echo `pwd`'/:'

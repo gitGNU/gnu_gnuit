@@ -17,7 +17,7 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: signals.h,v 1.6 1999/01/16 22:37:24 tudor Exp $ */
+/* $Id: signals.h,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $ */
 
 #ifndef _GIT_SIGNAL_H
 #define _GIT_SIGNAL_H

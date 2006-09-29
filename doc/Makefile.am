@@ -1,13 +1,11 @@
-# $Id: Makefile.am,v 1.7 2000/03/09 23:16:54 tudor Exp $
+# $Id: Makefile.am,v 1.5 2005-12-07 13:56:05 ianb Exp $
 info_TEXINFOS = git.texinfo
-man_MANS = git.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 gitunpack.1
+man_MANS = gitfm.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 gitunpack.1 git.transition.1
 htmldir = $(prefix)/doc/git-$(VERSION)
 html_DATA = git.html
-EXTRA_DIST = git.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 gitunpack.1\
-	     git.html
+EXTRA_DIST = gitfm.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 gitunpack.1\
+	     git.html git.transition.1
 
-html:
-	cd $(srcdir) &&\
-	texi2html -expandinfo -glossary -monolithic $(srcdir)/git.texinfo
+AM_MAKEINFOHTMLFLAGS = --no-split
 
 dist-hook: html

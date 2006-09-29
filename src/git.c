@@ -17,7 +17,7 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: git.c,v 1.21 1999/09/30 23:03:39 tudor Exp $ */
+/* $Id: git.c,v 1.4 2005-10-22 15:29:15 ianb Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -110,8 +110,8 @@ int wait_msg;
 
 int UseLastScreenChar;
 
-char color_section[]  = "[GIT-Color]";
-char monochrome_section[] = "[GIT-Monochrome]";
+char color_section[]  = "[GITFM-Color]";
+char monochrome_section[] = "[GITFM-Monochrome]";
 
 char lock_bad[]   = "Bad password, try again...";
 
@@ -1613,7 +1613,7 @@ add_to_environment(variable, alternate_variable, value)
 
 
 /*
- * Read keys from the current section ([GIT-Keys] is supposed to be in
+ * Read keys from the current section ([GITFM-Keys] is supposed to be in
  * use when read_keys() is called).  Return the number of keys read.
  */
 int
@@ -1906,21 +1906,21 @@ main(argc, argv)
 
     printf(copyright);
 
-    add_to_environment("GIT_EDITOR",  "EDITOR",     "vi");
+    add_to_environment("GIT_EDITOR",  "EDITOR",     "sensible-editor");
     add_to_environment("GIT_SHELL",   "SHELL",      "/bin/sh");
     add_to_environment("GIT_RMAIL",   (char *)NULL, "mail");
-    add_to_environment("GIT_PAGER",   (char *)NULL, "more");
+    add_to_environment("GIT_PAGER",   (char *)NULL, "sensible-pager");
     add_to_environment("GIT_VMSTAT",  (char *)NULL, "free");
-    add_to_environment("GIT_BROWSER", (char *)NULL, "lynx");
+    add_to_environment("GIT_BROWSER", (char *)NULL, "sensible-browser");
 
     tty_init(TTY_RESTRICTED_INPUT);
 
     common_configuration_init();
 
-    use_section("[GIT-FTI]");
+    use_section("[GITFM-FTI]");
     get_file_type_info();
 
-    use_section("[GIT-Keys]");
+    use_section("[GITFM-Keys]");
     keys = read_keys(0, &errors);
     wait_msg += errors;
     configuration_end();
@@ -1958,7 +1958,7 @@ main(argc, argv)
 
     tty_set_last_char_flag(UseLastScreenChar);
 
-    use_section("[GIT-Setup]");
+    use_section("[GITFM-Setup]");
 
     if (AnsiColors == ON)
 	TypeSensitivity = get_flag_var("TypeSensitivity", ON);
@@ -1974,10 +1974,10 @@ main(argc, argv)
 
     get_colorset_var(TitleColors, TitleFields, TITLE_FIELDS);
 
-    use_section("[GIT-FTI]");
+    use_section("[GITFM-FTI]");
     get_file_type_info();
 
-    use_section("[GIT-Keys]");
+    use_section("[GITFM-Keys]");
     keys = read_keys(keys, &errors);
     wait_msg += errors;
 

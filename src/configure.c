@@ -17,7 +17,7 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: configure.c,v 1.6 1999/05/31 18:51:22 tudor Exp $ */
+/* $Id: configure.c,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

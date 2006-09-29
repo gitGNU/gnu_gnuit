@@ -17,8 +17,8 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: misc.c,v 1.9 1999/05/31 18:51:22 tudor Exp $ */
-
+/* $Id: misc.c,v 1.2 2005-10-22 15:29:16 ianb Exp $ */
+#include <stdio.h>
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -277,12 +277,31 @@ void
 use_section(section)
     char *section;
 {
-    if (configuration_section(section) == -1)
-    {
-	fprintf(stderr,
-		"%s: can't find section %s in the configuration file.\n",
-		program, section);
-	exit(1);
+     char *gitfmprefix="[GITFM-";
+     char *gitprefix="[GIT-";
+     if (configuration_section(section) == -1)
+     {
+	  /* If we are looking for [GITFM-something,
+	     accept [GIT-something for backwards compatibility */
+	  if(strncmp(section,gitfmprefix,strlen(gitfmprefix)) == 0)
+	  {	
+	       char *newsection=xmalloc(strlen(gitprefix) +
+					strlen(section+strlen(gitprefix)) + 1);
+	       strcpy(newsection,gitprefix);
+	       strcat(newsection,section+strlen(gitfmprefix));
+	       if (configuration_section(newsection) != -1)
+	       {
+		    /* found old [GIT-something section */
+		    xfree(newsection);
+		    return;
+	       }
+	       xfree(newsection);
+	  }
+	  
+	  fprintf(stderr,
+		  "%s: can't find section %s in the configuration file.\n",
+		  program, section);
+	  exit(1);
     }
 }
 

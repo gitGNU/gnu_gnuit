@@ -1,4 +1,4 @@
-### $Id: .gitrc.vt102,v 1.5 1999/01/16 22:37:27 tudor Exp $
+### $Id: .gitrc.vt102,v 1.2 2005-10-22 15:29:16 ianb Exp $
 
 ###############################################################################
 ###									    ###
@@ -32,7 +32,7 @@ StartupScrollStep	=	# empty means half the number of lines
 # be end of sections !!!
 #
 
-[GIT-Setup]
+[GITFM-Setup]
 StartupFileDisplayMode	= Size	# OwnerGroup, DateTime, Size, Mode or FullName
 StartupFileSortMethod	= Name	# Name, Extension, Size, Date, Mode, OwnerId, GroupId, OwnerName or GroupName
 ConfirmOnExit		=	# empty means OFF
@@ -40,10 +40,10 @@ HistoryFile		= ~/.githistory
 InfoDisplay		= ON
 LeadingDotMatch		= ON     # OFF means that leading '.' is matched only explicitly
 TypeSensitivity		= ON	# Automatically set to OFF when AnsiColors is OFF
-NormalModeHelp		= System: \s   Host: \h   Machine: \m   Date: \d
-CommandLineModeHelp	= System: \s   Host: \h   Machine: \m   Date: \d
-#NormalModeHelp		= F3 View  F4 Edit  F5 Copy  F6 Move  F7 MkDir  F8 Del  F10 Exit ^CH Ln ^CS SymLn
-#CommandLineModeHelp	= ^G-STOP ^B/^F-MOVE ^P/^N-HISTORY ^A-BOL ^E-EOL ^O-RESTORE ^X^C-EXIT ^Z-SUSPEND
+NormalModeHelp		= F3 View  F4 Edit  F5 Copy  F6 Move  F7 MkDir  F8 Del  F10 Exit ^CH Ln ^CS SymLn
+CommandLineModeHelp	= ^G-STOP ^B/^F-MOVE ^P/^N-HISTORY ^A-BOL ^E-EOL ^O-RESTORE ^X^C-EXIT ^Z-SUSPEND
+#NormalModeHelp		= System: \s   Host: \h   Machine: \m   Date: \d
+#CommandLineModeHelp	= System: \s   Host: \h   Machine: \m   Date: \d
 
 
 [GITPS-Setup]
@@ -58,7 +58,7 @@ Help = Arrows/PgUp/PgDown/Home/End-MOVE ^L-REFRESH ^X^C/F10-QUIT 0-9/a-f/A-F-OFF
 ### To ignore a section just comment its name
 ###
 
-[GIT-FTI]
+[GITFM-FTI]
 
 
 ###############################
@@ -66,7 +66,7 @@ Help = Arrows/PgUp/PgDown/Home/End-MOVE ^L-REFRESH ^X^C/F10-QUIT 0-9/a-f/A-F-OFF
 ###############################
 
 
-[GIT-Color]
+[GITFM-Color]
 TitleForeground			= CYAN
 TitleBackground			= BLUE
 TitleBrightness			= ON
@@ -147,7 +147,7 @@ StatusBrightness		= ON
 ###################################
 
 
-[GIT-Monochrome]
+[GITFM-Monochrome]
 TitleForeground			= WHITE
 TitleBackground			= BLACK
 TitleBrightness			= ON
@@ -276,7 +276,7 @@ StatusBrightness		= OFF
 ### Key sequences starting with characters between ' ' and '~' are IGNORED!
 ###
 
-[GIT-Keys]
+[GITFM-Keys]
 ^[[A        = previous-line
 ^[[B        = next-line
 ^[[C 	    = forward-char

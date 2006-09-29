@@ -3,7 +3,7 @@
 # Prepare a freshly checked out copy of
 # the CVS tree for compilation.
 
-# $Id: prepare,v 1.2 1999/12/19 23:05:22 tudor Exp $
+# $Id: prepare,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $
 
 rm -f config.cache && echo -n "." &&
 autoheader && echo -n "." &&

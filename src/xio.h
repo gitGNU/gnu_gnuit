@@ -17,7 +17,7 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: xio.h,v 1.4 1999/01/16 22:37:24 tudor Exp $ */
+/* $Id: xio.h,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $ */
 
 #ifndef _GIT_XIO_H
 #define _GIT_XIO_H

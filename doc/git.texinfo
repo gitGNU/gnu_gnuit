@@ -6,7 +6,7 @@
 @c @setchapternewpage odd
 @c %**end of header
 
-@c $Id: git.texinfo,v 1.10 2000/03/09 22:59:55 tudor Exp $
+@c $Id: git.texinfo,v 1.3 2005-10-22 15:29:15 ianb Exp $
 
 @set EDITION 2.9
 @set VERSION 4.3.20
@@ -172,7 +172,7 @@ The @code{GIT} package contains three interactive programs and a few
 additional utilities.  Here there is a description of each of them.
 
 @menu
-* git::                         A file system browser.
+* gitfm::                       A file system browser.
 * gitps::                       A process viewer/killer.
 * gitview::                     An ASCII/HEX file viewer.
 * gitkeys::                     An utility for displaying key sequences.
@@ -184,11 +184,11 @@ additional utilities.  Here there is a description of each of them.
 @end menu
 
 
-@node git, gitps, , Description
+@node gitfm, gitps, , Description
 @section The GIT file system browser
-@cindex git
+@cindex gitfm
 
-@code{git} is a file system browser with some shell like features
+@code{gitfm} is a file system browser with some shell like features
 designed to make your work much easier and much efficient.  It displays
 one or two panels, each one containing a file system directory.  You can
 browse the directory tree with the usual cursor keys, pressing
@@ -222,7 +222,7 @@ you will be prompted if a decision has to be taken.
 * Grep::                        How to use grep/recursive grep.
 * Locking::                     How to lock your console.
 * Refreshing::                  How to refresh the screen contents.
-* Reseting::                    How to reset your terminal.
+* Resetting::                   How to reset your terminal.
 * Mounting::                    How to mount/unmount a file system.
 * Sysinfo::                     How to get some useful system information.
 * Environment::                 How to look at the environment variables.
@@ -235,10 +235,10 @@ you will be prompted if a decision has to be taken.
 @end menu
 
 
-@node Conventions, Command line, , git
+@node Conventions, Command line, , gitfm
 @subsection Key binding conventions
 
-@code{git} now follows a new, easy to remember, scheme to bind commands
+@code{gitfm} now follows a new, easy to remember, scheme to bind commands
 on keys.  This is only a convention, if you define new key bindings you
 may, or may not follow it.
 
@@ -298,57 +298,60 @@ them is a bad idea.  So, in this case, we need separate commands.
 
 
 
-@node Command line, Modes, Conventions, git
+@node Command line, Modes, Conventions, gitfm
 @subsection Command line
 
 This is a brief description of the command line arguments.
 
 @noindent
 @code{-h}         print this help message
+
 @noindent
 @code{-v}         print the version number
-@noindent
-@code{-i}         print the installation directory
+
 @noindent
 @code{-c}         use ANSI colors
+
 @noindent
 @code{-b}         don't use ANSI colors
+
 @noindent
 @code{-l}         don't use the last screen character
+
 @noindent
 @code{-p}         output final path at exit
 
 
-The @code{-p} option can be used to make git force bash (assuming that
-you're using it as your shell) chdir to the last directory git was in
-before quitting.  In order to do this, you need to invoke git using this
+The @code{-p} option can be used to make gitfm force bash (assuming that
+you're using it as your shell) chdir to the last directory gitfm was in
+before quitting.  In order to do this, you need to invoke gitfm using this
 function (put it into your .profile):
 
 @display
 function g
 @{
-    git -p $@ 3> /tmp/git.p.$$
+    gitfm -p $@ 3> /tmp/gitfm.p.$$
 
-    if test -s /tmp/git.p.$$; then
-	if test -d "`cat /tmp/git.p.$$`"; then
-	    cd "`cat /tmp/git.p.$$`"
+    if test -s /tmp/gitfm.p.$$; then
+	if test -d "`cat /tmp/gitfm.p.$$`"; then
+	    cd "`cat /tmp/gitfm.p.$$`"
 	else
 	    cd
 	fi
     fi
 
-    rm -f /tmp/git.p.$$
+    rm -f /tmp/gitfm.p.$$
 @}
 @end display
 
-This will not work if you suspend git.  Nothing bad will happen, just
+This will not work if you suspend gitfm.  Nothing bad will happen, just
 the chdir will not be performed.
 
 
-@node Modes, Sorting, Command line, git
+@node Modes, Sorting, Command line, gitfm
 @subsection Panel modes
 
-@code{git} has three major modes of displaying the panels.  In the first
+@code{gitfm} has three major modes of displaying the panels.  In the first
 (default) mode, two panels are displayed, each one using half of the
 screen.  In the second mode, only one panel uses the entire screen.  In
 the third mode, only the status bar and the input line are displayed,
@@ -420,7 +423,7 @@ These are the panel minor modes:
 @cindex Minor modes
 
 @noindent
-@kbd{ESC d o}
+@kbd{ESC e o}
 @display
 Display the entry owner and group (@samp{panel-enable-owner-group}).
 @end display
@@ -429,10 +432,10 @@ Display the entry owner and group (@samp{panel-enable-owner-group}).
 @cindex Owner and group
 @cindex Group and owner
 @findex panel-enable-owner-group
-@kindex ESC d o
+@kindex ESC e o
 
 @noindent
-@kbd{ESC d d}
+@kbd{ESC e d}
 @display
 Display the entry date and time (@samp{panel-enable-date-time}).
 @end display
@@ -441,10 +444,10 @@ Display the entry date and time (@samp{panel-enable-date-time}).
 @cindex Date and time
 @cindex Time and date
 @findex panel-enable-date-time
-@kindex ESC d d
+@kindex ESC e d
 
 @noindent
-@kbd{ESC d s}
+@kbd{ESC e s}
 @display
 Display the entry size (@samp{panel-enable-size}).
 @end display
@@ -452,10 +455,10 @@ Display the entry size (@samp{panel-enable-size}).
 @cindex Directory size
 @cindex File or directory size
 @findex panel-enable-size
-@kindex ESC d s
+@kindex ESC e s
 
 @noindent
-@kbd{ESC d m}
+@kbd{ESC e m}
 @display
 Display the entry mode (@samp{panel-enable-mode}).
 @end display
@@ -463,10 +466,10 @@ Display the entry mode (@samp{panel-enable-mode}).
 @cindex Directory mode
 @cindex File or directory mode
 @findex panel-enable-mode
-@kindex ESC d m
+@kindex ESC e m
 
 @noindent
-@kbd{ESC d f}
+@kbd{ESC e f}
 @display
 Display the entry full name (@samp{panel-enable-full-name}).
 @end display
@@ -475,10 +478,10 @@ Display the entry full name (@samp{panel-enable-full-name}).
 @cindex Full directory name
 @cindex Full file or directory name
 @findex panel-enable-full-name
-@kindex ESC d f
+@kindex ESC e f
 
 @noindent
-@kbd{ESC d a}
+@kbd{ESC e a}
 @display
 Display the entire information about file (@samp{panel-enable-all}).
 This mode is only available if the panel has been enlarged to use the
@@ -490,7 +493,7 @@ entire screen with @samp{enlarge-panel} or @samp{enlarge-other-panel}
 @cindex Full directory info
 @cindex Enable all
 @findex panel-enable-all
-@kindex ESC d a
+@kindex ESC e a
 
 There is also another way to change the panel minor modes:
 
@@ -504,7 +507,7 @@ Switches to the next panel minor mode (@samp{panel-enable-next-mode}).
 @kindex ^]
 @kindex ^[]
 
-@node Sorting, Moving, Modes, git
+@node Sorting, Moving, Modes, gitfm
 @subsection Sorting methods
 
 @cindex Sorting
@@ -624,7 +627,7 @@ Switch to the next panel sort method (@samp{panel-sort-next-method}).
 @kindex ESC s u
 
 
-@node Moving, Selecting, Sorting, git
+@node Moving, Selecting, Sorting, gitfm
 @subsection Moving the cursor in the panel
 
 Moving the cursor in the panel is very easy.  If your keyboard has
@@ -734,7 +737,7 @@ Move the cursor in the other panel (@samp{other-panel}).
 @noindent
 @kbd{^X P}
 @display
-Switch the two panels.  This command works even when @code{git} is not
+Switch the two panels.  This command works even when @code{gitfm} is not
 in the @samp{two panels} mode (@samp{switch-panels}).
 @end display
 @cindex Toggle panels
@@ -743,7 +746,7 @@ in the @samp{two panels} mode (@samp{switch-panels}).
 @kindex ^X P
 
 
-@node Selecting, Isearch, Moving, git
+@node Selecting, Isearch, Moving, gitfm
 @subsection Selecting files
 
 @noindent
@@ -811,12 +814,12 @@ starts with a dot, no files are unselected (@samp{unselect-extension}).
 files.
 
 
-@node Isearch, Input Line, Selecting, git
+@node Isearch, Input Line, Selecting, gitfm
 @subsection Incremental searching files in a panel
 
 
 Users sometime need to search a file in a panel, especially when the
-panel contains a big number of entries.  For that reason @code{git}
+panel contains a big number of entries.  For that reason @code{gitfm}
 provides an incremental search feature.  Using forward and backward
 incremental search, files can be very easy located.  Wrapped incremental
 search is also provided.
@@ -829,7 +832,7 @@ search is also provided.
 @display
 Incremental search forward a file name in the current panel
 (@samp{isearch-forward}).  Pressing @kbd{^S} or @kbd{^Xs} again will
-force @code{git} to go to the next entry that matches the current
+force @code{gitfm} to go to the next entry that matches the current
 isearched string.  When the end of the panel is reached, the isearch is
 restarted from its beginning.
 @end display
@@ -843,7 +846,7 @@ restarted from its beginning.
 @display
 Incremental search backward a file name in the current panel
 (@samp{isearch-backward}).  Pressing @kbd{^R} or @kbd{^Xr} again will
-force @code{git} to go to the next entry that matches the current
+force @code{gitfm} to go to the next entry that matches the current
 isearched string.  When the beginning of the panel is reached, the
 isearch is restarted from its end.
 @end display
@@ -853,10 +856,10 @@ isearch is restarted from its end.
 @kindex ^R, ^Xr
 
 
-@node Input Line, Files, Isearch, git
+@node Input Line, Files, Isearch, gitfm
 @subsection Using the input line
 
-The input line is one of the main methods used by @code{git} to interact
+The input line is one of the main methods used by @code{gitfm} to interact
 with the user.  All the answers the user should give in order to perform
 some operation and all the shell like commands are built using it.  So
 here is a description of all the basic editing operations that the
@@ -881,7 +884,7 @@ here is a description of all the basic editing operations that the
 
 Typing characters is the most usual way of inserting text into the input
 line.  Key sequences starting with printable ascii characters are not
-allowed in @code{git} so typing @kbd{a} for example results in inserting
+allowed in @code{gitfm} so typing @kbd{a} for example results in inserting
 @kbd{a} at the current point position.  Of course, there are some other
 ways of inserting text into the command line and here there is a
 description of most of them.
@@ -1222,7 +1225,7 @@ then all the selected files will become unselected, and all the
 unselected files will become selected.
 
 
-@node Files, Directories, Input Line, git
+@node Files, Directories, Input Line, gitfm
 @subsection File operations
 
 @menu
@@ -1466,21 +1469,18 @@ Pack the files into the smallest number of bins.  This is an
 approximation - the problem is NP-complete and no known algorithm can
 guarantee a solution better than @samp{(11/9) * OPTIMAL + 4}.
 
-To make things even worst, it is generally difficult to figure out the
-file system block size for the target bin.  Asking the user is not a
-good idea either.  @samp{git} currently assumes a file system block size
-of 1Kb.  Moreover, for large file, there is no portable way to predict
-how many blocks the file system implementation will require for indirect
-blocks, directories, etc.  So keep in mind that this is only an
-aproximation.
+To make things even worse, for large files, there is no portable way
+to predict how many blocks the file system implementation will require
+for indirect blocks, directories, etc.  So keep in mind that this is
+only an approximation.
 
 Bin packing can be useful when you want to put a bunch of files on
 floppies or zip disks and you want to optimize things a little bit
 (@samp{bin-packing}).
 
-@samp{git} assumes that you want to pack all the files in the current
+@samp{gitfm} assumes that you want to pack all the files in the current
 directory - if there is any selected file in that directory it will be
-unselected first.  Then @samp{git} will ask for a bin size, and select
+unselected first.  Then @samp{gitfm} will ask for a bin size, and select
 the files that should go in the first bin.  You are supposed to place
 those files in the first bin (e.g. a tar archive), remove them from the
 current directory, then run @samp{bin-packing} again, to obtain the list
@@ -2203,7 +2203,7 @@ performed in background (@samp{B-GENERIC-UNPACK-INTO}).
 Red Hat Linux Distributions use a very powerful package manager called
 @code{rpm}.  It is used whenever you need to install/remove/upgrade/etc
 a software package.  The packages used by @code{rpm} use the extension
-@samp{.rpm}.  @code{git} provides default key bindings for some of the
+@samp{.rpm}.  @code{gitfm} provides default key bindings for some of the
 basic operations @code{rpm} can perform on packages: install, uninstall,
 upgrade and query.
 
@@ -2466,7 +2466,7 @@ Perform an action on the current file, depending on its type
 @kindex F2, ESC 2, ^X a
 
 
-@node Directories, Compiling, Files, git
+@node Directories, Compiling, Files, gitfm
 @subsection Directory operations
 
 @menu
@@ -2738,10 +2738,10 @@ current panel (@samp{adapt-other-directory}).
 
 Users usually work on a limited set of subdirectories.  Providing a fast
 method of switching between a number of intensively used directories is
-a good idea and @code{git} has a set of builtin commands for doing it.
+a good idea and @code{gitfm} has a set of builtin commands for doing it.
 
 Usually new directories are added to the directory history when the
-@samp{change-directory} built-in command is used.  @code{git} also adds
+@samp{change-directory} built-in command is used.  @code{gitfm} also adds
 the current directory to the history list when started, when the
 directory history is reseted and when a command having a non empty
 @samp{new-dir} field successfully completes its execution.
@@ -2781,7 +2781,7 @@ directory becomes the only directory in the history
 @node Hot Keys, , Dirs History, Directories
 @subsubsection Hot Keys
 
-@code{git} provides default key bindings for switching to a number of
+@code{gitfm} provides default key bindings for switching to a number of
 important directories as "/", "..", "$HOME", etc.
 @cindex Hot Keys
 
@@ -2846,7 +2846,7 @@ Go to the @samp{/mnt/fd1} directory (@samp{SECOND-FLOPPY-DIR}).
 @kindex ESC ESC 2
 
 
-@node Compiling, Mail, Directories, git
+@node Compiling, Mail, Directories, gitfm
 @subsection Compiling programs
 
 @noindent
@@ -2873,7 +2873,7 @@ Run the @code{make} command in background in the current directory
 @kindex ^X b m
 
 
-@node Mail, Shell, Compiling, git
+@node Mail, Shell, Compiling, gitfm
 @subsection Sending/receiving ascii/binary mail
 
 @noindent
@@ -2954,7 +2954,7 @@ Run the @code{emacs -f rmail} command.  This will start the Emacs's
 @kindex ESC x r m
 
 
-@node Shell, Grep, Mail, git
+@node Shell, Grep, Mail, gitfm
 @subsection Starting a sub-shell
 
 @noindent
@@ -2973,7 +2973,7 @@ variable (@samp{SUB-SHELL}).
 @kindex ^X z
 
 
-@node Grep, Locking, Shell, git
+@node Grep, Locking, Shell, gitfm
 @subsection Using grep and recursive grep
 
 @noindent
@@ -3001,11 +3001,11 @@ and directories for a given pattern (@samp{RECURSIVE-GREP}).
 @kindex ^X G
 
 
-@node Locking, Refreshing, Grep, git
+@node Locking, Refreshing, Grep, gitfm
 @subsection Locking your console
 
 Having a lock feature might be a good idea and, since not all the
-@code{UNIX} systems provide one, @code{git} tries to get around the
+@code{UNIX} systems provide one, @code{gitfm} tries to get around the
 problem @dots{}
 
 @noindent
@@ -3020,7 +3020,7 @@ password is reinserted (@samp{lock}).
 @kindex ^X p
 
 
-@node Refreshing, Reseting, Locking, git
+@node Refreshing, Resetting, Locking, gitfm
 @subsection Refreshing the screen contents
 
 Sometimes your screen needs to be refreshed.  Just think about what
@@ -3035,7 +3035,7 @@ talk: respond with:  talk andrei@@galei.cs.vu.nl
 
 @noindent
 on your screen.  And sometimes you might also want to re-read the
-current directories.  @code{git} provides a built-in command for
+current directories.  @code{gitfm} provides a built-in command for
 refreshing the screen contents.
 
 @noindent
@@ -3048,8 +3048,8 @@ Re-read the directories contents and refresh the screen (@samp{refresh}).
 @findex refresh
 @kindex ^L
 
-@node Reseting, Mounting, Refreshing, git
-@subsection Reseting your terminal
+@node Resetting, Mounting, Refreshing, gitfm
+@subsection Resetting your terminal
 
 @noindent
 @kbd{^X ^L}
@@ -3057,18 +3057,18 @@ Re-read the directories contents and refresh the screen (@samp{refresh}).
 Call @code{reset} in order to reset the terminal to its default
 settings (@samp{TTY-RESET}).
 @end display
-@cindex Reseting the terminal
+@cindex Resetting the terminal
 @cindex Terminal reset
 @findex TTY-RESET
 @kindex ^X ^L
 
 
-@node Mounting, Sysinfo, Reseting, git
+@node Mounting, Sysinfo, Resetting, gitfm
 @subsection Mounting/unmounting file systems
 
 People dealing with lots of files usually need to save/restore/copy
 files from/to other file systems.  In order to be more efficient,
-@code{git} provides a set of key bindings for mounting and unmounting
+@code{gitfm} provides a set of key bindings for mounting and unmounting
 file systems.  @xref{gitmount}, for more information.
 
 The default key bindings set has been designed to work under
@@ -3238,7 +3238,7 @@ unmounted (@samp{UMOUNT-THESE}).
 @kindex ESC r t
 
 
-@node Sysinfo, Environment, Mounting, git
+@node Sysinfo, Environment, Mounting, gitfm
 @subsection Getting some useful system information
 
 @noindent
@@ -3330,7 +3330,7 @@ Call @code{who}(1) in order to find out who is on the system
 @kindex ESC S w
 
 
-@node Environment, Processes, Sysinfo, git
+@node Environment, Processes, Sysinfo, gitfm
 @subsection How to look at the environment variables
 
 @noindent
@@ -3356,14 +3356,14 @@ allowed to make connection to the X server (@samp{XHOST}).
 @kindex ^X H
 
 
-@node Processes, Sync, Environment, git
+@node Processes, Sync, Environment, gitfm
 @subsection Viewing/killing processes
 
 There are at least two kinds of @code{ps}(1) utilities.  One that
 accepts (more or less) combinations of the 'a', 'u', and 'x' flags and
 another that accepts combinations of 'e', 'f' and 'l' flags.  Since is
 quite difficult to test which one works fine on a given @code{UNIX}
-system, @code{git} provides key bindings for both of them.  Anyway, if
+system, @code{gitfm} provides key bindings for both of them.  Anyway, if
 your @code{ps}(1) fails to accept the predefined combinations, please
 take a look in its manual and then modify the @file{.gitrc.TERM} file as
 needed.
@@ -3435,7 +3435,7 @@ given signal (@samp{KILL}).
 @kindex ^X k
 
 
-@node Sync, Documentation, Processes, git
+@node Sync, Documentation, Processes, gitfm
 @subsection Synchronizing the file systems
 
 @noindent
@@ -3450,7 +3450,7 @@ Call @code{sync}(1) in order to synchronize all the file systems
 @kindex ^X S
 
 
-@node Documentation, Exit, Sync, git
+@node Documentation, Exit, Sync, gitfm
 @subsection Reading the documentation
 
 @noindent
@@ -3483,7 +3483,7 @@ Read the html documentation using the viewer specified in
 @findex HTML
 @kindex ^X h
 
-@node Exit, , Documentation, git
+@node Exit, , Documentation, gitfm
 @subsection Exiting GNU Interactive Tools
 
 @noindent
@@ -3499,7 +3499,7 @@ Exit GNU Interactive Tools (@samp{exit}).
 @c de scris de variabila cu pricina
 
 
-@node gitps, gitview, git, Description
+@node gitps, gitview, gitfm, Description
 @section The GIT process viewer/killer
 @cindex gitps
 
@@ -3613,7 +3613,7 @@ be required.
 @cindex gitaction
 
 @code{gitaction} is a script that executes a different action for each
-file type specified.  It is called by the @code{git} program when
+file type specified.  It is called by the @code{gitfm} program when
 pressing @kbd{F2}, @kbd{ESC 2} or @kbd{^Xa}.
 
 The first parameter is the current directory name and the second one is
@@ -3621,10 +3621,10 @@ the file name to be matched against the default patterns.  The matching
 is done using the shell 'case' statement.
 
 If you press @kbd{F2}, @kbd{ESC 2} or @kbd{^Xa} on a @file{*.c} file,
-@code{git} will compile it, if you press @kbd{F2}, @kbd{ESC 2} or
-@kbd{^Xa} on a @file{*.tar.gz} file, @code{git} will list the tar
+@code{gitfm} will compile it, if you press @kbd{F2}, @kbd{ESC 2} or
+@kbd{^Xa} on a @file{*.tar.gz} file, @code{gitfm} will list the tar
 archive contents, if you press the same keys on a @file{*.gz} file,
-@code{git} will display its uncompressed contents on the screen, etc
+@code{gitfm} will display its uncompressed contents on the screen, etc
 @dots{}
 
 If you want to find out what the default action for each file type is
@@ -3644,8 +3644,8 @@ that one fails to match the file name against its patterns, it backs up
 to @code{$HOME/.gitaction}.  When this one fails too the patterns in
 @code{gitaction} are tried.  For an example of how to write .gitaction
 scripts take a look at the @code{.gitaction} shell script provided as
-part of the distribution and installed in the @samp{$(prefix)/bin}
-directory.
+part of the distribution and installed in the
+@file{/usr/share/doc/git/examples/} directory.
 
 @node gitunpack, gitrgrep, gitaction, Description
 @section Unified archive unpacking
@@ -3699,11 +3699,11 @@ default one.  The defaults are:
 
 @display
 	GIT_SHELL='/bin/sh'
-	GIT_EDITOR='vi'
+	GIT_EDITOR='sensible-editor'
 	GIT_RMAIL='emacs -f rmail'
-	GIT_PAGER='more'
+	GIT_PAGER='sensible-pager'
 	GIT_VMSTAT='free'
-	GIT_BROWSER='lynx'
+	GIT_BROWSER='sensible-browser'
 @end display
 
 If @var{SHELL} is defined, @var{GIT_SHELL} will be set to that value.
@@ -3732,8 +3732,7 @@ your @file{.profile}:
 
 There is one configuration file per terminal type in @code{GIT}.  The
 configuration file(s) reside in the user's home directory or (the
-default versions) in the directory @file{$(prefix)/lib} (usually
-@file{/usr/local/lib}).
+default versions) in the directory @file{/usr/share/git/}).
 
 Their generic name is @file{.gitrc.TERM}.  @code{GIT} allows each
 terminal type to have its own configuration file (@var{TERM} is the
@@ -3765,9 +3764,9 @@ definitions of the most used terminals in a local @file{.termcap} file
 will lead to a faster start.
 
 The @file{.gitrc.TERM} it is first time searched in the home directory
-then, if not found, in the directory @file{$(prefix)/lib} (usually
-@file{/usr/local/lib}).  The configuration file is structured on
-sections, each section containing variables in the following format:
+then, if not found, in the directory @file{/usr/share/git/}).  The
+configuration file is structured in sections, each section containing
+variables in the following format:
 
 @display
 	@samp{variable-name} = @samp{first-field};@samp{second-field}; ...
@@ -3781,17 +3780,22 @@ Section names are enclosed in rectangular brackets (@samp{[} and
 @samp{]}).  Note that this manual don't include them while refering to
 section names.
 
-The @code{GIT} package contains three major programs: @code{git},
+The @code{GIT} package contains three major programs: @code{gitfm},
 @code{gitps} and @code{gitview}.  Each one has its own sections in the
 configuration files.  There is also a global setup section called
 @samp{Setup} that is used by all these programs.
+
+Note that now @code{git} has been renamed to @code{gitfm}, 
+the corresponding sections have been renamed to @code{GITFM},
+however for backwards compatibility, the old name (@code{GIT})
+is still checked if the @code{GITFM} section is not found.
 
 @menu
 * Key Sequences::               How to write a key sequence.
 
 * Setup::                       The global setup section.
 
-* git Sections::                git's sections.
+* gitfm Sections::              gitfm's sections.
 * gitps Sections::              gitps's Sections.
 * gitview Sections::            gitview's Sections.
 @end menu
@@ -3801,7 +3805,7 @@ configuration files.  There is also a global setup section called
 @subsection Writing key sequences
 
 @code{GIT} contains three interactive programs.  Their names are:
-@code{git} (this is the file system browser), @code{gitps} (this is the
+@code{gitfm} (this is the file system browser), @code{gitps} (this is the
 process viewer/killer and @code{gitview} (this is the ASCII/HEX file
 viewer).  Each one of these programs has its own set of key bindings.
 
@@ -3832,7 +3836,7 @@ configuration files.  For the sake of readability this manual uses
 @kbd{RET} for the @kbd{RETURN} (@kbd{ENTER}) key.
 
 
-@node Setup, git Sections, Key Sequences, Configuration Files
+@node Setup, gitfm Sections, Key Sequences, Configuration Files
 @subsection The global setup section
 
 In this section the variables have only one field.
@@ -3866,20 +3870,20 @@ This variable specifies the scroll step initial value for both panels.
 @vindex StartupScrollStep
 
 
-@node git Sections, gitps Sections, Setup, Configuration Files
-@subsection git Sections
+@node gitfm Sections, gitps Sections, Setup, Configuration Files
+@subsection gitfm Sections
 
 @menu
-* GIT-Setup::                   git's setup section.
-* GIT-Color::                   git's color section.
-* GIT-Monochrome::              git's monochrome section.
-* GIT-Keys::                    git's keys section.
-* GIT-FTI::                     git's file type information section.
+* GITFM-Setup::                 gitfm's setup section.
+* GITFM-Color::                 gitfm's color section.
+* GITFM-Monochrome::            gitfm's monochrome section.
+* GITFM-Keys::                  gitfm's keys section.
+* GITFM-FTI::                   gitfm's file type information section.
 @end menu
 
 
-@node GIT-Setup, GIT-Color, , git Sections
-@subsubsection git Setup
+@node GITFM-Setup, GITFM-Color, , gitfm Sections
+@subsubsection gitfm Setup
 
 In this section the variables have only one field.
 
@@ -3942,10 +3946,10 @@ leading '.' in the file name is matched only explicitly.
 @samp{TypeSensitivity}
 
 If this variable is @samp{OFF}, colors are not used when displaying
-files.  Normally, the information in the @samp{GIT-FTI} section is used
+files.  Normally, the information in the @samp{GITFM-FTI} section is used
 to display files with different colors, depending on their types.  Note
 that @samp{TypeSensitivity} is automatically set to @samp{OFF} when
-@samp{AnsiColors} is @samp{OFF}.  @xref{GIT-FTI}, for mor information.
+@samp{AnsiColors} is @samp{OFF}.  @xref{GITFM-FTI}, for mor information.
 @vindex TypeSensitivity
 
 
@@ -3954,8 +3958,8 @@ that @samp{TypeSensitivity} is automatically set to @samp{OFF} when
 @noindent
 @samp{CommandLineModeHelp}
 
-These variables describe the status bar contents for each @code{git}
-mode when no errors occurred.  @code{git} can display on the status bar
+These variables describe the status bar contents for each @code{gitfm}
+mode when no errors occurred.  @code{gitfm} can display on the status bar
 a help string and/or some system information (system type, hostname,
 machine type and the current date) using escape characters:
 
@@ -3970,29 +3974,29 @@ machine type and the current date) using escape characters:
 @vindex CommandLineModeHelp
 
 
-@node GIT-Color, GIT-Monochrome, GIT-Setup, git Sections
-@subsubsection Using git on colors displays
+@node GITFM-Color, GITFM-Monochrome, GITFM-Setup, gitfm Sections
+@subsubsection Using gitfm on colors displays
 
 In this sections the variables have only one field.
 
-These section allows you to customize the colors of @code{git}.  Reading
+These section allows you to customize the colors of @code{gitfm}.  Reading
 the @file{.gitrc.TERM} configuration file is self explanatory.
 
 
-@node GIT-Monochrome, GIT-Keys, GIT-Color, git Sections
-@subsubsection Using git on monochrome displays
+@node GITFM-Monochrome, GITFM-Keys, GITFM-Color, gitfm Sections
+@subsubsection Using gitfm on monochrome displays
 
 In this sections the variables have only one field.
 
-These section allows you to customize the appearance of @code{git} on
+These section allows you to customize the appearance of @code{gitfm} on
 monochrome displays.  Reading the @file{.gitrc.TERM} configuration file
 is self explanatory.
 
 
-@node GIT-Keys, GIT-FTI, GIT-Monochrome, git Sections
+@node GITFM-Keys, GITFM-FTI, GITFM-Monochrome, gitfm Sections
 @subsubsection Defining keys
 
-These section describes the actions @code{git} takes when a specified
+These section describes the actions @code{gitfm} takes when a specified
 key is pressed.  A variable can have up to 6 fields separated by ';'.
 Each line in this section looks like:
 
@@ -4015,7 +4019,7 @@ line.
 @end menu
 
 
-@node key-sequence, command-name, , GIT-Keys
+@node key-sequence, command-name, , GITFM-Keys
 @subsubsection The key-sequence field
 
 @samp{key-sequence} is the key sequence associated with the given
@@ -4030,7 +4034,7 @@ of the key sequence.  If some keys don't have a @samp{termcap}/
 @code{Linux} console) you can specify the key sequence in the usual way.
 
 
-@node command-name, formatted-command, key-sequence, GIT-Keys
+@node command-name, formatted-command, key-sequence, GITFM-Keys
 @subsubsection The command-name field
 
 @samp{command-name} is a command generic name.  Even if it is not always
@@ -4038,7 +4042,7 @@ used, the @samp{command-name} must be present (if a command is
 associated with a @samp{key-sequence}).  If it is not, no action will be
 taken when pressing @samp{key-sequence}.
 
-There are two types of commands in @code{git}: built-in commands and
+There are two types of commands in @code{gitfm}: built-in commands and
 user defined commands.  If the @samp{command-name} section contains a
 built-in command specification, the other fields are ignored.
 
@@ -4047,7 +4051,7 @@ letters while user defined command names contain only upper case
 letters.
 
 
-@node formatted-command, new-dir, command-name, GIT-Keys
+@node formatted-command, new-dir, command-name, GITFM-Keys
 @subsubsection The formatted-command field
 
 - @samp{formatted-command} is a shell command which can contain some
@@ -4082,7 +4086,7 @@ These are the available @samp{format specifiers}:
 
 The format of %s is:  %s@{question,default_answer@}.
 
-When @code{git} encounters a %s in the @samp{formatted-command} it asks
+When @code{gitfm} encounters a %s in the @samp{formatted-command} it asks
 the user the question @samp{question} whose default answer is
 @samp{default_answer} and replaces the @samp{%s@{ , @}} with the user's
 answer.  Both @samp{question} and @samp{default_answer} can contain any
@@ -4094,78 +4098,78 @@ Note that there should be no spaces between %s and '@{'.
 @node %f, %d, %s, formatted-command
 @subsubsection The %f format specifier
 
-@code{git} will replace %f with the current directory entry name only if
+@code{gitfm} will replace %f with the current directory entry name only if
 it is a file (not a directory).
 
 
 @node %d, %l, %f, formatted-command
 @subsubsection The %d format specifier
 
-@code{git} will replace %d with the current directory entry name only if
+@code{gitfm} will replace %d with the current directory entry name only if
 it is a directory (not a file).
 
 
 @node %l, %t, %d, formatted-command
 @subsubsection The %l format specifier
 
-@code{git} will replace %l with the current directory entry name only if
+@code{gitfm} will replace %l with the current directory entry name only if
 it is a symbolic link with no target.
 
 
 @node %t, %z, %l, formatted-command
 @subsubsection The %t format specifier
 
-@code{git} will replace %t with the current directory entry name only if
+@code{gitfm} will replace %t with the current directory entry name only if
 it is a named pipe.
 
 
 @node %z, %a, %t, formatted-command
 @subsubsection The %z format specifier
 
-@code{git} will replace %z with the current directory entry name only if
+@code{gitfm} will replace %z with the current directory entry name only if
 it is a socket.
 
 
 @node %a, %m, %z, formatted-command
 @subsubsection The %a format specifier
 
-@code{git} will always replace %a with the current directory entry name.
+@code{gitfm} will always replace %a with the current directory entry name.
 
 
 @node %m, %g, %a, formatted-command
 @subsubsection The %m format specifier
 
-@code{git} will always replace %m with the current file mode.
+@code{gitfm} will always replace %m with the current file mode.
 
 
 @node %g, %o, %m, formatted-command
 @subsubsection The %g format specifier
 
-@code{git} will always replace %g with the current file group.
+@code{gitfm} will always replace %g with the current file group.
 
 
 @node %o, %p, %g, formatted-command
 @subsubsection The %o format specifier
 
-@code{git} will always replace %o with the current file owner.
+@code{gitfm} will always replace %o with the current file owner.
 
 
 @node %p, %b, %o, formatted-command
 @subsubsection The %p format specifier
 
-@code{git} will always replace %p with the current panel path.
+@code{gitfm} will always replace %p with the current panel path.
 
 
 @node %b, %i, %p, formatted-command
 @subsubsection The %b format specifier
 
-@code{git} will always replace %b with the current panel directory name.
+@code{gitfm} will always replace %b with the current panel directory name.
 
 
 @node %i, %?, %b, formatted-command
 @subsubsection The %i format specifier
 
-@code{git} will always replace %i with all the current panel selected
+@code{gitfm} will always replace %i with all the current panel selected
 entry names.
 
 
@@ -4174,14 +4178,14 @@ entry names.
 
 The format of %? is: %?@{confirmation@}.
 
-@code{git} uses this format specifier only to ask for confirmation
+@code{gitfm} uses this format specifier only to ask for confirmation
 before expanding / executing the current command.  The
 @samp{confirmation} string is displayed and, if the user doesn't
 confirm, the command is aborted.  Otherwise, %?@{confirmation@} expands
 to a null string and the command is expanded / executed normally.
 
 
-@node new-dir, save-screen, formatted-command, GIT-Keys
+@node new-dir, save-screen, formatted-command, GITFM-Keys
 @subsubsection The new-dir field
 
 If the @samp{formatted-command} successfully exits (exit code = 0) or it
@@ -4192,10 +4196,10 @@ The character '~' used at the beginning of the @samp{new-dir} field is
 replaced by the user's home directory.
 
 
-@node save-screen, pause, new-dir, GIT-Keys
+@node save-screen, pause, new-dir, GITFM-Keys
 @subsubsection The save-screen field
 
-This field is a character (usually 'y' or 'n') that tells @code{git} to
+This field is a character (usually 'y' or 'n') that tells @code{gitfm} to
 save ('y') or not to save ('n') the terminal's screen after executing
 the @samp{formatted-command}.  Saving the screen is not necessary while
 editing or viewing a file because the information left after the editor
@@ -4205,15 +4209,15 @@ Currently this field is used only if you are working as a super user
 under @code{Linux} on a virtual console.  Its default value is 'y'.
 
 
-@node pause, hide, save-screen, GIT-Keys
+@node pause, hide, save-screen, GITFM-Keys
 @subsubsection The pause field
 
 Users may wish to read some commands's results before repainting the
-panels.  If this field is present git will wait for a key to be pressed
+panels.  If this field is present gitfm will wait for a key to be pressed
 before restoring the panels.  Its default value is 'n'.
 
 
-@node hide, , pause, GIT-Keys
+@node hide, , pause, GITFM-Keys
 @subsubsection The hide field
 
 Some commands that don't displaying any useful information if
@@ -4221,7 +4225,7 @@ successfully complete their execution: @code{mount}, @code{chmod},
 @code{chown}, @code{chgrp}, @code{sync} ... and, if an error occurs, a
 line or two are sent to stderr.  If this option is 'y', the stdout and
 stderr will be redirected to some files (@file{git.1.pid} and
-@file{git.2.pid}, where pid is @code{git}'s pid) and only if the
+@file{git.2.pid}, where pid is @code{gitfm}'s pid) and only if the
 command's exit code is not 0, the @file{git.2.pid} file will be
 displayed, line by line, onto the status bar.  This way the panels will
 not be deleted and then repainted and the command appears to be
@@ -4230,7 +4234,7 @@ temporary directory specified in the @code{TMPDIR} environment variable
 (or "/tmp" if @code{TMPDIR} is not defined).  The default value of the
 @code{hide} field is 'n'.
 
-@node GIT-FTI, , GIT-Keys, git Sections
+@node GITFM-FTI, , GITFM-Keys, gitfm Sections
 @subsection Setting up colors for different file types
 
 This sections contains entries of the form:
@@ -4244,10 +4248,10 @@ where @samp{pattern} is a file name matching pattern, @samp{foreground},
 @samp{background} and @samp{brightness} are the color specification to
 be used when a file whose name match the given @samp{pattern} is
 displayed in a panel.  Colors can be turned off using the
-@samp{TypeSensitivity} variable in the @samp{GIT-Setup} seection.
+@samp{TypeSensitivity} variable in the @samp{GITFM-Setup} seection.
 
 
-@node gitps Sections, gitview Sections, git Sections, Configuration Files
+@node gitps Sections, gitview Sections, gitfm Sections, Configuration Files
 @subsection gitps Sections
 
 
@@ -4344,13 +4348,14 @@ file but their result (stdout and stderr redirection), will be
 overwritten by the result of newer commands and, if an error occurs, it
 will not be seen.
 
-When @code{git} is compiled for @code{Linux}, the default built-in color
+When @code{gitfm} is compiled for @code{Linux}, the default built-in color
 descriptions are for color monitors, so you can't (decently) run
-@code{git} on a b/w monitor without the @file{.gitrc.TERM} file
+@code{gitfm} on a b/w monitor without the @file{.gitrc.TERM} file
 correctly configured.  @file{.gitrc.TERM} should be configured with
-@samp{AnsiColors} = OFF.
+@samp{AnsiColors} = OFF. However, if your system knows about the linux-m
+terminal type, using that may be a better solution.
 
-Job support is implemented only in @code{git}.
+Job support is implemented only in @code{gitfm}.
 
 Due to the fact that the ';' character is used as a field separator in
 the configuration files, you can't write something like that in the

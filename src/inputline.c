@@ -17,7 +17,7 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: inputline.c,v 1.9 1999/05/31 20:15:14 tudor Exp $ */
+/* $Id: inputline.c,v 1.2 2005-10-22 15:29:16 ianb Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -255,7 +255,7 @@ il_init()
     il->window = window_init();
 
 
-    use_section("[GIT-Setup]");
+    use_section("[GITFM-Setup]");
 
     configuration_getvarinfo("HistoryFile", &data, 1, DO_SEEK);
     il->history_file = tilde_expand(data ? data : "~/.githistory");

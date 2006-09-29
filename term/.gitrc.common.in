@@ -1,4 +1,4 @@
-### $Id: .gitrc.common.in,v 1.28 2000/03/09 23:16:54 tudor Exp $
+### $Id: .gitrc.common.in,v 1.2 2005-10-22 15:29:16 ianb Exp $
 
 ###############################################################################
 ###									    ###
@@ -20,7 +20,7 @@
 ### shell-pattern = [foreground]; [background]; [brightness]
 ###
 
-[GIT-FTI]
+[GITFM-FTI]
 *.[chlysp]	   = GREEN;; ON
 *.[chlysp].[bg]z   = GREEN;; ON
 *.[chlysp].bz2	   = GREEN;; ON
@@ -523,7 +523,7 @@ OUTBOX*	   	   = WHITE;;
 ### Key sequences starting with characters between ' ' and '~' are IGNORED!
 ###
 
-[GIT-Keys]
+[GITFM-Keys]
 UP	= previous-line
 DOWN	= next-line
 RIGHT	= forward-char

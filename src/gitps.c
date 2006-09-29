@@ -17,7 +17,7 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: gitps.c,v 1.20 1999/09/26 14:19:14 tudor Exp $ */
+/* $Id: gitps.c,v 1.2 2005-10-25 20:15:59 ianb Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -896,6 +896,8 @@ void
 refresh(signum)
     int signum;
 {
+    current_process = min(current_process, processes - 1);
+
     resize(0);
 
     if (signum == SIGCONT)

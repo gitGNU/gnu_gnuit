@@ -1,4 +1,4 @@
-/* $Id: acconfig.h,v 1.3 1999/01/16 22:37:15 tudor Exp $ */
+/* $Id: acconfig.h,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $ */
 
 /* Define if you want to disable various consistency checkings.  */
 #undef NDEBUG

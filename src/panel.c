@@ -17,7 +17,7 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: panel.c,v 1.29 2000/03/10 18:39:27 tudor Exp $ */
+/* $Id: panel.c,v 1.8 2005-10-22 15:29:16 ianb Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -32,6 +32,22 @@
 #endif /* !HAVE_STDLIB_H */
 
 #include <sys/types.h>
+
+
+#if HAVE_INTTYPES_H
+# include <inttypes.h>
+#endif
+#if HAVE_STDINT_H
+# include <stdint.h>
+#endif
+#if HAVE_UNISTD_H
+# include <unistd.h>
+#endif
+#ifndef UINTMAX_MAX
+# define UINTMAX_MAX ((uintmax_t) -1)
+#endif
+
+
 
 #ifdef HAVE_STDDEF_H
 #include <stddef.h>
@@ -353,7 +369,7 @@ panel_init(path)
     StartupScrollStep = get_int_var("StartupScrollStep", 0);
 
 
-    use_section("[GIT-Setup]");
+    use_section("[GITFM-Setup]");
 
     StartupFileDisplayMode = get_const_var("StartupFileDisplayMode",
 					    FileDisplayMode,
@@ -1350,11 +1366,16 @@ panel_update_path(this)
 static void
 panel_beautify_number(buf, number)
     char *buf;
-    off_t number;
+    uintmax_t number;
 {
     int i;
+    char *format="%14lu";
+    if(sizeof(uintmax_t) > 4)
+    {
+      format="%14llu";
+    }
 
-    sprintf(buf, "%14lu", (unsigned long)number);
+    sprintf(buf, format, number);
 
     for (i = 10; i > 0; i -= 4)
 	if (isdigit((int)buf[i]))
@@ -1382,8 +1403,10 @@ panel_update_size(this)
 
     fsu.fsu_blocks = -1;
 
+    /* get_fs_usage will fail on SVR2 (needs disk
+       instead of NULL) but we are Debian */
     if (viewable < 6 ||
-	get_fs_usage(this->path, &fsu) < 0 ||
+	get_fs_usage(this->path, NULL, &fsu) < 0 ||
 	fsu.fsu_blocks == -1)
     {
 	offset = 0;
@@ -1394,18 +1417,19 @@ panel_update_size(this)
     }
     else
     {
-	off_t n;
+	uintmax_t n;
 	char c = 'K';
-	off_t free_blocks = (geteuid() == 0) ? fsu.fsu_bfree : fsu.fsu_bavail;
 
+	uintmax_t free_blocks = (geteuid() == 0) ? fsu.fsu_bfree : fsu.fsu_bavail;
+
+#if 0
 	/* Indeed, this might happen...  */
+	/* ...not now we are a uintmax_t */
 	if (free_blocks < 0)
 	    free_blocks = 0;
+#endif	
 
-	/* `free_blocks' contains the number of 512-bytes free blocks.
-	   We divide it by two to get the number of kilobytes of free
-	   space on the file system.  */
-	n = free_blocks >> 1;
+	n = free_blocks * (fsu.fsu_blocksize / 1024);
 
 	if (viewable < 14)
 	{
@@ -1516,7 +1540,7 @@ panel_update_info(this)
 {
     tty_status_t status;
     size_t len, maxname;
-    off_t total_size = 0;
+    uintmax_t total_size = 0;
     char str[1024];
     char temp_rights[16];
 
@@ -3959,11 +3983,11 @@ void
 panel_act_BIN_PACKING(this, other, bin_size)
     panel_t *this;
     panel_t *other;
-    off_t bin_size;
+    uintmax_t bin_size;
 {
     char msg[160];
     off_t file_size;
-    long free_blocks;
+    uintmax_t free_blocks;
     off_t *bins = NULL;
     dir_entry_t **buffer;
     char *fn = "BIN PACKING";
@@ -3976,12 +4000,15 @@ panel_act_BIN_PACKING(this, other, bin_size)
 
 	fsu.fsu_blocks = -1;
 
-	if (get_fs_usage(other->path, &fsu) >= 0 && fsu.fsu_blocks != -1)
+	/* get_fs_usage will fail on SVR2 (needs disk
+	   instead of NULL) but we are Debian */
+
+	if (get_fs_usage(other->path, NULL, &fsu) >= 0 && fsu.fsu_blocks != -1)
 	{
 	    /* Make bin_size equal the file system free space in the
 	       other panel.  */
 	    free_blocks = ((geteuid() == 0) ? fsu.fsu_bfree : fsu.fsu_bavail);
-	    bin_size = (free_blocks * 512) / 1024;
+	    bin_size = (free_blocks * fsu.fsu_blocksize) / 1024;
 	}
     }
 
@@ -4696,7 +4723,7 @@ panel_action(this, action, other, aux_info, repeat_count)
 	    break;
 
 	case act_BIN_PACKING:
-	    panel_act_BIN_PACKING(this, other, (off_t)atoi((char *)aux_info));
+	    panel_act_BIN_PACKING(this, other, (uintmax_t)atoi((char *)aux_info));
 	    break;
 
 	case act_HORIZONTAL_SCROLL_LEFT:

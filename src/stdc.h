@@ -19,7 +19,7 @@
    along with Bash; see the file COPYING.  If not, write to the Free
    Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA. */
 
-/* $Id: stdc.h,v 1.4 1999/01/16 22:37:24 tudor Exp $ */
+/* $Id: stdc.h,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $ */
 
 #if !defined (__STDC_H__)
 #define __STDC_H__
