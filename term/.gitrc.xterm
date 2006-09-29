@@ -2,8 +2,8 @@
 
 ###############################################################################
 ###									    ###
-###	        GNU Interactive Tools 4.3.18 configuration file		    ###
-###          Copyright (c) 1993-1999 Free Software Foundation, Inc.         ###
+###	        GNU Interactive Tools 4.3.21 configuration file		    ###
+###          Copyright (c) 1993-2000 Free Software Foundation, Inc.         ###
 ###									    ###
 ###############################################################################
 
@@ -29,8 +29,8 @@ UseLastScreenChar	= ON	# use the last character on the screen
 StartupScrollStep	=	# empty means half the number of lines
 
 ###
-### WARNING: empty lines or lines begining with a comment are considered to
-### be end of sections !!!
+### WARNING: empty lines or lines begining with a comment are
+### considered to be end of sections!
 ###
 
 [GITFM-Setup]
