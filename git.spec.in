@@ -6,7 +6,7 @@ Copyright: GNU
 Group: Applications/File
 Source: ftp://ftp.gnu.org:/pub/gnu/git/git-%{version}.tar.gz
 URL: http://www.cs.unh.edu/~tudor
-Packager: Tudor Hulubei <tudor@cs.unh.edu>
+Packager: Tudor Hulubei <tudor@hulubei.net>
 BuildRoot: /var/tmp/git-root
 Prereq: /sbin/install-info
 
@@ -33,23 +33,23 @@ make
 
 %install
 make prefix=$RPM_BUILD_ROOT/usr/ install-strip
-gzip -9nf $RPM_BUILD_ROOT/usr/info/git.info*
+gzip -9nf $RPM_BUILD_ROOT/usr/share/info/git.info*
 
 %files
 %doc COPYING ChangeLog LSM NEWS PLATFORMS PROBLEMS README INSTALL doc/git.html
 /usr/bin/*
 /usr/bin/.gitaction
 /usr/man/man1/*
-/usr/info/git*
+/usr/share/info/git*
 /usr/share/git/.gitrc*
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
-/sbin/install-info /usr/info/git.info.gz /usr/info/dir
+/sbin/install-info /usr/share/info/git.info.gz /usr/share/info/dir
 
 %preun
 if [ "$1" = 0 ]; then
-    /sbin/install-info --delete /usr/info/git.info.gz /usr/info/dir
+    /sbin/install-info --delete /usr/share/info/git.info.gz /usr/share/info/dir
 fi

@@ -60,3 +60,4 @@ No.	Architecture		Operating System       GNU canonical name
 46.	mc88110			DG-UX 5.4R3.10 AViiON  m88k-dg-dgux5.4R3.10
 47.	i586			DG-UX R4.20MU01 AViiON i586-dg-dguxR4.20MU04
 48.	i586			DG-UX R4.11MU04 AViiON i586-dg-dguxR4.11MU04
+49.     PowerPC			Apple Powerbook G3     ???-???-???

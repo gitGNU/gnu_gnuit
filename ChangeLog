@@ -1,3 +1,12 @@
+2001-06-02  Tudor Hulubei  <tudor.hulubei@ecora.com>
+
+	* panel.c: Added support for displaying file sizes >2Gb.
+
+2000-05-07  Tudor Hulubei  <tudor@cs.unh.edu>
+
+	* configure.in: Added support for detecting the 64bit I/O support
+	in Linux/glibc.
+
 1999-10-07  Tudor Hulubei  <tudor@cs.unh.edu>
 
 	* doc/texinfo.tex: Updated to version 1999-10-01.07.

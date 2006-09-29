@@ -5,6 +5,24 @@
 			      =====================
 
 
+* Version 4.3.21
+================
+
+** Added 64bit I/O support.
+
+** Fixed a scrolling inconsistency in gitview.
+
+** Fixed a segmentation fault related to directory names containing
+   printf-like sequences.
+
+** Moved the info and documentation files in /usr/share.
+
+** Fixed a problem with gitps (refresh was resetting the signal type
+   to SIGTERM).
+
+** Documentation fixes.
+
+
 * Version 4.3.20
 ================
 

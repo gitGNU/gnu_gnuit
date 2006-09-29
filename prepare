@@ -3,11 +3,15 @@
 # Prepare a freshly checked out copy of
 # the CVS tree for compilation.
 
-# $Id: prepare,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $
+# $Id: prepare,v 1.6 2004/01/28 00:08:20 tudor Exp $
 
-rm -f config.cache && echo -n "." &&
-autoheader && echo -n "." &&
+rm -rf autom4te.cache config.cache; echo -n "."
+aclocal; echo -n "."
+libtoolize --automake --copy --force && echo -n "."
+autoheader 2>&1 | grep -v "config.h.in"
+echo -n "." &&
 aclocal && echo -n "." &&
-automake && echo -n "." &&
-autoconf && echo -n "." &&
-echo
+automake --foreign && echo -n "."
+autoconf
+echo -n "." &&
+echo " done"

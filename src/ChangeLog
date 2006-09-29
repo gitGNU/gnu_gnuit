@@ -1,3 +1,25 @@
+2001-06-03  Tudor Hulubei  <tudor.hulubei@ecora.com>
+
+	* panel.c (panel_copy): Fixed to work on files >2Gb.
+	* panel.c (panel_compare_files): Fixed to work on files >2Gb.
+
+2000-05-08  Tudor Hulubei  <tudor@cs.unh.edu>
+
+	* panel.c (panel_update_info): Directories are counted as 0 bytes, 
+	instead of the size of the listing.  This is less confusing, as
+	people may assume that a non-zero size represent the recursively
+	calculated sum of all the files in that directory, which is not
+	true.
+
+2000-05-01  Tudor Hulubei  <tudor@cs.unh.edu>
+
+	* panel.c (panel_beautify_number): Support for 64bit numbers.
+	(panel_update_info): Same thing.
+
+2000-04-18  Tudor Hulubei  <tudor@cs.unh.edu>
+
+	* gitunpack (unzip): Overwrite files w/o prompting.
+
 2000-03-10  Tudor Hulubei  <tudor@cs.unh.edu>
 
 	* panel.c (panel_act_COPY): Copy operations no longer preserve
