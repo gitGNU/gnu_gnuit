@@ -1,0 +1,26 @@
+Source: git
+Section: utils
+Priority: optional
+Maintainer: Ian Beckwith <ianb@nessie.mcc.ac.uk>
+Uploaders: MJ Ray (Debian) <mjr@debian.org>
+Build-Depends: libncurses-dev, libreadline5-dev, texinfo, debhelper (>= 4), autotools-dev
+Standards-Version: 3.7.2
+
+Package: git
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: GNU Interactive Tools, a file browser/viewer and process viewer/killer
+ git (GNU Interactive Tools) is a set of interactive text-mode tools,
+ closely integrated with the shell.  It contains an extensible file
+ system browser, an ascii/hex file viewer, a process viewer/killer and
+ some other related utilities and shell scripts.  It can be used to
+ increase the speed and efficiency of most of the daily tasks such as
+ copying and moving files and directories, invoking editors,
+ compressing and uncompressing files, creating and expanding archives,
+ compiling programs, sending mail, etc.  It looks nice, has colors (if
+ the standard ANSI color sequences are supported) and is user-friendly.
+ .
+ One of the main advantages of Git is its flexibility.  It is not
+ limited to a given set of commands.  The configuration file can be
+ easily enhanced, allowing the user to add new commands or file
+ operations, depending on its needs or preferences.

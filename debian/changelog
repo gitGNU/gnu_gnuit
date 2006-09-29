@@ -1,0 +1,190 @@
+git (4.3.20-10) unstable; urgency=low
+
+  * Change git.transition so it runs git-scm if run non-interactively.
+  * Standards-Version: 3.7.2 (No changes).
+
+ -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Sat,  5 Aug 2006 00:42:33 +0100
+
+git (4.3.20-9) unstable; urgency=low
+
+  * Fix git.transition to not interfere with kernel builds (Closes #362543).
+    Thanks to Peter Cordes.
+
+ -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Tue, 25 Apr 2006 23:33:56 +0100
+
+git (4.3.20-8) unstable; urgency=low
+
+  * Renamed /usr/bin/git to gitfm (Closes: #316676):
+    + Added NEWS.Debian with further explanation.
+    + Added git.transition to warn users.
+    + Use update-alternatives to manage /usr/bin/git,
+      so admins can finish transition early.
+    + Updated documentation.
+    + Changed all instances of [GIT-* in config files to [GITFM-*.
+    + Updated code to use [GITFM- sections, but accept old [GIT- sections too.
+  * gitps: fixed segfault on refresh when selected process has been killed.
+  * debian/control:
+    + Tightened Build-Depends to libreadline5-dev (Closes: #326356).
+    + Added my sponsor, MJ Ray, to Uploaders.
+    + Bumped Standards-Version to 3.6.2 (No changes).
+  * debian/copyright: Updated FSF address.
+  * debian/changelog: added fake dates to earliest two entries to silence linda.
+
+ -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Tue, 25 Oct 2005 21:11:44 +0100
+
+git (4.3.20-7) unstable; urgency=low
+
+  * panel.c: Fixes to cope with 64-bit uintmax_t (Closes: #277716).
+  * Moved pre-build cleanup code to configure target.
+
+ -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Wed, 19 Jan 2005 13:00:54 +0000
+
+git (4.3.20-6) unstable; urgency=low
+
+  * Updated to automake1.9 and autoconf2.50.
+  * Updated fsusage, fnmatch and getopt from latest gnulib
+  * Added update-gnulib script to source tree.
+  * git.info: fixed formatting, updated bin-packing docs.
+  * Switched from texi2html to makeinfo for formatting html docs.
+
+ -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Mon, 15 Nov 2004 16:49:37 +0000
+
+git (4.3.20-5) unstable; urgency=low
+
+  * Updated debian/copyright.
+  * Updated Standards-Version.
+
+ -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Wed, 30 Jun 2004 23:20:59 +0100
+
+git (4.3.20-4) unstable; urgency=low
+
+  * New maintainer (Closes: #227778).
+  * Rewrote debian/rules to use debhelper.
+  * Added config files for Eterm (Closes: #122034) and linux-m.
+  * Added man pages for gitps, gitview, gitwipe, gitwhich and gitxgrep,
+    and links from gitr[ef]grep to gitrgrep (Closes: #233237, #233239).
+  * Set default ModeHelp lines to help rather than system info in
+    all term/.gitrc.TERM files (Closes: #156647).
+  * src/fsusage.c: include <stdlib.h> or "ansi_stdlib.h" (for abort(3)).
+  * term/Makefile.am: added DESTDIR support to install-data-hook
+    and uninstall-local, converted hard links to symlinks.
+  * debian/control:
+    + added Build-Depends on texinfo, texi2html, debhelper, autotools-dev
+    + removed Build-Depends on file.
+    + rewrote Description.
+    + changed Section to utils.
+  * Updated Standards-Version to 3.6.1.
+  * configure.in:
+    + unconditionally define HAVE_LONG_FILE_NAMES to get round fakeroot
+      problems with AC_SYS_LONG_FILE_NAMES.
+    + added AM_MAINTAINER_MODE
+  * debian/rules: added touch commands to autotools output in clean target to
+    avoid buildd problems
+  * src/git.c: set default GIT_EDITOR, GIT_PAGER and GIT_BROWSER
+    to sensible-editor, sensible-pager and sensible-browser.
+  * doc/git.texinfo, doc/gitaction.1: changed paths to match debian,
+    documented new sensible-* defaults.
+  * doc/git.texinfo: corrected keys for panel minor modes
+    (prefix is ESC e, not ESC d)
+
+ -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Thu,  1 Apr 2004 11:46:00 +0100
+
+git (4.3.20-3) unstable; urgency=low
+
+  * Uploading with maintainer set to QA group
+
+ -- Andrew Pollock <apollock@debian.org>  Tue, 10 Feb 2004 08:03:30 +1100
+
+git (4.3.20-2) unstable; urgency=low
+
+  * Update to standards version 3.5.6.
+  * Include file package in build-depends. (closes: #107055)
+
+ -- Martin Mitchell <martin@debian.org>  Fri, 28 Sep 2001 22:25:52 +1000
+
+git (4.3.20-1) unstable; urgency=low
+
+  * New upstream release. (closes: #43307)
+  * Update to standards version 3.1.1.
+
+ -- Martin Mitchell <martin@debian.org>  Sat, 18 Mar 2000 11:19:30 +1100
+
+git (4.3.19-1) unstable; urgency=low
+
+  * New upstream release.
+  * Update to standards version 3.0.1.
+  * Update copyright information.
+
+ -- Martin Mitchell <martin@debian.org>  Mon,  9 Aug 1999 02:27:06 +1000
+
+git (4.3.17-1) unstable; urgency=low
+
+  * New upstream release.
+  * Update to standards version 2.4.1.
+  * Provide link for rxvt term support. (#28291)
+
+ -- Martin Mitchell <martin@debian.org>  Wed, 21 Oct 1998 16:24:06 +1000
+
+git (4.3.16-6) unstable; urgency=low
+
+  * Update FSF address in copyright file.
+  * Provide manpage links for all binaries.
+
+ -- Martin Mitchell <martin@debian.org>  Mon,  9 Mar 1998 20:16:45 +1100
+
+git (4.3.16-5) unstable; urgency=low
+
+  * Compress manpages.
+
+ -- Martin Mitchell <martin@debian.org>  Sun, 21 Dec 1997 04:35:58 +1100
+
+git (4.3.16-4) unstable; urgency=low
+
+  * Install only documentation relevant for using the program. (#13199)
+
+ -- Martin Mitchell <martin@debian.org>  Fri, 12 Dec 1997 18:53:09 +1100
+
+git (4.3.16-3) unstable; urgency=low
+
+  * New maintainer.
+  * Update to standards version 2.3.0.1.
+
+ -- Martin Mitchell <martin@debian.org>  Wed, 26 Nov 1997 17:11:52 +1100
+
+git (4.3.16-2.1) unstable; urgency=low
+
+  * Non-maintainer release.
+  * Libc6 compile.
+
+ -- Martin Mitchell <martin@debian.org>  Fri,  7 Nov 1997 04:08:36 +1100
+
+git (4.3.16-2) unstable; urgency=low
+
+  * Makefiles were detecting prefix change and recompiling binaries with 
+    incorrect pathnames on 'make install'.  Removed check for prefix-change
+    in Makefile.in and src/Makefile.in (Fixes #7434).
+
+ -- Klee Dienes <klee@debian.org>  Sun, 16 Feb 1997 20:25:10 -0500
+
+git (4.3.16-1) unstable; urgency=low
+
+  * New upstream version.
+  * New maintainer.
+  * Converted to new source format.
+  * Change /usr/lib/git/term/.gitrc.* to /usr/lib/git/term/gitrc.*
+  * Move /usr/bin/.gitaction to /usr/lib/git/gitaction.
+
+ -- Klee Dienes <klee@debian.org>  Sat, 8 Feb 1997 14:51:21 -0500
+
+git (4.3.9-2) unstable; urgency=low
+
+  * initial upload -- replaces git-4.3.7-6
+  * revised NormalModeHelp line in /usr/lib/git/term/.git* files
+
+ -- Bill Mitchell <mitchell@mdd.comm.mot.com>  Sat, 8 Feb 1997 14:51:20 -0500
+
+git (4.3.9-1) unstable; urgency=low
+
+  * added gitxgrep script and gitfgrep, gitregrep symlinks
+
+ -- Bill Mitchell <mitchell@mdd.comm.mot.com>  Sat, 8 Feb 1997 14:51:19 -0500

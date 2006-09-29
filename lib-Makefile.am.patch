@@ -1,0 +1,12 @@
+--- lib/Makefile.am	2004-11-14 19:17:22.000000000 +0000
++++ lib/Makefile.am.patched	2004-11-14 19:16:57.000000000 +0000
+@@ -17,7 +17,8 @@
+ 
+ libgnu_a_SOURCES =
+ libgnu_a_LIBADD = @LIBOBJS@
+-EXTRA_DIST =
++AM_CPPFLAGS = -I ../src
++EXTRA_DIST = tilde.c tilde.h history.c history.h
+ BUILT_SOURCES =
+ SUFFIXES =
+ MOSTLYCLEANFILES =

@@ -1,0 +1,20 @@
+This is the GNU Interactive Tools package version 4.3.20.
+
+Git contains a filesystem browser, an interactive process
+viewer/killer, and a hex/ascii file viewer
+
+This package was put together by Martin Mitchell <martin@debian.org> from
+sources obtained from
+
+<URL:ftp://ftp.gnu.org/pub/gnu/git/git-4.3.20.tar.gz>
+
+and is now maintained by Ian Beckwith <ianb@nessie.mcc.ac.uk>.
+
+This package is distributed under terms of the Gnu Public License,
+version 2.
+
+You should have received a copy of the GNU General Public License with
+your Debian GNU/Linux system, in /usr/share/common-licenses/GPL, or with the
+Debian GNU/Linux texinfo source package as the file COPYING.  If not,
+write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor,
+Boston, MA 02110-1301, USA.

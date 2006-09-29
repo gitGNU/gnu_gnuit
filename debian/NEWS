@@ -1,0 +1,24 @@
+git (4.3.20-8) unstable; urgency=low
+
+  * git, the filemanager with GNU Interactive Tools, is now called gitfm.
+
+    This is to avoid conflicts with Linus Torvalds' content tracker,
+    also called 'git'. Linus has refused to change the name of his
+    git, so we are forced to change our name. The name gitfm has been
+    chosen for consistency with the other git* tools (gitps, gitmount,
+    gitrgrep, etc.).
+  
+    Until after etch, /usr/bin/git points to a transition script that
+    warns the user and then runs gitfm.
+
+    If you want to complete the transition early, install git-core
+    then use 'update-alternatives --config git'
+
+    Section names in the .gitrc.* config files have changed
+    from [GIT-*] to [GITFM-*], however the old names are
+    still accepted for backwards compatibility.
+
+    These changes will also be in the next upstream version
+    of GNU Interactive Tools.
+
+ -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Wed,  7 Dec 2005 13:46:04 +0000

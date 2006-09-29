@@ -1,0 +1,31 @@
+#!/bin/bash
+
+cat >&2 << EOT
+
+git, the filemanager with GNU Interactive Tools, is now called gitfm.
+
+If you are looking for git, Linus Torvald's content tracker, install
+the cogito and git-core packages and see README.Debian and git(7).
+
+This transition script will be removed in the debian stable
+release after etch.
+
+If you wish to complete the transition early, install git-core
+and use (as root):
+ update-alternatives --config git
+
+EOT
+
+# If we are attached to a terminal, run gitfm, else run git-scm
+if [ -t 0 ] && [ -t 1 ];then
+   echo "Press RETURN to run gitfm" >&2
+   read
+   exec /usr/bin/gitfm "$@"
+else
+	if [ -x /usr/bin/git-scm ]
+	then
+		exec -a git /usr/bin/git-scm "$@"
+	fi
+fi
+
+exit 1

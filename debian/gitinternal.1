@@ -1,0 +1,66 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.\" First parameter, NAME, should be all caps
+.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
+.\" other parameters are allowed: see man(7), man(1)
+.TH GITINTERNAL 1 "Feb 19, 2004"
+.\" Please adjust this date whenever revising the manpage.
+.\"
+.\" Some roff macros, for reference:
+.\" .nh        disable hyphenation
+.\" .hy        enable hyphenation
+.\" .ad l      left justify
+.\" .ad b      justify to both left and right margins
+.\" .nf        disable filling
+.\" .fi        enable filling
+.\" .br        insert line break
+.\" .sp <n>    insert n+1 empty lines
+.\" for manpage-specific macros, see man(7)
+.SH NAME
+gitwhich, gitmkdirs, gitxgrep \- Helper programs for git
+.SH SYNOPSIS
+.B gitwhich 
+.I file ...
+.br
+.B gitmkdirs
+.I path ...
+.br
+.B gitxgrep
+.I grepcmd args ...
+.SH DESCRIPTION
+This manual page documents briefly the
+.BR gitwhich ", " gitmkdirs " and " gitxgrep
+commands.
+These commands are internal to \fBgit\fP(1) and should generally not be run directly.
+.PP
+
+This manual page was written for the Debian distribution
+because the original program does not have a manual page.
+Instead, it has documentation in the GNU Info format; see below.
+.PP
+.\" TeX users may be more comfortable with the \fB<whatever>\fP and
+.\" \fI<whatever>\fP escape sequences to invode bold face and italics, 
+.\" respectively.
+.TP
+.BI gitwhich " file ..."
+gitwitch returns with an exit status of 0 if any of its \fBfile\fP arguments
+exist in the PATH, otherwise it returns 1.
+.TP
+.BI gitmkdirs " path ..."
+Creates the directory \fBpath\fP and any required parent directories.
+.TP
+.BI gitxgrep " grepcmd args ..."
+Used as a helper script by \fBgitrgrep\fP(1), \fBgitregrep\fP(1),
+and \fBgitrfgrep\fP(1). Calls \fIgrepcmd\fP, passing \fIargs\fP to it.
+.PP
+.BR gitwhich ", " gitmkdirs " and " gitxgrep
+are part of \fBgit\fP(1), the GNU Interactive Tools.
+
+.SH SEE ALSO
+.BR git (1)
+.PP
+\fBgitview\fP and \fBgit\fP are documented fully by
+.IR "GNU Interactive Tools" ,
+available via the Info system.
+.SH AUTHOR
+This manual page was written by Ian Beckwith <ianb@nessie.mcc.ac.uk>,
+for the Debian project (but may be used by others).

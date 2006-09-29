@@ -1,0 +1,23 @@
+#!/bin/sh -e
+
+# to get the latest gnulib:
+# cvs -d:ext:anoncvs@savannah.gnu.org:/cvsroot/gnulib co gnulib
+
+GNULIBTOOL_DIR=../../gnulib/gnulib
+
+if [ ! -f ${GNULIBTOOL_DIR}/gnulib-tool ]
+then
+	echo Cannot find gnulib-tool, check GNULIBTOOL_DIR in $0
+	exit 1
+fi
+
+${GNULIBTOOL_DIR}/gnulib-tool --import --dir=. --lib=libgnu --source-base=lib --m4-base=m4   alloca error exit exitfail fnmatch fnmatch-gnu fsusage full-read full-write getopt gettext quote quotearg safe-read safe-write strtoimax strtol strtoll strtoul strtoull strtoumax xalloc xalloc-die xstrtol xstrtoumax
+
+echo
+
+patch -p0 < lib-Makefile.am.patch
+
+echo
+
+autoreconf -v
+
