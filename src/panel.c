@@ -1,6 +1,6 @@
 /* panel.c -- The panels management file.  */
 
-/* Copyright (C) 1993-1999 Free Software Foundation, Inc.
+/* Copyright (C) 1993-2000 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -63,9 +63,20 @@
 #include <limits.h>
 
 #ifndef INT_MAX
-/* The actual value doesn't matter too much... */
-#define INT_MAX 32767
+#define INT_MAX 2147483647
 #endif /* INT_MAX */
+
+#ifdef HAVE_64BIT_IO
+#ifndef LONG_LONG_MAX
+#define LONG_LONG_MAX 9223372036854775807LL
+#endif /* LONG_LONG_MAX */
+#endif /* HAVE_64BIT_IO */
+
+#ifdef HAVE_64BIT_IO
+#define MAXFILESIZE LONG_LONG_MAX
+#else /* !HAVE_64BIT_IO */
+#define MAXFILESIZE INT_MAX
+#endif /* !HAVE_64BIT_IO */
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -105,7 +116,6 @@ extern int errno;
 #include "system.h"
 #include "misc.h"
 #include "stat.h"
-
 
 
 extern int AnsiColors;
@@ -1366,16 +1376,15 @@ panel_update_path(this)
 static void
 panel_beautify_number(buf, number)
     char *buf;
-    uintmax_t number;
+    off64_t number;
 {
     int i;
-    char *format="%14lu";
-    if(sizeof(uintmax_t) > 4)
-    {
-      format="%14llu";
-    }
 
-    sprintf(buf, format, number);
+#ifdef HAVE_64BIT_IO
+    sprintf(buf, "%14Lu", (unsigned long long)number);
+#else /* !HAVE_64BIT_IO */
+    sprintf(buf, "%14lu", (unsigned long)number);
+#endif /* !HAVE_64BIT_IO */
 
     for (i = 10; i > 0; i -= 4)
 	if (isdigit((int)buf[i]))
@@ -1417,17 +1426,15 @@ panel_update_size(this)
     }
     else
     {
-	uintmax_t n;
+	off64_t n;
 	char c = 'K';
+	off64_t free_blocks =
+            (geteuid() == 0) ? fsu.fsu_bfree : fsu.fsu_bavail;
 
-	uintmax_t free_blocks = (geteuid() == 0) ? fsu.fsu_bfree : fsu.fsu_bavail;
 
-#if 0
 	/* Indeed, this might happen...  */
-	/* ...not now we are a uintmax_t */
 	if (free_blocks < 0)
 	    free_blocks = 0;
-#endif	
 
 	n = free_blocks * (fsu.fsu_blocksize / 1024);
 
@@ -1540,7 +1547,7 @@ panel_update_info(this)
 {
     tty_status_t status;
     size_t len, maxname;
-    uintmax_t total_size = 0;
+    off64_t total_size = 0;
     char str[1024];
     char temp_rights[16];
 
@@ -1589,18 +1596,36 @@ panel_update_info(this)
 	int entry;
 	int offset;
 	char sz[16];
+	char *unit = "bytes";
 
 	for (entry = 0; entry < this->entries; entry++)
-	    if (this->dir_entry[entry].selected)
+	    if (this->dir_entry[entry].selected &&
+		this->dir_entry[entry].type == FILE_ENTRY)
 		total_size += this->dir_entry[entry].size;
+
+#ifdef HAVE_64BIT_IO
+	/* If the number is > 99Tb, print it in Gb.  If it is > 99Gb,
+	   print it in Mb.  */
+	if (total_size > 99999999999999LL)
+	{
+	    total_size /= 1024 * 1024 * 1024;
+	    unit = "Gb";
+	}
+	else if (total_size > 99999999999LL)
+	{
+	    total_size /= 1024 * 1024;
+	    unit = "Mb";
+	}
+#endif /* HAVE_64BIT_IO */
 
 	panel_beautify_number(sz, total_size);
 
 	for (offset = 0; sz[offset] == ' '; offset++)
 	    ;
 
-	sprintf(str, "%s bytes in %d file(s)",
-		&sz[offset], this->selected_entries);
+	sprintf(str, "%s %s in %d file%s",
+		&sz[offset], unit, this->selected_entries,
+		(this->selected_entries > 1) ? "s" : "");
 
 	tty_brightness(PanelFilesInfoBrightness);
 	tty_foreground(PanelFilesInfo);
@@ -1667,9 +1692,37 @@ panel_build_entry_field(this, entry, display_mode, offset)
 	    break;
 
 	case ENABLE_SIZE:
+	{
+#ifdef HAVE_64BIT_IO
+	    /* If the number is > 999Tb, print it in Gb.  If it is > 999Gb,
+	       print it in Mb.  If it is > 999Mb, print it in Kb.  */
+	    char *unit = "";
+	    off64_t size = this->dir_entry[entry].size;
+	    if (size > 999999999999999LL)
+	    {
+		size /= 1024LL * 1024LL * 1024LL;
+		unit = "G";
+	    }
+	    else if (size > 999999999999LL)
+	    {
+		size /= 1024LL * 1024LL;
+		unit = "M";
+	    }
+	    else if (size > 999999999LL)
+	    {
+		size /= 1024LL;
+		unit = "K";
+	    }
+	    if (unit[0])
+		sprintf(buf, "%9Ld%s", (long long)size, unit);
+	    else
+		sprintf(buf, "%10Ld", (long long)size);
+#else /* !HAVE_64BIT_IO */
 	    sprintf(buf, "%10ld", (long)this->dir_entry[entry].size);
+#endif /* !HAVE_64BIT_IO */
 	    memcpy(this->temp + this->columns - 2 - offset, buf, 10);
 	    break;
+	}
 
 	case ENABLE_MODE:
 	    panel_mode2string(this, entry, temp_rights);
@@ -2150,8 +2203,8 @@ char *copyerr[11] =
 
 static int
 panel_percent(x, total)
-    size_t x;
-    size_t total;
+    off64_t x;
+    off64_t total;
 {
     /* This shouldn't happen.  */
     if (total == 0)
@@ -2170,8 +2223,9 @@ panel_copy(this, src, dest, mode, uid, gid)
     uid_t uid;
     gid_t gid;
 {
+    size_t len;
     int sfd, dfd, error;
-    size_t len, n, memsize;
+    off64_t flen, n, memsize;
     struct stat dest_statbuf;
     char *buf, *dest_file, *msg;
     int bytes_transferred, bytes_to_transfer;
@@ -2240,7 +2294,7 @@ panel_copy(this, src, dest, mode, uid, gid)
     }
 
     /* The source is a regular file.  */
-    len  = strlen(dest);
+    len = strlen(dest);
     dest = xstrdup(dest);
 
     if (xstat(dest, &dest_statbuf) == 0 && S_ISDIR(dest_statbuf.st_mode))
@@ -2280,7 +2334,7 @@ panel_copy(this, src, dest, mode, uid, gid)
     tty_update();
     xfree(msg);
 
-    if ((sfd = open(src, O_RDONLY)) == -1)
+    if ((sfd = open64(src, O_RDONLY | O_BINARY)) == -1)
 	return S_OPENERR;
 
 #ifdef HAVE_LINUX
@@ -2296,15 +2350,15 @@ panel_copy(this, src, dest, mode, uid, gid)
 	return D_CREATERR;
     }
 
-    memsize = min(len = get_file_length(sfd), COPY_BUFFER_SIZE);
+    memsize = min(flen = get_file_length(sfd), COPY_BUFFER_SIZE);
 
     if (S_ISBLK(mode) || S_ISCHR(mode))
     {
-	len = INT_MAX;
+	flen = MAXFILESIZE;
 	memsize = COPY_BUFFER_SIZE;
     }
 
-    if (len == 0)
+    if (flen == 0)
     {
 	if (getuid() == 0)
 	    chown(dest, uid, gid);
@@ -2315,9 +2369,9 @@ panel_copy(this, src, dest, mode, uid, gid)
 
     buf = xmalloc(memsize);
 
-    for (n = 0; n < len; n += COPY_BUFFER_SIZE)
+    for (n = 0; n < flen; n += COPY_BUFFER_SIZE)
     {
-	bytes_to_transfer = min(len - n, memsize);
+	bytes_to_transfer = min(flen - n, memsize);
 
 	if (canceled())
 	{
@@ -2341,7 +2395,7 @@ panel_copy(this, src, dest, mode, uid, gid)
 		{
 		    if (getuid() == 0)
 			chown(dest, uid, gid);
-		    close2(sfd, dfd);	
+		    close2(sfd, dfd);
 		    xfree2(buf, dest);
 		    return SD_OK;
 		}
@@ -2376,17 +2430,24 @@ panel_copy(this, src, dest, mode, uid, gid)
 		((safe_errno == ENOSPC) ? SD_NOSPACE : D_WRITEERR);
 	}
 
-	if (n + bytes_to_transfer <= len)
+	if (n + bytes_to_transfer <= flen)
 	{
 	    msg = xmalloc(32 + strlen(src));
 
 	    if (S_ISREG(mode))
 		sprintf(msg, "(COPY) [%3d%%] %s",
-			panel_percent((size_t)(n + bytes_to_transfer), len),
+			panel_percent(n + bytes_to_transfer, flen),
 			src);
 	    else
+	    {
+#ifdef HAVE_64BIT_IO
+		sprintf(msg, "(COPY) [%Ld bytes] %s",
+			(long long)(n + bytes_to_transfer), src);
+#else /* !HAVE_64BIT_IO */
 		sprintf(msg, "(COPY) [%ld bytes] %s",
 			(long)(n + bytes_to_transfer), src);
+#endif /* !HAVE_64BIT_IO */
+	    }
 	    status(msg, STATUS_WARNING, STATUS_LEFT);
 	    tty_update();
 	    xfree(msg);
@@ -3057,7 +3118,7 @@ panel_isdir(path)
 {
     struct stat s;
 
-    if (stat((char *)path, &s) < 0)
+    if (stat(path, &s) < 0)
 	return 0;
 
     return S_ISDIR(s.st_mode);
@@ -3430,14 +3491,14 @@ panel_act_REGET(this, aux_info)
  * FIXME: This needs work in order to be useful in comparing
  * special files (block devices).
  */
-int
-panel_compare_files(this, this_entry, other, other_entry)
+off64_t
+panel_compare(this, this_entry, other, other_entry)
     panel_t *this;
     int this_entry;
     panel_t *other;
     int other_entry;
 {
-    off_t n;
+    off64_t n;
     char *msg;
     int fd1, fd2;
     char *buf1, *buf2;
@@ -3450,8 +3511,8 @@ panel_compare_files(this, this_entry, other, other_entry)
 
     /* Make sure we initialize size to the smaller size.  We might be
        required to compare files of different length.  */
-    off_t size = min(this->dir_entry[this_entry].size,
-		     other->dir_entry[other_entry].size);
+    off64_t size = min(this->dir_entry[this_entry].size,
+                       other->dir_entry[other_entry].size);
 
     if (size == 0)
 	return 0;
@@ -3465,10 +3526,10 @@ panel_compare_files(this, this_entry, other, other_entry)
     tty_update();
     xfree(msg);
 
-    if ((fd1 = open(file1, O_RDONLY)) == -1)
+    if ((fd1 = open64(file1, O_RDONLY | O_BINARY)) == -1)
 	return CF_OPEN1;
 
-    if ((fd2 = open(file2, O_RDONLY)) == -1)
+    if ((fd2 = open64(file2, O_RDONLY | O_BINARY)) == -1)
     {
 	xfree(file2);
 	close(fd1);
@@ -3531,8 +3592,7 @@ panel_compare_files(this, this_entry, other, other_entry)
 	}
 
 	sprintf(msg, "(CMP) [%3d%%] %s",
-		panel_percent((size_t)(n + bytes_to_compare),
-			      (size_t)size), file1);
+		panel_percent(n + bytes_to_compare, size), file1);
 	status(msg, STATUS_WARNING, STATUS_LEFT);
 	tty_update();
     }
@@ -3589,8 +3649,8 @@ panel_act_COMPARE(this, other)
 
 	if (permission)
 	{
-	    off_t result = panel_compare_files(this, this_entry,
-					       other, other_entry);
+	    off64_t result =
+                panel_compare(this, this_entry, other, other_entry);
 
 	    switch ((int)result)
 	    {
@@ -3640,7 +3700,12 @@ panel_act_COMPARE(this, other)
 			   first difference encountered.  */
 			char *msg = xmalloc(128);
 
-			sprintf(msg, "%ld (0x%lx)", (long)result,(long)result);
+#ifdef HAVE_64BIT_IO
+			sprintf(msg, "%Ld (0x%Lx)", result, result);
+#else /* !HAVE_64BIT_IO */
+			sprintf(msg, "%ld (0x%lx)",
+				(long)result, (long)result);
+#endif /* !HAVE_64BIT_IO */
 			panel_2s_message("Files differ at offset %s. ",
 					 msg, (char *)NULL, IL_BEEP | IL_SAVE);
 			xfree(msg);
@@ -3719,8 +3784,7 @@ panel_act_CMPDIR(this, other, quick)
 			}
 			else
 			{
-			    int result = panel_compare_files(this, i,
-							     other, j);
+			    off64_t result = panel_compare(this, i, other, j);
 
 			    if (result == CF_ABORT)
 				goto done;
@@ -3983,12 +4047,12 @@ void
 panel_act_BIN_PACKING(this, other, bin_size)
     panel_t *this;
     panel_t *other;
-    uintmax_t bin_size;
+    off64_t bin_size;
 {
     char msg[160];
-    off_t file_size;
-    uintmax_t free_blocks;
-    off_t *bins = NULL;
+    off64_t file_size;
+    long free_blocks;
+    off64_t *bins = NULL;
     dir_entry_t **buffer;
     char *fn = "BIN PACKING";
     int max_bins = 0, used_bins = 0;
@@ -4076,7 +4140,7 @@ panel_act_BIN_PACKING(this, other, bin_size)
 	    if (used_bins == max_bins)
 	    {
 		max_bins += 16;
-		bins = (off_t *)xrealloc(bins, max_bins * sizeof(off_t));
+		bins = (off64_t *)xrealloc(bins, max_bins * sizeof(off64_t));
 	    }
 
 	    bins[used_bins++] = bin_size - file_size;
@@ -4723,7 +4787,8 @@ panel_action(this, action, other, aux_info, repeat_count)
 	    break;
 
 	case act_BIN_PACKING:
-	    panel_act_BIN_PACKING(this, other, (uintmax_t)atoi((char *)aux_info));
+	    panel_act_BIN_PACKING(
+                this, other, (off64_t)atoi((char *)aux_info));
 	    break;
 
 	case act_HORIZONTAL_SCROLL_LEFT:

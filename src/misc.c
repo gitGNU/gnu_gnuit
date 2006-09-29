@@ -1,6 +1,6 @@
 /* misc.c -- Miscelaneous functions used in git/gitps/gitview.  */
 
-/* Copyright (C) 1993-1999 Free Software Foundation, Inc.
+/* Copyright (C) 1993-2000 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
 /* $Id: misc.c,v 1.2 2005-10-22 15:29:16 ianb Exp $ */
-#include <stdio.h>
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -126,7 +126,7 @@ display_exit_message(signame)
 
     fprintf(stderr, "%s %d %2d:%02d:%02d %s[%d]: exiting on %s signal\n",
 	    month_name[time->tm_mon], time->tm_mday, time->tm_hour,
-	    time->tm_min, time->tm_sec, program, (int)getpid(), signame);
+	    time->tm_min, time->tm_sec, g_program, (int)getpid(), signame);
 }
 
 
@@ -157,10 +157,10 @@ fatal_signal(signum)
 	default:
 	    fprintf(stderr,
 		    "%s: got a stupid signal (%d). Unless it was a joke ...\n",
-		    program, signum);
+		    g_program, signum);
 	  ask_report:
 	    fprintf(stderr, "%s: please report to tudor@cs.unh.edu\n",
-		    program);
+		    g_program);
 	    break;
     }
 
@@ -172,9 +172,9 @@ void
 configuration_fatal_error(configfile)
     char *configfile;
 {
-    fprintf(stderr, "%s: installation problem: \n", program);
+    fprintf(stderr, "%s: installation problem: \n", g_program);
     fprintf(stderr, "%s: cannot find configuration file '%s'.\n\n",
-	    program, configfile);
+	    g_program, configfile);
 }
 
 
@@ -184,25 +184,25 @@ configuration_warning(configfile)
 {
     fprintf(stderr,
 	    "\n%s: Cannot open configuration file '%s'.\n",
-	    program, configfile);
+	    g_program, configfile);
     fprintf(stderr,
 	    "%s: See the info documentation for details.\n",
-	    program);
+	    g_program);
     fprintf(stderr,
 	   "%s: If the TERM environment variable is, say, vt102, your\n",
-	    program);
+	    g_program);
     fprintf(stderr,
 	    "%s: configuration file name is '.gitrc.vt102'.\n",
-	    program);
+	    g_program);
     fprintf(stderr,
 	   "%s: You can copy a configuration file in your home directory\n",
-	    program);
+	    g_program);
     fprintf(stderr,
 	    "%s: and modify it in order to overwrite the default one.\n",
-	    program);
+	    g_program);
     fprintf(stderr,
 	    "%s: Try modifying '.gitrc.generic'...\n\n",
-	    program);
+	    g_program);
 }
 
 
@@ -229,9 +229,9 @@ common_configuration_init()
 int
 specific_configuration_init()
 {
-    char *configfile = xmalloc(strlen(home) + 1 + strlen(CONFIGFILE_PREFIX) +
+    char *configfile = xmalloc(strlen(g_home) + 1 + strlen(CONFIGFILE_PREFIX) +
 			       strlen(tty_type) + 1);
-    strcpy(configfile, home);
+    strcpy(configfile, g_home);
     strcat(configfile, CONFIGFILE_PREFIX);
     strcat(configfile, tty_type);
 
@@ -300,7 +300,7 @@ use_section(section)
 	  
 	  fprintf(stderr,
 		  "%s: can't find section %s in the configuration file.\n",
-		  program, section);
+		  g_program, section);
 	  exit(1);
     }
 }
@@ -336,7 +336,7 @@ get_const_var(var_name, options, options_no, default_value)
 		break;
 
 	if (i == options_no)
-	    fprintf(stderr, "%s: invalid %s (%s).\n", program, var_name, data);
+	    fprintf(stderr, "%s: invalid %s (%s).\n", g_program, var_name, data);
 	else
 	    return i;
     }
@@ -362,7 +362,7 @@ get_flag_var(var_name, default_value)
 	if (strcmp(data, "OFF") == 0)
 	    return 0;
 
-	fprintf(stderr, "%s: invalid %s (%s).\n", program, var_name, data);
+	fprintf(stderr, "%s: invalid %s (%s).\n", g_program, var_name, data);
 	return default_value;
     }
 
@@ -403,7 +403,7 @@ get_colorset_var(charset, colorset_name, fields_no)
 	    index = tty_get_color_index(data);
 	    if (index == -1)
 		fprintf(stderr, "%s: invalid %s (%s).\n",
-			program, colorset_name[i], data);
+			g_program, colorset_name[i], data);
 	    else
 		charset[i] = index;
 	}
@@ -478,12 +478,12 @@ get_login_name()
     if ((pwd = getpwuid(euid)) == NULL)
     {
 	fprintf(stderr,
-		"%s: OOOPS, I can't get your user name (euid = %d) !\n",
-		program, euid);
+		"%s: OOOPS, I can't get your user name (euid = %d)!\n",
+		g_program, euid);
 	fprintf(stderr,
-		"%s: Your account no longer exists or you are a SYSTEM CRACKER !! :-)\n",
-		program);
-	fprintf(stderr, "%s: Correct the problem and try again.\n", program);
+		"%s: Your account no longer exists or you are a %s",
+		g_program, "SYSTEM CRACKER! :-)\n");
+	fprintf(stderr, "%s: Correct the problem and try again.\n", g_program);
 	exit(1);
     }
 
@@ -542,15 +542,15 @@ truncate_string(path, temppath, len)
 }
 
 
-int
+off64_t
 get_file_length(fd)
     int fd;
 {
-    int current, length;
+    off64_t current, length;
 
-    current = lseek(fd, 0, SEEK_CUR);
-    length  = lseek(fd, 0, SEEK_END);
-    lseek(fd, current, SEEK_SET);
+    current = lseek64(fd, 0, SEEK_CUR);
+    length  = lseek64(fd, 0, SEEK_END);
+    lseek64(fd, current, SEEK_SET);
     return length;
 }
 
@@ -669,7 +669,7 @@ putenv(entry)
 }
 #else
 /* I guess we are simply out of luck.  */
-#error
+	#error
 #endif /* NeXT */
 #endif /* HAVE_SETENV */
 #endif /* HAVE_PUTENV */
@@ -700,13 +700,13 @@ xsetenv(variable, value)
     unsetenv(variable);
     result = setenv(variable, value, 1);
 #else
-#error
+	#error
 #endif /* HAVE_SETENV */
 #endif /* HAVE_PUTENV */
 
     if (result == -1)
 	fprintf(stderr, "%s: warning: cannot add '%s' to environment\n",
-		program, variable);
+		g_program, variable);
 
     return result;
 }
