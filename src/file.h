@@ -1,6 +1,6 @@
 /* file.h -- Backward compatibility SEEK_* constants.  */
 
-/* Copyright (C) 1993-1999 Free Software Foundation, Inc.
+/* Copyright (C) 1993-2000 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: file.h,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $ */
+/* $Id: file.h,v 1.7 2002/10/01 19:28:23 tudor Exp $ */
 
 #ifndef _GIT_FILE_H
 #define _GIT_FILE_H
@@ -52,5 +52,11 @@
 #endif /* L_XTND */
 #endif /* SEEK_END */
 
+#ifndef _LARGEFILE64_SOURCE
+#define off64_t off_t
+#define fopen64 fopen
+#define lseek64 lseek
+#define open64 open
+#endif // !_LARGEFILE64_SOURCE
 
 #endif  /* _GIT_FILE_H */

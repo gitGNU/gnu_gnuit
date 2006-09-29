@@ -1,6 +1,6 @@
 /* git.c -- The main git file.  */
 
-/* Copyright (C) 1993-1999 Free Software Foundation, Inc.
+/* Copyright (C) 1993-2000 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -73,7 +73,7 @@ char *copyright =
 "GIT is free software; you can redistribute it and/or modify it under the\n\
 terms of the GNU General Public License as published by the Free Software\n\
 Foundation; either version 2, or (at your option) any later version.\n\
-Copyright (C) 1993-1999 Free Software Foundation, Inc.\n\
+Copyright (C) 1993-2000 Free Software Foundation, Inc.\n\
 Written by Tudor Hulubei and Andrei Pitis, Bucharest, Romania\n\n";
 
 
@@ -100,8 +100,8 @@ int TypeSensitivity = ON;
 #define GIT_TERMINAL_MODE       1
 
 
-char *home;
-char *program;
+char *g_home;
+char *g_program;
 char *version = VERSION;
 int two_panel_mode = 1;
 int current_mode = GIT_SCREEN_MODE;
@@ -1278,7 +1278,7 @@ fatal(postmsg)
     if (tty_get_mode() == TTY_NONCANONIC)
 	clean_up();
 
-    fprintf(stderr, "%s: fatal error: %s.\n", program, postmsg);
+    fprintf(stderr, "%s: fatal error: %s.\n", g_program, postmsg);
     exit(1);
 }
 
@@ -1531,7 +1531,7 @@ command_expand(command, dest, p, l)
 		    {
 			tmplen = 20;
 			tmp = xmalloc(tmplen + 1);
-			strcpy(tmp, "selected entries(s)");
+			strcpy(tmp, "selected entries");
 			break;
 		    }
 
@@ -1725,7 +1725,7 @@ read_keys(keys, errors)
 		else
 		{
 		    fprintf(stderr, "%s: warning: invalid key sequence '%s'\n",
-			    program, key_seq);
+			    g_program, key_seq);
 		    (*errors)++;
 		}
 	    }
@@ -1753,7 +1753,6 @@ hide()
 /*
  * Set the git prompt.
  */
-
 void
 set_prompt()
 {
@@ -1779,7 +1778,7 @@ reread()
 void
 usage()
 {
-    printf("usage: %s [-hvcblp] [path1] [path2]\n", program);
+    printf("usage: %s [-hvcblp] [path1] [path2]\n", g_program);
     printf(" -h         print this help message\n");
     printf(" -v         print the version number\n");
     printf(" -c         use ANSI colors\n");
@@ -1817,11 +1816,11 @@ main(argc, argv)
        them.  */
     signals_init();
 
-    program = argv[0];
+    g_program = argv[0];
 
-    home = getenv("HOME");
-    if (home == NULL)
-	home = ".";
+    g_home = getenv("HOME");
+    if (g_home == NULL)
+	g_home = ".";
 
     compute_directories();
     update_path();
@@ -1875,7 +1874,7 @@ main(argc, argv)
 		return 1;
 
 	    default:
-		fprintf(stderr, "%s: unknown error\n", program);
+		fprintf(stderr, "%s: unknown error\n", g_program);
 		return 1;
 	}
 
@@ -1893,7 +1892,7 @@ main(argc, argv)
 
     if (optind < argc)
 	fprintf(stderr, "%s: warning: invalid extra options ignored\n",
-		program);
+		g_program);
 
     printf("\n");
 
@@ -1983,12 +1982,12 @@ main(argc, argv)
 
     if (keys == MAX_KEYS)
 	fprintf(stderr, "%s: too many key sequences; only %d are allowed.\n",
-		program, MAX_KEYS);
+		g_program, MAX_KEYS);
 
 #ifndef HAVE_LONG_FILE_NAMES
     fprintf(stderr,
 	    "%s: warning: your system doesn't support long file names.",
-	    program);
+	    g_program);
 #endif /* !HAVE_LONG_FILE_NAMES */
 
     if (getuid() == 0)
@@ -3116,7 +3115,7 @@ main(argc, argv)
 
 	    case BUILTIN_up_one_dir:
 		panel_action(src_panel, act_UP_ONE_DIR, dst_panel, NULL, 1);
-		il_free(saved_il);
+		il_restore(saved_il);
 		set_prompt();
 		saved_il = il_save();
 		tty_update_title(panel_get_path(src_panel));

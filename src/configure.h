@@ -1,6 +1,6 @@
 /* configure.h -- The prototypes of functions used in config.c.  */
 
-/* Copyright (C) 1993-1999 Free Software Foundation, Inc.
+/* Copyright (C) 1993-2000 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: configure.h,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $ */
+/* $Id: configure.h,v 1.6 2000/07/31 03:10:01 tudor Exp $ */
 
 #ifndef _GIT_CONFIGURE_H
 #define _GIT_CONFIGURE_H
@@ -26,16 +26,16 @@
 #include "stdc.h"
 
 
-#define MAXLINE         1024
+#define MAXLINE 1024
 
 
-#define NO_SEEK         0
-#define DO_SEEK         1
+#define NO_SEEK 0
+#define DO_SEEK 1
 
 
-#define IFS             ';'     /* internal field separator */
-#define ICS             '#'     /* internal comment separator */
-#define IAS             '='     /* internal assignment operator */
+#define IFS ';'     /* Internal field separator.  */
+#define ICS '#'     /* Internal comment separator.  */
+#define IAS '='     /* Internal assignment operator.  */
 
 
 extern int configuration_init PROTO ((char *));

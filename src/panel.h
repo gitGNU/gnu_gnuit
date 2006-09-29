@@ -1,6 +1,6 @@
 /* panel.h -- The data structures and function prototypes used in panel.c.  */
 
-/* Copyright (C) 1993-1999 Free Software Foundation, Inc.
+/* Copyright (C) 1993-2000 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: panel.h,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $ */
+/* $Id: panel.h,v 1.8 2002/10/01 19:28:23 tudor Exp $ */
 
 #ifndef _GIT_PANEL_H
 #define _GIT_PANEL_H
@@ -54,6 +54,7 @@
 
 #include "stdc.h"
 #include "xstack.h"
+#include "file.h"
 
 
 /* Panel actions.  */
@@ -184,7 +185,7 @@ typedef struct
 typedef struct
 {
     char *name;
-    off_t size;
+    off64_t size;
     mode_t mode;
     uid_t uid;
     gid_t gid;

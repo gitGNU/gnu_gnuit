@@ -1,6 +1,6 @@
 /* misc.h -- Prototypes for the functions in misc.c.  */
 
-/* Copyright (C) 1993-1999 Free Software Foundation, Inc.
+/* Copyright (C) 1993-2000 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: misc.h,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $ */
+/* $Id: misc.h,v 1.10 2002/09/26 17:58:52 tudor Exp $ */
 
 #ifndef _GIT_MISC_H
 #define _GIT_MISC_H
@@ -38,8 +38,8 @@
 #include "stdc.h"
 
 
-extern char *home;
-extern char *program;
+extern char *g_home;
+extern char *g_program;
 extern char *login_name;
 
 extern char *day_name[];
@@ -104,7 +104,7 @@ extern char *minimize_path PROTO ((char *));
 extern void get_login_name PROTO (());
 extern void truncate_long_name PROTO ((char *, char *, int));
 extern char *truncate_string PROTO ((char *, char *, int));
-extern int get_file_length PROTO ((int));
+extern off64_t get_file_length PROTO ((int));
 extern struct tm *get_local_time PROTO (());
 extern int is_a_bg_command PROTO ((char *));
 extern int is_an_empty_command PROTO ((char *));

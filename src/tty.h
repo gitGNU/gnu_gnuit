@@ -1,6 +1,6 @@
 /* tty.h -- Data structures & function prototypes for tty.c stuff.  */
 
-/* Copyright (C) 1993-1999 Free Software Foundation, Inc.
+/* Copyright (C) 1993-2000 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: tty.h,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $ */
+/* $Id: tty.h,v 1.9 2001/06/02 17:33:30 tudor Exp $ */
 
 #ifndef _GIT_TTY_H
 #define _GIT_TTY_H
@@ -60,6 +60,7 @@
 /* Some key aliases.  */
 #define key_CTRL_G              0x07	/* Ctrl-G	*/
 #define key_CTRL_Z              0x1a	/* Ctrl-Z	*/
+#define key_CTRL_SPACE		0xff	/* Ctrl-Space	*/
 #define key_ENTER               0x0a	/* Enter	*/
 #define key_BACKSPACE           0x7f	/* Backspace	*/
 #define key_TAB                 0x09	/* Tab		*/

@@ -1,6 +1,6 @@
 /* gitview.c -- A hex/ascii file viewer.  */
 
-/* Copyright (C) 1993-1999 Free Software Foundation, Inc.
+/* Copyright (C) 1993-2000 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 /* Written by Tudor Hulubei and Andrei Pitis.  */
 /* Patched by Gregory Gerard <ggerard@ssl.sel.sony.com> to display on
    the entire screen.  */
-/* $Id: gitview.c,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $ */
+/* $Id: gitview.c,v 1.23 2003/06/21 22:45:08 tudor Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -187,42 +187,43 @@ int AnsiColors = OFF;
 /* Finally ... :-( */
 
 
-char *home;
-char *program;
+char *g_home;
+char *g_program;
 char *screen;
 char *filename;
-int count, size;
-char offset[16];
+int count;
+off64_t g_size;
+char g_offset[16];
 char *header_text;
 int  UseLastScreenChar;
 char *global_buf;
 char color_section[]  = "[GITVIEW-Color]";
 char monochrome_section[] = "[GITVIEW-Monochrome]";
 int fd, regular_file;
-int current_line, lines;
+long long g_current_line, g_lines;
 window_t *title_window, *header_window, *file_window, *status_window;
 static char *title_text;
-static char *help;
+static char *g_help;
 static char info_txt[] =
-    "  Offset    00 01 02 03 04 05 06 07  08 09 0A 0B 0C 0D 0E 0F        \
+    "   Offset     00 01 02 03 04 05 06 07  08 09 0A 0B 0C 0D 0E 0F       \
 Ascii       ";
 static char line_txt[]    =
-    " --------------------------------------------------------------------\
-----------  ";
+    "---------------------------------------------------------------------\
+----------- ";
 static char seek_txt[]    = " Seek at: ";
 
 
-int
+off64_t
 file_length()
 {
-    int current, length;
+    off64_t current, length;
 
     if (!regular_file)
 	return 0x7FFFFFFF;
 
-    current = lseek(fd, 0, SEEK_CUR);
-    length  = lseek(fd, 0, SEEK_END);
-    lseek(fd, current, SEEK_SET);
+    current = lseek64(fd, 0, SEEK_CUR);
+    length  = lseek64(fd, 0, SEEK_END);
+    lseek64(fd, current, SEEK_SET);
     return length;
 }
 
@@ -269,7 +270,7 @@ void
 set_status()
 {
     memset(global_buf, ' ', tty_columns);
-    memcpy(global_buf, help, min(tty_columns, (int)strlen(help)));
+    memcpy(global_buf, g_help, min(tty_columns, (int)strlen(g_help)));
 
     tty_colors(StatusBrightness, StatusForeground, StatusBackground);
 
@@ -324,22 +325,22 @@ char_to_print(c, index, total)
 
 void
 update_line(line)
-    int line;
+    long long line;
 {
-    int r;
+    ssize_t r;
     unsigned char buf[16];
     char *line_string = xmalloc(max(tty_columns, 80 + 1));
 
     memset(line_string, ' ', tty_columns);
     memset(buf, '\0', sizeof(buf));
-    lseek(fd, line * sizeof(buf), SEEK_SET);
+    lseek64(fd, (off64_t)line * sizeof(buf), SEEK_SET);
 
     if ((r = read(fd, buf, sizeof(buf))))
     {
-	sprintf(line_string, " %07X0   %02X %02X %02X %02X %02X %02X %02X\
- %02X  %02X %02X %02X %02X %02X %02X %02X %02X   \
-%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c  ",
-		line,
+	sprintf(line_string, "%011X0  %02X %02X %02X %02X %02X %02X %02X\
+ %02X  %02X %02X %02X %02X %02X %02X %02X %02X  \
+%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c ",
+		(unsigned int)(line & 0xFFFFFFFFFFF),
 		buf[0], buf[1], buf[2], buf[3],
 		buf[4], buf[5], buf[6], buf[7],
 		buf[8], buf[9], buf[10], buf[11],
@@ -373,13 +374,13 @@ update_line(line)
 void
 update_all()
 {
-    int i;
+    long long i;
 
     tty_colors(ScreenBrightness, ScreenForeground, ScreenBackground);
 
-    for (i = current_line; i < current_line + VIEW_LINES; i++)
+    for (i = g_current_line; i < g_current_line + VIEW_LINES; i++)
     {
-	window_goto(file_window, 3 + i - current_line, 0);
+	window_goto(file_window, 3 + i - g_current_line, 0);
 	update_line(i);
     }
 }
@@ -397,7 +398,7 @@ fatal(postmsg)
     char *postmsg;
 {
     clean_up();
-    fprintf(stderr, "%s: fatal error: %s.\n", program, postmsg);
+    fprintf(stderr, "%s: fatal error: %s.\n", g_program, postmsg);
     exit(1);
 }
 
@@ -461,7 +462,7 @@ read_keys(keys)
 	}
 	else
 	    fprintf(stderr, "%s: invalid built-in operation: %s.\n",
-		    program, contents);
+		    g_program, contents);
     }
 
     return i;
@@ -548,6 +549,9 @@ refresh(signum)
     tty_colors(ScreenBrightness, ScreenForeground, ScreenBackground);
     tty_fill();
 
+    g_size = file_length();
+    g_lines = g_size / 16 + (g_size % 16 ? 1 : 0);
+
     if (tty_lines >= 5)
     {
 	window_goto(file_window, 1, 0);
@@ -560,23 +564,20 @@ refresh(signum)
 	window_puts(file_window, line_txt, sizeof(line_txt) - 1);
     }
 
-    size = file_length();
-    lines = size / 16 + (size % 16 ? 1 : 0);
-
     if (tty_lines >= 9)
     {
 	if (VIEW_LINES == 0)
-	    current_line = 0;
+	    g_current_line = 0;
 	else
-	    current_line = min(current_line, (lines/VIEW_LINES)*VIEW_LINES);
+	    g_current_line = min(g_current_line, (g_lines / VIEW_LINES) * VIEW_LINES);
 
 	window_goto(file_window, SEEK_LINE, 0);
 	window_puts(file_window, seek_txt, sizeof(seek_txt) - 1);
 	window_goto(file_window, SEEK_LINE, sizeof(seek_txt) - 1);
-	window_puts(file_window, offset, count);
+	window_puts(file_window, g_offset, count);
     }
     else
-	current_line = 0;
+	g_current_line = 0;
 
     set_title();
     set_status();
@@ -614,7 +615,7 @@ clock_refresh()
 void
 usage()
 {
-    printf("usage: %s [-hvicbl] file\n", program);
+    printf("usage: %s [-hvicbl] file\n", g_program);
     printf(" -h         print this help message\n");
     printf(" -v         print the version number\n");
     printf(" -c         use ANSI colors\n");
@@ -639,11 +640,11 @@ main(argc, argv)
        them.  */
     signals_init();
 
-    program = argv[0];
+    g_program = argv[0];
 
-    home = getenv("HOME");
-    if (home == NULL)
-	home = ".";
+    g_home = getenv("HOME");
+    if (g_home == NULL)
+	g_home = ".";
 
     compute_directories();
     get_login_name();
@@ -685,7 +686,7 @@ main(argc, argv)
 		return 1;
 
 	    default:
-		fprintf(stderr, "%s: unknown error\n", program);
+		fprintf(stderr, "%s: unknown error\n", g_program);
 		return 1;
 	}
 
@@ -699,7 +700,7 @@ main(argc, argv)
 
     if (optind < argc)
 	fprintf(stderr, "%s: warning: invalid extra options ignored\n",
-		program);
+		g_program);
 
     title_text = xmalloc(strlen(PRODUCT) + strlen(VERSION) + 64);
     sprintf(title_text, " %s %s - Hex/Ascii File Viewer", PRODUCT, VERSION);
@@ -712,15 +713,15 @@ main(argc, argv)
     if (!(S_ISREG(s.st_mode) || S_ISBLK(s.st_mode)))
     {
 	fprintf(stderr, "%s: %s is neither regular file nor block device.\n",
-		program, filename);
+		g_program, filename);
 	return 1;
     }
 */
-    fd = open(filename, O_RDONLY);
+    fd = open64(filename, O_RDONLY | O_BINARY);
 
     if (fd == -1)
     {
-	fprintf(stderr, "%s: cannot open file %s.\n", program, filename);
+	fprintf(stderr, "%s: cannot open file %s.\n", g_program, filename);
 	return 1;
     }
 
@@ -747,7 +748,7 @@ main(argc, argv)
     tty_set_last_char_flag(UseLastScreenChar);
 
     use_section("[GITVIEW-Setup]");
-    help = get_string_var("Help", "");
+    g_help = get_string_var("Help", "");
 
     use_section(AnsiColors ? color_section : monochrome_section);
     get_colorset_var(ViewerColors, ViewerFields, VIEWER_FIELDS);
@@ -757,7 +758,7 @@ main(argc, argv)
 
     if (keys == MAX_KEYS)
 	fprintf(stderr, "%s: too many key sequences; only %d are allowed.\n",
-		program, MAX_KEYS);
+		g_program, MAX_KEYS);
 
     configuration_end();
 
@@ -774,8 +775,8 @@ main(argc, argv)
 
     signal_handlers(ON);
 
-    offset[count]  = 0;
-    current_line = 0;
+    g_offset[count]  = 0;
+    g_current_line = 0;
 
     sprintf(header_text, " File: %s", filename);
     tty_update_title(header_text);
@@ -794,8 +795,8 @@ main(argc, argv)
 	else
 	    key = ((char *)ks->aux_data - (char *)built_in) / MAX_BUILTIN_NAME;
 
-	size = file_length();
-	lines = size / 16 + (size % 16 ? 1 : 0);
+	g_size = file_length();
+	g_lines = g_size / 16 + (g_size % 16 ? 1 : 0);
 
 	switch (key)
 	{
@@ -804,10 +805,10 @@ main(argc, argv)
 
 		while (repeat_count--)
 		{
-		    if (current_line == 0)
+		    if (g_current_line == 0)
 			break;
 
-		    current_line--, need_update = 1;
+		    g_current_line--, need_update = 1;
 		}
 
 		if (need_update)
@@ -820,10 +821,10 @@ main(argc, argv)
 
 		while (repeat_count--)
 		{
-		    if (current_line >= lines - VIEW_LINES)
+		    if (g_current_line >= g_lines - VIEW_LINES)
 			break;
 
-		    current_line++, need_update = 1;
+		    g_current_line++, need_update = 1;
 		}
 
 		if (need_update)
@@ -852,35 +853,35 @@ main(argc, argv)
 		}
 
 	    case BUILTIN_scroll_down:
-		if (current_line == 0)
+		if (g_current_line == 0)
 		    break;
 
-		current_line = max(0, current_line - VIEW_LINES);
+		g_current_line = max(0, g_current_line - VIEW_LINES);
 		update_all();
 		break;
 
 	    case ' ':
 	    case BUILTIN_scroll_up:
-		if (current_line >= lines - VIEW_LINES)
+		if (g_current_line >= g_lines - VIEW_LINES)
 		    break;
 
-		current_line = min(lines - 1, current_line + 16);
+		g_current_line = min(g_lines - 1, g_current_line + VIEW_LINES);
 		update_all();
 		break;
 
 	    case BUILTIN_beginning_of_file:
-		if (current_line)
+		if (g_current_line)
 		{
-		    current_line = 0;
+		    g_current_line = 0;
 		    update_all();
 		}
 
 		break;
 
 	    case BUILTIN_end_of_file:
-		if (regular_file && current_line < lines - VIEW_LINES)
+		if (regular_file && g_current_line < g_lines - VIEW_LINES)
 		{
-		    current_line = lines - VIEW_LINES;
+		    g_current_line = g_lines - VIEW_LINES;
 		    update_all();
 		}
 
@@ -906,7 +907,7 @@ main(argc, argv)
 				    strlen(seek_txt) + count);
 			tmp = (char)key;
 			window_putc(file_window, tmp);
-			offset[count++] = tmp;
+			g_offset[count++] = tmp;
 		    }
 		}
 		else
@@ -920,9 +921,9 @@ main(argc, argv)
 		{
 		    if (tty_lines >= 9)
 		    {
-			offset[count] = 0;
+			g_offset[count] = 0;
 
-			sscanf(offset, "%x", &count);
+			sscanf(g_offset, "%x", &count);
 			tty_colors(ScreenBrightness,
 				   ScreenForeground,
 				   ScreenBackground);
@@ -932,10 +933,10 @@ main(argc, argv)
 			if (count < 0)
 			    count = 0;
 
-			if (count > size)
-			    count = size;
+			if (count > g_size)
+			    count = g_size;
 
-			current_line = count >> 4;
+			g_current_line = count >> 4;
 			update_all();
 			count = 0;
 		    }

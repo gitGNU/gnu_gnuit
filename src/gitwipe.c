@@ -1,7 +1,7 @@
 /* gitwipe.c -- An utility that deletes the contents of a file in order to
    make it impossible for someone to recover it.  */
 
-/* Copyright (C) 1993-1999 Free Software Foundation, Inc.
+/* Copyright (C) 1993-2000 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: gitwipe.c,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $ */
+/* $Id: gitwipe.c,v 1.11 2003/06/21 22:45:08 tudor Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -54,26 +54,26 @@
 #define min(a, b) ((a) <= (b) ? (a) : (b))
 
 
-char *program;
+char *g_program;
 
 
 void
 usage()
 {
-    fprintf(stderr, "%s file1 [file2 [...]]\n", program);
+    fprintf(stderr, "%s file1 [file2 [...]]\n", g_program);
     exit(1);
 }
 
 
-int
+off64_t
 file_length(fd)
     int fd;
 {
-    int current, length;
+    off64_t current, length;
 
-    current = lseek(fd, 0, SEEK_CUR);
-    length  = lseek(fd, 0, SEEK_END);
-    lseek(fd, current, SEEK_SET);
+    current = lseek64(fd, 0, SEEK_CUR);
+    length  = lseek64(fd, 0, SEEK_END);
+    lseek64(fd, current, SEEK_SET);
     return length;
 }
 
@@ -84,13 +84,14 @@ wipe(file)
 {
     int fd;
     unsigned char *buf;
-    size_t len, i, j, bytes_to_write;
+    off64_t len, i;
+    ssize_t j, bytes_to_write;
 
-    fd = open(file, O_RDWR);
+    fd = open64(file, O_RDWR | O_BINARY);
 
     if (fd == -1)
     {
-	fprintf(stderr, "%s: can't open file '%s'.\n", program, file);
+	fprintf(stderr, "%s: can't open file '%s'.\n", g_program, file);
 	return 1;
     }
 
@@ -103,7 +104,7 @@ wipe(file)
 
     if (buf == NULL)
     {
-	fprintf(stderr, "%s: virtual memory exhausted.\n", program);
+	fprintf(stderr, "%s: virtual memory exhausted.\n", g_program);
 	return 1;
     }
 
@@ -114,9 +115,9 @@ wipe(file)
 	for (j = 0; j < bytes_to_write; j++)
 	    buf[j] = rand() % 0xFF;
 
-	if (write(fd, buf, bytes_to_write) != (int)bytes_to_write)
+	if (write(fd, buf, bytes_to_write) != bytes_to_write)
 	{
-	    fprintf(stderr, "%s: can't write to file %s.\n", program, file);
+	    fprintf(stderr, "%s: can't write to file %s.\n", g_program, file);
 	    return 1;
 	}
     }
@@ -146,7 +147,7 @@ main(argc, argv)
 {
     int i, errors = 0;
 
-    program = argv[0];
+    g_program = argv[0];
 
     if (argc < 2)
 	usage();
@@ -156,5 +157,5 @@ main(argc, argv)
     for (i = 1; i < argc; i++)
 	errors += wipe(argv[i]);
 
-    return errors;
+    return (errors != 0);
 }

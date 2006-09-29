@@ -3,12 +3,12 @@
 ###############################################################################
 ###                                                                         ###
 ###		     GNU Interactive Tools auto-mount script		    ###
-###            Copyright (C) 1994-1999 Free Software Foundation, Inc.       ###
+###            Copyright (C) 1994-2000 Free Software Foundation, Inc.       ###
 ###                 Written by Tudor Hulubei and Andrei Pitis.              ###
 ###                                                                         ###
 ###############################################################################
 
-### $Id: gitmount,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $
+### $Id: gitmount,v 1.11 2003/10/05 02:20:58 tudor Exp $
 
 ###
 ### The ideea of this script is quite general but the script needs
@@ -58,8 +58,9 @@ while true; do
 
 	if test $success -eq 1; then
 	    success=0
-	    for fstype in ext2 iso9660 vfat msdos ntfs minix ext xiafs\
-			  hpfs xenix sysv coherent ufs umsdos affs; do
+	    for fstype in ext3 ext2 iso9660 reiserfs xfs vfat msdos\
+		          ntfs minix ext xiafs jfs hpfs xenix sysv\
+		          coherent ufs umsdos affs; do
 		mount -t "$fstype" "/dev/$device" "$mp/$device_alias"\
 			> /dev/null 2>&1
 		if test $? = 0; then

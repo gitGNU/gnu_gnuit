@@ -1,6 +1,6 @@
 /* gitps.c -- A process viewer/killer utility.  */
 
-/* Copyright (C) 1993-1999 Free Software Foundation, Inc.
+/* Copyright (C) 1993-2000 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -136,8 +136,8 @@ char monochrome_section[] = "[GITPS-Monochrome]";
 int  processes;
 int  PID_index;
 
-char *home;
-char *program;
+char *g_home;
+char *g_program;
 char *ps_cmd;
 char *temporary_directory;
 char header_text[MAX_LINE];
@@ -159,7 +159,7 @@ static char no_proc[] = "no such process ! (REFRESH recommended)";
 typedef struct
 {
     char signame[10];
-    int  signal;
+    int signal;
 } xsignal_t;
 
 int signal_type = 0;
@@ -681,7 +681,7 @@ fatal(postmsg)
     char *postmsg;
 {
     clean_up();
-    fprintf(stderr, "%s: fatal error: %s.\n", program, postmsg);
+    fprintf(stderr, "%s: fatal error: %s.\n", g_program, postmsg);
     exit(1);
 }
 
@@ -736,9 +736,9 @@ ps(args)
 	close(old_stdout);
 	close(old_stderr);
 
-	fprintf(stderr, "%s: invalid command line for ps(1).\n", program);
-	fprintf(stderr, "%s: the command was: `%s'.\n", program, ps_cmd);
-	fprintf(stderr, "%s: see the ps(1) man page for details.\n", program);
+	fprintf(stderr, "%s: invalid command line for ps(1).\n", g_program);
+	fprintf(stderr, "%s: the command was: `%s'.\n", g_program, ps_cmd);
+	fprintf(stderr, "%s: see the ps(1) man page for details.\n", g_program);
 
 	return 0;
     }
@@ -815,7 +815,7 @@ read_keys(keys)
 	}
 	else
 	    fprintf(stderr, "%s: invalid built-in operation: %s.\n",
-		    program, contents);
+		    g_program, contents);
     }
 
     return i;
@@ -891,7 +891,6 @@ resize(resize_required)
 /*
  * Resize (if necessary) and then refresh all gitps' components.
  */
-
 void
 refresh(signum)
     int signum;
@@ -919,7 +918,7 @@ refresh(signum)
     set_title();
     set_header();
     set_status((char *)NULL);
-    set_signal(SIGTERM);
+    set_signal(-1);
     update_all();
     tty_update();
 
@@ -946,7 +945,7 @@ clock_refresh()
 void
 usage()
 {
-    printf("usage: %s [-hvilcbp]\n", program);
+    printf("usage: %s [-hvilcbp]\n", g_program);
     printf(" -h         print this help message\n");
     printf(" -v         print the version number\n");
     printf(" -c         use ANSI colors\n");
@@ -971,16 +970,15 @@ main(argc, argv)
     int need_update, need_update_all, old_current_process;
     int c, ansi_colors = -1, use_last_screen_character = ON;
 
-
     /* Make sure we don't get signals before we are ready to handle
        them.  */
     signals_init();
 
-    program = argv[0];
+    g_program = argv[0];
 
-    home = getenv("HOME");
-    if (home == NULL)
-	home = ".";
+    g_home = getenv("HOME");
+    if (g_home == NULL)
+	g_home = ".";
 
     compute_directories();
     get_login_name();
@@ -1028,7 +1026,7 @@ main(argc, argv)
 		return 1;
 
 	    default:
-		fprintf(stderr, "%s: unknown error\n", program);
+		fprintf(stderr, "%s: unknown error\n", g_program);
 		return 1;
 	}
 
@@ -1088,14 +1086,14 @@ main(argc, argv)
 
     if (keys == MAX_KEYS)
 	fprintf(stderr, "%s: too many key sequences; only %d are allowed.\n",
-		program, MAX_KEYS);
+		g_program, MAX_KEYS);
 
     configuration_end();
 
 #ifndef HAVE_LONG_FILE_NAMES
     fprintf(stderr,
 	    "%s: warning: your system doesn't support long file names.",
-	    program);
+	    g_program);
 #endif /* !HAVE_LONG_FILE_NAMES */
 
     stdout_log_name = xmalloc(32 + strlen(temporary_directory) + 1);
@@ -1129,6 +1127,7 @@ main(argc, argv)
     first_on_screen = current_process = 0;
 
     tty_update_title(ps_cmd);
+    set_signal(SIGTERM);
 
   restart:
     stdout_log = fopen(stdout_log_name, "r");

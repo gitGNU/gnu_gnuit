@@ -4,13 +4,13 @@
 ###									    ###
 ###		 GNU Interactive Tools per file type action script	    ###
 ###				   Global version			    ###
-###	       Copyright (C) 1994-1999 Free Software Foundation, Inc.       ###
+###	       Copyright (C) 1994-2000 Free Software Foundation, Inc.       ###
 ###		    Written by Tudor Hulubei and Andrei Pitis.		    ###
 ###			  Enhanced by Verdoolaege Sven.		            ###
 ###									    ###
 ###############################################################################
 
-### $Id: gitaction,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $
+### $Id: gitaction,v 1.40 2003/10/05 02:20:58 tudor Exp $
 
 ###
 ### This script executes a different action for each file type
@@ -103,7 +103,7 @@ fi
 file="$1/$2"
 
 case "$2" in
-*.[oO]	   |\
+*.[oO] |\
 *.[lL][oO] |\
 *.[sS][oO] |\
 *.[sS][oO].[0-9]*)
@@ -129,8 +129,9 @@ case "$2" in
 		 bunzip2 -c "$file" | tar tvf -) | "$GIT_PAGER";	\
 		echo "$msg"; read key;;
 
-*.[tT][aA][rR].[gG][zZ]  |\
-*.[tT][aA][rR].[zZ]      |\
+*.[pP][kK][gG] |\
+*.[tT][aA][rR].[gG][zZ] |\
+*.[tT][aA][rR].[zZ] |\
 *.[tT][aArRgG][zZ])
 		(echo "Compressed archive:";				\
 		 gunzip -l -- "$file";					\
@@ -206,7 +207,6 @@ case "$2" in
 		    echo "$msg"; read key;				\
 		fi;;
 
-*.[dD][oO][cC] |\
 *.[pP][pP][tT])
 		if test "$DISPLAY"; then				\
 		    gitwhich soffice;					\
@@ -217,29 +217,29 @@ case "$2" in
 		if test "$FILE_VIEWER"; then				\
 		    ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
 		else							\
-		    echo "No DOC/PPT viewer found in PATH.";		\
+		    echo "No PPT viewer found in PATH.";		\
 		    echo "$msgView"; read key;				\
 		    "$GIT_PAGER" "$file";				\
 		    echo "$msg"; read key;				\
 		fi;;
 
-*.[gG][iI][fF]     |\
-*.[jJ][pP][gG]     |\
+*.[gG][iI][fF] |\
+*.[jJ][pP][gG] |\
 *.[jJ][pP][eE][gG] |\
-*.[tT][gG][aA]     |\
-*.[bB][mM][pP]     |\
-*.[pP][pP][mM]     |\
-*.[pP][nN][mM]     |\
-*.[pP][gG][mM]	   |\
-*.[pP][bB][mM]     |\
+*.[tT][gG][aA] |\
+*.[bB][mM][pP] |\
+*.[pP][pP][mM] |\
+*.[pP][nN][mM] |\
+*.[pP][gG][mM] |\
+*.[pP][bB][mM] |\
 *.[tT][iI][fF][fF] |\
-*.[tT][iI][fF]	   |\
-*.[bB][mM]	   |\
-*.[xX][bB][mM]	   |\
-*.[xX][pP][mM]	   |\
-*.[rR][aA][sS]	   |\
-*.[rR][gG][bB]	   |\
-*.[pP][nN][gG]     |\
+*.[tT][iI][fF] |\
+*.[bB][mM] |\
+*.[xX][bB][mM] |\
+*.[xX][pP][mM] |\
+*.[rR][aA][sS] |\
+*.[rR][gG][bB] |\
+*.[pP][nN][gG] |\
 *.[fF][tT][sS])
 		if test "$DISPLAY"; then				\
 		    for prog in xv kview ee display gimp; do		\
@@ -289,7 +289,7 @@ case "$2" in
 		    echo "$msg"; read key;				\
 		fi;;
 
-*.[mM][pP]3)
+*.[mM][pP][23])
 		if test "$DISPLAY"; then				\
 		    for prog in amp x11amp; do				\
 		        gitwhich "$prog";				\
@@ -307,50 +307,72 @@ case "$2" in
 		if test "$FILE_VIEWER"; then				\
 		    ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
 		else							\
-		    echo "No MP3 player found in PATH.";		\
+		    echo "No MP2/MP3 player found in PATH.";		\
 		    echo "$msgView"; read key;				\
 		    "$GIT_PAGER" "$file";				\
 		    echo "$msg"; read key;				\
 		fi;;
 
-*.[mM][pP]3.[gG][zZ] |\
-*.[mM][pP]3.[zZ])
+*.[mM][pP][23].[gG][zZ] |\
+*.[mM][pP][23].[zZ])
 		gitwhich amp;						\
 		if test $? -eq 0; then					\
 		    (gunzip -c -- "$file"|amp -q - > /dev/null 2>&1 &);	\
 		else							\
-		    echo "No MP3 player found in PATH.";		\
+		    echo "No MP2/MP3 player found in PATH.";		\
 		    echo "$msgView"; read key;				\
 		    "$GIT_PAGER" "$file";				\
 		    echo "$msg"; read key;				\
 		fi;;
 
-*.[mM][pP]3.[bB][zZ]2)
+*.[mM][pP][23].[bB][zZ]2)
 		gitwhich amp;						\
 		if test $? -eq 0; then					\
 		    (bunzip2 -c "$file"|amp -q - > /dev/null 2>&1 &);	\
 		else							\
-		    echo "No MP3 player found in PATH.";		\
+		    echo "No MP2/MP3 player found in PATH.";		\
 		    echo "$msgView"; read key;				\
 		    "$GIT_PAGER" "$file";				\
 		    echo "$msg"; read key;				\
 		fi;;
 
-*.[mM][pP]3.[bB][zZ])
+*.[mM][pP][23].[bB][zZ])
 		gitwhich amp;						\
 		if test $? -eq 0; then					\
 		    (bunzip -c "$file"|amp -q - > /dev/null 2>&1 &);	\
 		else							\
-		    echo "No MP3 player found in PATH.";		\
+		    echo "No MP2/MP3 player found in PATH.";		\
 		    echo "$msgView"; read key;				\
 		    "$GIT_PAGER" "$file";				\
 		    echo "$msg"; read key;				\
 		fi;;
 
-*.[mM][pP][eE][gG] |\
-*.[mM][pP][gG])
+*.[aA][sS][fF] |\
+*.[wW][mM][vV] |\
+*.[mM][oO][vV] |\
+*.[aA][vV][iI])
 		if test "$DISPLAY"; then				\
-		    for prog in xanim aktion; do			\
+		    for prog in gmplayer mplayer xanim aktion; do	\
+		        gitwhich "$prog";				\
+		        if test $? -eq 0; then				\
+		            FILE_VIEWER="$prog";			\
+			    break;					\
+		        fi;						\
+		    done;						\
+		fi;							\
+		if test "$FILE_VIEWER"; then				\
+		    ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
+		else							\
+		    echo "No ASF/WMV/MOV/AVI player found in PATH.";	\
+		    echo "$msgView"; read key;				\
+		    "$GIT_PAGER" "$file";				\
+		    echo "$msg"; read key;				\
+		fi;;
+
+*.[mM][pP][gG] |\
+*.[mM][pP][eE][gG])
+		if test "$DISPLAY"; then				\
+		    for prog in gmplayer mplayer xanim aktion; do	\
 		        gitwhich "$prog";				\
 		        if test $? -eq 0; then				\
 		            FILE_VIEWER="$prog";			\
@@ -376,88 +398,91 @@ case "$2" in
 		    echo "$msg"; read key;				\
 		fi;;
 
-*.[mM][oO][vV] |\
-*.[aA][vV][iI])
-		if test "$DISPLAY"; then				\
-		    gitwhich xanim;					\
-		    if test $? -eq 0; then				\
-		        FILE_VIEWER=xanim;				\
-		    fi;							\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
-		else							\
-		    echo "XANIM not found in PATH.";			\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[mM][oO][vV].[gG][zZ] |\
-*.[mM][oO][vV].[zZ]     |\
-*.[aA][vV][iI].[gG][zZ] |\
-*.[aA][vV][iI].[zZ])
-		if test "$DISPLAY"; then				\
-		    gitwhich xanim;					\
-		    if test $? -eq 0; then				\
-			FILE_VIEWER=xanim;				\
-		    fi;							\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    (gunzip -c -- "$file" |				\
-		     "$FILE_VIEWER" - > /dev/null 2>&1 &);		\
-		else							\
-		    echo "No MOV/AVI player found in PATH.";		\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
+*.[aA][sS][fF].[bB][zZ]2 |\
+*.[wW][mM][vV].[bB][zZ]2 |\
 *.[mM][oO][vV].[bB][zZ]2 |\
 *.[aA][vV][iI].[bB][zZ]2)
 		if test "$DISPLAY"; then				\
-		    gitwhich xanim;					\
-		    if test $? -eq 0; then				\
-			FILE_VIEWER=xanim;				\
-		    fi;							\
+		    for prog in gmplayer mplayer xanim aktion; do	\
+		        gitwhich "$prog";				\
+		        if test $? -eq 0; then				\
+		            FILE_VIEWER="$prog";			\
+			    break;					\
+		        fi;						\
+		    done;						\
 		fi;							\
 		if test "$FILE_VIEWER"; then				\
 		    (bunzip2 -c "$file" |				\
 		     "$FILE_VIEWER" - > /dev/null 2>&1 &);		\
 		else							\
-		    echo "No MOV/AVI player found in PATH.";		\
+		    echo "No ASF/WMV/MOV/AVI player found in PATH.";	\
 		    echo "$msgView"; read key;				\
 		    "$GIT_PAGER" "$file";				\
 		    echo "$msg"; read key;				\
 		fi;;
 
+*.[aA][sS][fF].[bB][zZ] |\
+*.[wW][mM][vV].[bB][zZ] |\
 *.[mM][oO][vV].[bB][zZ] |\
 *.[aA][vV][iI].[bB][zZ])
 		if test "$DISPLAY"; then				\
-		    gitwhich xanim;					\
-		    if test $? -eq 0; then				\
-			FILE_VIEWER=xanim;				\
-		    fi;							\
+		    for prog in gmplayer mplayer xanim aktion; do	\
+		        gitwhich "$prog";				\
+		        if test $? -eq 0; then				\
+		            FILE_VIEWER="$prog";			\
+			    break;					\
+		        fi;						\
+		    done;						\
 		fi;							\
 		if test "$FILE_VIEWER"; then				\
 		    (bunzip -c "$file" |				\
 		     "$FILE_VIEWER" - > /dev/null 2>&1 &);		\
 		else							\
-		    echo "No MOV/AVI player found in PATH.";		\
+		    echo "No ASF/WMV/MOV/AVI player found in PATH.";	\
+		    echo "$msgView"; read key;				\
+		    "$GIT_PAGER" "$file";				\
+		    echo "$msg"; read key;				\
+		fi;;
+
+*.[aA][sS][fF].[gG][zZ] |\
+*.[aA][sS][fF].[zZ] |\
+*.[wW][mM][vV].[gG][zZ] |\
+*.[wW][mM][vV].[zZ] |\
+*.[mM][oO][vV].[gG][zZ] |\
+*.[mM][oO][vV].[zZ] |\
+*.[aA][vV][iI].[gG][zZ] |\
+*.[aA][vV][iI].[zZ])
+		if test "$DISPLAY"; then				\
+		    for prog in gmplayer mplayer xanim aktion; do	\
+		        gitwhich "$prog";				\
+		        if test $? -eq 0; then				\
+		            FILE_VIEWER="$prog";			\
+			    break;					\
+		        fi;						\
+		    done;						\
+		fi;							\
+		if test "$FILE_VIEWER"; then				\
+		    (gunzip -c -- "$file" |				\
+		     "$FILE_VIEWER" - > /dev/null 2>&1 &);		\
+		else							\
+		    echo "No ASF/WMV/MOV/AVI player found in PATH.";	\
 		    echo "$msgView"; read key;				\
 		    "$GIT_PAGER" "$file";				\
 		    echo "$msg"; read key;				\
 		fi;;
 
 *.[mM][pP][eE][gG].[gG][zZ] |\
-*.[mM][pP][eE][gG].[zZ]     |\
-*.[mM][pP][gG].[gG][zZ]     |\
+*.[mM][pP][eE][gG].[zZ] |\
+*.[mM][pP][gG].[gG][zZ] |\
 *.[mM][pP][gG].[zZ])
 		if test "$DISPLAY"; then				\
-		    gitwhich xanim;					\
-		    if test $? -eq 0; then				\
-			FILE_VIEWER=xanim;				\
-		    fi;							\
+		    for prog in gmplayer mplayer xanim aktion; do	\
+		        gitwhich "$prog";				\
+		        if test $? -eq 0; then				\
+		            FILE_VIEWER="$prog";			\
+			    break;					\
+		        fi;						\
+		    done;						\
 		else							\
 		    gitwhich mpeg_vga;					\
 		    if test $? -eq 0; then				\
@@ -481,10 +506,13 @@ case "$2" in
 *.[mM][pP][eE][gG].[bB][zZ]2 |\
 *.[mM][pP][gG].[bB][zZ]2)
 		if test "$DISPLAY"; then				\
-		    gitwhich xanim;					\
-		    if test $? -eq 0; then				\
-			FILE_VIEWER=xanim;				\
-		    fi;							\
+		    for prog in gmplayer mplayer xanim aktion; do	\
+		        gitwhich "$prog";				\
+		        if test $? -eq 0; then				\
+		            FILE_VIEWER="$prog";			\
+			    break;					\
+		        fi;						\
+		    done;						\
 		else							\
 		    gitwhich mpeg_vga;					\
 		    if test $? -eq 0; then				\
@@ -508,10 +536,13 @@ case "$2" in
 *.[mM][pP][eE][gG].[bB][zZ] |\
 *.[mM][pP][gG].[bB][zZ])
 		if test "$DISPLAY"; then				\
-		    gitwhich xanim;					\
-		    if test $? -eq 0; then				\
-			FILE_VIEWER=xanim;				\
-		    fi;							\
+		    for prog in gmplayer mplayer xanim aktion; do	\
+		        gitwhich "$prog";				\
+		        if test $? -eq 0; then				\
+		            FILE_VIEWER="$prog";			\
+			    break;					\
+		        fi;						\
+		    done;						\
 		else							\
 		    gitwhich mpeg_vga;					\
 		    if test $? -eq 0; then				\
@@ -563,10 +594,13 @@ case "$2" in
 *.[fF][lL][iIcC].[gG][zZ] |\
 *.[fF][lL][iIcC].[zZ])
 		if test "$DISPLAY"; then				\
-		    gitwhich xanim;					\
-		    if test $? -eq 0; then				\
-			FILE_VIEWER=xanim;				\
-		    fi;							\
+		    for prog in gmplayer mplayer xanim aktion; do	\
+		        gitwhich "$prog";				\
+		        if test $? -eq 0; then				\
+		            FILE_VIEWER="$prog";			\
+			    break;					\
+		        fi;						\
+		    done;						\
 		else							\
 		    gitwhich flip;					\
 		    if test $? -eq 0; then				\
@@ -589,10 +623,13 @@ case "$2" in
 
 *.[fF][lL][iIcC].[bB][zZ]2)
 		if test "$DISPLAY"; then				\
-		    gitwhich xanim;					\
-		    if test $? -eq 0; then				\
-			FILE_VIEWER=xanim;				\
-		    fi;							\
+		    for prog in gmplayer mplayer xanim aktion; do	\
+		        gitwhich "$prog";				\
+		        if test $? -eq 0; then				\
+		            FILE_VIEWER="$prog";			\
+			    break;					\
+		        fi;						\
+		    done;						\
 		else							\
 		    gitwhich flip;					\
 		    if test $? -eq 0; then				\
@@ -615,10 +652,13 @@ case "$2" in
 
 *.[fF][lL][iIcC].[bB][zZ])
 		if test "$DISPLAY"; then				\
-		    gitwhich xanim;					\
-		    if test $? -eq 0; then				\
-			FILE_VIEWER=xanim;				\
-		    fi;							\
+		    for prog in gmplayer mplayer xanim aktion; do	\
+		        gitwhich "$prog";				\
+		        if test $? -eq 0; then				\
+		            FILE_VIEWER="$prog";			\
+			    break;					\
+		        fi;						\
+		    done;						\
 		else							\
 		    gitwhich flip;					\
 		    if test $? -eq 0; then				\
@@ -707,65 +747,65 @@ case "$2" in
 		    echo "$msg"; read key;				\
 		fi;;
 
-*.[mM][oO][dD] 		    |\
-*.[mM][oO][dD].[gG][zZ]     |\
-*.[mM][oO][dD].[zZ]	    |\
+*.[mM][oO][dD] |\
+*.[mM][oO][dD].[gG][zZ] |\
+*.[mM][oO][dD].[zZ] |\
 *.[mM][oO][dD].[lL][hH][aA] |\
 *.[mM][oO][dD].[lL][zZ][hH] |\
 *.[mM][oO][dD].[zZ][iI][pP] |\
-*.669			    |\
-*.669.[gG][zZ]		    |\
-*.669.[zZ]		    |\
-*.669.[lL][hH][aA]	    |\
-*.669.[lL][zZ][hH]	    |\
-*.669.[zZ][iI][pP]	    |\
-*.[Dd][Ss][Mm] 		    |\
-*.[Dd][Ss][Mm].[gG][zZ]     |\
-*.[Dd][Ss][Mm].[zZ]	    |\
+*.669 |\
+*.669.[gG][zZ] |\
+*.669.[zZ] |\
+*.669.[lL][hH][aA] |\
+*.669.[lL][zZ][hH] |\
+*.669.[zZ][iI][pP] |\
+*.[Dd][Ss][Mm] |\
+*.[Dd][Ss][Mm].[gG][zZ] |\
+*.[Dd][Ss][Mm].[zZ] |\
 *.[Dd][Ss][Mm].[lL][hH][aA] |\
 *.[Dd][Ss][Mm].[lL][zZ][hH] |\
 *.[Dd][Ss][Mm].[zZ][iI][pP] |\
-*.[fF][aA][rR] 		    |\
-*.[fF][aA][rR].[gG][zZ]     |\
-*.[fF][aA][rR].[zZ]	    |\
+*.[fF][aA][rR] |\
+*.[fF][aA][rR].[gG][zZ] |\
+*.[fF][aA][rR].[zZ] |\
 *.[fF][aA][rR].[lL][hH][aA] |\
 *.[fF][aA][rR].[lL][zZ][hH] |\
 *.[fF][aA][rR].[zZ][iI][pP] |\
-*.[Mm][Ee][Dd] 		    |\
-*.[Mm][Ee][Dd].[gG][zZ]     |\
-*.[Mm][Ee][Dd].[zZ]	    |\
+*.[Mm][Ee][Dd] |\
+*.[Mm][Ee][Dd].[gG][zZ] |\
+*.[Mm][Ee][Dd].[zZ] |\
 *.[Mm][Ee][Dd].[lL][hH][aA] |\
 *.[Mm][Ee][Dd].[lL][zZ][hH] |\
 *.[Mm][Ee][Dd].[zZ][iI][pP] |\
-*.[Uu][Ll][Tt] 		    |\
-*.[Uu][Ll][Tt].[gG][zZ]     |\
-*.[Uu][Ll][Tt].[zZ]	    |\
+*.[Uu][Ll][Tt] |\
+*.[Uu][Ll][Tt].[gG][zZ] |\
+*.[Uu][Ll][Tt].[zZ] |\
 *.[Uu][Ll][Tt].[lL][hH][aA] |\
 *.[Uu][Ll][Tt].[lL][zZ][hH] |\
 *.[Uu][Ll][Tt].[zZ][iI][pP] |\
-*.[iI][tT] 	            |\
-*.[iI][tT].[gG][zZ]         |\
-*.[iI][tT].[zZ]	            |\
-*.[iI][tT].[lL][hH][aA]     |\
-*.[iI][tT].[lL][zZ][hH]     |\
-*.[iI][tT].[zZ][iI][pP]     |\
-*.[sS][3tT][mM]		    |\
-*.[sS][3tT][mM].[gG][zZ]    |\
-*.[sS][3tT][mM].[zZ] 	    |\
+*.[iI][tT] |\
+*.[iI][tT].[gG][zZ] |\
+*.[iI][tT].[zZ] |\
+*.[iI][tT].[lL][hH][aA] |\
+*.[iI][tT].[lL][zZ][hH] |\
+*.[iI][tT].[zZ][iI][pP] |\
+*.[sS][3tT][mM] |\
+*.[sS][3tT][mM].[gG][zZ] |\
+*.[sS][3tT][mM].[zZ] |\
 *.[sS][3tT][mM].[lL][hH][aA]|\
 *.[sS][3tT][mM].[lL][zZ][hH]|\
 *.[sS][3tT][mM].[zZ][iI][pP]|\
-*.[mM][tT][mM]		    |\
-*.[mM][tT][mM].[gG][zZ]     |\
-*.[mM][tT][mM].[zZ] 	    |\
+*.[mM][tT][mM] |\
+*.[mM][tT][mM].[gG][zZ] |\
+*.[mM][tT][mM].[zZ] |\
 *.[mM][tT][mM].[lL][hH][aA] |\
 *.[mM][tT][mM].[lL][zZ][hH] |\
 *.[mM][tT][mM].[zZ][iI][pP] |\
-*.[xX][mM]		    |\
-*.[xX][mM].[gG][zZ]	    |\
-*.[xX][mM].[zZ]		    |\
-*.[xX][mM].[lL][hH][aA]	    |\
-*.[xX][mM].[lL][zZ][hH]     |\
+*.[xX][mM] |\
+*.[xX][mM].[gG][zZ] |\
+*.[xX][mM].[zZ] |\
+*.[xX][mM].[lL][hH][aA] |\
+*.[xX][mM].[lL][zZ][hH] |\
 *.[xX][mM].[zZ][iI][pP])
 		(mikmod -t "$file" > /dev/null 2>&1 &);;
 
@@ -842,7 +882,7 @@ case "$2" in
 *.[mM][iI][dD])
 		(playmidi $PLAYMIDIOPT "$file" > /dev/null 2>&1 &);;
 
-*.[sS][fF]2    |\
+*.[sS][fF]2 |\
 *.[sS][fF][xX] |\
 *.[sS][bB][kK])
 		echo "Sound Font file.  No information available.";	\
@@ -919,18 +959,20 @@ case "$2" in
 		    echo "$msg"; read key;				\
 		fi;;
 
-*.[dD][oO][cC] |\
-*.[aA][wW])
+*.[dD][oO][cC])
 		if test "$DISPLAY"; then				\
-		    gitwhich applix;					\
-		    if test $? -eq 0; then				\
-			FILE_VIEWER=applix;				\
-		    fi;							\
+		    for prog in AbiWord soffice; do			\
+		        gitwhich "$prog";				\
+		        if test $? -eq 0; then				\
+		            FILE_VIEWER="$prog";			\
+			    break;					\
+		        fi;						\
+		    done;						\
 		fi;							\
 		if test "$FILE_VIEWER"; then				\
 		    ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
 		else							\
-		    echo "APPLIX not found in PATH.";			\
+		    echo "No DOC viewer found in PATH.";		\
 		    echo "$msgView"; read key;				\
 		    "$GIT_PAGER" "$file";				\
 		    echo "$msg"; read key;				\
@@ -978,8 +1020,8 @@ case "$2" in
 		echo "$msg"; read key;;
 
 *.[1-9nN][xXmM].[gG][zZ] |\
-*.[1-9nN][xXmM].[zZ]     |\
-*.[1-9nN].[gG][zZ]       |\
+*.[1-9nN][xXmM].[zZ] |\
+*.[1-9nN].[gG][zZ] |\
 *.[1-9nN].[zZ])
 		gunzip -c -- "$file" | nroff -man | "$GIT_PAGER";	\
 		echo "$msg"; read key;;

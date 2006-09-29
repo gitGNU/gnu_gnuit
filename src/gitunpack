@@ -3,12 +3,12 @@
 ###############################################################################
 ###									    ###
 ###			GNU Interactive Tools unpack script	    	    ###
-###	      Copyright (C) 1997-1999 Free Software Foundation, Inc.        ###
+###	      Copyright (C) 1997-2000 Free Software Foundation, Inc.        ###
 ###		    Written by Tudor Hulubei and Viorel Anghel.		    ###
 ###									    ###
 ###############################################################################
 
-### $Id: gitunpack,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $
+### $Id: gitunpack,v 1.11 2000/05/02 02:28:46 tudor Exp $
 
 # We can have one or two arguments.
 if test "$#" -lt 2; then
@@ -59,7 +59,7 @@ while true; do
 	*.[tT][aA][zZ])                  uncompress -dc "$archive"|tar -xvf -;;
 	*.[tT][rR][zZ])                  uncompress -dc "$archive"|tar -xvf -;;
 	*.[jJ][aA][rR])                  jar -xvf "$archive";;
-	*.[zZ][iI][pP])                  unzip "$archive";;
+	*.[zZ][iI][pP])                  unzip -o "$archive";;
 	*.[aA][rR][jJ]|*.[aA][0-9][0-9]) unarj x "$archive";;
 	*.[rR][aA][rR]|*.[rR][0-9][0-9]) rar x -y -r -v "$archive";;
 	*.[lL][hH][aA]) 		 lha -xvf "$archive";;

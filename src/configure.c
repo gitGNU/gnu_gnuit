@@ -1,6 +1,6 @@
 /* configure.c -- Configuration files management functions.  */
 
-/* Copyright (C) 1993-1999 Free Software Foundation, Inc.
+/* Copyright (C) 1993-2000 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: configure.c,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $ */
+/* $Id: configure.c,v 1.8 2002/09/26 17:58:51 tudor Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -88,7 +88,7 @@ configuration_getline()
     if ((len = strlen(line)) == MAXLINE - 1)
     {
 	fprintf(stderr, "%s: configuration: line too long. Truncated.\n",
-		program);
+		g_program);
 
 	/* Search the end of this big line.  */
 	for (;;)

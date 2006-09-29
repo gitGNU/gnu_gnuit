@@ -1,6 +1,6 @@
 /* tty.c -- The tty management file.  */
 
-/* Copyright (C) 1993-1999 Free Software Foundation, Inc.
+/* Copyright (C) 1993-2000 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: tty.c,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $ */
+/* $Id: tty.c,v 1.33 2002/09/26 17:58:52 tudor Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -949,6 +949,10 @@ tty_key_machine2human(key_seq)
 	    strcat((char *)keystr, "escape");
 	else if (*ptr == ' ')
 	    strcat((char *)keystr, "space");
+	else if (*ptr == key_BACKSPACE)
+	    strcat((char *)keystr, "backspace");
+	else if (*ptr == key_CTRL_SPACE)
+	    strcat((char *)keystr, "^space");
 	else if (iscntrl(*ptr))
 	{
 	    char x[3];
@@ -1723,7 +1727,7 @@ tty_get_key(repeat_count)
     int *repeat_count;
 {
     int i, c;
-    tty_key_t *key;
+    tty_key_t *key = NULL;
 
     while ((c = tty_getc()) == -1)
 	;
@@ -1985,8 +1989,11 @@ vcs_io(buf, op)
 {
     int (*fn)();
     int vcsfd, flag;
-    char vcs_name[16]  = "/dev/vcsX";
-    char vcsa_name[16] = "/dev/vcsaX";
+    char vcs_name[16];
+    char vcsa_name[16];
+
+    strcpy(vcs_name, "/dev/vcsX");
+    strcpy(vcsa_name, "/dev/vcsaX");
 
     if (op == VCS_READ)
     {
@@ -2189,14 +2196,14 @@ tty_get_capabilities()
     if (termtype == NULL)
     {
 	fprintf(stderr, "%s: can't find the TERM environment variable, ",
-		program);
+		g_program);
 	goto switch_to_vt100;
     }
 
     if (strlen(termtype) > 63)
     {
 	fprintf(stderr, "%s: the TERM environment variable is too long, ",
-		program);
+		g_program);
       switch_to_vt100:
 	fprintf(stderr, "trying vt100 ...\n");
 	termtype = vt100;
@@ -2212,9 +2219,9 @@ tty_get_capabilities()
     if (err == -1)
     {
 	fprintf(stderr, "%s: can't find the %s database.\n",
-		program, term_database);
+		g_program, term_database);
 	fprintf(stderr, "%s: check your %s environment variable ...\n",
-		program, term_env);
+		g_program, term_env);
 	exit(1);
     }
 
@@ -2222,7 +2229,7 @@ tty_get_capabilities()
     {
 	fprintf(stderr,
 		"%s: can't find the terminal type %s in the %s database.\n",
-		program, termtype, term_database);
+		g_program, termtype, term_database);
 
 	/* Try something resonable, given the current value.  Add here
 	   as needed...  */
@@ -2233,14 +2240,14 @@ tty_get_capabilities()
 	    strcmp(termtype, "aixterm")      == 0 ||
 	    strcmp(termtype, "dtterm")       == 0)
 	{
-	    fprintf(stderr, "%s: trying xterm...\n", program);
+	    fprintf(stderr, "%s: trying xterm...\n", g_program);
 	    termtype = "xterm";
 	    goto retry;
 	}
 
 	if (strcmp(termtype, "iris-ansi") == 0)
 	{
-	    fprintf(stderr, "%s: trying ansi...\n", program);
+	    fprintf(stderr, "%s: trying ansi...\n", g_program);
 	    termtype = "ansi";
 	    goto retry;
 	}
@@ -2249,7 +2256,7 @@ tty_get_capabilities()
 	    strcmp(termtype, "vt220") == 0 ||
 	    strcmp(termtype, "vt320") == 0)
 	{
-	    fprintf(stderr, "%s: trying vt100...\n", program);
+	    fprintf(stderr, "%s: trying vt100...\n", g_program);
 	    termtype = "ansi";
 	    goto retry;
 	}
@@ -2325,7 +2332,7 @@ tty_get_capabilities()
 		term_errors++;
 		fprintf(stderr,
 			"%s: can't find the '%s' terminal capability.\n",
-			program, tty_capability[i].name);
+			g_program, tty_capability[i].name);
 	    }
 	    else
 	    {
@@ -2338,7 +2345,7 @@ tty_get_capabilities()
     if (term_errors)
     {
 	fprintf(stderr, "%s: %d errors. Your terminal is too dumb :-< .\n",
-		program, term_errors);
+		g_program, term_errors);
 	exit(1);
     }
 }
@@ -2354,13 +2361,13 @@ tty_init(kbd_mode)
     /* Fail if stdin or stdout are not real terminals.  */
     if (!isatty(TTY_INPUT) || !isatty(TTY_OUTPUT))
     {
-	fprintf(stderr, "%s: only stderr can be redirected.\n", program);
+	fprintf(stderr, "%s: only stderr can be redirected.\n", g_program);
 	exit(1);
     }
 
     if ((tty_device = ttyname(1)) == NULL)
     {
-	fprintf(stderr, "%s: can't get terminal name.\n", program);
+	fprintf(stderr, "%s: can't get terminal name.\n", g_program);
 	exit(1);
     }
 
@@ -2418,7 +2425,7 @@ tty_update_title(string)
 	    temp[2 * tty_columns + 1] = '\0';
 	}
 
-	printf(temp);
+	xwrite(TTY_OUTPUT, temp, strlen(temp));
 	xfree(printable_string);
 	xfree(temp);
 	fflush(stdout);
