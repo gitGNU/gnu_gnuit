@@ -1,7 +1,0 @@
-/* $Id: config.h.bot,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $ */
-/* See the file PROBLEMS for details on this.  */
-#ifdef HAVE_LINUX
-#undef HAVE_LSTAT
-#define HAVE_LSTAT 1
-#endif
-
