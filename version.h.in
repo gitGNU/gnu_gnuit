@@ -1,6 +1,6 @@
-/* $Id: version.h.in,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $ */
-#define PRODUCT			"@PRODUCT@"
-#define PACKAGE			"@PACKAGE@"
-#define VERSION			"@VERSION@"
-#define HOST			"@HOST@"
-#define PREFIX			"@prefix@"
+/* $Id: version.h.in,v 1.4 2002/10/26 17:33:19 tudor Exp $ */
+#define PRODUCT "@PRODUCT@"
+#define PACKAGE "@PACKAGE@"
+#define VERSION "@VERSION@"
+#define HOST "@HOST@"
+#define PREFIX "@prefix@"
