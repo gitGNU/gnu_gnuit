@@ -1,186 +1,61 @@
-/* config.h.in.  Generated from configure.in by autoheader.  */
-/* $Id: config.h.in,v 1.11 2005-12-07 13:56:05 ianb Exp $ */
+/* config.h.in.  Generated from configure.ac by autoheader.  */
+
+
+/* Include the header file containing the version of the package.  */
 #include <version.h>
 
 /* Define to get the GNU functionality in the C header files.  */
 #define _GNU_SOURCE
-/* $Id: config.h.in,v 1.11 2005-12-07 13:56:05 ianb Exp $ */
+    
 
-/* Define if you want to disable various consistency checkings.  */
-#undef NDEBUG
-
-/* Define if you have GCC.  */
-#undef HAVE_GCC
-
-/* Define if you have a termcap library.  */
-#undef HAVE_LIBTERMCAP
-
-/* Define if you have a terminfo library.  */
-#undef HAVE_LIBTERMINFO
-
-/* Define if your system is Linux.  */
-#undef HAVE_LINUX
-
-/* Define if you have a dumb C compiler, like the one running on B.O.S.  */
-#undef HAVE_DUMB_CC
-
-/* Define if you have POSIX compatible terminal interface.  */
-#undef HAVE_POSIX_TTY
-
-/* Define if you have System V compatible terminal interface.  */
-#undef HAVE_SYSTEMV_TTY
-
-/* Define if you have BSD compatible terminal interface.  */
-#undef HAVE_BSD_TTY
-
-/* Define if you have the utsname system call.  */
-#undef HAVE_UTSNAME
-
-/* Define if you have the TIOCGWINSZ ioctl system call.  */
-#undef HAVE_WINSZ
-
-/* Define if you have two-argument statfs with statfs.bsize member
-   (AIX, 4.3BSD).  */
-#undef STAT_STATFS2_BSIZE
-
-/* Define if you have two-argument statfs with statfs.fsize member
-   (4.4BSD and NetBSD).  */
-#undef STAT_STATFS2_FSIZE
-
-/* Define if you have two-argument statfs with struct fs_data (Ultrix).  */
-#undef STAT_STATFS2_FS_DATA
-
-/* Define if you have 3-argument statfs function (DEC OSF/1).  */
-#undef STAT_STATFS3_OSF1
-
-/* Define if you have four-argument statfs (AIX-3.2.5, SVR3).  */
-#undef STAT_STATFS4
-
-/* Define if you have the statvfs system call.  */
-#undef STAT_STATVFS
-
-/* Define if you have a broken sys/filesys.h header file.  */
+/* Define if you have a broken sys/filesys.h header file. */
 #undef BROKEN_SYS_FILSYS_H
 
-/* Define this to the name of the package.  */
-#undef PACKAGE
+/* Define if you have the Unix 64bit I/O API. */
+#undef HAVE_64BIT_IO
 
-/* Define this to the version of the package.  */
-#undef VERSION
-
-
-/* Leave that blank line there!!  Autoheader needs it.
-   If you're adding to this file, keep in mind:
-   The entries are in sort -df order: alphabetical, case insensitive,
-   ignoring punctuation (such as underscores).  */
-
-/* Define to one of `_getb67', `GETB67', `getb67' for Cray-2 and Cray-YMP
-   systems. This function is required for `alloca.c' support on those systems.
-   */
-#undef CRAY_STACKSEG_END
-
-/* Define to 1 if using `alloca.c'. */
-#undef C_ALLOCA
-
-/* Define to 1 if you have `alloca' after including <alloca.h>, a header that
-   may be supplied by this distribution. */
-#undef HAVE_ALLOCA
-
-/* Define HAVE_ALLOCA_H for backward compatibility with older code that
-   includes <alloca.h> only if HAVE_ALLOCA_H is defined. */
-#undef HAVE_ALLOCA_H
-
-/* Define to 1 if you have the `btowc' function. */
-#undef HAVE_BTOWC
-
-/* Define to 1 if you have the declaration of `getenv', and to 0 if you don't.
-   */
-#undef HAVE_DECL_GETENV
-
-/* Define to 1 if you have the declaration of `strerror_r', and to 0 if you
-   don't. */
-#undef HAVE_DECL_STRERROR_R
-
-/* Define to 1 if you have the declaration of `strtoimax', and to 0 if you
-   don't. */
-#undef HAVE_DECL_STRTOIMAX
-
-/* Define to 1 if you have the declaration of `strtoll', and to 0 if you
-   don't. */
-#undef HAVE_DECL_STRTOLL
-
-/* Define to 1 if you have the declaration of `strtoull', and to 0 if you
-   don't. */
-#undef HAVE_DECL_STRTOULL
-
-/* Define to 1 if you have the declaration of `strtoumax', and to 0 if you
-   don't. */
-#undef HAVE_DECL_STRTOUMAX
+/* Define if you have BSD compatible terminal interface. */
+#undef HAVE_BSD_TTY
 
 /* Define to 1 if you have the <dirent.h> header file, and it defines `DIR'.
    */
 #undef HAVE_DIRENT_H
 
-/* Define to 1 if you have the <dustat.h> header file. */
-#undef HAVE_DUSTAT_H
+/* Define if you have a dumb C compiler (e.g. B.O.S.). */
+#undef HAVE_DUMB_CC
 
 /* Define to 1 if you have the <fcntl.h> header file. */
 #undef HAVE_FCNTL_H
 
+/* Define if the compiler used is GNU CC. */
+#undef HAVE_GCC
+
 /* Define to 1 if you have the `getcwd' function. */
 #undef HAVE_GETCWD
-
-/* Define to 1 if you have the <getopt.h> header file. */
-#undef HAVE_GETOPT_H
-
-/* Define to 1 if you have the `getopt_long_only' function. */
-#undef HAVE_GETOPT_LONG_ONLY
-
-/* Define if you have the 'intmax_t' type in <stdint.h> or <inttypes.h>. */
-#undef HAVE_INTMAX_T
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
-/* Define if <inttypes.h> exists, doesn't clash with <sys/types.h>, and
-   declares uintmax_t. */
-#undef HAVE_INTTYPES_H_WITH_UINTMAX
-
-/* Define to 1 if you have the `isascii' function. */
-#undef HAVE_ISASCII
-
-/* Define to 1 if you have the `iswprint' function. */
-#undef HAVE_ISWPRINT
-
-/* Define to 1 if you have the `readline' library (-lreadline). */
-#undef HAVE_LIBREADLINE
-
 /* Define to 1 if you have the `sun' library (-lsun). */
 #undef HAVE_LIBSUN
+
+/* Define if you have a termcap library. */
+#undef HAVE_LIBTERMCAP
+
+/* Define if you have a terminfo library. */
+#undef HAVE_LIBTERMINFO
 
 /* Define to 1 if you have the `ucb' library (-lucb). */
 #undef HAVE_LIBUCB
 
+/* Define if your system Linux. */
+#undef HAVE_LINUX
+
 /* Define to 1 if you support file names longer than 14 characters. */
 #undef HAVE_LONG_FILE_NAMES
 
-/* Define if you have the 'long long' type. */
-#undef HAVE_LONG_LONG
-
 /* Define to 1 if you have the `lstat' function. */
 #undef HAVE_LSTAT
-
-/* Define to 1 if mbrtowc and mbstate_t are properly declared. */
-#undef HAVE_MBRTOWC
-
-/* Define to 1 if you have the `mbsinit' function. */
-#undef HAVE_MBSINIT
-
-/* Define to 1 if you have the `mbsrtowcs' function. */
-#undef HAVE_MBSRTOWCS
-
-/* Define to 1 if <wchar.h> declares mbstate_t. */
-#undef HAVE_MBSTATE_T
 
 /* Define to 1 if you have the `memmove' function. */
 #undef HAVE_MEMMOVE
@@ -188,11 +63,11 @@
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
 
-/* Define to 1 if you have the `mempcpy' function. */
-#undef HAVE_MEMPCPY
-
 /* Define to 1 if you have the <ndir.h> header file, and it defines `DIR'. */
 #undef HAVE_NDIR_H
+
+/* Define if you have POSIX compatible terminal interface. */
+#undef HAVE_POSIX_TTY
 
 /* Define to 1 if you have the `putenv' function. */
 #undef HAVE_PUTENV
@@ -209,15 +84,14 @@
 /* Define to 1 if you have the `sigaction' function. */
 #undef HAVE_SIGACTION
 
+/* Define to 1 if you have the `statvfs' function. */
+#undef HAVE_STATVFS
+
 /* Define to 1 if you have the <stddef.h> header file. */
 #undef HAVE_STDDEF_H
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
-
-/* Define if <stdint.h> exists, doesn't clash with <sys/types.h>, and declares
-   uintmax_t. */
-#undef HAVE_STDINT_H_WITH_UINTMAX
 
 /* Define to 1 if you have the <stdlib.h> header file. */
 #undef HAVE_STDLIB_H
@@ -227,9 +101,6 @@
 
 /* Define to 1 if you have the `strerror' function. */
 #undef HAVE_STRERROR
-
-/* Define to 1 if you have the `strerror_r' function. */
-#undef HAVE_STRERROR_R
 
 /* Define to 1 if you have the <strings.h> header file. */
 #undef HAVE_STRINGS_H
@@ -243,23 +114,8 @@
 /* Define to 1 if you have the `strstr' function. */
 #undef HAVE_STRSTR
 
-/* Define to 1 if you have the `strtoimax' function. */
-#undef HAVE_STRTOIMAX
-
-/* Define to 1 if you have the `strtol' function. */
-#undef HAVE_STRTOL
-
-/* Define to 1 if you have the `strtoll' function. */
-#undef HAVE_STRTOLL
-
-/* Define to 1 if you have the `strtoul' function. */
-#undef HAVE_STRTOUL
-
-/* Define to 1 if you have the `strtoull' function. */
-#undef HAVE_STRTOULL
-
-/* Define to 1 if you have the `strtoumax' function. */
-#undef HAVE_STRTOUMAX
+/* Define if you have System V compatible terminal interface. */
+#undef HAVE_SYSTEMV_TTY
 
 /* Define to 1 if you have the <sys/dir.h> header file, and it defines `DIR'.
    */
@@ -270,12 +126,6 @@
 
 /* Define to 1 if you have the <sys/filsys.h> header file. */
 #undef HAVE_SYS_FILSYS_H
-
-/* Define to 1 if you have the <sys/fs/s5param.h> header file. */
-#undef HAVE_SYS_FS_S5PARAM_H
-
-/* Define to 1 if you have the <sys/fs_types.h> header file. */
-#undef HAVE_SYS_FS_TYPES_H
 
 /* Define to 1 if you have the <sys/mount.h> header file. */
 #undef HAVE_SYS_MOUNT_H
@@ -311,32 +161,20 @@
 /* Define to 1 if you have <sys/wait.h> that is POSIX.1 compatible. */
 #undef HAVE_SYS_WAIT_H
 
-/* Define if you have the 'uintmax_t' type in <stdint.h> or <inttypes.h>. */
-#undef HAVE_UINTMAX_T
-
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
-/* Define if you have the 'unsigned long long' type. */
-#undef HAVE_UNSIGNED_LONG_LONG
+/* Define if you have the utsname system call. */
+#undef HAVE_UTSNAME
 
 /* Define to 1 if you have the <values.h> header file. */
 #undef HAVE_VALUES_H
 
-/* Define to 1 if you have the <wchar.h> header file. */
-#undef HAVE_WCHAR_H
+/* Define if you have the TIOCGWINSZ ioctl system call. */
+#undef HAVE_WINSZ
 
-/* Define to 1 if you have the <wctype.h> header file. */
-#undef HAVE_WCTYPE_H
-
-/* Define to 1 if you have the `wmemchr' function. */
-#undef HAVE_WMEMCHR
-
-/* Define to 1 if you have the `wmemcpy' function. */
-#undef HAVE_WMEMCPY
-
-/* Define to 1 if you have the `wmempcpy' function. */
-#undef HAVE_WMEMPCPY
+/* Define if you want to disable various consistency checkings. */
+#undef NDEBUG
 
 /* Name of package */
 #undef PACKAGE
@@ -359,53 +197,31 @@
 /* Define as the return type of signal handlers (`int' or `void'). */
 #undef RETSIGTYPE
 
-/* If using the C implementation of alloca, define if you know the
-   direction of stack growth for your system; otherwise it will be
-   automatically deduced at run-time.
-	STACK_DIRECTION > 0 => grows toward higher addresses
-	STACK_DIRECTION < 0 => grows toward lower addresses
-	STACK_DIRECTION = 0 => direction of growth unknown */
-#undef STACK_DIRECTION
-
-/* Define if the block counts reported by statfs may be truncated to 2GB and
-   the correct values may be stored in the f_spare array. (SunOS 4.1.2, 4.1.3,
-   and 4.1.3_U1 are reported to have this problem. SunOS 4.1.1 seems not to be
-   affected.) */
-#undef STATFS_TRUNCATES_BLOCK_COUNTS
-
 /* Define to 1 if the `S_IS*' macros in <sys/stat.h> do not work properly. */
 #undef STAT_MACROS_BROKEN
 
-/* Define if there is no specific function for reading file systems usage
-   information and you have the <sys/filsys.h> header file. (SVR2) */
-#undef STAT_READ_FILSYS
-
-/* Define if statfs takes 2 args and struct statfs has a field named f_bsize.
-   (4.3BSD, SunOS 4, HP-UX, AIX PS/2) */
+/* Define if you have two-argument statfs with statfs.bsize member (AIX,
+   4.3BSD). */
 #undef STAT_STATFS2_BSIZE
 
-/* Define if statfs takes 2 args and struct statfs has a field named f_fsize.
-   (4.4BSD, NetBSD) */
+/* Define if you have two-argument statfs with statfs.fsize member (4.4BSD and
+   NetBSD). */
 #undef STAT_STATFS2_FSIZE
 
-/* Define if statfs takes 2 args and the second argument has type struct
-   fs_data. (Ultrix) */
+/* Define if you have two-argument statfs with struct fs_data (Ultrix). */
 #undef STAT_STATFS2_FS_DATA
 
-/* Define if statfs takes 3 args. (DEC Alpha running OSF/1) */
+/* Define if you have 3-argument statfs function (DEC OSF/1). */
 #undef STAT_STATFS3_OSF1
 
-/* Define if statfs takes 4 args. (SVR3, Dynix, Irix, Dolphin) */
+/* Define if you have four-argument statfs (AIX-3.2.5, SVR3). */
 #undef STAT_STATFS4
 
-/* Define if there is a function named statvfs. (SVR4) */
+/* Define if you have the statvfs system call. */
 #undef STAT_STATVFS
 
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
-
-/* Define to 1 if strerror_r returns char *. */
-#undef STRERROR_R_CHAR_P
 
 /* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
 #undef TIME_WITH_SYS_TIME
@@ -418,11 +234,6 @@
    We just want to avoid a redefinition error message.  */
 #ifndef _ALL_SOURCE
 # undef _ALL_SOURCE
-#endif
-
-/* Enable GNU extensions on systems that have them.  */
-#ifndef _GNU_SOURCE
-# undef _GNU_SOURCE
 #endif
 
 /* Define to 1 if on MINIX. */
@@ -438,68 +249,38 @@
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
 
-/* Define to a replacement function name for fnmatch(). */
-#undef fnmatch
-
-/* Define to rpl_getopt if the replacement function should be used. */
-#undef getopt
-
-/* Define to rpl_getopt_long if the replacement function should be used. */
-#undef getopt_long
-
-/* Define to rpl_getopt_long_only if the replacement function should be used.
-   */
-#undef getopt_long_only
-
 /* Define to `int' if <sys/types.h> doesn't define. */
 #undef gid_t
-
-/* Define to `__inline__' or `__inline' if that's what the C compiler
-   calls it, or to nothing if 'inline' is not supported under any name.  */
-#ifndef __cplusplus
-#undef inline
-#endif
-
-/* Define to long or long long if <inttypes.h> and <stdint.h> don't define. */
-#undef intmax_t
-
-/* Define to a type if <wchar.h> does not define. */
-#undef mbstate_t
 
 /* Define to `int' if <sys/types.h> does not define. */
 #undef mode_t
 
-/* Define to `long' if <sys/types.h> does not define. */
+/* Define to `long int' if <sys/types.h> does not define. */
 #undef off_t
-
-/* Define to rpl_optarg if the replacement variable should be used. */
-#undef optarg
-
-/* Define to rpl_optind if the replacement variable should be used. */
-#undef optind
-
-/* Define to rpl_optopt if the replacement variable should be used. */
-#undef optopt
 
 /* Define to `int' if <sys/types.h> does not define. */
 #undef pid_t
 
-/* Define to `unsigned' if <sys/types.h> does not define. */
+/* Define to `unsigned int' if <sys/types.h> does not define. */
 #undef size_t
-
-/* Define as a signed type of the same size as size_t. */
-#undef ssize_t
 
 /* Define to `int' if <sys/types.h> doesn't define. */
 #undef uid_t
 
-/* Define to unsigned long or unsigned long long if <stdint.h> and
-   <inttypes.h> don't define. */
-#undef uintmax_t
-/* $Id: config.h.in,v 1.11 2005-12-07 13:56:05 ianb Exp $ */
+
+/* Define to get the Unix 64bit I/O API (Linux/glibc only).  */
+#ifdef HAVE_64BIT_IO
+#define _LARGEFILE64_SOURCE
+#endif
+
 /* See the file PROBLEMS for details on this.  */
 #ifdef HAVE_LINUX
 #undef HAVE_LSTAT
 #define HAVE_LSTAT 1
 #endif
 
+/* Support for O_BINARY, required for CYGWIN.  */
+#ifndef O_BINARY
+#define O_BINARY 0
+#endif
+    

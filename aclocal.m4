@@ -340,6 +340,18 @@ AC_DEFUN([AM_OUTPUT_DEPENDENCY_COMMANDS],
      [AMDEP_TRUE="$AMDEP_TRUE" ac_aux_dir="$ac_aux_dir"])
 ])
 
+# Copyright (C) 1996, 1997, 2000, 2001, 2003, 2005
+# Free Software Foundation, Inc.
+#
+# This file is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# serial 8
+
+# AM_CONFIG_HEADER is obsolete.  It has been replaced by AC_CONFIG_HEADERS.
+AU_DEFUN([AM_CONFIG_HEADER], [AC_CONFIG_HEADERS($@)])
+
 # Do all the work for Automake.                             -*- Autoconf -*-
 
 # Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005
@@ -488,35 +500,6 @@ else
 fi
 rmdir .tst 2>/dev/null
 AC_SUBST([am__leading_dot])])
-
-# Add --enable-maintainer-mode option to configure.         -*- Autoconf -*-
-# From Jim Meyering
-
-# Copyright (C) 1996, 1998, 2000, 2001, 2002, 2003, 2004, 2005
-# Free Software Foundation, Inc.
-#
-# This file is free software; the Free Software Foundation
-# gives unlimited permission to copy and/or distribute it,
-# with or without modifications, as long as this notice is preserved.
-
-# serial 4
-
-AC_DEFUN([AM_MAINTAINER_MODE],
-[AC_MSG_CHECKING([whether to enable maintainer-specific portions of Makefiles])
-  dnl maintainer-mode is disabled by default
-  AC_ARG_ENABLE(maintainer-mode,
-[  --enable-maintainer-mode  enable make rules and dependencies not useful
-			  (and sometimes confusing) to the casual installer],
-      USE_MAINTAINER_MODE=$enableval,
-      USE_MAINTAINER_MODE=no)
-  AC_MSG_RESULT([$USE_MAINTAINER_MODE])
-  AM_CONDITIONAL(MAINTAINER_MODE, [test $USE_MAINTAINER_MODE = yes])
-  MAINT=$MAINTAINER_MODE_TRUE
-  AC_SUBST(MAINT)dnl
-]
-)
-
-AU_DEFUN([jm_MAINTAINER_MODE], [AM_MAINTAINER_MODE])
 
 # Check to see how 'make' treats includes.	            -*- Autoconf -*-
 
@@ -877,33 +860,3 @@ AC_SUBST([am__tar])
 AC_SUBST([am__untar])
 ]) # _AM_PROG_TAR
 
-m4_include([m4/alloca.m4])
-m4_include([m4/error.m4])
-m4_include([m4/exitfail.m4])
-m4_include([m4/fnmatch.m4])
-m4_include([m4/fsusage.m4])
-m4_include([m4/getopt.m4])
-m4_include([m4/gnulib.m4])
-m4_include([m4/intmax_t.m4])
-m4_include([m4/inttypes_h.m4])
-m4_include([m4/longlong.m4])
-m4_include([m4/mbrtowc.m4])
-m4_include([m4/mbstate_t.m4])
-m4_include([m4/onceonly_2_57.m4])
-m4_include([m4/quote.m4])
-m4_include([m4/quotearg.m4])
-m4_include([m4/safe-read.m4])
-m4_include([m4/safe-write.m4])
-m4_include([m4/ssize_t.m4])
-m4_include([m4/stdint_h.m4])
-m4_include([m4/strtoimax.m4])
-m4_include([m4/strtol.m4])
-m4_include([m4/strtoll.m4])
-m4_include([m4/strtoul.m4])
-m4_include([m4/strtoull.m4])
-m4_include([m4/strtoumax.m4])
-m4_include([m4/uintmax_t.m4])
-m4_include([m4/ulonglong.m4])
-m4_include([m4/xalloc.m4])
-m4_include([m4/xstrtol.m4])
-m4_include([m4/xstrtoumax.m4])
