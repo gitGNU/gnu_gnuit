@@ -15,6 +15,7 @@ AM_CONFIG_HEADER([config.h])
 AC_PREREQ(2.59)
 AC_CANONICAL_HOST
 AC_PROG_CC
+gl_EARLY	
 AC_PROG_CPP
 AC_PROG_INSTALL
 AC_REQUIRE_CPP
@@ -131,6 +132,9 @@ AC_CHECK_HEADERS(
     unistd.h stdlib.h string.h memory.h values.h\
     sys/param.h sys/mount.h sys/vfs.h sys/filsys.h fcntl.h\
     sys/statfs.h sys/dustat.h sys/statvfs.h sys/sioctl.h stddef.h)
+
+gl_INIT
+
 
 dnl Unisys has a broken sys/filsys.h.  We don't want to include it,
 dnl considering the fact that other methods are available.

@@ -1,22 +1,12 @@
-# fsusage.m4 serial 13
+#serial 20
 # Obtaining file system usage information.
 
-# Copyright (C) 1997, 1998, 2000, 2001, 2003, 2004 Free Software
+# Copyright (C) 1997, 1998, 2000, 2001, 2003, 2004, 2005, 2006 Free Software
 # Foundation, Inc.
-
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2, or (at your option)
-# any later version.
-
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software Foundation,
-# Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+#
+# This file is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
 
 # Written by Jim Meyering.
 
@@ -58,10 +48,12 @@ if test $ac_fsusage_space = no; then
   # SVR4
   AC_CACHE_CHECK([for statvfs function (SVR4)], fu_cv_sys_stat_statvfs,
 		 [AC_TRY_LINK([#include <sys/types.h>
-#ifdef __GLIBC__
+#if defined __GLIBC__ && !defined __BEOS__
 Do not use statvfs on systems with GNU libc, because that function stats
 all preceding entries in /proc/mounts, and that makes df hang if even
 one of the corresponding file systems is hard-mounted, but not available.
+statvfs in GNU libc on BeOS operates differently: it only makes a system
+call.
 #endif
 #include <sys/statvfs.h>],
 			      [struct statvfs fsd; statvfs (0, &fsd);],
@@ -82,11 +74,12 @@ if test $ac_fsusage_space = no; then
 #include <sys/param.h>
 #include <sys/types.h>
 #include <sys/mount.h>
+  int
   main ()
   {
     struct statfs fsd;
     fsd.f_fsize = 0;
-    exit (statfs (".", &fsd, sizeof (struct statfs)));
+    return statfs (".", &fsd, sizeof (struct statfs)) != 0;
   }],
   fu_cv_sys_stat_statfs3_osf1=yes,
   fu_cv_sys_stat_statfs3_osf1=no,
@@ -114,11 +107,12 @@ member (AIX, 4.3BSD)])
 #ifdef HAVE_SYS_VFS_H
 #include <sys/vfs.h>
 #endif
+  int
   main ()
   {
   struct statfs fsd;
   fsd.f_bsize = 0;
-  exit (statfs (".", &fsd));
+  return statfs (".", &fsd) != 0;
   }],
   fu_cv_sys_stat_statfs2_bsize=yes,
   fu_cv_sys_stat_statfs2_bsize=no,
@@ -138,10 +132,11 @@ if test $ac_fsusage_space = no; then
   AC_CACHE_VAL(fu_cv_sys_stat_statfs4,
   [AC_TRY_RUN([#include <sys/types.h>
 #include <sys/statfs.h>
+  int
   main ()
   {
   struct statfs fsd;
-  exit (statfs (".", &fsd, sizeof fsd, 0));
+  return statfs (".", &fsd, sizeof fsd, 0) != 0;
   }],
     fu_cv_sys_stat_statfs4=yes,
     fu_cv_sys_stat_statfs4=no,
@@ -166,11 +161,12 @@ member (4.4BSD and NetBSD)])
 #ifdef HAVE_SYS_MOUNT_H
 #include <sys/mount.h>
 #endif
+  int
   main ()
   {
   struct statfs fsd;
   fsd.f_fsize = 0;
-  exit (statfs (".", &fsd));
+  return statfs (".", &fsd) != 0;
   }],
   fu_cv_sys_stat_statfs2_fsize=yes,
   fu_cv_sys_stat_statfs2_fsize=no,
@@ -198,12 +194,13 @@ if test $ac_fsusage_space = no; then
 #ifdef HAVE_SYS_FS_TYPES_H
 #include <sys/fs_types.h>
 #endif
+  int
   main ()
   {
   struct fs_data fsd;
   /* Ultrix's statfs returns 1 for success,
      0 for not mounted, -1 for failure.  */
-  exit (statfs (".", &fsd) != 1);
+  return statfs (".", &fsd) != 1;
   }],
   fu_cv_sys_stat_fs_data=yes,
   fu_cv_sys_stat_fs_data=no,
@@ -262,8 +259,6 @@ choke -- this is a workaround for a Sun-specific problem
 # Prerequisites of lib/fsusage.c not done by gl_FILE_SYSTEM_USAGE.
 AC_DEFUN([gl_PREREQ_FSUSAGE_EXTRA],
 [
-  AC_REQUIRE([gl_AC_TYPE_UINTMAX_T])
-  AC_CHECK_HEADERS_ONCE(fcntl.h)
-  AC_CHECK_HEADERS(dustat.h sys/fs/s5param.h sys/filsys.h sys/statfs.h sys/statvfs.h)
+  AC_CHECK_HEADERS(dustat.h sys/fs/s5param.h sys/filsys.h sys/statfs.h)
   gl_STATFS_TRUNCATES
 ])
