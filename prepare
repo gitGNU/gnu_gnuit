@@ -7,7 +7,7 @@
 
 rm -rf autom4te.cache config.cache; echo -n "."
 aclocal; echo -n "."
-libtoolize --automake --copy --force && echo -n "."
+#libtoolize --automake --copy --force && echo -n "."
 autoheader 2>&1 | grep -v "config.h.in"
 echo -n "." &&
 aclocal && echo -n "." &&
