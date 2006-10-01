@@ -32,6 +32,7 @@ AC_DEFUN([gl_INIT],
   AM_CONDITIONAL([GL_COND_LIBTOOL], [false])
   gl_FUNC_ALLOCA
   # No macro. You should also use one of fnmatch-posix or fnmatch-gnu.
+  gl_FUNC_FNMATCH_GNU
   gl_FSUSAGE
   gl_GETOPT
   gl_SAFE_READ

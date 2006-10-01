@@ -39,7 +39,16 @@ subdir = term
 DIST_COMMON = $(srcdir)/.gitrc.common.in $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in ChangeLog
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/m4/absolute-header.m4 \
+	$(top_srcdir)/m4/alloca.m4 $(top_srcdir)/m4/fnmatch.m4 \
+	$(top_srcdir)/m4/fsusage.m4 $(top_srcdir)/m4/getopt.m4 \
+	$(top_srcdir)/m4/gnulib-comp.m4 $(top_srcdir)/m4/longlong.m4 \
+	$(top_srcdir)/m4/mbstate_t.m4 \
+	$(top_srcdir)/m4/onceonly_2_57.m4 \
+	$(top_srcdir)/m4/safe-read.m4 $(top_srcdir)/m4/safe-write.m4 \
+	$(top_srcdir)/m4/ssize_t.m4 $(top_srcdir)/m4/stdbool.m4 \
+	$(top_srcdir)/m4/stdint.m4 $(top_srcdir)/m4/unistd_h.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -58,7 +67,10 @@ pkgdataDATA_INSTALL = $(INSTALL_DATA)
 DATA = $(pkgdata_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 INSTALL = @INSTALL@
+ABSOLUTE_STDINT_H = @ABSOLUTE_STDINT_H@
 ACLOCAL = @ACLOCAL@
+ALLOCA = @ALLOCA@
+ALLOCA_H = @ALLOCA_H@
 AMDEP_FALSE = @AMDEP_FALSE@
 AMDEP_TRUE = @AMDEP_TRUE@
 AMTAR = @AMTAR@
@@ -66,6 +78,11 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
+BITSIZEOF_PTRDIFF_T = @BITSIZEOF_PTRDIFF_T@
+BITSIZEOF_SIG_ATOMIC_T = @BITSIZEOF_SIG_ATOMIC_T@
+BITSIZEOF_SIZE_T = @BITSIZEOF_SIZE_T@
+BITSIZEOF_WCHAR_T = @BITSIZEOF_WCHAR_T@
+BITSIZEOF_WINT_T = @BITSIZEOF_WINT_T@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
@@ -80,7 +97,22 @@ ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 EXEEXT = @EXEEXT@
+FNMATCH_H = @FNMATCH_H@
+GETOPT_H = @GETOPT_H@
+GL_COND_LIBTOOL_FALSE = @GL_COND_LIBTOOL_FALSE@
+GL_COND_LIBTOOL_TRUE = @GL_COND_LIBTOOL_TRUE@
 GREP = @GREP@
+HAVE_INTTYPES_H = @HAVE_INTTYPES_H@
+HAVE_LONG_LONG_INT = @HAVE_LONG_LONG_INT@
+HAVE_SIGNED_SIG_ATOMIC_T = @HAVE_SIGNED_SIG_ATOMIC_T@
+HAVE_SIGNED_WCHAR_T = @HAVE_SIGNED_WCHAR_T@
+HAVE_SIGNED_WINT_T = @HAVE_SIGNED_WINT_T@
+HAVE_STDINT_H = @HAVE_STDINT_H@
+HAVE_SYS_BITYPES_H = @HAVE_SYS_BITYPES_H@
+HAVE_SYS_INTTYPES_H = @HAVE_SYS_INTTYPES_H@
+HAVE_SYS_TYPES_H = @HAVE_SYS_TYPES_H@
+HAVE_WCHAR_H = @HAVE_WCHAR_H@
+HAVE__BOOL = @HAVE__BOOL@
 HOST = @HOST@
 INCLUDES = @INCLUDES@
 INSTALL_DATA = @INSTALL_DATA@
@@ -102,12 +134,21 @@ PACKAGE_TARNAME = @PACKAGE_TARNAME@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PRODUCT = @PRODUCT@
+PTRDIFF_T_SUFFIX = @PTRDIFF_T_SUFFIX@
+RANLIB = @RANLIB@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
+SIG_ATOMIC_T_SUFFIX = @SIG_ATOMIC_T_SUFFIX@
+SIZE_T_SUFFIX = @SIZE_T_SUFFIX@
+STDBOOL_H = @STDBOOL_H@
+STDINT_H = @STDINT_H@
 STRIP = @STRIP@
 TEXI2DVI = @TEXI2DVI@
 TEXI2HTML = @TEXI2HTML@
+UNISTD_H = @UNISTD_H@
 VERSION = @VERSION@
+WCHAR_T_SUFFIX = @WCHAR_T_SUFFIX@
+WINT_T_SUFFIX = @WINT_T_SUFFIX@
 ac_ct_CC = @ac_ct_CC@
 am__fastdepCC_FALSE = @am__fastdepCC_FALSE@
 am__fastdepCC_TRUE = @am__fastdepCC_TRUE@

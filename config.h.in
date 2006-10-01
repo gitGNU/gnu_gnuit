@@ -11,8 +11,23 @@
 /* Define if you have a broken sys/filesys.h header file. */
 #undef BROKEN_SYS_FILSYS_H
 
+/* Define to one of `_getb67', `GETB67', `getb67' for Cray-2 and Cray-YMP
+   systems. This function is required for `alloca.c' support on those systems.
+   */
+#undef CRAY_STACKSEG_END
+
+/* Define to 1 if using `alloca.c'. */
+#undef C_ALLOCA
+
 /* Define if you have the Unix 64bit I/O API. */
 #undef HAVE_64BIT_IO
+
+/* Define to 1 if you have `alloca', as a function or macro. */
+#undef HAVE_ALLOCA
+
+/* Define to 1 if you have <alloca.h> and it should be used (not on Ultrix).
+   */
+#undef HAVE_ALLOCA_H
 
 /* Define if you have BSD compatible terminal interface. */
 #undef HAVE_BSD_TTY
@@ -83,9 +98,6 @@
 
 /* Define to 1 if you have the `sigaction' function. */
 #undef HAVE_SIGACTION
-
-/* Define to 1 if you have the `statvfs' function. */
-#undef HAVE_STATVFS
 
 /* Define to 1 if you have the <stddef.h> header file. */
 #undef HAVE_STDDEF_H
@@ -196,6 +208,14 @@
 
 /* Define as the return type of signal handlers (`int' or `void'). */
 #undef RETSIGTYPE
+
+/* If using the C implementation of alloca, define if you know the
+   direction of stack growth for your system; otherwise it will be
+   automatically deduced at runtime.
+	STACK_DIRECTION > 0 => grows toward higher addresses
+	STACK_DIRECTION < 0 => grows toward lower addresses
+	STACK_DIRECTION = 0 => direction of growth unknown */
+#undef STACK_DIRECTION
 
 /* Define to 1 if the `S_IS*' macros in <sys/stat.h> do not work properly. */
 #undef STAT_MACROS_BROKEN

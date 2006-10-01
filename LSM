@@ -1,7 +1,7 @@
 Begin3
 Title:          GNU Interactive Tools
-Version:        4.3.20
-Entered-date:   12MAR2000
+Version:        4.3.21
+Entered-date:   12MAY2000
 Description:	GIT (GNU Interactive Tools) provides an extensible file
 		system browser, an ASCII/hexadecimal file viewer, a process
 		viewer/killer and other related utilities and shell scripts.
@@ -15,7 +15,7 @@ Author:         tudor@cs.unh.edu (Tudor Hulubei)
 		pink@roedu.net (Andrei Pitis)
 Maintained-by:  tudor@cs.unh.edu (Tudor Hulubei)
 Primary-site:   ftp.cs.unh.edu /pub/grads/tudor/git
-		415k git-4.3.20.tar.gz
+		415k git-4.3.21.tar.gz
 Alternate-site: ftp.gnu.org /pub/gnu/git
 Original-site:	
 Platforms:	

@@ -6,11 +6,12 @@
 # $Id: prepare,v 1.6 2004/01/28 00:08:20 tudor Exp $
 
 rm -rf autom4te.cache config.cache; echo -n "."
+#gnulib-tool --update; echo -n .
 aclocal; echo -n "."
 #libtoolize --automake --copy --force && echo -n "."
 autoheader 2>&1 | grep -v "config.h.in"
 echo -n "." &&
-aclocal && echo -n "." &&
+aclocal -I m4 && echo -n "." &&
 automake --foreign && echo -n "."
 autoconf
 echo -n "." &&

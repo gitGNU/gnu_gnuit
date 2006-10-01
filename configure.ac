@@ -17,6 +17,7 @@ AC_CANONICAL_HOST
 AC_PROG_CC
 gl_EARLY	
 AC_PROG_CPP
+AC_PROG_RANLIB	
 AC_PROG_INSTALL
 AC_REQUIRE_CPP
 HOST=$host
@@ -135,6 +136,7 @@ AC_CHECK_HEADERS(
 
 gl_INIT
 
+AC_FUNC_ALLOCA
 
 dnl Unisys has a broken sys/filsys.h.  We don't want to include it,
 dnl considering the fact that other methods are available.
@@ -304,7 +306,7 @@ fi
 if test $space = no; then
     # 4.4BSD and NetBSD
     AC_CACHE_CHECK(
-	[for two-argument statfs with statfs.fsize member (4.4BSD and NetBSD)]
+	[for two-argument statfs with statfs.fsize member (4.4BSD and NetBSD)],
         [fu_cv_sys_stat_statfs2_fsize],
         [AC_TRY_RUN(
 	    [
@@ -374,9 +376,9 @@ dnl If the GNU readline library is installed on the system, we will use
 dnl its tilde_expand() and history functions.  Otherwise, we have to use
 dnl the versions of tilde.c and history.c included in the package.  These
 dnl files belong to the GNU readline library version 2.0.1.
-#AC_CHECK_LIB(readline, tilde_expand)
-#AC_CHECK_FUNC(tilde_expand,, AC_LIBOBJ([tilde]))
-#AC_CHECK_FUNC(using_history,, AC_LIBOBJ([history]))
+dnl#AC_CHECK_LIB(readline, tilde_expand)
+dnl#AC_CHECK_FUNC(tilde_expand,, AC_LIBOBJ([tilde]))
+dnl#AC_CHECK_FUNC(using_history,, AC_LIBOBJ([history]))
 
 dnl Check for compilers that do not support constructs combinations
 dnl of ANSI C like prototypes & K&R definitions.  B.O.S. systems.
@@ -663,5 +665,6 @@ AC_OUTPUT([
     term/Makefile
     term/.gitrc.common
     doc/Makefile
+    lib/Makefile
     git.spec
     LSM])
