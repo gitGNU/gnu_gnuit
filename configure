@@ -3576,7 +3576,6 @@ else
 fi
 
 
-
 if test -n "$ac_tool_prefix"; then
   # Extract the first word of "${ac_tool_prefix}ranlib", so it can be a program name with args.
 set dummy ${ac_tool_prefix}ranlib; ac_word=$2
@@ -3677,7 +3676,6 @@ fi
 cat >>confdefs.h <<\_ACEOF
 #define _GNU_SOURCE 1
 _ACEOF
-
 
 
 
@@ -11979,9 +11977,13 @@ space=no
 # since it seems there are no variants of the statvfs function.
 if test $space = no; then
     # SVR4
-    { echo "$as_me:$LINENO: checking for statvfs" >&5
-echo $ECHO_N "checking for statvfs... $ECHO_C" >&6; }
-if test "${ac_cv_func_statvfs+set}" = set; then
+
+for ac_func in statvfs
+do
+as_ac_var=`echo "ac_cv_func_$ac_func" | $as_tr_sh`
+{ echo "$as_me:$LINENO: checking for $ac_func" >&5
+echo $ECHO_N "checking for $ac_func... $ECHO_C" >&6; }
+if { as_var=$as_ac_var; eval "test \"\${$as_var+set}\" = set"; }; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   cat >conftest.$ac_ext <<_ACEOF
@@ -11990,12 +11992,12 @@ _ACEOF
 cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
-/* Define statvfs to an innocuous variant, in case <limits.h> declares statvfs.
+/* Define $ac_func to an innocuous variant, in case <limits.h> declares $ac_func.
    For example, HP-UX 11i <limits.h> declares gettimeofday.  */
-#define statvfs innocuous_statvfs
+#define $ac_func innocuous_$ac_func
 
 /* System header to define __stub macros and hopefully few prototypes,
-    which can conflict with char statvfs (); below.
+    which can conflict with char $ac_func (); below.
     Prefer <limits.h> to <assert.h> if __STDC__ is defined, since
     <limits.h> exists even on freestanding compilers.  */
 
@@ -12005,7 +12007,7 @@ cat >>conftest.$ac_ext <<_ACEOF
 # include <assert.h>
 #endif
 
-#undef statvfs
+#undef $ac_func
 
 /* Override any GCC internal prototype to avoid an error.
    Use char because int might match the return type of a GCC
@@ -12013,18 +12015,18 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef __cplusplus
 extern "C"
 #endif
-char statvfs ();
+char $ac_func ();
 /* The GNU C library defines this for functions which it implements
     to always fail with ENOSYS.  Some functions are actually named
     something starting with __ and the normal name is an alias.  */
-#if defined __stub_statvfs || defined __stub___statvfs
+#if defined __stub_$ac_func || defined __stub___$ac_func
 choke me
 #endif
 
 int
 main ()
 {
-return statvfs ();
+return $ac_func ();
   ;
   return 0;
 }
@@ -12063,39 +12065,39 @@ eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  ac_cv_func_statvfs=yes
+  eval "$as_ac_var=yes"
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-	ac_cv_func_statvfs=no
+	eval "$as_ac_var=no"
 fi
 
 rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
       conftest$ac_exeext conftest.$ac_ext
 fi
-{ echo "$as_me:$LINENO: result: $ac_cv_func_statvfs" >&5
-echo "${ECHO_T}$ac_cv_func_statvfs" >&6; }
-if test $ac_cv_func_statvfs = yes; then
-  echo trUE
-else
-  echo faLSE
-fi
+ac_res=`eval echo '${'$as_ac_var'}'`
+	       { echo "$as_me:$LINENO: result: $ac_res" >&5
+echo "${ECHO_T}$ac_res" >&6; }
+if test `eval echo '${'$as_ac_var'}'` = yes; then
+  cat >>confdefs.h <<_ACEOF
+#define `echo "HAVE_$ac_func" | $as_tr_cpp` 1
+_ACEOF
 
-    if test "$ac_cv_func_statvfs" = "yes"; then
+fi
+done
+
+    if test $ac_cv_func_statvfs = yes; then
         space=yes
-	echo here
 
 cat >>confdefs.h <<\_ACEOF
 #define STAT_STATVFS 1
 _ACEOF
 
-	echo after
     fi
 fi
-echo aftertest1
+
 if test $space = no; then
-   echo osf
     # DEC Alpha running OSF/1
     { echo "$as_me:$LINENO: checking for 3-argument statfs function (DEC OSF/1)" >&5
 echo $ECHO_N "checking for 3-argument statfs function (DEC OSF/1)... $ECHO_C" >&6; }
@@ -12172,7 +12174,7 @@ _ACEOF
 
     fi
 fi
-echo after osf
+
 if test $space = no; then
     # AIX
     { echo "$as_me:$LINENO: checking for two-argument statfs with statfs.bsize member (AIX, 4.3BSD)" >&5
@@ -12252,7 +12254,7 @@ _ACEOF
 
     fi
 fi
-echo after aix before svr3
+
 if test $space = no; then
     # SVR3
     { echo "$as_me:$LINENO: checking for four-argument statfs (AIX-3.2.5, SVR3)" >&5
@@ -12326,7 +12328,7 @@ _ACEOF
 
     fi
 fi
-echo after svr3
+
 if test $space = no; then
     # 4.4BSD and NetBSD
     { echo "$as_me:$LINENO: checking for two-argument statfs with statfs.fsize member (4.4BSD and NetBSD)" >&5
@@ -12404,7 +12406,7 @@ _ACEOF
 
     fi
 fi
-echo afterbsd
+
 if test $space = no; then
     # Ultrix
     { echo "$as_me:$LINENO: checking for two-argument statfs with struct fs_data (Ultrix)" >&5
@@ -12487,10 +12489,311 @@ _ACEOF
     fi
 fi
 
-echo after statchecks
 
 
-    echo before compiler check
+{ echo "$as_me:$LINENO: checking for tilde_expand in -lreadline" >&5
+echo $ECHO_N "checking for tilde_expand in -lreadline... $ECHO_C" >&6; }
+if test "${ac_cv_lib_readline_tilde_expand+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lreadline  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char tilde_expand ();
+int
+main ()
+{
+return tilde_expand ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_link") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag" || test ! -s conftest.err'
+  { (case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_try") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_try") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_readline_tilde_expand=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_lib_readline_tilde_expand=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
+      conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ echo "$as_me:$LINENO: result: $ac_cv_lib_readline_tilde_expand" >&5
+echo "${ECHO_T}$ac_cv_lib_readline_tilde_expand" >&6; }
+if test $ac_cv_lib_readline_tilde_expand = yes; then
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBREADLINE 1
+_ACEOF
+
+  LIBS="-lreadline $LIBS"
+
+fi
+
+{ echo "$as_me:$LINENO: checking for tilde_expand" >&5
+echo $ECHO_N "checking for tilde_expand... $ECHO_C" >&6; }
+if test "${ac_cv_func_tilde_expand+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+/* Define tilde_expand to an innocuous variant, in case <limits.h> declares tilde_expand.
+   For example, HP-UX 11i <limits.h> declares gettimeofday.  */
+#define tilde_expand innocuous_tilde_expand
+
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char tilde_expand (); below.
+    Prefer <limits.h> to <assert.h> if __STDC__ is defined, since
+    <limits.h> exists even on freestanding compilers.  */
+
+#ifdef __STDC__
+# include <limits.h>
+#else
+# include <assert.h>
+#endif
+
+#undef tilde_expand
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char tilde_expand ();
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined __stub_tilde_expand || defined __stub___tilde_expand
+choke me
+#endif
+
+int
+main ()
+{
+return tilde_expand ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_link") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag" || test ! -s conftest.err'
+  { (case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_try") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_try") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_func_tilde_expand=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_func_tilde_expand=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
+      conftest$ac_exeext conftest.$ac_ext
+fi
+{ echo "$as_me:$LINENO: result: $ac_cv_func_tilde_expand" >&5
+echo "${ECHO_T}$ac_cv_func_tilde_expand" >&6; }
+if test $ac_cv_func_tilde_expand = yes; then
+  :
+else
+  case " $LIBOBJS " in
+  *" tilde.$ac_objext "*
+fi
+ ;;
+  *) LIBOBJS="$LIBOBJS tilde.$ac_objext"
+ ;;
+esac
+)
+{ echo "$as_me:$LINENO: checking for using_history" >&5
+echo $ECHO_N "checking for using_history... $ECHO_C" >&6; }
+if test "${ac_cv_func_using_history+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+/* Define using_history to an innocuous variant, in case <limits.h> declares using_history.
+   For example, HP-UX 11i <limits.h> declares gettimeofday.  */
+#define using_history innocuous_using_history
+
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char using_history (); below.
+    Prefer <limits.h> to <assert.h> if __STDC__ is defined, since
+    <limits.h> exists even on freestanding compilers.  */
+
+#ifdef __STDC__
+# include <limits.h>
+#else
+# include <assert.h>
+#endif
+
+#undef using_history
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char using_history ();
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined __stub_using_history || defined __stub___using_history
+choke me
+#endif
+
+int
+main ()
+{
+return using_history ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_link") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag" || test ! -s conftest.err'
+  { (case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_try") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_try") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_func_using_history=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_func_using_history=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
+      conftest$ac_exeext conftest.$ac_ext
+fi
+{ echo "$as_me:$LINENO: result: $ac_cv_func_using_history" >&5
+echo "${ECHO_T}$ac_cv_func_using_history" >&6; }
+if test $ac_cv_func_using_history = yes; then
+  :
+else
+  case " $LIBOBJS " in
+  *" history.$ac_objext "*
+fi
+ ;;
+  *) LIBOBJS="$LIBOBJS history.$ac_objext"
+ ;;
+esac
+)
+
 { echo "$as_me:$LINENO: checking for dumb C compiler" >&5
 echo $ECHO_N "checking for dumb C compiler... $ECHO_C" >&6; }
 if test "${git_cv_dumb_cc+set}" = set; then
