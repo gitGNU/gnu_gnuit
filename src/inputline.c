@@ -255,7 +255,7 @@ il_init()
     il->window = window_init();
 
 
-    use_section("[GIT-Setup]");
+    use_section("[GITFM-Setup]");
 
     configuration_getvarinfo("HistoryFile", &data, 1, DO_SEEK);
     il->history_file = tilde_expand(data ? data : "~/.githistory");
