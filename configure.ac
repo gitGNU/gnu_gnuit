@@ -377,8 +377,8 @@ dnl its tilde_expand() and history functions.  Otherwise, we have to use
 dnl the versions of tilde.c and history.c included in the package.  These
 dnl files belong to the GNU readline library version 2.0.1.
 AC_CHECK_LIB(readline, tilde_expand)
-AC_CHECK_FUNC(tilde_expand,, AC_LIBOBJ([tilde]))
-AC_CHECK_FUNC(using_history,, AC_LIBOBJ([history]))
+AC_CHECK_FUNC(tilde_expand,, [AC_LIBOBJ(tilde)])
+AC_CHECK_FUNC(using_history,, [AC_LIBOBJ(history)])
 
 dnl Check for compilers that do not support constructs combinations
 dnl of ANSI C like prototypes & K&R definitions.  B.O.S. systems.

@@ -12678,13 +12678,13 @@ if test $ac_cv_func_tilde_expand = yes; then
   :
 else
   case " $LIBOBJS " in
-  *" tilde.$ac_objext "*
-fi
- ;;
+  *" tilde.$ac_objext "* ) ;;
   *) LIBOBJS="$LIBOBJS tilde.$ac_objext"
  ;;
 esac
-)
+
+fi
+
 { echo "$as_me:$LINENO: checking for using_history" >&5
 echo $ECHO_N "checking for using_history... $ECHO_C" >&6; }
 if test "${ac_cv_func_using_history+set}" = set; then
@@ -12786,13 +12786,13 @@ if test $ac_cv_func_using_history = yes; then
   :
 else
   case " $LIBOBJS " in
-  *" history.$ac_objext "*
-fi
- ;;
+  *" history.$ac_objext "* ) ;;
   *) LIBOBJS="$LIBOBJS history.$ac_objext"
  ;;
 esac
-)
+
+fi
+
 
 { echo "$as_me:$LINENO: checking for dumb C compiler" >&5
 echo $ECHO_N "checking for dumb C compiler... $ECHO_C" >&6; }
