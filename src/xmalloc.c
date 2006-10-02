@@ -40,6 +40,8 @@ void
 xalloc_die(void)
 {
     fatal("virtual memory exhausted");
+    /* NOTREACHED */
+    abort();
 }
 
 void
