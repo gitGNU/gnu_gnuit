@@ -3,7 +3,7 @@
 AUTOMAKE_OPTIONS = 1.9
 
 EXTRA_DIST = PLATFORMS PROBLEMS LSM.in version version.h.in\
-	     git.spec.in mkvcs prepare
+	     git.spec.in mkvcs prepare 
 SUBDIRS = lib src term doc 
 
 ACLOCAL_AMFLAGS = -I m4
@@ -12,5 +12,4 @@ html:
 	cd doc && $(MAKE) html
 
 dist-hook:
-	rm -f $(distdir)/TODO
 	cp LSM git.spec $(distdir) 

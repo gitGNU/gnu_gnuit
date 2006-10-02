@@ -5,12 +5,14 @@
 
 # $Id: prepare,v 1.6 2004/01/28 00:08:20 tudor Exp $
 
+AMFLAGS=
+
 if [ "$1" = "-a" ]
 then
 #    gnulib-tool --import fsusage getopt strcase strstr memmove fnmatch fnmatch-gnu rename readlink putenv xalloc ; echo -n .
     gnulib-tool --update; echo -n .
     patch -p0 < lib-Makefile.am.patch ; echo -n .
-    automake --foreign --add-missing --force-missing --copy ; echo -n .
+    AMFLAGS="--add-missing --force-missing --copy"
 fi
 
 rm -rf autom4te.cache config.cache; echo -n "."
@@ -19,7 +21,7 @@ aclocal; echo -n "."
 autoheader 2>&1 | grep -v "config.h.in"
 echo -n "." &&
 aclocal -I m4 && echo -n "." &&
-automake --foreign && echo -n "."
+automake --foreign $AMFLAGS && echo -n "."
 autoconf
 echo -n "." &&
 echo " done"

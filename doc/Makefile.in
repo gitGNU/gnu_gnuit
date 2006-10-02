@@ -595,7 +595,6 @@ uninstall-man: uninstall-man1
 git.html:
 	-make html
 html:
-	cd $(srcdir) &&\
 	texi2html -expandinfo $(srcdir)/git.texinfo
 
 dist-hook: html

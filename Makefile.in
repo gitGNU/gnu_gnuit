@@ -40,8 +40,8 @@ DIST_COMMON = README $(am__configure_deps) $(srcdir)/LSM.in \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/config.h.in $(srcdir)/git.spec.in \
 	$(srcdir)/version.h.in $(top_srcdir)/configure AUTHORS COPYING \
-	ChangeLog INSTALL NEWS TODO config.guess config.rpath \
-	config.sub depcomp install-sh missing mkinstalldirs
+	ChangeLog INSTALL NEWS TODO config.guess config.sub depcomp \
+	install-sh missing mkinstalldirs
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/absolute-header.m4 \
@@ -220,7 +220,7 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 AUTOMAKE_OPTIONS = 1.9
 EXTRA_DIST = PLATFORMS PROBLEMS LSM.in version version.h.in\
-	     git.spec.in mkvcs prepare
+	     git.spec.in mkvcs prepare 
 
 SUBDIRS = lib src term doc 
 ACLOCAL_AMFLAGS = -I m4
@@ -662,7 +662,6 @@ html:
 	cd doc && $(MAKE) html
 
 dist-hook:
-	rm -f $(distdir)/TODO
 	cp LSM git.spec $(distdir) 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

@@ -14,7 +14,6 @@ EXTRA_DIST = gitfm.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 gitunpack.1\
 git.html:
 	-make html
 html:
-	cd $(srcdir) &&\
 	texi2html -expandinfo $(srcdir)/git.texinfo
 
 dist-hook: html

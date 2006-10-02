@@ -1,6 +1,6 @@
 # $Id: Makefile.am,v 1.5 2005-12-07 13:56:05 ianb Exp $
 EXTRA_DIST = gitaction gitmkdirs gitmount gitrgrep gitunpack gitxgrep\
-	     .gitaction .gdbinit
+	     .gitaction .gdbinit git.transition
 
 bin_PROGRAMS = gitfm gitps gitview gitwipe gitkeys gitwhich
 bin_SCRIPTS = gitaction gitmkdirs gitmount gitrgrep gitunpack gitxgrep\
