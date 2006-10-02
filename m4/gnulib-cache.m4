@@ -15,11 +15,11 @@
 
 
 # Specification in the form of a command-line invocation:
-#   gnulib-tool --import --dir=. --lib=libgnu --source-base=lib --m4-base=m4 --doc-base=doc --aux-dir=. --no-libtool --macro-prefix=gl fnmatch fnmatch-gnu fsusage getopt memmove putenv readlink rename strcase strstr
+#   gnulib-tool --import --dir=. --lib=libgnu --source-base=lib --m4-base=m4 --doc-base=doc --aux-dir=. --no-libtool --macro-prefix=gl fnmatch fnmatch-gnu fsusage getopt memmove putenv readlink rename strcase strstr xalloc
 
 # Specification in the form of a few gnulib-tool.m4 macro invocations:
 gl_LOCAL_DIR([])
-gl_MODULES([fnmatch fnmatch-gnu fsusage getopt memmove putenv readlink rename strcase strstr])
+gl_MODULES([fnmatch fnmatch-gnu fsusage getopt memmove putenv readlink rename strcase strstr xalloc])
 gl_AVOID([])
 gl_SOURCE_BASE([lib])
 gl_M4_BASE([m4])

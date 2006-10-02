@@ -37,10 +37,9 @@
 
 #include "stdc.h"
 
+#include "xalloc.h"
 
-extern char *xmalloc PROTO ((size_t));
-extern char *xcalloc PROTO ((size_t, size_t));
-extern char *xrealloc PROTO ((void *, size_t));
+extern void  xalloc_die PROTO ((void));
 extern void  xfree PROTO ((void *));
 
 

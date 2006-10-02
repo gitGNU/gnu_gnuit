@@ -46,7 +46,7 @@
 
 
 #include "stdc.h"
-
+#include "xalloc.h"
 
 #ifndef HAVE_STRCASECMP
 #include "strcase.h"
@@ -59,7 +59,5 @@
 #ifndef HAVE_STRSTR
 #include "strstr.h"
 #endif /* !HAVE_STRSTR */
-
-extern char *xstrdup PROTO ((const char *));
 
 #endif  /* _GIT_XSTRING_H */

@@ -71,8 +71,8 @@ PROGRAMS = $(bin_PROGRAMS)
 am_gitfm_OBJECTS = git.$(OBJEXT) tty.$(OBJEXT) window.$(OBJEXT) \
 	inputline.$(OBJEXT) status.$(OBJEXT) panel.$(OBJEXT) \
 	title.$(OBJEXT) configure.$(OBJEXT) misc.$(OBJEXT) \
-	signals.$(OBJEXT) xmalloc.$(OBJEXT) xstring.$(OBJEXT) \
-	xio.$(OBJEXT) xid.$(OBJEXT) xstack.$(OBJEXT) system.$(OBJEXT)
+	signals.$(OBJEXT) xmalloc.$(OBJEXT) xio.$(OBJEXT) \
+	xid.$(OBJEXT) xstack.$(OBJEXT) system.$(OBJEXT)
 gitfm_OBJECTS = $(am_gitfm_OBJECTS)
 gitfm_DEPENDENCIES =
 am_gitkeys_OBJECTS = gitkeys.$(OBJEXT)
@@ -80,12 +80,12 @@ gitkeys_OBJECTS = $(am_gitkeys_OBJECTS)
 gitkeys_LDADD = $(LDADD)
 am_gitps_OBJECTS = gitps.$(OBJEXT) tty.$(OBJEXT) window.$(OBJEXT) \
 	misc.$(OBJEXT) configure.$(OBJEXT) signals.$(OBJEXT) \
-	xio.$(OBJEXT) xmalloc.$(OBJEXT) xstring.$(OBJEXT)
+	xio.$(OBJEXT) xmalloc.$(OBJEXT)
 gitps_OBJECTS = $(am_gitps_OBJECTS)
 gitps_DEPENDENCIES =
 am_gitview_OBJECTS = gitview.$(OBJEXT) tty.$(OBJEXT) window.$(OBJEXT) \
 	misc.$(OBJEXT) configure.$(OBJEXT) signals.$(OBJEXT) \
-	xio.$(OBJEXT) xmalloc.$(OBJEXT) xstring.$(OBJEXT)
+	xio.$(OBJEXT) xmalloc.$(OBJEXT)
 gitview_OBJECTS = $(am_gitview_OBJECTS)
 gitview_DEPENDENCIES =
 am_gitwhich_OBJECTS = gitwhich.$(OBJEXT) xmalloc.$(OBJEXT)
@@ -252,16 +252,16 @@ EXTRA_gitfm_SOURCES = ansi_stdlib.h file.h stat.h stdc.h xtime.h
 gitfm_SOURCES = git.c tty.c tty.h window.c window.h inputline.c inputline.h\
 	      status.c status.h panel.c panel.h title.c title.h\
 	      configure.c configure.h misc.c misc.h signals.c signals.h\
-	      xmalloc.c xmalloc.h xstring.c xstring.h xio.c xio.h\
+	      xmalloc.c xmalloc.h xstring.h xio.c xio.h\
 	      xid.c xid.h xstack.c xstack.h system.c system.h
 
 gitps_SOURCES = gitps.c tty.c tty.h window.c window.h misc.c misc.h\
 		configure.c configure.h signals.c signals.h xio.c xio.h\
-		xmalloc.c xmalloc.h xstring.c xstring.h 
+		xmalloc.c xmalloc.h xstring.h 
 
 gitview_SOURCES = gitview.c tty.c tty.h window.c window.h misc.c misc.h\
 		  configure.c configure.h signals.c signals.h xio.c xio.h\
-		  xmalloc.c xmalloc.h xstring.c xstring.h
+		  xmalloc.c xmalloc.h xstring.h
 
 gitwipe_SOURCES = gitwipe.c
 gitkeys_SOURCES = gitkeys.c
@@ -390,7 +390,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xio.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xmalloc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xstack.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xstring.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	if $(COMPILE) -MT $@ -MD -MP -MF "$(DEPDIR)/$*.Tpo" -c -o $@ $<; \

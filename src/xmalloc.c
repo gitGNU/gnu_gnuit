@@ -36,54 +36,11 @@
 
 extern void fatal PROTO ((char *));
 
-
-char *
-xmalloc(size)
-    size_t size;
+void 
+xalloc_die(void)
 {
-    void *pointer = malloc(size ? size : 1);
-
-    if (pointer == NULL)
-	fatal("xmalloc: virtual memory exhausted");
-
-    return (char *)pointer;
+    fatal("virtual memory exhausted");
 }
-
-
-char *
-xcalloc(count, itemsize)
-    size_t count, itemsize;
-{
-    void *pointer;
-
-    if (count && itemsize)
-	pointer = calloc(count, itemsize);
-    else
-	pointer = calloc(1, 1);
-
-    if (pointer == NULL)
-	fatal("xcalloc: virtual memory exhausted");
-
-    return (char *)pointer;
-}
-
-
-char *
-xrealloc(pointer, size)
-    void *pointer;
-    size_t size;
-{
-    /* I know realloc should call malloc if 'pointer' is NULL, but it seems
-       to work better on suns. Strange... */
-    void *new_pointer = pointer ? realloc(pointer, size ? size : 1) :
-				  malloc(size ? size : 1);
-
-    if (new_pointer == NULL)
-	fatal("xrealloc: virtual memory exhausted");
-
-    return (char *)new_pointer;
-}
-
 
 void
 xfree(pointer)
