@@ -1324,11 +1324,6 @@ Optional Features:
   --enable-gcc-warnings   more gcc warnings for debugging purposes
   --enable-efence         link against the Electric Fence library
 
-Optional Packages:
-  --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
-  --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
-  --with-terminfo         use terminfo insted of termcap
-
 Some influential environment variables:
   CC          C compiler command
   CFLAGS      C compiler flags
@@ -4129,15 +4124,6 @@ HOST=$host
 
 
 
-
-
-
-# Check whether --with-terminfo was given.
-if test "${with_terminfo+set}" = set; then
-  withval=$with_terminfo; TERMINFO="$withval"
-else
-  TERMINFO=no
-fi
 
 
 # Check whether --enable-smp was given.
@@ -16002,11 +15988,93 @@ _ACEOF
 
 fi
 
+{ echo "$as_me:$LINENO: checking for tgetent in -lncursesw" >&5
+echo $ECHO_N "checking for tgetent in -lncursesw... $ECHO_C" >&6; }
+if test "${ac_cv_lib_ncursesw_tgetent+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lncursesw  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
 
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char tgetent ();
+int
+main ()
+{
+return tgetent ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_link") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag" || test ! -s conftest.err'
+  { (case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_try") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_try") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_ncursesw_tgetent=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
 
-if test "$TERMINFO" = "yes"; then
+	ac_cv_lib_ncursesw_tgetent=no
+fi
 
-	{ echo "$as_me:$LINENO: checking for tgetent in -lncurses" >&5
+rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
+      conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ echo "$as_me:$LINENO: result: $ac_cv_lib_ncursesw_tgetent" >&5
+echo "${ECHO_T}$ac_cv_lib_ncursesw_tgetent" >&6; }
+if test $ac_cv_lib_ncursesw_tgetent = yes; then
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_LIBTERMINFO 1
+_ACEOF
+
+    LIBS="$LIBS -lncursesw"
+    TERMLIB_FOUND=yes
+else
+  { echo "$as_me:$LINENO: checking for tgetent in -lncurses" >&5
 echo $ECHO_N "checking for tgetent in -lncurses... $ECHO_C" >&6; }
 if test "${ac_cv_lib_ncurses_tgetent+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -16089,8 +16157,8 @@ cat >>confdefs.h <<\_ACEOF
 #define HAVE_LIBTERMINFO 1
 _ACEOF
 
-            LIBS="$LIBS -lncurses"
-            TERMLIB_FOUND=yes
+        LIBS="$LIBS -lncurses"
+        TERMLIB_FOUND=yes
 else
   { echo "$as_me:$LINENO: checking for tgetent in -ltermlib" >&5
 echo $ECHO_N "checking for tgetent in -ltermlib... $ECHO_C" >&6; }
@@ -16175,634 +16243,9 @@ cat >>confdefs.h <<\_ACEOF
 #define HAVE_LIBTERMINFO 1
 _ACEOF
 
-                LIBS="$LIBS -ltermlib"
-                TERMLIB_FOUND=yes
-else
-  { echo "$as_me:$LINENO: checking for tgetent in -lcurses" >&5
-echo $ECHO_N "checking for tgetent in -lcurses... $ECHO_C" >&6; }
-if test "${ac_cv_lib_curses_tgetent+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lcurses  $LIBS"
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char tgetent ();
-int
-main ()
-{
-return tgetent ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (ac_try="$ac_link"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_link") 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag" || test ! -s conftest.err'
-  { (case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_try") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; } &&
-	 { ac_try='test -s conftest$ac_exeext'
-  { (case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_try") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_cv_lib_curses_tgetent=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-	ac_cv_lib_curses_tgetent=no
-fi
-
-rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
-      conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ echo "$as_me:$LINENO: result: $ac_cv_lib_curses_tgetent" >&5
-echo "${ECHO_T}$ac_cv_lib_curses_tgetent" >&6; }
-if test $ac_cv_lib_curses_tgetent = yes; then
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_LIBTERMINFO 1
-_ACEOF
-
-                    LIBS="$LIBS -lcurses"
-                    TERMLIB_FOUND=yes
-else
-  { echo "$as_me:$LINENO: checking for tgetent in -ltinfo" >&5
-echo $ECHO_N "checking for tgetent in -ltinfo... $ECHO_C" >&6; }
-if test "${ac_cv_lib_tinfo_tgetent+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-ltinfo  $LIBS"
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char tgetent ();
-int
-main ()
-{
-return tgetent ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (ac_try="$ac_link"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_link") 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag" || test ! -s conftest.err'
-  { (case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_try") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; } &&
-	 { ac_try='test -s conftest$ac_exeext'
-  { (case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_try") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_cv_lib_tinfo_tgetent=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-	ac_cv_lib_tinfo_tgetent=no
-fi
-
-rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
-      conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ echo "$as_me:$LINENO: result: $ac_cv_lib_tinfo_tgetent" >&5
-echo "${ECHO_T}$ac_cv_lib_tinfo_tgetent" >&6; }
-if test $ac_cv_lib_tinfo_tgetent = yes; then
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_LIBTERMINFO 1
-_ACEOF
-
-                        LIBS="$LIBS -ltinfo"
-                        TERMLIB_FOUND=yes
-else
-  { echo "$as_me:$LINENO: checking for tgetent in -lterminfo" >&5
-echo $ECHO_N "checking for tgetent in -lterminfo... $ECHO_C" >&6; }
-if test "${ac_cv_lib_terminfo_tgetent+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lterminfo  $LIBS"
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char tgetent ();
-int
-main ()
-{
-return tgetent ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (ac_try="$ac_link"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_link") 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag" || test ! -s conftest.err'
-  { (case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_try") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; } &&
-	 { ac_try='test -s conftest$ac_exeext'
-  { (case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_try") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_cv_lib_terminfo_tgetent=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-	ac_cv_lib_terminfo_tgetent=no
-fi
-
-rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
-      conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ echo "$as_me:$LINENO: result: $ac_cv_lib_terminfo_tgetent" >&5
-echo "${ECHO_T}$ac_cv_lib_terminfo_tgetent" >&6; }
-if test $ac_cv_lib_terminfo_tgetent = yes; then
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_LIBTERMINFO 1
-_ACEOF
-
-                            LIBS="$LIBS -lterminfo"
-                            TERMLIB_FOUND=yes
-else
-  TERMLIB_FOUND=no
-
-fi
-
-
-fi
-
-
-fi
-
-
-fi
-
-
-fi
-
-
-
-    if test "$TERMLIB_FOUND" = "no"; then
-        { echo "$as_me:$LINENO: checking for tgetent in -ltermcap" >&5
-echo $ECHO_N "checking for tgetent in -ltermcap... $ECHO_C" >&6; }
-if test "${ac_cv_lib_termcap_tgetent+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-ltermcap  $LIBS"
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char tgetent ();
-int
-main ()
-{
-return tgetent ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (ac_try="$ac_link"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_link") 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag" || test ! -s conftest.err'
-  { (case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_try") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; } &&
-	 { ac_try='test -s conftest$ac_exeext'
-  { (case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_try") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_cv_lib_termcap_tgetent=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-	ac_cv_lib_termcap_tgetent=no
-fi
-
-rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
-      conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ echo "$as_me:$LINENO: result: $ac_cv_lib_termcap_tgetent" >&5
-echo "${ECHO_T}$ac_cv_lib_termcap_tgetent" >&6; }
-if test $ac_cv_lib_termcap_tgetent = yes; then
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_LIBTERMCAP 1
-_ACEOF
-
-            LIBS="$LIBS -ltermcap"
-            TERMLIB_FOUND="yes"
-fi
-
-    fi
-else
-    { echo "$as_me:$LINENO: checking for tgetent in -ltermcap" >&5
-echo $ECHO_N "checking for tgetent in -ltermcap... $ECHO_C" >&6; }
-if test "${ac_cv_lib_termcap_tgetent+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-ltermcap  $LIBS"
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char tgetent ();
-int
-main ()
-{
-return tgetent ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (ac_try="$ac_link"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_link") 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag" || test ! -s conftest.err'
-  { (case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_try") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; } &&
-	 { ac_try='test -s conftest$ac_exeext'
-  { (case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_try") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_cv_lib_termcap_tgetent=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-	ac_cv_lib_termcap_tgetent=no
-fi
-
-rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
-      conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ echo "$as_me:$LINENO: result: $ac_cv_lib_termcap_tgetent" >&5
-echo "${ECHO_T}$ac_cv_lib_termcap_tgetent" >&6; }
-if test $ac_cv_lib_termcap_tgetent = yes; then
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_LIBTERMCAP 1
-_ACEOF
-
-        LIBS="$LIBS -ltermcap"
-        TERMLIB_FOUND="yes"
-else
-
-	{ echo "$as_me:$LINENO: checking for tgetent in -lncurses" >&5
-echo $ECHO_N "checking for tgetent in -lncurses... $ECHO_C" >&6; }
-if test "${ac_cv_lib_ncurses_tgetent+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lncurses  $LIBS"
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char tgetent ();
-int
-main ()
-{
-return tgetent ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (ac_try="$ac_link"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_link") 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag" || test ! -s conftest.err'
-  { (case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_try") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; } &&
-	 { ac_try='test -s conftest$ac_exeext'
-  { (case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_try") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_cv_lib_ncurses_tgetent=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-	ac_cv_lib_ncurses_tgetent=no
-fi
-
-rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
-      conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ echo "$as_me:$LINENO: result: $ac_cv_lib_ncurses_tgetent" >&5
-echo "${ECHO_T}$ac_cv_lib_ncurses_tgetent" >&6; }
-if test $ac_cv_lib_ncurses_tgetent = yes; then
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_LIBTERMINFO 1
-_ACEOF
-
-            LIBS="$LIBS -lncurses"
+            LIBS="$LIBS -ltermlib"
             TERMLIB_FOUND=yes
 else
-  { echo "$as_me:$LINENO: checking for tgetent in -ltermlib" >&5
-echo $ECHO_N "checking for tgetent in -ltermlib... $ECHO_C" >&6; }
-if test "${ac_cv_lib_termlib_tgetent+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-ltermlib  $LIBS"
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char tgetent ();
-int
-main ()
-{
-return tgetent ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (ac_try="$ac_link"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_link") 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag" || test ! -s conftest.err'
-  { (case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_try") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; } &&
-	 { ac_try='test -s conftest$ac_exeext'
-  { (case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_try") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_cv_lib_termlib_tgetent=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-	ac_cv_lib_termlib_tgetent=no
-fi
-
-rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
-      conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ echo "$as_me:$LINENO: result: $ac_cv_lib_termlib_tgetent" >&5
-echo "${ECHO_T}$ac_cv_lib_termlib_tgetent" >&6; }
-if test $ac_cv_lib_termlib_tgetent = yes; then
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_LIBTERMINFO 1
-_ACEOF
-
-                LIBS="$LIBS -ltermlib"
-                TERMLIB_FOUND=yes
-else
   { echo "$as_me:$LINENO: checking for tgetent in -lcurses" >&5
 echo $ECHO_N "checking for tgetent in -lcurses... $ECHO_C" >&6; }
 if test "${ac_cv_lib_curses_tgetent+set}" = set; then
@@ -16886,8 +16329,8 @@ cat >>confdefs.h <<\_ACEOF
 #define HAVE_LIBTERMINFO 1
 _ACEOF
 
-                    LIBS="$LIBS -lcurses"
-                    TERMLIB_FOUND=yes
+                LIBS="$LIBS -lcurses"
+                TERMLIB_FOUND=yes
 else
   { echo "$as_me:$LINENO: checking for tgetent in -ltinfo" >&5
 echo $ECHO_N "checking for tgetent in -ltinfo... $ECHO_C" >&6; }
@@ -16972,8 +16415,8 @@ cat >>confdefs.h <<\_ACEOF
 #define HAVE_LIBTERMINFO 1
 _ACEOF
 
-                        LIBS="$LIBS -ltinfo"
-                        TERMLIB_FOUND=yes
+                    LIBS="$LIBS -ltinfo"
+                    TERMLIB_FOUND=yes
 else
   { echo "$as_me:$LINENO: checking for tgetent in -lterminfo" >&5
 echo $ECHO_N "checking for tgetent in -lterminfo... $ECHO_C" >&6; }
@@ -17058,8 +16501,94 @@ cat >>confdefs.h <<\_ACEOF
 #define HAVE_LIBTERMINFO 1
 _ACEOF
 
-                            LIBS="$LIBS -lterminfo"
-                            TERMLIB_FOUND=yes
+                        LIBS="$LIBS -lterminfo"
+                        TERMLIB_FOUND=yes
+else
+  { echo "$as_me:$LINENO: checking for tgetent in -ltermcap" >&5
+echo $ECHO_N "checking for tgetent in -ltermcap... $ECHO_C" >&6; }
+if test "${ac_cv_lib_termcap_tgetent+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-ltermcap  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char tgetent ();
+int
+main ()
+{
+return tgetent ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_link") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag" || test ! -s conftest.err'
+  { (case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_try") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_try") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_termcap_tgetent=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_lib_termcap_tgetent=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
+      conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ echo "$as_me:$LINENO: result: $ac_cv_lib_termcap_tgetent" >&5
+echo "${ECHO_T}$ac_cv_lib_termcap_tgetent" >&6; }
+if test $ac_cv_lib_termcap_tgetent = yes; then
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_LIBTERMCAP 1
+_ACEOF
+
+                        LIBS="$LIBS -ltermcap"
+                        TERMLIB_FOUND=yes
 else
   TERMLIB_FOUND=no
 
@@ -17078,10 +16607,12 @@ fi
 fi
 
 
+fi
+
 
 fi
 
-fi
+
 
 if test "$TERMLIB_FOUND" = "no"; then
     { { echo "$as_me:$LINENO: error: no library for handling terminal capabilities" >&5
@@ -17302,7 +16833,7 @@ if test "$TEXI2HTML" = "false"; then
 echo "$as_me: WARNING: ***** texi2html utility not found *****" >&2;}
 fi
 
-if test "$TERMINFO" = "no"; then
+if test "$HAVE_LIBTERMCAP" = "yes"; then
     if test "$host_os" = "solaris2.3" || test "$host_os" = "solaris2.4"; then
 
 { echo "$as_me:$LINENO: checking for tgetent in -lucb" >&5
