@@ -115,66 +115,6 @@ xwrite(fd, buf, count)
 }
 
 
-#ifndef HAVE_RENAME
-
-/*
- * This is a rename() function for the systems that don't have one.
- * Stolen from glibc-1.08.1.
- */
-
-int
-rename(old, new)
-    const char *old;
-    const char *new;
-{
-    int old_errno = errno;
-
-    if (link(old, new) < 0)
-    {
-	if (errno == EEXIST)
-	{
-	    errno = old_errno;
-
-	    /* Race condition, required for 1003.1 conformance.  */
-	    if (unlink(new) < 0 || link(old, new) < 0)
-		return -1;
-	}
-	else
-	    return -1;
-    }
-
-    if (unlink(old) < 0)
-    {
-	old_errno = errno;
-
-	if (unlink(new) == 0)
-	    errno = old_errno;
-
-	return -1;
-    }
-
-    return 0;
-}
-#endif /* HAVE_RENAME */
-
-
-#ifndef HAVE_READLINK
-
-/*
- * readlink() stub.  Just to make things compile.
- */
-
-int
-readlink(path, buf, bufsize)
-    const char *path;
-    char *buf;
-    size_t bufsize;
-{
-    /* The underlying system doesn't have the readlink() system call.  */
-    return -1;
-}
-#endif /* HAVE_READLINK */
-
 
 int
 __xreadlink(path, buf, size)

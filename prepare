@@ -5,8 +5,15 @@
 
 # $Id: prepare,v 1.6 2004/01/28 00:08:20 tudor Exp $
 
+
+if [ "$1" = "-a" ]
+then
+#    gnulib-tool --import fsusage getopt strcase strstr memmove fnmatch fnmatch-gnu rename readlink putenv ; echo -n .
+    gnulib-tool --update; echo -n .
+    automake --foreign --add-missing --force-missing --copy ; echo -n .
+fi
+
 rm -rf autom4te.cache config.cache; echo -n "."
-#gnulib-tool --update; echo -n .
 aclocal; echo -n "."
 #libtoolize --automake --copy --force && echo -n "."
 autoheader 2>&1 | grep -v "config.h.in"

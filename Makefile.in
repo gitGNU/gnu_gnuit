@@ -45,15 +45,24 @@ DIST_COMMON = README $(am__configure_deps) $(srcdir)/LSM.in \
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/absolute-header.m4 \
-	$(top_srcdir)/m4/alloca.m4 $(top_srcdir)/m4/fnmatch.m4 \
-	$(top_srcdir)/m4/fsusage.m4 $(top_srcdir)/m4/getopt.m4 \
-	$(top_srcdir)/m4/gnulib-comp.m4 $(top_srcdir)/m4/longlong.m4 \
-	$(top_srcdir)/m4/mbstate_t.m4 \
-	$(top_srcdir)/m4/onceonly_2_57.m4 \
-	$(top_srcdir)/m4/safe-read.m4 $(top_srcdir)/m4/safe-write.m4 \
-	$(top_srcdir)/m4/ssize_t.m4 $(top_srcdir)/m4/stdbool.m4 \
-	$(top_srcdir)/m4/stdint.m4 $(top_srcdir)/m4/unistd_h.m4 \
-	$(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/alloca.m4 $(top_srcdir)/m4/dirname.m4 \
+	$(top_srcdir)/m4/dos.m4 $(top_srcdir)/m4/double-slash-root.m4 \
+	$(top_srcdir)/m4/error.m4 $(top_srcdir)/m4/exitfail.m4 \
+	$(top_srcdir)/m4/fnmatch.m4 $(top_srcdir)/m4/fsusage.m4 \
+	$(top_srcdir)/m4/getopt.m4 $(top_srcdir)/m4/gnulib-comp.m4 \
+	$(top_srcdir)/m4/longlong.m4 $(top_srcdir)/m4/mbchar.m4 \
+	$(top_srcdir)/m4/mbiter.m4 $(top_srcdir)/m4/mbrtowc.m4 \
+	$(top_srcdir)/m4/mbstate_t.m4 $(top_srcdir)/m4/memchr.m4 \
+	$(top_srcdir)/m4/memmove.m4 $(top_srcdir)/m4/onceonly_2_57.m4 \
+	$(top_srcdir)/m4/putenv.m4 $(top_srcdir)/m4/readlink.m4 \
+	$(top_srcdir)/m4/rename.m4 $(top_srcdir)/m4/safe-read.m4 \
+	$(top_srcdir)/m4/safe-write.m4 $(top_srcdir)/m4/ssize_t.m4 \
+	$(top_srcdir)/m4/stdbool.m4 $(top_srcdir)/m4/stdint.m4 \
+	$(top_srcdir)/m4/strcase.m4 $(top_srcdir)/m4/strndup.m4 \
+	$(top_srcdir)/m4/strnlen.m4 $(top_srcdir)/m4/strstr.m4 \
+	$(top_srcdir)/m4/unistd_h.m4 $(top_srcdir)/m4/wchar_t.m4 \
+	$(top_srcdir)/m4/wcwidth.m4 $(top_srcdir)/m4/xalloc.m4 \
+	$(top_srcdir)/m4/xstrndup.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \

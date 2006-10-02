@@ -37,6 +37,22 @@
 /* Define to 1 if using `alloca.c'. */
 #undef C_ALLOCA
 
+/* Define to 1 if // is a file system root distinct from /. */
+#undef DOUBLE_SLASH_IS_DISTINCT_ROOT
+
+/* Define on systems for which file names may have a so-called `drive letter'
+   prefix, define this to compute the length of that prefix, including the
+   colon. */
+#undef FILE_SYSTEM_ACCEPTS_DRIVE_LETTER_PREFIX
+
+/* Define if the backslash character may also serve as a file name component
+   separator. */
+#undef FILE_SYSTEM_BACKSLASH_IS_FILE_NAME_SEPARATOR
+
+/* Define if a drive letter prefix denotes a relative path if it is not
+   followed by a file name component separator. */
+#undef FILE_SYSTEM_DRIVE_PREFIX_CAN_BE_RELATIVE
+
 /* Define if you have the Unix 64bit I/O API. */
 #undef HAVE_64BIT_IO
 
@@ -46,6 +62,9 @@
 /* Define to 1 if you have <alloca.h> and it should be used (not on Ultrix).
    */
 #undef HAVE_ALLOCA_H
+
+/* Define to 1 if you have the <bp-sym.h> header file. */
+#undef HAVE_BP_SYM_H
 
 /* Define if you have BSD compatible terminal interface. */
 #undef HAVE_BSD_TTY
@@ -60,6 +79,22 @@
 /* Define to 1 if you have the declaration of `isblank', and to 0 if you
    don't. */
 #undef HAVE_DECL_ISBLANK
+
+/* Define to 1 if you have the declaration of `strerror_r', and to 0 if you
+   don't. */
+#undef HAVE_DECL_STRERROR_R
+
+/* Define to 1 if you have the declaration of `strndup', and to 0 if you
+   don't. */
+#undef HAVE_DECL_STRNDUP
+
+/* Define to 1 if you have the declaration of `strnlen', and to 0 if you
+   don't. */
+#undef HAVE_DECL_STRNLEN
+
+/* Define to 1 if you have the declaration of `wcwidth', and to 0 if you
+   don't. */
+#undef HAVE_DECL_WCWIDTH
 
 /* Define to 1 if you have the <dirent.h> header file, and it defines `DIR'.
    */
@@ -89,6 +124,12 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
+/* Define to 1 if you have the `iswcntrl' function. */
+#undef HAVE_ISWCNTRL
+
+/* Define to 1 if you have the `iswprint' function. */
+#undef HAVE_ISWPRINT
+
 /* Define to 1 if you have the `readline' library (-lreadline). */
 #undef HAVE_LIBREADLINE
 
@@ -116,11 +157,17 @@
 /* Define to 1 if you have the `lstat' function. */
 #undef HAVE_LSTAT
 
+/* Define to 1 if mbrtowc and mbstate_t are properly declared. */
+#undef HAVE_MBRTOWC
+
 /* Define to 1 if you have the `mbsrtowcs' function. */
 #undef HAVE_MBSRTOWCS
 
 /* Define to 1 if <wchar.h> declares mbstate_t. */
 #undef HAVE_MBSTATE_T
+
+/* Define to 1 if you have the `memchr' function. */
+#undef HAVE_MEMCHR
 
 /* Define to 1 if you have the `memmove' function. */
 #undef HAVE_MEMMOVE
@@ -182,6 +229,9 @@
 /* Define to 1 if you have the `strerror' function. */
 #undef HAVE_STRERROR
 
+/* Define to 1 if you have the `strerror_r' function. */
+#undef HAVE_STRERROR_R
+
 /* Define to 1 if you have the <strings.h> header file. */
 #undef HAVE_STRINGS_H
 
@@ -190,6 +240,9 @@
 
 /* Define to 1 if you have the `strncasecmp' function. */
 #undef HAVE_STRNCASECMP
+
+/* Define if you have the strndup() function and it works. */
+#undef HAVE_STRNDUP
 
 /* Define to 1 if you have the `strstr' function. */
 #undef HAVE_STRSTR
@@ -265,8 +318,14 @@
 /* Define to 1 if you have the <wchar.h> header file. */
 #undef HAVE_WCHAR_H
 
+/* Define if you have the 'wchar_t' type. */
+#undef HAVE_WCHAR_T
+
 /* Define to 1 if you have the <wctype.h> header file. */
 #undef HAVE_WCTYPE_H
+
+/* Define to 1 if you have the `wcwidth' function. */
+#undef HAVE_WCWIDTH
 
 /* Define if you have the TIOCGWINSZ ioctl system call. */
 #undef HAVE_WINSZ
@@ -282,6 +341,12 @@
 
 /* Define to 1 if the system has the type `_Bool'. */
 #undef HAVE__BOOL
+
+#if FILE_SYSTEM_BACKSLASH_IS_FILE_NAME_SEPARATOR
+# define ISSLASH(C) ((C) == '/' || (C) == '\\')
+#else
+# define ISSLASH(C) ((C) == '/')
+#endif
 
 /* Define if you want to disable various consistency checkings. */
 #undef NDEBUG
@@ -307,6 +372,10 @@
 /* Define to l, ll, u, ul, ull, etc., as suitable for constants of type
    'ptrdiff_t'. */
 #undef PTRDIFF_T_SUFFIX
+
+/* Define if rename does not work for source file names with a trailing slash,
+   like the one from SunOS 4.1.1_U1. */
+#undef RENAME_TRAILING_SLASH_BUG
 
 /* Define as the return type of signal handlers (`int' or `void'). */
 #undef RETSIGTYPE
@@ -363,6 +432,9 @@
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
+/* Define to 1 if strerror_r returns char *. */
+#undef STRERROR_R_CHAR_P
+
 /* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
 #undef TIME_WITH_SYS_TIME
 
@@ -412,6 +484,12 @@
 /* Define to `int' if <sys/types.h> doesn't define. */
 #undef gid_t
 
+/* Define to `__inline__' or `__inline' if that's what the C compiler
+   calls it, or to nothing if 'inline' is not supported under any name.  */
+#ifndef __cplusplus
+#undef inline
+#endif
+
 /* Define to a type if <wchar.h> does not define. */
 #undef mbstate_t
 
@@ -424,11 +502,26 @@
 /* Define to `int' if <sys/types.h> does not define. */
 #undef pid_t
 
+/* Define to rpl_putenv if the replacement function should be used. */
+#undef putenv
+
+/* Define to rpl_rename if the replacement function should be used. */
+#undef rename
+
 /* Define to `unsigned int' if <sys/types.h> does not define. */
 #undef size_t
 
 /* Define as a signed type of the same size as size_t. */
 #undef ssize_t
+
+/* Define to rpl_strcasecmp always. */
+#undef strcasecmp
+
+/* Define to rpl_strndup if the replacement function should be used, */
+#undef strndup
+
+/* Define to rpl_strnlen if the replacement function should be used. */
+#undef strnlen
 
 /* Define to `int' if <sys/types.h> doesn't define. */
 #undef uid_t

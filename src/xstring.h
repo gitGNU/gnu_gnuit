@@ -49,20 +49,16 @@
 
 
 #ifndef HAVE_STRCASECMP
-extern int strcasecmp PROTO ((const char *, const char *));
+#include "strcase.h"
 #endif /* !HAVE_STRCASECMP */
 
 #ifndef HAVE_STRNCASECMP
-extern int strncasecmp PROTO ((const char *, const char *, size_t));
+#include "strcase.h"
 #endif /* !HAVE_STRNCASECMP */
 
 #ifndef HAVE_STRSTR
-extern char *strstr PROTO ((const char *, const char *));
+#include "strstr.h"
 #endif /* !HAVE_STRSTR */
-
-#ifndef HAVE_MEMMOVE
-extern void *memmove PROTO ((void *, const void *, size_t));
-#endif /* !HAVE_MEMMOVE */
 
 extern char *xstrdup PROTO ((const char *));
 
