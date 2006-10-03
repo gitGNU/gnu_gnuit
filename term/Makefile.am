@@ -10,7 +10,7 @@ pkgdata_DATA = .gitrc.aixterm .gitrc.ansi .gitrc.common\
 
 GIT_GENERICS	 = .gitrc.sun .gitrc.sun-cmd .gitrc.eterm .gitrc.pc3
 GIT_XTERMS	 = .gitrc.xterms
-GIT_ANSIS	 = .gitrc.iris-ansi .gitrc.iris-ansi-net
+GIT_ANSIS	 = .gitrc.iris-ansi .gitrc.iris-ansi-net .gitrc.cygwin
 GIT_COLOR_XTERMS = .gitrc.dtterm .gitrc.rxvt .gitrc.xterm-debian .gitrc.Eterm
 GIT_LINUXS	 = .gitrc.console
 GIT_HPTERMS	 = .gitrc.hp
