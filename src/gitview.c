@@ -340,7 +340,7 @@ update_line(line)
 	sprintf(line_string, "%011X0  %02X %02X %02X %02X %02X %02X %02X\
  %02X  %02X %02X %02X %02X %02X %02X %02X %02X  \
 %c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c ",
-		(unsigned int)(line & 0xFFFFFFFFFFF),
+		(unsigned int)(line & 0xFFFFFFFF),
 		buf[0], buf[1], buf[2], buf[3],
 		buf[4], buf[5], buf[6], buf[7],
 		buf[8], buf[9], buf[10], buf[11],
