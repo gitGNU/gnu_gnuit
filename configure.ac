@@ -50,10 +50,20 @@ AH_BOTTOM(
 #endif
     ])
 
+dnl Default to enabling transition for this release
+TRANSITIONOPT=yes
+AC_ARG_ENABLE(
+    transition,
+    AS_HELP_STRING([--enable-transition], [install transitional /usr/bin/git]),
+    TRANSITIONOPT="$enableval",
+    TRANSITIONOPT=yes)
+
+AM_CONDITIONAL(TRANSITION, test "$TRANSITIONOPT" = yes)
+
 dnl Check for SMP compilation.
 AC_ARG_ENABLE(
     smp,
-    [  --enable-smp            enable parallel compilation (Linux only)],
+    AS_HELP_STRING([--enable-smp],[enable parallel compilation (Linux only)]),
     SMP="$enableval",
     SMP=no)
 
@@ -78,13 +88,13 @@ fi
 
 AC_ARG_ENABLE(
         gcc-warnings,
-        [  --enable-gcc-warnings   more gcc warnings for debugging purposes],
+        AS_HELP_STRING([--enable-gcc-warnings],[more gcc warnings for debugging purposes]),
         GCC_WARNINGS="$enableval",
         GCC_WARNINGS=no)
 
 AC_ARG_ENABLE(
         efence,
-        [  --enable-efence         link against the Electric Fence library],
+        AS_HELP_STRING([--enable-efence],[link against the Electric Fence library]),
         EFENCE="$enableval",
         EFENCE=no)
 
@@ -118,7 +128,6 @@ AC_AIX
 AC_ISC_POSIX
 AC_MINIX
 AC_CHECK_LIB(sun, getpwnam)
-
 
 dnl Check for standard C as well as system dependent header files.
 AC_HEADER_STDC

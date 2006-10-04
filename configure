@@ -687,6 +687,8 @@ am__fastdepCC_TRUE
 am__fastdepCC_FALSE
 RANLIB
 CPP
+TRANSITION_TRUE
+TRANSITION_FALSE
 GREP
 EGREP
 GL_COND_LIBTOOL_TRUE
@@ -1320,6 +1322,7 @@ Optional Features:
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --disable-dependency-tracking  speeds up one-time build
   --enable-dependency-tracking   do not reject slow dependency extractors
+  --enable-transition     install transitional /usr/bin/git
   --enable-smp            enable parallel compilation (Linux only)
   --enable-gcc-warnings   more gcc warnings for debugging purposes
   --enable-efence         link against the Electric Fence library
@@ -4126,6 +4129,26 @@ HOST=$host
 
 
 
+TRANSITIONOPT=yes
+# Check whether --enable-transition was given.
+if test "${enable_transition+set}" = set; then
+  enableval=$enable_transition; TRANSITIONOPT="$enableval"
+else
+  TRANSITIONOPT=yes
+fi
+
+
+
+
+if test "$TRANSITIONOPT" = yes; then
+  TRANSITION_TRUE=
+  TRANSITION_FALSE='#'
+else
+  TRANSITION_TRUE='#'
+  TRANSITION_FALSE=
+fi
+
+
 # Check whether --enable-smp was given.
 if test "${enable_smp+set}" = set; then
   enableval=$enable_smp; SMP="$enableval"
@@ -5038,7 +5061,6 @@ _ACEOF
   LIBS="-lsun $LIBS"
 
 fi
-
 
 
 { echo "$as_me:$LINENO: checking for ANSI C header files" >&5
@@ -17054,6 +17076,13 @@ echo "$as_me: error: conditional \"am__fastdepCC\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
+if test -z "${TRANSITION_TRUE}" && test -z "${TRANSITION_FALSE}"; then
+  { { echo "$as_me:$LINENO: error: conditional \"TRANSITION\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+echo "$as_me: error: conditional \"TRANSITION\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
 if test -z "${GL_COND_LIBTOOL_TRUE}" && test -z "${GL_COND_LIBTOOL_FALSE}"; then
   { { echo "$as_me:$LINENO: error: conditional \"GL_COND_LIBTOOL\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
@@ -17671,6 +17700,8 @@ am__fastdepCC_TRUE!$am__fastdepCC_TRUE$ac_delim
 am__fastdepCC_FALSE!$am__fastdepCC_FALSE$ac_delim
 RANLIB!$RANLIB$ac_delim
 CPP!$CPP$ac_delim
+TRANSITION_TRUE!$TRANSITION_TRUE$ac_delim
+TRANSITION_FALSE!$TRANSITION_FALSE$ac_delim
 GREP!$GREP$ac_delim
 EGREP!$EGREP$ac_delim
 GL_COND_LIBTOOL_TRUE!$GL_COND_LIBTOOL_TRUE$ac_delim
@@ -17682,8 +17713,6 @@ FNMATCH_H!$FNMATCH_H$ac_delim
 GETOPT_H!$GETOPT_H$ac_delim
 STDBOOL_H!$STDBOOL_H$ac_delim
 HAVE__BOOL!$HAVE__BOOL$ac_delim
-HAVE_LONG_LONG_INT!$HAVE_LONG_LONG_INT$ac_delim
-HAVE_WCHAR_H!$HAVE_WCHAR_H$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -17725,6 +17754,8 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+HAVE_LONG_LONG_INT!$HAVE_LONG_LONG_INT$ac_delim
+HAVE_WCHAR_H!$HAVE_WCHAR_H$ac_delim
 HAVE_INTTYPES_H!$HAVE_INTTYPES_H$ac_delim
 HAVE_SYS_TYPES_H!$HAVE_SYS_TYPES_H$ac_delim
 ABSOLUTE_STDINT_H!$ABSOLUTE_STDINT_H$ac_delim
@@ -17757,7 +17788,7 @@ CLEANFILES!$CLEANFILES$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 30; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 32; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

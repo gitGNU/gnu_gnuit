@@ -168,6 +168,8 @@ STDINT_H = @STDINT_H@
 STRIP = @STRIP@
 TEXI2DVI = @TEXI2DVI@
 TEXI2HTML = @TEXI2HTML@
+TRANSITION_FALSE = @TRANSITION_FALSE@
+TRANSITION_TRUE = @TRANSITION_TRUE@
 UNISTD_H = @UNISTD_H@
 VERSION = @VERSION@
 WCHAR_T_SUFFIX = @WCHAR_T_SUFFIX@
@@ -600,7 +602,7 @@ html:
 dist-hook: html
 
 uninstall-local:
-	-rmdir $(htmldir)
+	-rmdir $(DESTDIR)$(htmldir)
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

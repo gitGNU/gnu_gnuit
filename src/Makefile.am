@@ -4,7 +4,8 @@ EXTRA_DIST = gitaction gitmkdirs gitmount gitrgrep gitunpack gitxgrep\
 
 bin_PROGRAMS = gitfm gitps gitview gitwipe gitkeys gitwhich
 bin_SCRIPTS = gitaction gitmkdirs gitmount gitrgrep gitunpack gitxgrep\
-	      .gitaction git.transition
+	      .gitaction
+
 # We're not including tilde.c & tilde.h here because they are
 # automagically detected (configure.in includes them in LIBOBJS).
 EXTRA_gitfm_SOURCES = ansi_stdlib.h file.h stat.h stdc.h xtime.h
@@ -31,6 +32,13 @@ gitview_LDADD = -L../lib -lgnu
 AM_CPPFLAGS = -I$(srcdir)/.. -I.. -I$(top_srcdir)/lib -I$(top_srcdir)/src
 
 install-exec-hook:
+if TRANSITION
+	$(INSTALL_PROGRAM) -m 755 $(srcdir)/git.transition $(DESTDIR)$(bindir)/git
+endif
 	ln -sf gitrgrep $(DESTDIR)$(bindir)/gitregrep
 	ln -sf gitrgrep $(DESTDIR)$(bindir)/gitrfgrep
 
+
+uninstall-hook:
+	-rm -f $(DESTDIR)$(bindir)/git
+	-rm -f $(DESTDIR)$(bindir)/gitregrep $(DESTDIR)$(bindir)/gitrfgrep

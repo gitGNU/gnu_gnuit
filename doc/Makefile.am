@@ -19,4 +19,4 @@ html:
 dist-hook: html
 
 uninstall-local:
-	-rmdir $(htmldir)
+	-rmdir $(DESTDIR)$(htmldir)

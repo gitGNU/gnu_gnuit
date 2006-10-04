@@ -191,6 +191,8 @@ STDINT_H = @STDINT_H@
 STRIP = @STRIP@
 TEXI2DVI = @TEXI2DVI@
 TEXI2HTML = @TEXI2HTML@
+TRANSITION_FALSE = @TRANSITION_FALSE@
+TRANSITION_TRUE = @TRANSITION_TRUE@
 UNISTD_H = @UNISTD_H@
 VERSION = @VERSION@
 WCHAR_T_SUFFIX = @WCHAR_T_SUFFIX@
@@ -244,7 +246,8 @@ EXTRA_DIST = gitaction gitmkdirs gitmount gitrgrep gitunpack gitxgrep\
 	     .gitaction .gdbinit git.transition
 
 bin_SCRIPTS = gitaction gitmkdirs gitmount gitrgrep gitunpack gitxgrep\
-	      .gitaction git.transition
+	      .gitaction
+
 
 # We're not including tilde.c & tilde.h here because they are
 # automagically detected (configure.in includes them in LIBOBJS).
@@ -564,6 +567,8 @@ ps-am:
 
 uninstall-am: uninstall-binPROGRAMS uninstall-binSCRIPTS \
 	uninstall-info-am
+	@$(NORMAL_INSTALL)
+	$(MAKE) $(AM_MAKEFLAGS) uninstall-hook
 
 .PHONY: CTAGS GTAGS all all-am check check-am clean clean-binPROGRAMS \
 	clean-generic ctags distclean distclean-compile \
@@ -575,12 +580,17 @@ uninstall-am: uninstall-binPROGRAMS uninstall-binSCRIPTS \
 	installdirs maintainer-clean maintainer-clean-generic \
 	mostlyclean mostlyclean-compile mostlyclean-generic pdf pdf-am \
 	ps ps-am tags uninstall uninstall-am uninstall-binPROGRAMS \
-	uninstall-binSCRIPTS uninstall-info-am
+	uninstall-binSCRIPTS uninstall-hook uninstall-info-am
 
 
 install-exec-hook:
+@TRANSITION_TRUE@	$(INSTALL_PROGRAM) -m 755 $(srcdir)/git.transition $(DESTDIR)$(bindir)/git
 	ln -sf gitrgrep $(DESTDIR)$(bindir)/gitregrep
 	ln -sf gitrgrep $(DESTDIR)$(bindir)/gitrfgrep
+
+uninstall-hook:
+	-rm -f $(DESTDIR)$(bindir)/git
+	-rm -f $(DESTDIR)$(bindir)/gitregrep $(DESTDIR)$(bindir)/gitrfgrep
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
