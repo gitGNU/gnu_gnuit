@@ -517,9 +517,6 @@
 /* Define to rpl_strcasecmp always. */
 #undef strcasecmp
 
-/* Define to rpl_strndup if the replacement function should be used, */
-#undef strndup
-
 /* Define to rpl_strnlen if the replacement function should be used. */
 #undef strnlen
 

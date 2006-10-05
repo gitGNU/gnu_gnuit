@@ -723,6 +723,8 @@ WCHAR_T_SUFFIX
 WINT_T_SUFFIX
 STDINT_H
 UNISTD_H
+LIBGNU_LIBDEPS
+LIBGNU_LTLIBDEPS
 TEXI2DVI
 TEXI2HTML
 PRODUCT
@@ -8231,6 +8233,10 @@ else
   GL_COND_LIBTOOL_FALSE=
 fi
 
+  gl_cond_libtool=false
+  gl_libdeps=
+  gl_ltlibdeps=
+  gl_source_base='lib'
 
 
 
@@ -8428,7 +8434,7 @@ int
 main ()
 {
 exit
-	   (!((fnm ? fnm : fnmatch) ("a*", "", 0) == FNM_NOMATCH
+	   (!(fnm ("a*", "", 0) == FNM_NOMATCH
 	      && y ("a*", "abc", 0)
 	      && n ("d*/*1", "d/s/1", FNM_PATHNAME)
 	      && y ("a\\\\bc", "abc", 0)
@@ -8974,7 +8980,8 @@ done
 
 
 
-echo "checking how to get file system space usage..."
+{ echo "$as_me:$LINENO: checking how to get file system space usage" >&5
+echo "$as_me: checking how to get file system space usage" >&6;}
 ac_fsusage_space=no
 
 # Perform only the link test since it seems there are no variants of the
@@ -9718,6 +9725,7 @@ int
 main ()
 {
 struct statfs t; long c = *(t.f_spare);
+      if (c) return 0;
   ;
   return 0;
 }
@@ -10390,25 +10398,28 @@ _ACEOF
 cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
+$ac_includes_default
+int
+main ()
+{
 
-    int
-    main ()
-    {
-      /* Put it in env.  */
-      if (putenv ("CONFTEST_putenv=val"))
-        return 1;
+    /* Put it in env.  */
+    if (putenv ("CONFTEST_putenv=val"))
+      return 1;
 
-      /* Try to remove it.  */
-      if (putenv ("CONFTEST_putenv"))
-        return 1;
+    /* Try to remove it.  */
+    if (putenv ("CONFTEST_putenv"))
+      return 1;
 
-      /* Make sure it was deleted.  */
-      if (getenv ("CONFTEST_putenv") != 0)
-        return 1;
+    /* Make sure it was deleted.  */
+    if (getenv ("CONFTEST_putenv") != 0)
+      return 1;
 
-      return 0;
-    }
+    return 0;
 
+  ;
+  return 0;
+}
 _ACEOF
 rm -f conftest$ac_exeext
 if { (ac_try="$ac_link"
@@ -10587,7 +10598,7 @@ esac
 
  { echo "$as_me:$LINENO: checking whether rename is broken" >&5
 echo $ECHO_N "checking whether rename is broken... $ECHO_C" >&6; }
-if test "${vb_cv_func_rename_trailing_slash_bug+set}" = set; then
+if test "${gl_cv_func_rename_trailing_slash_bug+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
 
@@ -10597,7 +10608,7 @@ else
 echo "$as_me: error: cannot create temporary directory" >&2;}
    { (exit 1); exit 1; }; }
     if test "$cross_compiling" = yes; then
-        vb_cv_func_rename_trailing_slash_bug=yes
+        gl_cv_func_rename_trailing_slash_bug=yes
 else
   cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
@@ -10635,14 +10646,14 @@ eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  vb_cv_func_rename_trailing_slash_bug=no
+  gl_cv_func_rename_trailing_slash_bug=no
 else
   echo "$as_me: program exited with status $ac_status" >&5
 echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
 ( exit $ac_status )
-vb_cv_func_rename_trailing_slash_bug=yes
+gl_cv_func_rename_trailing_slash_bug=yes
 fi
 rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
 fi
@@ -10652,9 +10663,9 @@ fi
       rm -rf conftest.d1 conftest.d2
 
 fi
-{ echo "$as_me:$LINENO: result: $vb_cv_func_rename_trailing_slash_bug" >&5
-echo "${ECHO_T}$vb_cv_func_rename_trailing_slash_bug" >&6; }
-  if test $vb_cv_func_rename_trailing_slash_bug = yes; then
+{ echo "$as_me:$LINENO: result: $gl_cv_func_rename_trailing_slash_bug" >&5
+echo "${ECHO_T}$gl_cv_func_rename_trailing_slash_bug" >&6; }
+  if test $gl_cv_func_rename_trailing_slash_bug = yes; then
     case " $LIBOBJS " in
   *" rename.$ac_objext "* ) ;;
   *) LIBOBJS="$LIBOBJS rename.$ac_objext"
@@ -12256,6 +12267,7 @@ cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
 #include <string.h>
+		 	#include <stdlib.h>
 int
 main ()
 {
@@ -12320,11 +12332,6 @@ _ACEOF
   *) LIBOBJS="$LIBOBJS strndup.$ac_objext"
  ;;
 esac
-
-
-cat >>confdefs.h <<\_ACEOF
-#define strndup rpl_strndup
-_ACEOF
 
     :
   fi
@@ -12770,6 +12777,10 @@ esac
 
   :
 
+
+  LIBGNU_LIBDEPS="$gl_libdeps"
+
+  LIBGNU_LTLIBDEPS="$gl_ltlibdeps"
 
 
 
@@ -17777,6 +17788,8 @@ WCHAR_T_SUFFIX!$WCHAR_T_SUFFIX$ac_delim
 WINT_T_SUFFIX!$WINT_T_SUFFIX$ac_delim
 STDINT_H!$STDINT_H$ac_delim
 UNISTD_H!$UNISTD_H$ac_delim
+LIBGNU_LIBDEPS!$LIBGNU_LIBDEPS$ac_delim
+LIBGNU_LTLIBDEPS!$LIBGNU_LTLIBDEPS$ac_delim
 TEXI2DVI!$TEXI2DVI$ac_delim
 TEXI2HTML!$TEXI2HTML$ac_delim
 PRODUCT!$PRODUCT$ac_delim
@@ -17788,7 +17801,7 @@ CLEANFILES!$CLEANFILES$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 32; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 34; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

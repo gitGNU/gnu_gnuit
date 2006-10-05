@@ -30,6 +30,10 @@ AC_DEFUN([gl_EARLY],
 AC_DEFUN([gl_INIT],
 [
   AM_CONDITIONAL([GL_COND_LIBTOOL], [false])
+  gl_cond_libtool=false
+  gl_libdeps=
+  gl_ltlibdeps=
+  gl_source_base='lib'
   gl_FUNC_ALLOCA
   gl_DIRNAME
   gl_ERROR
@@ -44,7 +48,7 @@ AC_DEFUN([gl_INIT],
   gl_FUNC_MEMMOVE
   gl_FUNC_PUTENV
   gl_FUNC_READLINK
-  vb_FUNC_RENAME
+  gl_FUNC_RENAME
   gl_SAFE_READ
   gl_SAFE_WRITE
   gt_TYPE_SSIZE_T
@@ -58,6 +62,10 @@ AC_DEFUN([gl_INIT],
   gl_FUNC_WCWIDTH
   gl_XALLOC
   gl_XSTRNDUP
+  LIBGNU_LIBDEPS="$gl_libdeps"
+  AC_SUBST([LIBGNU_LIBDEPS])
+  LIBGNU_LTLIBDEPS="$gl_ltlibdeps"
+  AC_SUBST([LIBGNU_LTLIBDEPS])
 ])
 
 # This macro records the list of files which have been installed by

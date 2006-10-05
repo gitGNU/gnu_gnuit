@@ -1,4 +1,4 @@
-#serial 20
+#serial 22
 # Obtaining file system usage information.
 
 # Copyright (C) 1997, 1998, 2000, 2001, 2003, 2004, 2005, 2006 Free Software
@@ -35,7 +35,7 @@ AC_DEFUN([gl_FSUSAGE],
 AC_DEFUN([gl_FILE_SYSTEM_USAGE],
 [
 
-echo "checking how to get file system space usage..."
+AC_MSG_NOTICE([checking how to get file system space usage])
 ac_fsusage_space=no
 
 # Perform only the link test since it seems there are no variants of the
@@ -242,7 +242,8 @@ choke -- this is a workaround for a Sun-specific problem
 #endif
 #include <sys/types.h>
 #include <sys/vfs.h>]],
-    [[struct statfs t; long c = *(t.f_spare);]])],
+    [[struct statfs t; long c = *(t.f_spare);
+      if (c) return 0;]])],
     [fu_cv_sys_truncating_statfs=yes],
     [fu_cv_sys_truncating_statfs=no])])
   if test $fu_cv_sys_truncating_statfs = yes; then
