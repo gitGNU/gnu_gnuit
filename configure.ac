@@ -21,6 +21,7 @@ AC_PROG_RANLIB
 AC_PROG_INSTALL
 AC_REQUIRE_CPP
 HOST=$host
+AM_MAINTAINER_MODE
 
 AH_TOP(
     [
@@ -131,11 +132,19 @@ AC_CHECK_LIB(sun, getpwnam)
 
 dnl Check for standard C as well as system dependent header files.
 AC_HEADER_STDC
+
 AC_CHECK_HEADERS(
     unistd.h stdlib.h string.h memory.h values.h\
-    sys/param.h sys/mount.h sys/vfs.h sys/filsys.h fcntl.h\
-    sys/statfs.h sys/dustat.h sys/statvfs.h sys/sioctl.h stddef.h)
+    sys/param.h sys/vfs.h sys/filsys.h fcntl.h sys/statfs.h\
+    sys/dustat.h sys/statvfs.h sys/sioctl.h stddef.h)
 
+dnl freebsd needs sys/param.h included before sys/mount.h
+AC_CHECK_HEADERS([sys/mount.h],[],[],
+[#if HAVE_SYS_PARAM_H
+#include<sys/param.h>
+#endif
+])
+    
 gl_INIT
 
 AC_FUNC_ALLOCA

@@ -22,6 +22,9 @@
 #ifndef _GIT_FILE_H
 #define _GIT_FILE_H
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include <sys/file.h>
 

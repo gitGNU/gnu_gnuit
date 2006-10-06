@@ -37,6 +37,7 @@
 
 #include "stdc.h"
 
+#include "file.h"
 
 extern char *g_home;
 extern char *g_program;
