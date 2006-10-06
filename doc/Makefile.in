@@ -137,6 +137,10 @@ HAVE_SYS_TYPES_H = @HAVE_SYS_TYPES_H@
 HAVE_WCHAR_H = @HAVE_WCHAR_H@
 HAVE__BOOL = @HAVE__BOOL@
 HOST = @HOST@
+HTMLDOCS_MAKEINFO_FALSE = @HTMLDOCS_MAKEINFO_FALSE@
+HTMLDOCS_MAKEINFO_TRUE = @HTMLDOCS_MAKEINFO_TRUE@
+HTMLDOCS_TEXI2HTML_FALSE = @HTMLDOCS_TEXI2HTML_FALSE@
+HTMLDOCS_TEXI2HTML_TRUE = @HTMLDOCS_TEXI2HTML_TRUE@
 INCLUDES = @INCLUDES@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -602,7 +606,9 @@ uninstall-man: uninstall-man1
 git.html:
 	-make html
 html:
-	texi2html -expandinfo $(srcdir)/git.texinfo
+@HTMLDOCS_TEXI2HTML_TRUE@	texi2html -expandinfo $(srcdir)/git.texinfo
+@HTMLDOCS_MAKEINFO_TRUE@@HTMLDOCS_TEXI2HTML_FALSE@	makeinfo --html --no-split -o git.html  $(srcdir)/git.texinfo
+@HTMLDOCS_MAKEINFO_FALSE@@HTMLDOCS_TEXI2HTML_FALSE@	echo Not building html documentation: cannot find texi2html or makeinfo
 
 dist-hook: html
 

@@ -36,7 +36,9 @@ AH_BOTTOM(
     [
 /* Define to get the Unix 64bit I/O API (Linux/glibc only).  */
 #ifdef HAVE_64BIT_IO
+#ifndef _LARGEFILE64_SOURCE
 #define _LARGEFILE64_SOURCE
+#endif
 #endif
 
 /* See the file PROBLEMS for details on this.  */
@@ -612,13 +614,6 @@ if test "$git_cv_64bit_io" = "yes"; then
         [Define if you have the Unix 64bit I/O API.])
 fi
 
-dnl Check for the presence of the makeinfo utility.  If we can't find
-dnl it, we can't build the info documentation.
-AC_PROGRAM_CHECK(MAKEINFO, makeinfo, makeinfo, false)
-if test "$MAKEINFO" = "false"; then
-    AC_MSG_WARN(***** makeinfo utility not found *****)
-fi
-
 dnl Check for the presence of the texi2dvi utility.  If we can't find
 dnl it, we can't build the dvi documentation.
 AC_PROGRAM_CHECK(TEXI2DVI, texi2dvi, texi2dvi, false)
@@ -628,10 +623,25 @@ fi
 
 dnl Check for the presence of the texi2html utility.  If we can't find
 dnl it, we can't build the html documentation.
+htmldocs_texi2html=no
 AC_PROGRAM_CHECK(TEXI2HTML, texi2html, texi2html, false)
 if test "$TEXI2HTML" = "false"; then
     AC_MSG_WARN(***** texi2html utility not found *****)
+else
+    htmldocs_texi2html=yes
 fi
+AM_CONDITIONAL(HTMLDOCS_TEXI2HTML, test "$htmldocs_texi2html" = yes)
+
+dnl Check for the presence of the makeinfo utility.  If we can't find
+dnl it, we can't build the info documentation.
+htmldocs_makeinfo=no
+AC_PROGRAM_CHECK(MAKEINFO, makeinfo, makeinfo, false)
+if test "$MAKEINFO" = "false"; then
+    AC_MSG_WARN(***** makeinfo utility not found *****)
+else
+    htmldocs_makeinfo=yes
+fi
+AM_CONDITIONAL(HTMLDOCS_MAKEINFO, test "$htmldocs_makeinfo" = yes)
 
 dnl According to Joachim Baumann, for Solaris 2.3 & Solaris 2.4 (at least)
 dnl -lucb should be included after -ltermcap.  This hasn't been tested!

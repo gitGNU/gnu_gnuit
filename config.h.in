@@ -296,7 +296,9 @@
 
 /* Define to get the Unix 64bit I/O API (Linux/glibc only).  */
 #ifdef HAVE_64BIT_IO
+#ifndef _LARGEFILE64_SOURCE
 #define _LARGEFILE64_SOURCE
+#endif
 #endif
 
 /* See the file PROBLEMS for details on this.  */
