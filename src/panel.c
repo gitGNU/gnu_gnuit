@@ -1412,8 +1412,7 @@ panel_update_size(this)
 
     fsu.fsu_blocks = -1;
 
-    /* get_fs_usage will fail on SVR2 (needs disk
-       instead of NULL) but we are Debian */
+    /* get_fs_usage will fail on SVR2 (needs disk instead of NULL) */
     if (viewable < 6 ||
 	get_fs_usage(this->path, NULL, &fsu) < 0 ||
 	fsu.fsu_blocks == -1)
@@ -2230,6 +2229,14 @@ panel_copy(this, src, dest, mode, uid, gid)
     char *buf, *dest_file, *msg;
     int bytes_transferred, bytes_to_transfer;
 
+    if (S_ISLNK(mode))
+    {
+	struct stat s_tmp;
+	if(xstat(src,&s_tmp) != -1)
+	{
+	    mode=s_tmp.st_mode;
+	}
+    }
 
     if (S_ISDIR(mode))
     {

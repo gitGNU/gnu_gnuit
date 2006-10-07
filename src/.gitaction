@@ -16,7 +16,7 @@
 # If you want to add new file types & actions to this script, just add a
 # new entry to the 'case' statement *before* the last one ( *) ... )
 #
-# For grater flexibility, .gitaction's first parameter is the name of the
+# For greater flexibility, .gitaction's first parameter is the name of the
 # directory where the file resides.  So, you can get the complete file
 # name appending the file base name to the file path just like that: $1/$2
 #
