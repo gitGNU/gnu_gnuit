@@ -138,7 +138,7 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS(
     unistd.h stdlib.h string.h memory.h values.h\
     sys/param.h sys/vfs.h sys/filsys.h fcntl.h sys/statfs.h\
-    sys/dustat.h sys/statvfs.h sys/sioctl.h stddef.h)
+    sys/dustat.h sys/statvfs.h sys/sioctl.h stddef.h locale.h)
 
 dnl freebsd needs sys/param.h included before sys/mount.h
 AC_CHECK_HEADERS([sys/mount.h],[],[],
@@ -203,7 +203,7 @@ AC_HEADER_SYS_WAIT
 dnl Check for the existence of various functions.
 AC_CHECK_FUNCS([\
     lstat sigaction strerror strcasecmp strncasecmp\
-    strstr memmove putenv setenv getcwd rename readlink])
+    strstr memmove putenv setenv getcwd rename readlink setlocale])
 
 dnl This configure.in code has been stolen from GNU fileutils-3.12.
 dnl Its purpose is detecting a method to get file system information.

@@ -48,6 +48,10 @@
 #include <unistd.h>
 #endif /* HAVE_UNISTD_H */
 
+#ifdef HAVE_LOCALE_H
+#include <locale.h>
+#endif
+
 #include <assert.h>
 
 #include "stdc.h"
@@ -1815,6 +1819,10 @@ main(argc, argv)
     /* Make sure we don't get signals before we are ready to handle
        them.  */
     signals_init();
+
+#ifdef HAVE_SETLOCALE
+    setlocale(LC_ALL,"");
+#endif
 
     g_program = argv[0];
 
