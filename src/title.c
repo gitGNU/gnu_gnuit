@@ -94,10 +94,33 @@ static int info_length;
 static char login_string[] = "User:";
 static char ttydev_string[] = "tty:";
 
+static char mail_have_none[] = "";
+static char mail_have_mail[] = "(Mail)";
+static char mail_have_new[] = "(New Mail)";
+
+static char *mail_string = "";
+static char *mail_file=NULL;
+static off64_t mail_size=0;
+static time_t mail_mtime=0;
 
 static window_t *title_window;
 
 extern int in_terminal_mode PROTO (());
+
+static int calc_info_length PROTO (());
+static int mail_check PROTO (());
+
+
+static int
+calc_info_length()
+{
+    info_length = (sizeof(login_string)  - 1) + 1 + login_name_length + 1 +
+	          (strlen(mail_string)) + 1 +
+		  (sizeof(ttydev_string) - 1) + 1 + tty_device_length + 1 +
+		  6 + 1;
+    return(info_length);
+}
+
 
 void
 title_init()
@@ -108,10 +131,18 @@ title_init()
     login_name_length = strlen(login_name);
     tty_device_length = strlen(tty_device);
 
-    info_length = (sizeof(login_string)  - 1) + 1 + login_name_length + 2 +
-		  (sizeof(ttydev_string) - 1) + 1 + tty_device_length + 1 +
-		  6 + 1;
-
+    mail_file=getenv("MAIL");
+    if(mail_file)
+    {
+	struct stat s;
+	if(xstat(mail_file,&s) != -1)
+	{
+	    mail_size=s.st_size;
+	    mail_mtime=s.st_mtime;
+	}
+    }
+    mail_check();
+    info_length = calc_info_length();
     title_window = window_init();
 }
 
@@ -132,7 +163,7 @@ title_resize(columns, line)
 
 
 /*
- * Update the title clock only.  If signum is 0 it means that
+ * Update the title clock and check for mail.  If signum is 0 it means that
  * clock_refresh() has been called synchronously and no terminal
  * flushing is necessary at this point.
  */
@@ -152,6 +183,13 @@ clock_refresh(signum)
 
     if (product_name_length + 2 + info_length >= title_window->columns)
 	return;
+
+    /* signum means we weren't called from title_update */
+    if(signum && mail_check())
+    {
+	title_update();
+    }
+	    
 
     time = get_local_time();
 
@@ -176,6 +214,47 @@ clock_refresh(signum)
 	tty_update();
 }
 
+static int
+mail_check()
+{
+    time_t new_mtime;
+    time_t new_atime;
+    off64_t new_size;
+    char *old_mail=mail_string;
+
+    mail_string=mail_have_none;
+
+    if(mail_file)
+    {
+	struct stat s;
+	if(xstat(mail_file,&s) != -1)
+	{
+	    new_size=s.st_size;
+	    new_mtime=s.st_mtime;
+	    new_atime=s.st_atime;
+
+	    /* If mtime changed and atime < mtime then (Mail) */
+	    if((new_mtime != mail_mtime) &&
+	       (new_atime <= new_mtime))
+	    {
+		/* if file size increased then (New Mail) */
+		if(new_size > mail_size)
+		{
+		    mail_string=mail_have_new;
+		}
+		else
+		{
+		    mail_string=mail_have_mail;
+		}
+	    }
+	}
+    }
+    info_length=calc_info_length();
+    if(strcmp(mail_string,old_mail) == 0)
+	return 0; /* No change  */
+    else
+	return 1; /* need to update title */
+}
 
 void
 title_update()
@@ -193,6 +272,7 @@ title_update()
 
     buf = xmalloc(title_window->columns + 1);
 
+    mail_check();
     if (product_name_length + 2 + info_length < title_window->columns)
     {
 	length = title_window->columns - product_name_length - info_length;
@@ -209,6 +289,9 @@ title_update()
 	tty_foreground(UserName);
 	window_puts(title_window, login_name, login_name_length);
 	window_putc(title_window, ' ');
+
+	window_puts(title_window, mail_string, strlen(mail_string));
+
 	window_putc(title_window, ' ');
 
 	tty_foreground(TitleForeground);
