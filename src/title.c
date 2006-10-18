@@ -42,6 +42,7 @@
 #include "window.h"
 #include "xmalloc.h"
 #include "xstring.h"
+#include "xio.h"
 #include "tty.h"
 #include "title.h"
 #include "misc.h"
