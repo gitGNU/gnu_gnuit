@@ -2182,9 +2182,9 @@ panel_unlink(name)
 #define SD_UNKNOWN	 9
 #define D_STATERR	10
 #define SD_INVAL	11
+#define SD_INTERRUPTED  12
 
-
-char *copyerr[11] =
+char *copyerr[12] =
 {
     "",
     "",
@@ -2197,6 +2197,7 @@ char *copyerr[11] =
     "unknown error",
     "cannot stat destination file",
     "cannot copy a directory to a non-directory",
+    "cp was interrupted by a signal",
 };
 
 
@@ -2289,15 +2290,22 @@ panel_copy(this, src, dest, mode, uid, gid)
 	xfree(msg);
 
 	sprintf(temp, "cp -r \"%s\" \"%s\"", src, dest);
-	result = (start(temp, 1) == 0);
+	result = start(temp, 1);
 	xfree(temp);
 
 	tty_update_title(this->path);
 
-	if (!result)
-	    display_errors("cp");
+	if (WIFSIGNALED(result))
+	{
+	    return SD_INTERRUPTED;
+	}
 
-	return result ? SD_OK : SD_UNKNOWN;
+	if(WIFEXITED(result) && (WEXITSTATUS(result) != 0))
+	{
+	    display_errors("cp");
+	    return SD_UNKNOWN;
+	}
+	return SD_OK;
     }
 
     /* The source is a regular file.  */
@@ -2482,9 +2490,10 @@ panel_copy(this, src, dest, mode, uid, gid)
 #define FT_INVAL	 9
 #define FT_NOSPACE	10
 #define FT_COPY		11
+#define FT_INTERRUPTED  12
 
 
-char *moveerr[11] =
+char *moveerr[12] =
 {
     "",
     "",
@@ -2497,6 +2506,7 @@ char *moveerr[11] =
     "cannot copy a directory to a non-directory",
     "not enough space on device",
     "cannot copy file",
+    "mv was interrupted by a signal",
 };
 
 
@@ -2564,15 +2574,24 @@ panel_move(this, from, to, mode)
 	xfree(msg);
 
 	sprintf(temp, "mv -f \"%s\" \"%s\"", from, to);
-	result = (start(temp, 1) == 0);
+	result = start(temp, 1);
 	xfree(temp);
 
 	tty_update_title(this->path);
 
-	if (!result)
-	    display_errors("mv");
+	if (WIFSIGNALED(result))
+	    return FT_INTERRUPTED;
 
-	return result ? FT_OK : FT_UNKNOWN;
+	if(WIFEXITED(result))
+	{
+	    if(WEXITSTATUS(result) != 0)
+	    {
+		display_errors("mv");
+		return FT_UNKNOWN;
+	    }
+	    return FT_OK;
+	}
+	return FT_UNKNOWN;
     }
 
     /* The source is not a directory.  */
@@ -3030,6 +3049,7 @@ panel_act_DELETE(this, other)
     while ((entry = panel_get_next(this)) != -1)
     {
 	char *name = this->dir_entry[entry].name;
+	int interrupted=0;
 
 	service_pending_signals();
 
@@ -3072,20 +3092,44 @@ panel_act_DELETE(this, other)
 		{
 		    command = xmalloc(32 + strlen(name) + 1);
 		    sprintf(command, "rm -r -f \"%s\"", name);
-		    result = (start(command, 1) == 0);
+		    result = start(command, 1);
 		    xfree(command);
 
 		    tty_update_title(this->path);
 
-		    if (!result)
-			display_errors("rm");
+		    if(WIFSIGNALED(result))
+		    {
+			result=0;
+			interrupted=1;
+		    }
+		    else if(WIFEXITED(result))
+		    {
+			if(WEXITSTATUS(result) != 0)
+			{
+			    display_errors("rm");
+			    result=0;
+			}
+			else
+			{
+			    result=1; /* ok */
+			}
+		    }
+		    else
+			result=0; /* unknown error */
 		}
 	    }
 	}
 	else
 	    result = unlink(name) == 0;
 
-	if (!result)
+	if (interrupted)
+	{
+	    if (panel_2s_message("%s: Deletion interrupted.  Continue? ",
+				 name, "yn",
+				 IL_MOVE | IL_BEEP | IL_ERROR) != 'y')
+		break;
+	}
+	else if (!result)
 	{
 	    if (panel_2s_message("%s: Deletion failed.  Continue? ",
 				 name, "yn",
@@ -3843,9 +3887,9 @@ panel_act_CMPDIR(this, other, quick)
 #define O_RMERR		4
 #define N_RMERR		5
 #define ON_RENERR	6
+#define ON_INTERRUPTED  7
 
-
-char *renerr[6] =
+char *renerr[7] =
 {
     "",
     "",
@@ -3853,6 +3897,7 @@ char *renerr[6] =
     "cannot remove old entry",
     "cannot remove existing entry",
     "cannot rename entry",
+    "mv interrupted by a signal",
 };
 
 
@@ -3907,14 +3952,25 @@ panel_case_rename(this, entry, upcase)
 
 	    command = xmalloc(32 + strlen(new_name) + 1);
 	    sprintf(command, "rm -r -f \"%s\"", new_name);
-	    result = (start(command, 1) == 0);
+	    result = start(command, 1);
 	    xfree(command);
 
 	    tty_update_title(this->path);
 
-	    if (!result)
+	    if (WIFSIGNALED(result))
 	    {
-		display_errors("rm");
+		return ON_INTERRUPTED;
+	    }
+	    if(WIFEXITED(result))
+	    {
+		if(WEXITSTATUS(result) != 0)
+		{
+		    display_errors("rm");
+		    return N_RMERR;
+		}
+	    }
+	    else
+	    {
 		return N_RMERR;
 	    }
 	}

@@ -49,16 +49,6 @@
 extern int errno;
 #endif /* !errno */
 
-#if HAVE_SYS_WAIT_H
-#include <sys/wait.h>
-#endif
-#ifndef WEXITSTATUS
-#define WEXITSTATUS(stat_val) ((unsigned)(stat_val) >> 8)
-#endif
-#ifndef WIFEXITED
-#define WIFEXITED(stat_val) (((stat_val) & 0xFF) == 0)
-#endif
-
 #include "xmalloc.h"
 #include "xstring.h"
 #include "xio.h"
@@ -144,13 +134,10 @@ my_system(command, hide)
     {
 	/* This is the parent code.  */
 	while (wait(&status) != pid);
-
-	if (WIFEXITED(status) != 0)
-	{
-	    /* Child exited normally.  */
-	    status = WEXITSTATUS(status);
-	}
     }
+
+    /* Don't extract exit code, return full status so caller can see
+       if child died */
 
     return status;
 }

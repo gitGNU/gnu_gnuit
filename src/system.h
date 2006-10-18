@@ -25,6 +25,19 @@
 
 #include "stdc.h"
 
+#if HAVE_SYS_WAIT_H
+#include <sys/wait.h>
+#endif
+#ifndef WEXITSTATUS
+#define WEXITSTATUS(stat_val) ((unsigned)(stat_val) >> 8)
+#endif
+#ifndef WIFEXITED
+#define WIFEXITED(stat_val) (((stat_val) & 0xFF) == 0)
+#endif
+#ifndef WIFSIGNALED
+#define WIFSIGNALED(stat_val)   ((int)((stat_val) & 0xFF) != 0)
+#endif
+
 
 extern char *stdout_log_name;
 extern char *stderr_log_name;

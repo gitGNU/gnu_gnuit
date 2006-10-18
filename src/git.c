@@ -2170,7 +2170,14 @@ main(argc, argv)
 
 				if (command->hide)
 				{
-				    if (child_exit_code != 0)
+				    if(WIFSIGNALED(child_exit_code))
+				    {
+					il_read_char("Command interrupted by signal",
+						     (char *)NULL,
+						     IL_BEEP|IL_ERROR);
+				    }
+				    else if(WIFEXITED(child_exit_code) &&
+					    (WEXITSTATUS(child_exit_code) != 0))
 				    {
 					tty_beep();
 					display_errors(command->name);
@@ -2187,7 +2194,9 @@ main(argc, argv)
 					wait_msg = 1;
 				}
 
-				if (child_exit_code == 0 && command->new_dir)
+				if (WIFEXITED(child_exit_code) &&
+				    (WEXITSTATUS(child_exit_code) == 0) &&
+				    command->new_dir)
 				{
 				    char *expanded_dir =
 					tilde_expand(command->new_dir);
@@ -2199,7 +2208,8 @@ main(argc, argv)
 				    xfree(expanded_dir);
 				}
 
-				if (child_exit_code == 0)
+				if (WIFEXITED(child_exit_code) &&
+				    (WEXITSTATUS(child_exit_code) == 0))
 				{
 				    if (retval == 2)
 					panel_unselect_all(src_panel);
