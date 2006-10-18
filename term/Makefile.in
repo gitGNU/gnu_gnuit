@@ -36,7 +36,14 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 subdir = term
-DIST_COMMON = $(srcdir)/.gitrc.common.in $(srcdir)/Makefile.am \
+DIST_COMMON = $(srcdir)/.gitrc.aixterm.in $(srcdir)/.gitrc.ansi.in \
+	$(srcdir)/.gitrc.common.in $(srcdir)/.gitrc.generic.in \
+	$(srcdir)/.gitrc.hft.in $(srcdir)/.gitrc.hpterm.in \
+	$(srcdir)/.gitrc.linux-m.in $(srcdir)/.gitrc.linux.in \
+	$(srcdir)/.gitrc.mach.in $(srcdir)/.gitrc.minix.in \
+	$(srcdir)/.gitrc.thix.in $(srcdir)/.gitrc.vt100.in \
+	$(srcdir)/.gitrc.vt102.in $(srcdir)/.gitrc.xterm-color.in \
+	$(srcdir)/.gitrc.xterm.in $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in ChangeLog
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/absolute-header.m4 \
@@ -62,7 +69,10 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
-CONFIG_CLEAN_FILES = .gitrc.common
+CONFIG_CLEAN_FILES = .gitrc.common .gitrc.aixterm .gitrc.ansi \
+	.gitrc.generic .gitrc.hft .gitrc.hpterm .gitrc.linux \
+	.gitrc.linux-m .gitrc.mach .gitrc.minix .gitrc.thix \
+	.gitrc.vt100 .gitrc.vt102 .gitrc.xterm .gitrc.xterm-color
 SOURCES =
 DIST_SOURCES =
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
@@ -214,10 +224,10 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 
 # $Id: Makefile.am,v 1.2 2005-12-07 13:56:05 ianb Exp $
-EXTRA_DIST = .gitrc.aixterm .gitrc.ansi .gitrc.common.in\
-	     .gitrc.generic .gitrc.hft .gitrc.hpterm .gitrc.linux\
-	     .gitrc.mach .gitrc.minix .gitrc.thix .gitrc.vt100\
-	     .gitrc.vt102 .gitrc.xterm .gitrc.xterm-color .gitrc.linux-m
+EXTRA_DIST = .gitrc.aixterm.in .gitrc.ansi.in .gitrc.common.in\
+	     .gitrc.generic.in .gitrc.hft.in .gitrc.hpterm.in .gitrc.linux.in\
+	     .gitrc.mach.in .gitrc.minix.in .gitrc.thix.in .gitrc.vt100.in\
+	     .gitrc.vt102.in .gitrc.xterm.in .gitrc.xterm-color.in .gitrc.linux-m.in
 
 pkgdata_DATA = .gitrc.aixterm .gitrc.ansi .gitrc.common\
 	       .gitrc.generic .gitrc.hft .gitrc.hpterm .gitrc.linux\
@@ -267,6 +277,34 @@ $(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
 $(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 .gitrc.common: $(top_builddir)/config.status $(srcdir)/.gitrc.common.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+.gitrc.aixterm: $(top_builddir)/config.status $(srcdir)/.gitrc.aixterm.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+.gitrc.ansi: $(top_builddir)/config.status $(srcdir)/.gitrc.ansi.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+.gitrc.generic: $(top_builddir)/config.status $(srcdir)/.gitrc.generic.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+.gitrc.hft: $(top_builddir)/config.status $(srcdir)/.gitrc.hft.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+.gitrc.hpterm: $(top_builddir)/config.status $(srcdir)/.gitrc.hpterm.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+.gitrc.linux: $(top_builddir)/config.status $(srcdir)/.gitrc.linux.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+.gitrc.linux-m: $(top_builddir)/config.status $(srcdir)/.gitrc.linux-m.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+.gitrc.mach: $(top_builddir)/config.status $(srcdir)/.gitrc.mach.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+.gitrc.minix: $(top_builddir)/config.status $(srcdir)/.gitrc.minix.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+.gitrc.thix: $(top_builddir)/config.status $(srcdir)/.gitrc.thix.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+.gitrc.vt100: $(top_builddir)/config.status $(srcdir)/.gitrc.vt100.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+.gitrc.vt102: $(top_builddir)/config.status $(srcdir)/.gitrc.vt102.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+.gitrc.xterm: $(top_builddir)/config.status $(srcdir)/.gitrc.xterm.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+.gitrc.xterm-color: $(top_builddir)/config.status $(srcdir)/.gitrc.xterm-color.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 uninstall-info-am:
 install-pkgdataDATA: $(pkgdata_DATA)

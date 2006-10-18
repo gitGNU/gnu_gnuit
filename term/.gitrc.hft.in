@@ -1,29 +1,29 @@
-### $Id: .gitrc.vt102,v 1.2 2005-10-22 15:29:16 ianb Exp $
+### $Id: .gitrc.hft,v 1.2 2005-10-22 15:29:16 ianb Exp $
 
 ###############################################################################
 ###									    ###
-###	        GNU Interactive Tools 4.3.21 configuration file		    ###
+###	        GNU Interactive Tools @VERSION@ configuration file	    ###
 ###          Copyright (c) 1993-2000 Free Software Foundation, Inc.         ###
 ###									    ###
 ###############################################################################
 
 
 ###
-### vt102 configuration file.
+### hft configuration file.
 ###
 
 
 ###
 ### If your terminal supports the standard ANSI color sequences, set
-### AnsiColors to ON ([GITxxx-Color] descriptions will be used).  If it
-### doesn't, AnsiColors should be OFF ([GITxxx-Monochrome] descriptions
-### will be used instead).
+### AnsiColors to ON ([GITxxx-Color] descriptions will be used).  If
+### it doesn't, AnsiColors should be OFF ([GITxxx-Monochrome]
+### descriptions will be used instead).
 ###
 
 
 [Setup]
-AnsiColors	= OFF	# empty means OFF
-UseLastScreenChar	= ON	# use the last character on the screen
+AnsiColors		= ON	# empty means OFF
+UseLastScreenChar	= OFF	# use the last character on the screen
 StartupScrollStep	=	# empty means half the number of lines
 
 
@@ -38,7 +38,7 @@ StartupFileSortMethod	= Name	# Name, Extension, Size, Date, Mode, OwnerId, Group
 ConfirmOnExit		=	# empty means OFF
 HistoryFile		= ~/.githistory
 InfoDisplay		= ON
-LeadingDotMatch		= ON     # OFF means that leading '.' is matched only explicitly
+LeadingDotMatch		= ON	# OFF means that leading '.' is matched only explicitly
 TypeSensitivity		= ON	# Automatically set to OFF when AnsiColors is OFF
 NormalModeHelp		= F3 View  F4 Edit  F5 Copy  F6 Move  F7 MkDir  F8 Del  F10 Exit ^CH Ln ^CS SymLn
 CommandLineModeHelp	= ^G-STOP ^B/^F-MOVE ^P/^N-HISTORY ^A-BOL ^E-EOL ^O-RESTORE ^X^C-EXIT ^Z-SUSPEND
@@ -61,9 +61,9 @@ Help = Arrows/PgUp/PgDown/Home/End-MOVE ^L-REFRESH ^X^C/F10-QUIT 0-9/a-f/A-F-OFF
 [GITFM-FTI]
 
 
-###############################
-### vt102 with ANSI colors. ###
-###############################
+##################################
+### hft tty with color monitor ###
+##################################
 
 
 [GITFM-Color]
@@ -142,9 +142,9 @@ StatusBackground		= BLUE
 StatusBrightness		= ON
 
 
-###################################
-### vt102 monochrome settings.  ###
-###################################
+##################################################
+### hft tty with monochrome monitor or b/w tty ###
+##################################################
 
 
 [GITFM-Monochrome]
@@ -156,24 +156,24 @@ TtyName				= WHITE
 ClockForeground			= BLACK
 ClockBackground			= WHITE
 ClockBrightness			= OFF
-PanelFrame			= WHITE
-PanelBackground			= BLACK
+PanelFrame 			= WHITE
+PanelBackground 		= BLACK
 PanelThumbForeground		= BLACK
 PanelThumbBackground		= WHITE
 PanelThumbBrightness		= OFF
-PanelSelectedFile		= WHITE
+PanelSelectedFile 		= WHITE
 PanelSelectedFileBrightness	= ON
 PanelNotSelectedFile		= WHITE
 PanelNotSelectedFileBrightness	= OFF
 PanelCurrentSelectedFile	= WHITE
 PanelCurrentNotSelectedFile	= BLACK
 PanelCurrentFile		= WHITE
-PanelPath			= BLACK
-PanelPathBrightness		= OFF
-PanelDeviceFreeSpace		= BLACK
+PanelPath 			= BLACK
+PanelPathBrightness 		= OFF
+PanelDeviceFreeSpace        	= BLACK
 PanelDeviceFreeSpaceBrightness	= OFF
-PanelFileInfo			= BLACK
-PanelFileInfoBrightness		= OFF
+PanelFileInfo 			= BLACK
+PanelFileInfoBrightness 	= OFF
 PanelFilesInfo			= BLACK
 PanelFilesInfoBrightness	= OFF
 InputLineForeground		= WHITE
@@ -182,15 +182,15 @@ InputLineBrightness		= ON
 InputLineErrorForeground	= WHITE
 InputLineErrorBackground	= BLACK
 InputLineErrorBrightness	= ON
-StatusBarForeground		= BLACK
-StatusBarBackground		= WHITE
-StatusBarBrightness		= OFF
-StatusBarWarningForeground	= BLACK
-StatusBarWarningBackground	= WHITE
-StatusBarWarningBrightness	= OFF
-StatusBarErrorForeground	= BLACK
-StatusBarErrorBackground	= WHITE
-StatusBarErrorBrightness	= OFF
+StatusBarForeground 		= BLACK
+StatusBarBackground 		= WHITE
+StatusBarBrightness 		= OFF
+StatusBarWarningForeground 	= BLACK
+StatusBarWarningBackground 	= WHITE
+StatusBarWarningBrightness 	= OFF
+StatusBarErrorForeground 	= BLACK
+StatusBarErrorBackground 	= WHITE
+StatusBarErrorBrightness 	= OFF
 
 
 [GITPS-Monochrome]
@@ -277,37 +277,24 @@ StatusBrightness		= OFF
 ###
 
 [GITFM-Keys]
-^[[A        = previous-line
-^[[B        = next-line
-^[[C 	    = forward-char
-^[[D  	    = backward-char
-^[OA        = previous-line
-^[OB        = next-line
-^[OC 	    = forward-char
-^[OD  	    = backward-char
-^[[1~       = beginning-of-panel			# HOME
-^[[4~       = end-of-panel                              # END
-^[[2~       = select-entry                              # INS
-^[[3~       = delete-char				# DEL
-^[[5~	    = scroll-down                               # PGUP
-^[[6~       = scroll-up					# PGDOWN
-^[[[A  	    = INFO; info %s{Info documentation: ,}	# F1 (telnet from a Linux console)
-^[[[B	    = FILE-ACTION; gitaction %p %f		# F2 (telnet from a Linux console)
-^[[[C  	    = VIEW; gitview %f;;n			# F3 (telnet from a Linux console)
-^[[[D  	    = EDIT; $GIT_EDITOR %f;;n			# F4 (telnet from a Linux console)
-^[[[E  	    = copy					# F5 (telnet from a Linux console)
-^[OP  	    = INFO; info %s{Info documentation: ,}	# F1
-^[OQ	    = FILE-ACTION; gitaction %p %f		# F2
-^[OR  	    = VIEW; gitview %f;;n			# F3
-^[OS  	    = EDIT; $GIT_EDITOR %f;;n			# F4
-^[[16~ 	    = copy					# F5
-^[[17~ 	    = move					# F6
-^[[18~ 	    = make-directory				# F7
-^[[19~ 	    = delete					# F8
-^[[20~	    = MAKE; make %s{Options: ,-k };;;y		# F9
-^[[21~ 	    = exit					# F10
-^[[23~	    = GITPS; gitps;;n				# F11
-^[[24~ 	    = READ-MAIL; $GIT_RMAIL;;n			# F12
+^[[001q	= INFO; info %s{Info documentation: ,}		# F1
+^[[002q	= FILE-ACTION; gitaction %p %f			# F2
+^[[003q	= VIEW; gitview %f;;n				# F3
+^[[004q	= EDIT; $GIT_EDITOR %f;;n			# F4
+^[[005q	= copy						# F5
+^[[006q	= move						# F6
+^[[007q	= make-directory				# F7
+^[[008q	= delete					# F8
+^[[009q	= MAKE; make %s{Options: ,-k };;;y		# F9
+^[[010q	= exit						# F10
+^[[011q	= GITPS; gitps;;n				# F11
+^[[012q	= READ-MAIL; $GIT_RMAIL;;n			# F12
+^[[139q	= select-entry					# INS
+^[[P	= delete-char					# DEL
+^[[H	= beginning-of-panel				# HOME
+^[[146q	= end-of-panel					# END
+^[[150q	= scroll-down					# PGUP
+^[[154q	= scroll-up					# PGDOWN
 
 
 ###
@@ -316,19 +303,11 @@ StatusBrightness		= OFF
 ###
 
 [GITPS-Keys]
-^[[A	    = previous-line
-^[[B	    = next-line
-^[[5~	    = scroll-down				# PGUP
-^[[D	    = scroll-down				# PGUP
-^[[6~	    = scroll-up					# PGDOWN
-^[[C	    = scroll-up					# PGDOWN
-^[[1~	    = beginning-of-list
-^[[4~	    = end-of-list
-^[OA        = previous-line
-^[OB        = next-line
-^[OC 	    = scroll-up
-^[OD  	    = scroll-down
-^[[21~	    = exit					# F10
+^[[150q = scroll-down					# PGUP
+^[[154q = scroll-up					# PGDOWN
+^[[H    = beginning-of-list				# HOME
+^[[146q = end-of-list					# END
+^[[010q	= exit						# F10
 
 
 ###
@@ -336,16 +315,8 @@ StatusBrightness		= OFF
 ###
 
 [GITVIEW-Keys]
-^[[A	    = previous-line
-^[[B	    = next-line
-^[[5~	    = scroll-down				# PGUP
-^[[D	    = scroll-down          			# PGUP
-^[[6~	    = scroll-up        				# PGDOWN
-^[[C	    = scroll-up        				# PGDOWN
-^[OA        = previous-line
-^[OB        = next-line
-^[OC 	    = scroll-up
-^[OD  	    = scroll-down
-^[[1~	    = beginning-of-file				# HOME
-^[[4~	    = end-of-file				# END
-^[[21~	    = exit					# F10
+^[[150q = scroll-down					# PGUP
+^[[154q = scroll-up					# PGDOWN
+^[[H    = beginning-of-list				# HOME
+^[[146q = end-of-list					# END
+^[[010q	= exit						# F10

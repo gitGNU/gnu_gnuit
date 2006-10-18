@@ -6,7 +6,7 @@ dnl #####################################################################
 
 dnl Initialize the autoconf & automake stuff.
 AC_REVISION($Revision: 1.7 $)
-AC_INIT(git, 4.3.21, tudor@hulubei.net)
+AC_INIT(git, 4.9.1, ianb@nessie.mcc.ac.uk)
 AC_CONFIG_SRCDIR([config.h.in])
 AM_INIT_AUTOMAKE
 AC_PROG_MAKE_SET
@@ -675,6 +675,20 @@ AC_OUTPUT([
     src/Makefile
     term/Makefile
     term/.gitrc.common
+    term/.gitrc.aixterm
+    term/.gitrc.ansi
+    term/.gitrc.generic
+    term/.gitrc.hft
+    term/.gitrc.hpterm
+    term/.gitrc.linux
+    term/.gitrc.linux-m
+    term/.gitrc.mach
+    term/.gitrc.minix
+    term/.gitrc.thix
+    term/.gitrc.vt100
+    term/.gitrc.vt102
+    term/.gitrc.xterm
+    term/.gitrc.xterm-color
     doc/Makefile
     lib/Makefile
     git.spec

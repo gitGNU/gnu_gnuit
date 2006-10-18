@@ -1,4 +1,4 @@
-This is git.info, produced by Makeinfo version 3.12h from git.texinfo.
+This is git.info, produced by makeinfo version 4.8 from git.texinfo.
 
 START-INFO-DIR-ENTRY
 * GIT: (git).         GNU Interactive Tools
@@ -25,139 +25,3850 @@ versions, except that this permission notice may be stated in a
 translation approved by the Foundation.
 
 
-Indirect:
-git.info-1: 1007
-git.info-2: 50765
-git.info-3: 92769
+File: git.info,  Node: Top,  Next: Introduction,  Up: (dir)
+
+   `GIT' is a package containing basically a file system browser, a
+process viewer/killer and a ASCII/HEX file viewer.  This is edition
+2.9, for GNU Interactive Tools version 4.9.1.
+
+* Menu:
+
+* Introduction::                An introduction to GIT concepts.
+* Distrib::                     How to get the latest GIT distribution.
+
+* Description::                 How to use GIT.
+* Customization::               How to customize GIT.
+* Limitations::                 Known GIT limitations.
+* Bugs::                        How to report a bug.
+* Key Index::                   An item for each standard GIT key sequence.
+* Command Index::               An item for each command name.
+* Variable Index::              An item for each documented variable.
+* Concept Index::               An item for each concept.
+
+
+File: git.info,  Node: Introduction,  Next: Distrib,  Prev: Top,  Up: Top
+
+1 Introduction
+**************
+
+`GIT' is a set of interactive tools.  It contains an extensible file
+system browser, an ascii/hex file viewer, a process viewer/killer and
+some other related utilities and shell scripts.  It can be used to
+increase the speed and efficiency of most of the daily tasks such as
+copying and moving files and directories, invoking editors, compressing
+and uncompressing files, creating and expanding archives, compiling
+programs, sending mail, etc.  It looks nice, has colors (if the standard
+ANSI color sequences are supported) and is user-friendly.
+
+   `GIT' runs on a wide variety of `UNIX' systems because it uses the
+`GNU Autoconf' package to get system specific information.  Please
+refer to the PLATFORMS file included in the standard distribution for a
+detailed list of systems on which `GIT' has been tested.
+
+   One of the main advantages of `GIT' is its flexibility.  It is not
+limited to a given set of commands.  The configuration file can be
+easily enhanced, allowing the user to add new commands or file
+operations, depending on its needs or preferences.
+
+   `GIT' also provides a shell like command prompt, just to make sure
+that the entire power of the `UNIX' shell commands is still there.
+
+
+File: git.info,  Node: Distrib,  Next: Key Index,  Prev: Introduction,  Up: Top
+
+2 Distributing GNU Interactive Tools
+************************************
+
+`GIT' is "free software"; this means that everyone is free to use it
+and free to redistribute it on certain conditions.  `GIT' is not in the
+public domain; it is copyrighted and there are restrictions on its
+distribution, but these restrictions are designed to permit everything
+that a good cooperating citizen would want to do.  What is not allowed
+is to try to prevent others from further sharing any version of `GIT'
+that they might get from you.  The precise conditions are found in the
+GNU General Public License that comes with `GIT' and also appears
+following this section.
+
+   The easiest way to get a copy of `GIT' is from someone else who has
+it.  You need not ask for our permission to do so, or tell any one else;
+just copy it.  If you have access to the Internet, you can get the
+latest distribution version of `GIT' from host `ftp.gnu.org' using
+anonymous login.  See the file `/pub/gnu/GETTING.GNU.SOFTWARE' on that
+host to find out about your options for copying and which files to use.
+
+   You may also receive `GNU Interactive Tools' when you buy a
+computer.  Computer manufacturers are free to distribute copies on the
+same terms that apply to everyone else.  These terms require them to
+give you the full sources, including whatever changes they may have
+made, and to permit you to redistribute the GNU Interactive Tools
+received from them under the usual terms of the General Public License.
+In other words, the program must be free for you when you get it, not
+just free for the manufacturer.
+
+
+File: git.info,  Node: Description,  Next: Customization,  Prev: Concept Index,  Up: Top
+
+3 Using GNU Interactive Tools
+*****************************
+
+The `GIT' package contains three interactive programs and a few
+additional utilities.  Here there is a description of each of them.
+
+* Menu:
+
+* gitfm::                       A file system browser.
+* gitps::                       A process viewer/killer.
+* gitview::                     An ASCII/HEX file viewer.
+* gitkeys::                     An utility for displaying key sequences.
+* gitwipe::                     An utility for wiping files.
+* gitmount::                    A script for mounting file systems.
+* gitaction::                   A per file type action script.
+* gitunpack::                   Unified archive unpacking.
+* gitrgrep::                    A recursive grep script.
+
+
+File: git.info,  Node: gitfm,  Next: gitps,  Up: Description
+
+3.1 The GIT file system browser
+===============================
+
+`gitfm' is a file system browser with some shell like features designed
+to make your work much easier and much efficient.  It displays one or
+two panels, each one containing a file system directory.  You can
+browse the directory tree with the usual cursor keys, pressing `ENTER'
+when you want to enter or leave a directory and `TAB' when you want to
+change the panels.
+
+   Under the two panels there is a shell like input line which you can
+use to type normal shell commands.  The input line can handle an
+unlimited number of characters and keeps a history of typed commands
+(using the GNU history library).
+
+   Under the input line there is a status bar.  You can see there the
+status of the currently executed command, the warnings and errors and
+you will be prompted if a decision has to be taken.
+
+* Menu:
+
+* Conventions::                 Key binding conventions.
+
+* Command line::                The command line arguments.
+* Modes::                       How panels can look like.
+* Sorting::                     How files can be sorted in a panel.
+* Moving::                      How to move the cursor in the panel.
+* Selecting::                   How to select (mark) files in a panel.
+* Isearch::                     How to search a file name in a panel.
+* Input Line::                  How to use the input line.  Basic editing.
+* Files::                       How to copy/move/delete/compress/... files.
+* Directories::                 How to operate with directories.
+* Compiling::                   How to compile programs.
+* Mail::                        How to send/receive ascii/binary mail.
+* Shell::                       How to start a sub-shell.
+* Grep::                        How to use grep/recursive grep.
+* Locking::                     How to lock your console.
+* Refreshing::                  How to refresh the screen contents.
+* Resetting::                   How to reset your terminal.
+* Mounting::                    How to mount/unmount a file system.
+* Sysinfo::                     How to get some useful system information.
+* Environment::                 How to look at the environment variables.
+* Processes::                   How to view/kill processes.
+* Sync::                        How to synchronize your file systems.
+
+* Documentation::               How to read documentation.
+
+* Exit::                        How to exit GNU Interactive Tools.
+
+
+File: git.info,  Node: Conventions,  Next: Command line,  Up: gitfm
+
+3.1.1 Key binding conventions
+-----------------------------
+
+`gitfm' now follows a new, easy to remember, scheme to bind commands on
+keys.  This is only a convention, if you define new key bindings you
+may, or may not follow it.
+
+   All the file commands start with `^C'.  This prefix can be followed
+by some modifiers, in order to affect the default behavior of the given
+command.  These modifiers are `b' and `r'.
+
+   `b' - this modifier specifies that the command will run in
+background:
+
+     	^CM = CHMOD; chmod %s{New mode of %i: ,%m} %i;;;;y
+
+defines a command that changes the current selected files mode in
+foreground, while
+
+     	^CbM = B-CHMOD; chmod %s{New mode of %i: ,%m} %i&;;;;y
+
+defines a background command that does the same thing.
+
+   `r' - this modifier specifies that the command will be run
+recursively:
+
+     	^CrM = R-CHMOD; chmod -R %s{New mode of %i: ,} %i;;;;y
+
+defines a command that recursively changes the mode of the selected
+entries.
+
+   The `b' and `r' modifiers can be combined, the resulting command
+running recursively and in background:
+
+     	^CbrM = B-R-CHMOD; chmod -R %s{New mode of %i: ,} %i&;;;;y
+
+   You should also note that for some commands (like `gzip') there is
+no need for a non-recursive version.  Running `gzip' recursively on
+files is harmless.  If there is a directory between these files, `gzip'
+will recursively compress that directory, so you can use the same key
+binding for recursively and non-recursively compressing.  In fact, it
+is a matter of selecting files or directories.
+
+   Unfortunately, we can't run `chmod' recursively trying to change the
+mode of all the files in a directory to 0644 because that directory
+might contain subdirectories and removing the execution permission from
+them is a bad idea.  So, in this case, we need separate commands.
+
+
+File: git.info,  Node: Command line,  Next: Modes,  Prev: Conventions,  Up: gitfm
+
+3.1.2 Command line
+------------------
+
+This is a brief description of the command line arguments.
+
+`-h'         print this help message
+
+`-v'         print the version number
+
+`-c'         use ANSI colors
+
+`-b'         don't use ANSI colors
+
+`-l'         don't use the last screen character
+
+`-p'         output final path at exit
+
+   The `-p' option can be used to make gitfm force bash (assuming that
+you're using it as your shell) chdir to the last directory gitfm was in
+before quitting.  In order to do this, you need to invoke gitfm using
+this function (put it into your .profile):
+
+     function g
+     {
+         gitfm -p $ 3> /tmp/gitfm.p.$$
+
+         if test -s /tmp/gitfm.p.$$; then
+     	if test -d "`cat /tmp/gitfm.p.$$`"; then
+     	    cd "`cat /tmp/gitfm.p.$$`"
+     	else
+     	    cd
+     	fi
+         fi
+
+         rm -f /tmp/gitfm.p.$$
+     }
+
+   This will not work if you suspend gitfm.  Nothing bad will happen,
+just the chdir will not be performed.
+
+
+File: git.info,  Node: Modes,  Next: Sorting,  Prev: Command line,  Up: gitfm
+
+3.1.3 Panel modes
+-----------------
+
+`gitfm' has three major modes of displaying the panels.  In the first
+(default) mode, two panels are displayed, each one using half of the
+screen.  In the second mode, only one panel uses the entire screen.  In
+the third mode, only the status bar and the input line are displayed,
+both panels being hidden.
+
+   Briefly, a panel can use the entire screen or just half of it.  Even
+when a panel is hidden, it still exists.
+
+   Users can switch between these three major modes as needed:
+
+`^X 0'
+     Enlarges the other panel to use the entire screen.  It also changes the
+     minor mode to `Enable all'.  The current panel will become
+     invisible (`enlarge-other-panel').
+   
+`^X 1'
+     Enlarges the current panel to use the entire screen.  It also changes
+     the minor mode to `Enable all'.  The other panel will become
+     invisible (`enlarge-panel').
+   
+`^X 2'
+     Switches back to the two panel mode (`two-panel-mode').
+   
+`^O', `ESC o'
+     Switches to the tty mode (no panels on the screen) (`tty-mode').
+   
+   A panel displays the files and subdirectories in a directory.  You
+can optionally specify some additional information about each entry
+(file, directory, ...) to be displayed (a minor mode).
+
+   When using the full screen mode, all the minor modes here can be
+used.  In half screen mode, the `panel-enable-all' mode is not
+available.
+
+   These are the panel minor modes: 
+
+`ESC e o'
+     Display the entry owner and group (`panel-enable-owner-group').
+   
+`ESC e d'
+     Display the entry date and time (`panel-enable-date-time').
+   
+`ESC e s'
+     Display the entry size (`panel-enable-size').
+   
+`ESC e m'
+     Display the entry mode (`panel-enable-mode').
+   
+`ESC e f'
+     Display the entry full name (`panel-enable-full-name').
+   
+`ESC e a'
+     Display the entire information about file (`panel-enable-all').
+     This mode is only available if the panel has been enlarged to use the
+     entire screen with `enlarge-panel' or `enlarge-other-panel'
+     (`panel-enable-all').
+   
+   There is another way of changing the panel minor modes:
+
+`^]', `^[]'
+     Switches to the next panel minor mode (`panel-enable-next-mode').
+   
+
+File: git.info,  Node: Sorting,  Next: Moving,  Prev: Modes,  Up: gitfm
+
+3.1.4 Sorting methods
+---------------------
+
+Entries in a panel can be sorted in different ways.  These are the
+available options:
+
+`ESC s n'
+     Display the panel entries sorted by their names
+     (`panel-sort-by-name').
+   
+`ESC s e'
+     Display the panel entries sorted by their extensions
+     (`panel-sort-by-extension').
+   
+`ESC s s'
+     Display the panel entries sorted by their sizes
+     (`panel-sort-by-size').
+   
+`ESC s d'
+     Display the panel entries sorted by their `last modified' stamps
+     (`panel-sort-by-date').
+   
+`ESC s m'
+     Display the panel entries sorted by their modes
+     (`panel-sort-by-mode').
+   
+`ESC s o i'
+     Display the panel entries sorted by their owner ids
+     (`panel-sort-by-owner-id').
+   
+`ESC s g i'
+     Display the panel entries sorted by their group ids
+     (`panel-sort-by-group-id').
+   
+`ESC s o n'
+     Display the panel entries sorted by their owner names
+     (`panel-sort-by-owner-name').
+   
+`ESC s g n'
+     Display the panel entries sorted by their group names
+     (`panel-sort-by-group-name').
+   
+   There is also another way to change the sort method:
+
+`ESC s u'
+     Switch to the next panel sort method (`panel-sort-next-method').
+   
+
+File: git.info,  Node: Moving,  Next: Selecting,  Prev: Sorting,  Up: gitfm
+
+3.1.5 Moving the cursor in the panel
+------------------------------------
+
+Moving the cursor in the panel is very easy.  If your keyboard has
+arrows, use them.  If the arrow keys don't work (it might be due to a
+badly configured TERM environment variable), you can use the Emacs
+commands bindings as well.
+
+`UP', `^P'
+     Move the cursor vertically up one entry (`previous-line').
+   
+`DOWN', `^N'
+     Move the cursor vertically down one entry (`next-line').
+   
+`HOME', `ESC <'
+     Move the cursor on the first entry in the panel
+     (`beginning-of-panel').
+   
+`END', `ESC >'
+     Move the cursor on the last entry in the panel (`end-of-panel').
+   
+`PGUP', `ESC v'
+     Move the cursor vertically down one page (`scroll-down').
+   
+`PGDOWN', `^V'
+     Move the cursor vertically down one page (`scroll-up').
+   
+`ESC g'
+     Scroll the panel entries to the left (`horizontal-scroll-left').
+   
+`ESC j'
+     Scroll the panel entries to the right (`horizontal-scroll-right').
+   
+`^X P'
+     In order to optimize the screen output, you can modify the scroll step
+     (`set-scroll-step').  This is the number of lines to try scrolling
+     a panel when the cursor moves out.  The `StartupScrollStep'
+     specifies the initial scroll step, but using `set-scroll-step' you
+     can dynamically change it.
+   
+`TAB', `^I', `^X o'
+     Move the cursor in the other panel (`other-panel').
+   
+`^X P'
+     Switch the two panels.  This command works even when `gitfm' is not
+     in the `two panels' mode (`switch-panels').
+   
+
+File: git.info,  Node: Selecting,  Next: Isearch,  Prev: Moving,  Up: gitfm
+
+3.1.6 Selecting files
+---------------------
+
+`INS', `^T', `^X \', `^\'
+     Toggle the `selected' flag of the current entry
+     (`select-entry').
+   
+`^C s'
+     Select (marks) all the files matching at least one pattern from a space
+     separated list of shell patterns.  Spaces and \s are allowed in the
+     patterns but they have to be escaped with a \.  The user will be
+     prompted for a pattern to match against
+     (`select-files-matching-pattern').
+   
+`^C u'
+     Unselect (unmarks) all the files matching at least one pattern from a
+     space separated list of shell patterns.  Spaces and \s are allowed in
+     the patterns but they have to be escaped with a \.  The user will be
+     prompted for a pattern to match against
+     (`unselect-files-matching-pattern').
+   
+`ESC +'
+     Select (marks) all the files having the same extension as the current
+     file.  If the current file name doesn't have an extension or starts with
+     a dot, no files are selected (`select-extension').
+   
+`ESC -'
+     Unselect (unmarks) all the files having the same extension as the
+     current file.  If the current file name doesn't have an extension or
+     starts with a dot, no files are unselected (`unselect-extension').
+   
+   *Note Selecting Files::, for additional ways of selecting and
+unselecting files.
+
+
+File: git.info,  Node: Isearch,  Next: Input Line,  Prev: Selecting,  Up: gitfm
+
+3.1.7 Incremental searching files in a panel
+--------------------------------------------
+
+Users sometime need to search a file in a panel, especially when the
+panel contains a big number of entries.  For that reason `gitfm'
+provides an incremental search feature.  Using forward and backward
+incremental search, files can be very easy located.  Wrapped incremental
+search is also provided.  
+
+`^S', `^Xs'
+     Incremental search forward a file name in the current panel
+     (`isearch-forward').  Pressing `^S' or `^Xs' again will
+     force `gitfm' to go to the next entry that matches the current
+     isearched string.  When the end of the panel is reached, the isearch is
+     restarted from its beginning.
+   
+`^R', `^Xr'
+     Incremental search backward a file name in the current panel
+     (`isearch-backward').  Pressing `^R' or `^Xr' again will
+     force `gitfm' to go to the next entry that matches the current
+     isearched string.  When the beginning of the panel is reached, the
+     isearch is restarted from its end.
+   
+
+File: git.info,  Node: Input Line,  Next: Files,  Prev: Isearch,  Up: gitfm
+
+3.1.8 Using the input line
+--------------------------
+
+The input line is one of the main methods used by `gitfm' to interact
+with the user.  All the answers the user should give in order to perform
+some operation and all the shell like commands are built using it.  So
+here is a description of all the basic editing operations that the
+`input line' provides.  They are very much inspired from `Emacs', so
+`Emacs' users should have no problem using them.
+
+* Menu:
+
+* Inserting Text::              Inserting text by simply typing it.
+* Moving Point::                How to move the cursor to the place where you
+				    want to change something.
+* Erasing::                     Deleting and killing text.
+* Case Changes::                Case conversion of words.
+* History::                     Reusing recent input line arguments.
+* Setting Mark::                Commands to set the mark.
+* Yanking::                     Reinserting recently killed text.
+* Selecting Files::             Selecting files matching patterns.
+
+
+File: git.info,  Node: Inserting Text,  Next: Moving Point,  Up: Input Line
+
+3.1.8.1 Inserting Text
+......................
+
+Typing characters is the most usual way of inserting text into the input
+line.  Key sequences starting with printable ascii characters are not
+allowed in `gitfm' so typing `a' for example results in inserting `a'
+at the current point position.  Of course, there are some other ways of
+inserting text into the command line and here there is a description of
+most of them.
+
+`ESC RET'
+     Copy the current entry name into the input line at the current point
+     position (`entry-to-input-line').
+   
+`ESC ESC RET'
+     Copy the other panel path into the input line at the current point
+     position (`other-path-to-input-line').
+   
+`^X ^I'
+     Copy the names of all the selected entries into the input line at the
+     current point position (`selected-entries-to-input-line').
+   
+
+File: git.info,  Node: Moving Point,  Next: Erasing,  Prev: Inserting Text,  Up: Input Line
+
+3.1.8.2 Moving Point
+....................
+
+`^B', `LEFT'
+     Move the point backward one character (`backward-char').
+   
+`^F', `RIGHT'
+     Move the point forward one character (`forward-char').
+   
+`ESC b'
+     Move the point one word backward (`backward-word').
+   
+`ESC f'
+     Move the point one word forward (`forward-word').
+   
+`^A'
+     Move the cursor at the beginning of the input line (`beginning-of-line').
+   
+`^E'
+     Move the cursor at the end of the input line (`end-of-line').
+   
+
+File: git.info,  Node: Erasing,  Next: Case Changes,  Prev: Moving Point,  Up: Input Line
+
+3.1.8.3 Deleting and killing text
+.................................
+
+`DEL', `^D'
+     Delete the character under the cursor (`delete-char').
+   
+`^H', `BKSPC'
+     Delete the character before the cursor (`backward-delete-char').
+   
+`ESC BKSPC'
+     Delete backward one word (`backward-kill-word').
+   
+`ESC d'
+     Delete forward one word (`kill-word').
+   
+`ESC k'
+     Delete the entire line (`kill-line').
+   
+`^U'
+     Delete all the characters between the beginning of the input line and
+     the point (`kill-to-beginning-of-line').
+   
+`^K'
+     Delete all the characters between the point and the end of the input
+     line (`kill-to-end-of-line').
+   
+`ESC SPC'
+     Delete all the spaces around the point, leaving only one space
+     (`just-one-space').
+   
+`ESC \'
+     Delete all the spaces around the point
+     (`delete-horizontal-space').
+   
+`^W'
+     Save the region between the point and the mark into the kill "ring" and
+     then kills it (`kill-region').  Note that there is no real
+     kill-ring here.  The so-called kill-ring has only one entry.
+   
+`ESC w'
+     Save the region between the point and the mark without killing it
+     (`kill-ring-save').
+   
+
+File: git.info,  Node: Case Changes,  Next: History,  Prev: Erasing,  Up: Input Line
+
+3.1.8.4 Case conversion of words.
+.................................
+
+`ESC l'
+     Convert the following word to lower case, moving over.
+     (`downcase-word').
+   
+`ESC u'
+     Convert the following word to upper case, moving over.
+     (`upcase-word').
+   
+`ESC c'
+     Capitalize the following word, moving over.
+     (`capitalize-word').
+   
+
+File: git.info,  Node: History,  Next: Setting Mark,  Prev: Case Changes,  Up: Input Line
+
+3.1.8.5 Reusing recent input line arguments
+...........................................
+
+A separate history is kept for both built-in and user-defined commands.
+If you call a command that you have used before, you can re-edit a
+previously entered string in order to minimize the amount of characters
+needed to be typed for the new one.  There is no limit on the number of
+strings that can be kept in the history.
+
+`ESC p'
+     Walk backward through the history of previously entered strings
+     (`previous-history-element').
+   
+`ESC n'
+     Walk forward through the history of previously entered strings
+     (`next-history-element').
+   
+
+File: git.info,  Node: Setting Mark,  Next: Yanking,  Prev: History,  Up: Input Line
+
+3.1.8.6 Commands to set the mark
+................................
+
+`^SPC'
+     Set the mark at the current point position (`set-mark').
+   
+`^X ^X'
+     Exchange the current point position with the mark one
+     (`exchange-point-and-mark').
+   
+
+File: git.info,  Node: Yanking,  Next: Selecting Files,  Prev: Setting Mark,  Up: Input Line
+
+3.1.8.7 Reinserting recently killed text
+........................................
+
+`^Y'
+     Reinsert a previously killed text at the current point position
+     (`yank').
+   
+
+File: git.info,  Node: Selecting Files,  Prev: Yanking,  Up: Input Line
+
+3.1.8.8 Selecting files matching patterns
+.........................................
+
+If the very first character in the input line is a `+', what comes after
+it is considered a (space separated) list of shell patterns, and all the
+files that match at least one pattern from that list will be marked as
+selected.  An empty list of shell patterns (i.e. the `+' by itself) will
+cause all the files to be selected.
+
+   If the very first character in the input line is a `-', the space
+separated list of shell patterns that follows is used to unselect files.
+An empty list of shell patterns (i.e. the `-' by itself) will cause all
+the selected files to be unselected.
+
+   Finally, if the first and only character in the input line is a `*',
+then all the selected files will become unselected, and all the
+unselected files will become selected.
+
+
+File: git.info,  Node: Files,  Next: Directories,  Prev: Input Line,  Up: gitfm
+
+3.1.9 File operations
+---------------------
+
+* Menu:
+
+* Copying Files::               How to copy files.
+* Moving Files::                How to move files.
+* Creating Files::              How to create new files.
+* Deleting Files::              How to delete files.
+* Linking Files::               How to create hard and symbolic links.
+* Renaming Files::              How to rename files.
+* Splitting Files::		How to split files into smaller parts.
+* Packing Files::               How to pack files in the min. number of bins.
+* Inode::                       How to change a file's mode, owner, group.
+
+* Editing Files::               How to edit and create files.  Default editor.
+* Viewing Files::               How to view files.  Default viewer.
+* Compressing Files::           How to compress and decompress files.
+* Encoding Files::              How to uuencode/uudecode, mpack/munpack a file.
+* Encrypting Files::            How to encrypt/decrypt files with pgp.
+* Comparing Files::             How to compare two files.
+* Spell Checking Files::        How to spell check a file.
+* Printing Files::		How to print files.
+* Wiping Files::                How to wipe a file.
+* Searching Files::             How to search a file.
+* Archive Files::               How to manage tar based archive files.
+* RPM Packages::                How to install and uninstall RPM packages.
+* File Types::                  How to figure out the file type.
+* MSDOS Files::                 How to access msdos floppies.
+
+* Actions::                     A different action for each file type.
+
+
+File: git.info,  Node: Copying Files,  Next: Moving Files,  Up: Files
+
+3.1.9.1 Copying Files
+.....................
+
+`F5', `ESC 5', `^C C'
+     Copy the currently selected entries to the user supplied path
+     (`copy').
+   
+`^C b C'
+     Copy the currently selected entries to the user supplied path.  The
+     operation is performed in background (`B-COPY').
+   
+
+File: git.info,  Node: Moving Files,  Next: Creating Files,  Prev: Copying Files,  Up: Files
+
+3.1.9.2 Moving Files
+....................
+
+`F6', `ESC 6', `^C T'
+     Move the currently selected entries to the user supplied path
+     (`move').
+   
+`^C b T'
+     Move the currently selected entries to the user supplied path.  The
+     operation is performed in background (`B-MOVE').
+   
+
+File: git.info,  Node: Creating Files,  Next: Deleting Files,  Prev: Moving Files,  Up: Files
+
+3.1.9.3 Creating Files
+......................
+
+The easiest way to create a new file is to start an editor passing the
+file name as an argument.  Most editors will try to create the file if
+the file doesn't exist.  *Note Editing Files::, for more information.
+
+
+File: git.info,  Node: Deleting Files,  Next: Linking Files,  Prev: Creating Files,  Up: Files
+
+3.1.9.4 Deleting Files
+......................
+
+`F8', `ESC 8', `^C D'
+     Delete the currently selected entries (`delete').
+   
+`^C b D'
+     Delete the currently selected entries.  The operation is performed in
+     background (`B-DELETE').
+   
+
+File: git.info,  Node: Linking Files,  Next: Renaming Files,  Prev: Deleting Files,  Up: Files
+
+3.1.9.5 Linking Files
+.....................
+
+`^C H'
+     Create a hard link from the current files to a user supplied file
+     name (`LINK').
+   
+`^C b H'
+     Create a hard link from the current files to a user supplied file name
+     (`B-LINK').  The action is performed in background.
+   
+`^C S'
+     Create a symbolic link from the current files to a user supplied file
+     name (`SYMLINK').
+   
+`^C b S'
+     Create a symbolic link from the current files to a user supplied file
+     name (`B-SYMLINK').  The action is performed in background.
+   
+
+File: git.info,  Node: Renaming Files,  Next: Splitting Files,  Prev: Linking Files,  Up: Files
+
+3.1.9.6 Renaming Files
+......................
+
+`^C R'
+     Rename the current file or directory with the user supplied name
+     (`RENAME').
+   
+`^C b R'
+     Rename the current file or directory with the user supplied name.  The
+     operation is performed in background (`B-RENAME').
+   
+`^C n d'
+     Change the name of all the selected entries to lowercase.
+     (`name-downcase').
+   
+`^C n u'
+     Change the name of all the selected entries to uppercase.
+     (`name-upcase').
+   
+
+File: git.info,  Node: Splitting Files,  Next: Packing Files,  Prev: Renaming Files,  Up: Files
+
+3.1.9.7 Splitting files into smaller parts
+..........................................
+
+`^C /'
+     Split the current file into several smaller files of a given size and
+     named based on a given prefix (`SPLIT').
+   
+`^C b /'
+     Split the current file into several smaller files of a given size and
+     named based on a given prefix.  The operation is performed in background
+     (`B-SPLIT').
+   
+
+File: git.info,  Node: Packing Files,  Next: Inode,  Prev: Splitting Files,  Up: Files
+
+3.1.9.8 Packing files into the minimum number of bins
+.....................................................
+
+`^C ~'
+     Pack the files into the smallest number of bins.  This is an
+     approximation - the problem is NP-complete and no known algorithm can
+     guarantee a solution better than `(11/9) * OPTIMAL + 4'.
+
+     To make things even worse, for large files, there is no portable way
+     to predict how many blocks the file system implementation will require
+     for indirect blocks, directories, etc.  So keep in mind that this is
+     only an approximation.
+
+     Bin packing can be useful when you want to put a bunch of files on
+     floppies or zip disks and you want to optimize things a little bit
+     (`bin-packing').
+
+     `gitfm' assumes that you want to pack all the files in the current
+     directory - if there is any selected file in that directory it will be
+     unselected first.  Then `gitfm' will ask for a bin size, and select
+     the files that should go in the first bin.  You are supposed to place
+     those files in the first bin (e.g. a tar archive), remove them from the
+     current directory, then run `bin-packing' again, to obtain the list
+     of the files that should go into the second bin, etc.
+   
+
+File: git.info,  Node: Inode,  Next: Editing Files,  Prev: Packing Files,  Up: Files
+
+3.1.9.9 Changing a file's mode, owner and group
+...............................................
+
+`^C M'
+     Change the mode of the currently selected entries (`CHMOD').
+   
+`^C b M'
+     Change the mode of the currently selected entries.  The operation is
+     performed in background (`B-CHMOD').
+   
+`^C r M'
+     Recursively change the modes of the selected entries if one of them is a
+     directory (`R-CHMOD').
+   
+`^C b r M'
+     Recursively change the modes of the selected entries if one of them is a
+     directory.  The operation is performed in background (`B-R-CHMOD').
+   
+`^C O'
+     Change the owner of the currently selected entries (`CHOWN').
+   
+`^C b O'
+     Change the owner of the currently selected entries.  The operation is
+     performed in background (`B-CHOWN').
+   
+`^C r O'
+     Recursively change the owners of the selected entries if one of them is
+     a directory (`R-CHOWN').
+   
+`^C b r O'
+     Recursively change the owners of the selected entries if one of them is
+     a directory.  The operation is performed in background
+     (`B-R-CHOWN').
+   
+`^C G'
+     Change the group of the currently selected entries (`CHGRP').
+   
+`^C b G'
+     Change the group of the currently selected entries.  The operation is
+     performed in background (`B-CHGRP').
+   
+`^C r G'
+     Recursively change the groups of the selected entries if one of them is
+     a directory (`R-CHGRP').
+   
+`^C b r G'
+     Recursively change the groups of the selected entries if one of them is
+     a directory.  The operation is performed in background
+     (`B-R-CHGRP').
+   
+
+File: git.info,  Node: Editing Files,  Next: Viewing Files,  Prev: Inode,  Up: Files
+
+3.1.9.10 Editing Files
+......................
+
+`F4', `ESC 4'
+     Call the default editor with the current file name as an argument
+     (`EDIT').
+   
+`^X e'
+     Call the default editor with the selected entry names as arguments
+     (`MULTIPLE-EDIT').
+   
+`^X ^F'
+     Create a new file by calling the default editor with the user supplied
+     file name as an argument (`FILE-CREATE').
+   
+`^X 4 a'
+     Call the default editor in order to edit the `ChangeLog' file
+     (`CHANGE-LOG').
+   
+   The default editor can be specified using the EDITOR or GIT_EDITOR
+environment variables.  *Note Environment Variables::, for more
+information.
+
+
+File: git.info,  Node: Viewing Files,  Next: Compressing Files,  Prev: Editing Files,  Up: Files
+
+3.1.9.11 Viewing Files
+......................
+
+`F3', `ESC 3'
+     Call the default viewer (`gitview') with the current file name as
+     argument (`VIEW').
+   
+`^X v'
+     Call the default pager (`more') with the currently selected entry
+     names as arguments (`MULTIPLE-VIEW').
+   
+
+File: git.info,  Node: Compressing Files,  Next: Encoding Files,  Prev: Viewing Files,  Up: Files
+
+3.1.9.12 Compressing Files
+..........................
+
+`^C z'
+     Compress the currently selected entries with `gzip'
+     (`COMPRESS').
+   
+`^C b z'
+     Compress the currently selected entries with `gzip'.  The operation
+     is performed in background (`B-COMPRESS').
+   
+`^C Z'
+     Uncompress the currently selected entries with `gunzip'
+     (`UNCOMPRESS').
+   
+`^C b Z'
+     Uncompress the currently selected entries with `gunzip'.  The
+     operation is performed in background (`B-UNCOMPRESS').
+   
+`^C f Z'
+     Uncompress the currently selected entries with `gunzip'
+     (`F-UNCOMPRESS').  Force uncompression of links.
+   
+`^C b f Z'
+     Uncompress the currently selected entries with `gunzip'.  Force
+     uncompression of links.  The operation is performed in background
+     (`BF-UNCOMPRESS').
+   
+`^C .'
+     Compress the currently selected entries with `bzip2'
+     (`BZIP2-COMPRESS').
+   
+`^C b .'
+     Compress the currently selected entries with `bzip2'.  The
+     operation is performed in background (`B-BZIP2-COMPRESS').
+   
+`^C o'
+     Uncompress the currently selected entries with `bunzip2'
+     (`BZIP2-UNCOMPRESS').
+   
+`^C b o'
+     Uncompress the currently selected entries with `bunzip2'.  The
+     operation is performed in background (`B-BZIP2-UNCOMPRESS').
+   
+
+File: git.info,  Node: Encoding Files,  Next: Encrypting Files,  Prev: Compressing Files,  Up: Files
+
+3.1.9.13 Encoding Files
+.......................
+
+`^C e'
+     Encode the currently selected file (`UUENCODE').
+   
+`^C b e'
+     Encode the currently selected file.  The operation is performed in
+     background (`B-UUENCODE').
+   
+`^C E'
+     Decode the currently selected file (`UUDECODE').
+   
+`^C b E'
+     Decode the currently selected file.  The operation is performed in
+     background (`B-UUDECODE').
+   
+`^C k'
+     Encode the currently selected file using mpack (`MIME-PACK').
+   
+`^C b k'
+     Encode the currently selected file using mpack.  The operation is
+     performed in background (`B-MIME-PACK').
+   
+`^C K'
+     Decode the currently selected file using munpack (`MIME-UNPACK').
+   
+`^C b K'
+     Decode the currently selected file using munpack.  The operation is
+     performed in background (`B-MIME-UNPACK').
+   
+
+File: git.info,  Node: Encrypting Files,  Next: Comparing Files,  Prev: Encoding Files,  Up: Files
+
+3.1.9.14 Encrypting Files
+.........................
+
+`^C p'
+     Encrypt (using `pgp') the current file (`ENCRYPT').
+   
+`^C P'
+     Decrypt (using `pgp') the current file (`DECRYPT').
+   
+
+File: git.info,  Node: Comparing Files,  Next: Spell Checking Files,  Prev: Encrypting Files,  Up: Files
+
+3.1.9.15 Comparing Files
+........................
+
+`^C ='
+     Compare (using `diff') the current ASCII file with the other
+     panel's current file (`DIFF').  If both entries are directories, a
+     recursive diff is performed.
+   
+`^C ESC ='
+     Compare (using `diff') the current ASCII file with its latest
+     backup.  The latest backup is the file having the same name and a '~' at
+     the end (`LAST-BACKUP-DIFF').
+   
+`^C B'
+     Compare the current file with the other panel current file.  A binary
+     comparison is performed (`compare').
+   
+
+File: git.info,  Node: Spell Checking Files,  Next: Printing Files,  Prev: Comparing Files,  Up: Files
+
+3.1.9.16 Spell Checking Files
+.............................
+
+`^X I'
+     Run the `ispell' command with the current file name as an
+     argument.
+   
+
+File: git.info,  Node: Printing Files,  Next: Wiping Files,  Prev: Spell Checking Files,  Up: Files
+
+3.1.9.17 Printing Files
+.......................
+
+`^C j'
+     Print the selected files via `lpr' to the user specified printer or
+     to the default one if no `lpr' options are given (`PRINT-JOB').
+   
+`^C J'
+     Print the list of active printing jobs via `lpq'.  The default
+     printer is queried if no `lpq' options are given
+     (`PRINT-JOB-LIST').
+   
+
+File: git.info,  Node: Wiping Files,  Next: Searching Files,  Prev: Printing Files,  Up: Files
+
+3.1.9.18 Wiping Files
+.....................
+
+`^C W'
+     Call `gitwipe' to wipe the selected files.  Asks for confirmation
+     before actually wiping them in order to avoid errors (`WIPE').
+   *Note gitwipe::, for more information.  
+
+
+File: git.info,  Node: Searching Files,  Next: Archive Files,  Prev: Wiping Files,  Up: Files
+
+3.1.9.19 Searching Files
+........................
+
+`ESC %'
+     Searche files on the file system, starting from the current directory
+     (`FIND').
+   
+`ESC &'
+     Use 'locate' to search files on the file system, starting from the
+     current directory (`LOCATE').
+   
+`^X w'
+     Locate the binary, source, and manual page files for a command
+     (`WHEREIS').
+   
+`^X W'
+     Locate a command; display its pathname or alias (`WHICH').
+   
+
+File: git.info,  Node: Archive Files,  Next: RPM Packages,  Prev: Searching Files,  Up: Files
+
+3.1.9.20 Managing tar based archive files
+.........................................
+
+`^C a'
+     Create a `tar' archive containing all the currently selected
+     entries (`TAR').
+   
+`^C b a'
+     Create a `tar' archive containing all the currently selected
+     entries.  The operation is performed in background (`B-TAR').
+   
+`^C x'
+     Create a compressed `tar' archive containing the current entry,
+     provided it is a directory (`TAR-COMPRESS').
+   
+`^C b x'
+     Create a compressed `tar' archive containing the current entry,
+     provided it is directory.  The operation is performed in background
+     (`B-TAR-COMPRESS').
+   
+`^C -'
+     Create a bzip2 compressed `tar' archive containing the current
+     entry, provided it is a directory (`TAR-BZIP2').
+   
+`^C b -'
+     Create a bzip2 compressed `tar' archive containing the current
+     entry, provided it is a directory.  The operation is performed in
+     background (`B-TAR-BZIP2').
+   
+`^C X'
+     Expand the selected archives into the current directory.  The utility
+     used is selected based on the extension of the file
+     (`GENERIC-UNPACK').
+   
+`^C b X'
+     Expand the selected archives into the current directory.  The utility
+     used is based on the extension of the file.  The operation is performed
+     in background (`B-GENERIC-UNPACK').
+   
+`^C V'
+     Expand the selected archives into an user supplied current directory.
+     The utility used is selected based on the extension of the file
+     (`GENERIC-UNPACK-INTO').
+   
+`^C b V'
+     Expand the selected archives into an user supplied directory.  The
+     utility used is based on the extension of the file.  The operation is
+     performed in background (`B-GENERIC-UNPACK-INTO').
+   
+
+File: git.info,  Node: RPM Packages,  Next: File Types,  Prev: Archive Files,  Up: Files
+
+3.1.9.21 Installing and Uninstalling RPM packages
+.................................................
+
+Red Hat Linux Distributions use a very powerful package manager called
+`rpm'.  It is used whenever you need to install/remove/upgrade/etc a
+software package.  The packages used by `rpm' use the extension `.rpm'.
+`gitfm' provides default key bindings for some of the basic operations
+`rpm' can perform on packages: install, uninstall, upgrade and query.
+
+`^C I'
+     Install the `rpm' package pointed by the cursor
+     (`RPM-INSTALL').
+   
+`^C b I'
+     Install the `rpm' package pointed by the cursor
+     (`B-RPM-INSTALL').  The operation is performed in background.
+   
+`^C i'
+     Uninstall the `rpm' package pointed by the cursor
+     (`RPM-UNINSTALL').
+   
+`^C b i'
+     Uninstall the `rpm' package pointed by the cursor
+     (`B-RPM-UNINSTALL').  The operation is performed in background.
+   
+`^C N'
+     Upgrade the `rpm' package pointed by the cursor
+     (`RPM-UPGRADE').
+   
+`^C b N'
+     Upgrade the `rpm' package pointed by the cursor
+     (`B-RPM-UPGRADE').  The operation is performed in background.
+   
+`^C q'
+     Query the `rpm' package manager (`RPM-QUERY').  The default
+     options used are `-qil'.  See the `rpm' manual page for
+     more details on using `rpm'.
+   
+
+File: git.info,  Node: File Types,  Next: MSDOS Files,  Prev: RPM Packages,  Up: Files
+
+3.1.9.22 File Types
+...................
+
+`^C t'
+     Print the type of a file using the `file' utility
+     (`FILE-TYPE').
+   
+
+File: git.info,  Node: MSDOS Files,  Next: Actions,  Prev: File Types,  Up: Files
+
+3.1.9.23 Accessing MSDOS Files
+..............................
+
+`^C m d', `^C m ^D'
+     Change the current `MSDOS' directory to a given directory
+     (`MTOOLS-CHDIR').
+   
+`^C m P'
+     Put the currently selected files on a `MSDOS' floppy
+     (`MTOOLS-PUT').
+   
+`^C b m P'
+     Put the currently selected files on a `MSDOS' floppy
+     (`B-MTOOLS-PUT').  The operation is performed in background.
+   
+`^C m G'
+     Get some files from a `MSDOS' floppy and put them in a given
+     directory (`MTOOLS-GET').
+   
+`^C b m G'
+     Get some files from a `MSDOS' floppy and put them in a given
+     directory (`B-MTOOLS-GET').  The operation is performed in
+     background.
+   
+`^C m D'
+     Delete files from a `MSDOS' floppy (`MTOOLS-DELETE').
+   
+`^C b m D'
+     Delete files from a `MSDOS' floppy (`B-MTOOLS-DELETE').  The
+     operation is performed in background.
+   
+`^C m L'
+     List files and directories on a `MSDOS' floppy (`MTOOLS-DIR').
+   
+`^C m F'
+     Format a `MSDOS' floppy (`MTOOLS-FORMAT').
+   
+`^C b m F'
+     Format a `MSDOS' floppy (`B-MTOOLS-FORMAT').  The operation is
+     performed in background.
+   
+`^C m M'
+     Create a directory on a `MSDOS' floppy (`MTOOLS-MKDIR').
+   
+`^C b m M'
+     Create a directory on a `MSDOS' floppy (`B-MTOOLS-MKDIR').
+     The operation is performed in background.
+   
+`^C m K'
+     Remove a directory from a `MSDOS' floppy (`MTOOLS-RMDIR').
+     All the files and subdirectories in that directory are removed as well.
+   
+`^C b m K'
+     Remove a directory from a `MSDOS' floppy (`B-MTOOLS-RMDIR').
+     All the files and subdirectories in that directory are removed as well.
+     The operation is performed in background.
+   
+`^C m R'
+     Rename a file or directory on a `MSDOS' floppy
+     (`MTOOLS-RENAME').
+   
+`^C b m R'
+     Rename a file or directory on a `MSDOS' floppy
+     (`B-MTOOLS-RENAME').  The operation is performed in background.
+   
+`^C m T'
+     Display the contents of a file located on a `MSDOS' floppy
+     (`MTOOLS-TYPE').
+   
+
+File: git.info,  Node: Actions,  Prev: MSDOS Files,  Up: Files
+
+3.1.9.24 A different action for each file type
+..............................................
+
+Many files on `UNIX' systems have one or more extensions specifying
+their types.  For example, a file that ends in `.c' is a file
+containing a `C' program, while a file ending in `.tar.gz' is a `tar'
+archive compressed with the `gzip' utility.  Having a default action
+for each file type, binded on the same key, seems to be a good idea
+because you can use that key to obtain type specific information about
+a file or to process it in some type specific way much easier.  The
+`GIT' package contains a script called `gitaction' that is used to
+detect the current file type and perform a type specific action.  *Note
+gitaction::, for more information.
+
+`F2', `ESC 2', `^X a'
+     Perform an action on the current file, depending on its type
+     (`FILE-ACTION').
+   
+
+File: git.info,  Node: Directories,  Next: Compiling,  Prev: Files,  Up: gitfm
+
+3.1.10 Directory operations
+---------------------------
+
+* Menu:
+
+* Creating Dirs::               How to create new directories.
+* Copying Dirs::                How to copy directories.
+* Deleting Dirs::               How to delete directories.
+* Moving Dirs::                 How to move directories.
+* Renaming Dirs::               How to rename directories.
+* Comparing Dirs::              How to compare directories.
+* Dirs Usage::                  Summarize directory usage.
+* Changing Dirs::               How to go to a new directory.
+* Dirs History::                How to use the directory history.
+* Hot Keys::                    Hot keys for the most used directories.
+
+
+File: git.info,  Node: Creating Dirs,  Next: Copying Dirs,  Up: Directories
+
+3.1.10.1 Creating directories
+.............................
+
+`F7', `ESC 7', `^X M'
+     Create a new subdirectory in the current directory with the user
+     supplied name (`make-directory').
+   
+
+File: git.info,  Node: Copying Dirs,  Next: Deleting Dirs,  Prev: Creating Dirs,  Up: Directories
+
+3.1.10.2 Copying directories
+............................
+
+`F5 (for directories)', `ESC 5 (for directories)', `^C C (for
+directories)'
+     Copy the currently selected entries to the user supplied path
+     (`copy').
+   
+`^C b C (for directories)'
+     Copy the currently selected entries to the user supplied path.  The
+     operation is performed in background (`B-COPY').
+   
+
+File: git.info,  Node: Deleting Dirs,  Next: Moving Dirs,  Prev: Copying Dirs,  Up: Directories
+
+3.1.10.3 Deleting directories
+.............................
+
+`F8 (for subdirectories)', `ESC 8 (for directories)', `^C D (for
+subdirectories)'
+     Delete the currently selected entries (`delete').
+   
+`^C b D (for directories)'
+     Delete the currently selected entries.  The operation is performed in
+     background (`B-DELETE').
+   
+
+File: git.info,  Node: Moving Dirs,  Next: Renaming Dirs,  Prev: Deleting Dirs,  Up: Directories
+
+3.1.10.4 Moving directories
+...........................
+
+`F6 (for directories)', `ESC 6 (for directories)', `^C T (for
+directories)'
+     Move the currently selected entries to the user supplied path
+     (`move').
+   
+`^C b T (for directories)'
+     Move the currently selected entries to the user supplied path.  The
+     operation is performed in background (`B-MOVE').
+   
+
+File: git.info,  Node: Renaming Dirs,  Next: Comparing Dirs,  Prev: Moving Dirs,  Up: Directories
+
+3.1.10.5 Renaming directories
+.............................
+
+`^C R (for directories)'
+     Rename the current file or directory with the user supplied name
+     (`RENAME').
+   
+`^C b R (for directories)'
+     Rename the current file or directory with the user supplied name.  The
+     operation is performed in background (`B-RENAME').
+   
+
+File: git.info,  Node: Comparing Dirs,  Next: Dirs Usage,  Prev: Renaming Dirs,  Up: Directories
+
+3.1.10.6 Comparing Directories
+..............................
+
+`^C c q'
+     Quickly compare the files in the left panel with the files in the right
+     one.  Only the file names, sizes and time stamps are considered in the
+     comparison.
+   
+`^C c t'
+     Compare the files in the left panel with the files in the right one.
+     The contents of each file in the current panel will be compared against
+     the contents of its couterpart (if any) from the other panel.
+   
+`^C f d'
+     Recursively compare (using `diff -r -q') the current directory with
+     the other panel's current directory (`FAST-DIFF').  Print on
+     standard output the names of the files that differ.
+   
+`^C d'
+     Compare (using `diff') the current directory with the other panel
+     current directory.  For successful operation, both panels should contain
+     the same directory (`DIR-DIFF').
+   
+`^C b d'
+     Compare (using `diff') the current directory with the other panel
+     current directory.  For successful operation, both panels should contain
+     the same directory.  The operation is performed in background
+     (`DIR-DIFF').
+   
+
+File: git.info,  Node: Dirs Usage,  Next: Changing Dirs,  Prev: Comparing Dirs,  Up: Directories
+
+3.1.10.7 Summarize directory usage
+..................................
+
+`^C U'
+     Display the output of the `du -s' command on the status line
+     (`DIRECTORY-USAGE').
+   
+
+File: git.info,  Node: Changing Dirs,  Next: Dirs History,  Prev: Dirs Usage,  Up: Directories
+
+3.1.10.8 Changing directories
+.............................
+
+`^X d', `^X ^D'
+     Change the current working directory.  The user is asked for a new
+     directory name and the new directory is added to the directory history
+     (`change-directory').
+   *Note Dirs History::, for more information.  
+
+`ESC a c'
+     Change the current directory of the current panel to the directory of
+     the other panel (`adapt-current-directory').
+   
+`ESC a o'
+     Change the current directory of the other panel to the directory of the
+     current panel (`adapt-other-directory').
+   
+
+File: git.info,  Node: Dirs History,  Next: Hot Keys,  Prev: Changing Dirs,  Up: Directories
+
+3.1.10.9 Directory History
+..........................
+
+Users usually work on a limited set of subdirectories.  Providing a fast
+method of switching between a number of intensively used directories is
+a good idea and `gitfm' has a set of builtin commands for doing it.
+
+   Usually new directories are added to the directory history when the
+`change-directory' built-in command is used.  `gitfm' also adds the
+current directory to the history list when started, when the directory
+history is reseted and when a command having a non empty `new-dir'
+field successfully completes its execution.  *Note new-dir::, for more
+information.
+
+`^X ^N'
+     Go to the next directory in the history (`next-directory').
+   
+`^X ^P'
+     Go to the previous directory in the history
+     (`previous-directory').
+   
+`^X ^R'
+     Reset the entire directory history.  As explained above, the current
+     directory becomes the only directory in the history
+     (`reset-directory-history').
+   
+
+File: git.info,  Node: Hot Keys,  Prev: Dirs History,  Up: Directories
+
+3.1.10.10 Hot Keys
+..................
+
+`gitfm' provides default key bindings for switching to a number of
+important directories as "/", "..", "$HOME", etc.  
+
+`ESC /'
+     Go to the `/' directory (`ROOT-DIR').
+   
+`ESC .'
+     Go to the `..' directory (`up-one-dir').
+   
+`ESC h'
+     Go to the `~' ($HOME) directory (`HOME-DIR').
+   
+`ESC i'
+     Go to the `/usr/include' directory (`INCLUDE-DIR').
+   
+`ESC ESC 1'
+     Go to the `/mnt/fd0' directory (`FIRST-FLOPPY-DIR').
+   
+`ESC ESC 2'
+     Go to the `/mnt/fd1' directory (`SECOND-FLOPPY-DIR').
+   
+
+File: git.info,  Node: Compiling,  Next: Mail,  Prev: Directories,  Up: gitfm
+
+3.1.11 Compiling programs
+-------------------------
+
+`F9', `ESC 9', `^X m'
+     Run the `make' command in the current directory.  Use -k as the
+     default option (`MAKE').
+   
+`^X b m'
+     Run the `make' command in background in the current directory
+     (`B-MAKE').
+   *Note gitaction::, for more information.  
+
+
+File: git.info,  Node: Mail,  Next: Shell,  Prev: Compiling,  Up: gitfm
+
+3.1.12 Sending/receiving ascii/binary mail
+------------------------------------------
+
+`^C 2 a'
+     Send the current current ascii file by mail to an user supplied email
+     address (`ASCII-MAIL').
+   
+`^C b 2 a'
+     The same as `ASCII-MAIL', the only difference being that the
+     command runs in background (`B-ASCII-MAIL').
+   
+`^C 2 b'
+     Send the current current binary file by mail to an user supplied list of
+     email addresses.  The file is uuencoded first (`BINARY-MAIL').
+   
+`^C b 2 b'
+     The same as `BINARY-MAIL', the only difference being that the
+     command runs in background (`B-BINARY-MAIL').
+   
+`^C 2 m'
+     Send the current current binary file by mail to an user supplied list of
+     email addresses.  The file is encoded with mpack first
+     (`MIME-MAIL').
+   
+`^C b 2 m'
+     The same as `MIME-MAIL', the only difference being that the command
+     runs in background (`B-MIME-MAIL').
+   
+`ESC x r m'
+     Run the `emacs -f rmail' command.  This will start the Emacs's
+     `rmail' function so that you can read your mail (`READ-MAIL').
+   
+
+File: git.info,  Node: Shell,  Next: Grep,  Prev: Mail,  Up: gitfm
+
+3.1.13 Starting a sub-shell
+---------------------------
+
+`^X z'
+     Call a sub-shell as specified by the $GIT_SHELL environment
+     variable (`SUB-SHELL').
+   *Note Environment Variables::, for more information.  
+
+
+File: git.info,  Node: Grep,  Next: Locking,  Prev: Shell,  Up: gitfm
+
+3.1.14 Using grep and recursive grep
+------------------------------------
+
+`^X g'
+     Search using `grep' all the selected files for a given pattern
+     (`GREP').
+   
+`^X g'
+     Search recursively using `gitrgrep' all the user specified files
+     and directories for a given pattern (`RECURSIVE-GREP').
+   *Note gitrgrep::, for more information.  
+
+
+File: git.info,  Node: Locking,  Next: Refreshing,  Prev: Grep,  Up: gitfm
+
+3.1.15 Locking your console
+---------------------------
+
+Having a lock feature might be a good idea and, since not all the
+`UNIX' systems provide one, `gitfm' tries to get around the problem ...
+
+`^X p'
+     Prompt the user for a password and locks the console until the same
+     password is reinserted (`lock').
+   
+
+File: git.info,  Node: Refreshing,  Next: Resetting,  Prev: Locking,  Up: gitfm
+
+3.1.16 Refreshing the screen contents
+-------------------------------------
+
+Sometimes your screen needs to be refreshed.  Just think about what
+happens when somebody wants to talk with you and the talk daemon writes
+something like this
+
+     Message from Talk_Daemon@galei.cs.vu.nl at 12:15 ...
+     talk: connection requested by andrei@galei.cs.vu.nl.
+     talk: respond with:  talk andrei@galei.cs.vu.nl
+
+on your screen.  And sometimes you might also want to re-read the
+current directories.  `gitfm' provides a built-in command for
+refreshing the screen contents.
+
+`^L'
+     Re-read the directories contents and refresh the screen (`refresh').
+   
+
+File: git.info,  Node: Resetting,  Next: Mounting,  Prev: Refreshing,  Up: gitfm
+
+3.1.17 Resetting your terminal
+------------------------------
+
+`^X ^L'
+     Call `reset' in order to reset the terminal to its default
+     settings (`TTY-RESET').
+   
+
+File: git.info,  Node: Mounting,  Next: Sysinfo,  Prev: Resetting,  Up: gitfm
+
+3.1.18 Mounting/unmounting file systems
+---------------------------------------
+
+People dealing with lots of files usually need to save/restore/copy
+files from/to other file systems.  In order to be more efficient,
+`gitfm' provides a set of key bindings for mounting and unmounting file
+systems.  *Note gitmount::, for more information.
+
+   The default key bindings set has been designed to work under
+`Linux', but it can be easily changed for other `UNIX' systems with
+different device names.  Reading the configuration file `.gitrc.common'
+should be enough.  *Note Hot Keys::, for more information.
+
+   As a convention, the `/mnt' directory is used to store an empty
+subdirectory for each mountable file system.  Each file system is
+actually mounted in its counterpart `/mnt' subdirectory.  Try to follow
+this convention since the `gitmount' script is heavily based on it.
+*Note Customization::, for more information.
+
+`ESC m a'
+     Call `mount'(1) in order to mount the first floppy
+     (`/dev/fd0') in the `/mnt/fd0' directory (`MOUNT-A').
+   
+`ESC m b'
+     Call `mount'(1) in order to mount the second floppy
+     (`/dev/fd1') in the `/mnt/fd1' directory (`MOUNT-B').
+   
+`ESC m c'
+     Call `mount'(1) in order to mount the cdrom
+     (`/dev/cdrom') in the `/mnt/cdrom' directory (`MOUNT-CDROM').
+   
+`ESC m f'
+     Call `mount'(1) in order to mount the first floppy
+     (`/dev/fd0') in the `/mnt/floppy' directory (`MOUNT-FLOPPY').
+   
+`ESC m z'
+     Call `mount'(1) in order to mount the zip drive
+     (`/dev/zip') in the `/mnt/zip' directory (`MOUNT-ZIP').
+   
+`ESC m j'
+     Call `mount'(1) in order to mount the jaz drive
+     (`/dev/jaz') in the `/mnt/jaz' directory (`MOUNT-JAZ').
+   
+`ESC m t'
+     Call `mount'(1) in order to mount the file systems corresponding to
+     the selected subdirectories.  For example, if you are in the `/mnt'
+     directory and the `cdrom' and `zip' subdirectories are
+     selected, the cdrom and the zip disk will be mounted (`MOUNT-THESE').
+   
+`ESC r a'
+     Call `umount'(1) in order to remove (unmount) the first floppy
+     (`/dev/fd0') (`UMOUNT-A').
+   
+`ESC r b'
+     Call `umount'(1) in order to remove (unmount) the second floppy
+     (`/dev/fd1') (`UMOUNT-B').
+   
+`ESC r c'
+     Call `umount'(1) in order to remove (unmount) the cdrom
+     (`/dev/cdrom') (`UMOUNT-CDROM').
+   findex UMOUNT-CDROM 
+
+`ESC r f'
+     Call `umount'(1) in order to remove (unmount) the first floppy
+     (`/dev/fd0') (`UMOUNT-FLOPPY').
+   
+`ESC r z'
+     Call `umount'(1) in order to remove (unmount) the zip drive
+     (`/dev/zip') (`UMOUNT-ZIP').
+   
+`ESC r j'
+     Call `umount'(1) in order to remove (unmount) the jaz drive
+     (`/dev/jaz') (`UMOUNT-JAZ').
+   
+`ESC r t'
+     Call `umount'(1) in order to remove (unmount) the file systems
+     mounted into the selected subdirectories.  For example, if the current
+     directory is `/mnt' and the `cdrom' and `zip'
+     subdirectories are selected, the cdrom and the zip disk will be
+     unmounted (`UMOUNT-THESE').
+   
+
+File: git.info,  Node: Sysinfo,  Next: Environment,  Prev: Mounting,  Up: gitfm
+
+3.1.19 Getting some useful system information
+---------------------------------------------
+
+`^X T'
+     Call `date'(1) in order to display the current time/date
+     (`DATE').
+   
+`ESC S f'
+     Call `finger'(1) in order to display information about local and
+     remote users  (`FINGER').
+   
+`ESC S m'
+     Call `mount'(1) in order to display a list of the currently
+     mounted file systems (`MOUNTED-FILE-SYSTEMS').
+   
+`ESC S q'
+     Call `quota'(1) in order to display a user file system disk quota
+     and quota (`QUOTA').
+   
+`ESC S s'
+     Call `df'(1) in order to get the status of the currently mounted
+     file systems (`DISK-FREE-SPACE').
+   
+`ESC S u'
+     Call `users'(1) in order to get the name of the currently logged in
+     users (`USERS').
+   
+`ESC S v'
+     Call `$GIT_VMSTAT'(1) in order to get the current virtual memory
+     status.  This is very system dependent, `Linux' uses `free',
+     other systems use `vmstat', so the $GIT_VMSTAT variable is
+     used to deal with this (`VIRTUAL-MEMORY-STATUS').
+   *Note Environment Variables::, for more information.  
+
+`ESC S w'
+     Call `who'(1) in order to find out who is on the system
+     (`WHO').
+   
+
+File: git.info,  Node: Environment,  Next: Processes,  Prev: Sysinfo,  Up: gitfm
+
+3.1.20 How to look at the environment variables
+-----------------------------------------------
+
+`^X E'
+     Call `env'(1) in order to display the current environment
+     (`ENV').
+   
+`^X H'
+     Call `xhost'(1) in order to add/remove hosts names to the list
+     allowed to make connection to the X server (`XHOST').
+   
+
+File: git.info,  Node: Processes,  Next: Sync,  Prev: Environment,  Up: gitfm
+
+3.1.21 Viewing/killing processes
+--------------------------------
+
+There are at least two kinds of `ps'(1) utilities.  One that accepts
+(more or less) combinations of the 'a', 'u', and 'x' flags and another
+that accepts combinations of 'e', 'f' and 'l' flags.  Since is quite
+difficult to test which one works fine on a given `UNIX' system,
+`gitfm' provides key bindings for both of them.  Anyway, if your
+`ps'(1) fails to accept the predefined combinations, please take a look
+in its manual and then modify the `.gitrc.TERM' file as needed.
+
+   Since the number of possible combinations of flags in the `ps'
+command line is quite big and *very* system dependent, there is no real
+reason to display them all here.  We are only interested in giving you
+a starting point in your search through the `.gitrc.TERM' file.
+
+   Note also that you can display a list of processes using `ps'(1) or
+browse through a list of them (killing as needed) using `gitps'.  As a
+convention, we have used the same key sequence for a given set of
+`ps'(1) flags for both `ps'(1) and `gitps', the only difference being
+that `ps'(1) keys end in an uppercase letter.  *Note gitps::, for more
+information.
+
+   Under Linux it is possible to see a tree of processes using
+`pstree'(1).
+
+   Here there are the default key bindings for the 'e', 'f' and 'l'
+`ps'(1) flags combinations:
+
+`ESC P b', `ESC P c', `ESC P e'
+     Call `gitps' or `ps'(1) in order to browse through or display
+     a list of currently running processes (`GITPS', `PS').
+   
+... and the default key bindings for the 'a', 'u' and 'x' `ps'(1) flags
+combinations:
+
+`ESC P a', `ESC P l', `ESC P u' `ESC P x', `ESC P y'
+     Call `gitps' or `ps'(1) in order to browse through or display
+     a list of currently running processes (`GITPS', `PS').
+   
+`ESC P T'
+     Call `pstree'(1) in order to displat the tree of currently running
+     processes (`PSTREE').
+   
+`^X k'
+     Call `kill'(1) in order to kill a user specified process with a
+     given signal (`KILL').
+   
+
+File: git.info,  Node: Sync,  Next: Documentation,  Prev: Processes,  Up: gitfm
+
+3.1.22 Synchronizing the file systems
+-------------------------------------
+
+`^X S'
+     Call `sync'(1) in order to synchronize all the file systems
+     (`SYNC').
+   
+
+File: git.info,  Node: Documentation,  Next: Exit,  Prev: Sync,  Up: gitfm
+
+3.1.23 Reading the documentation
+--------------------------------
+
+`^X q'
+     Read a manual page.  The user is prompted for its name (`MAN').
+   
+`F1', `ESC 1', `^X i'
+     Read an info documentation.  The user is prompted for the documentation
+     name (`INFO').
+   
+`^X h'
+     Read the html documentation using the viewer specified in
+     GIT_BROWSER, or with lynx if GIT_BROWSER is not set
+     (`HTML').
+   
+
+File: git.info,  Node: Exit,  Prev: Documentation,  Up: gitfm
+
+3.1.24 Exiting GNU Interactive Tools
+------------------------------------
+
+`F10', `ESC 0', `^X ^C', `^X c'
+     Exit GNU Interactive Tools (`exit').
+   
+
+File: git.info,  Node: gitps,  Next: gitview,  Prev: gitfm,  Up: Description
+
+3.2 The GIT process viewer/killer
+=================================
+
+`gitps' is an interactive process viewer/killer.  It calls internally
+the `ps'(1) utility.  This is a brief description of the command line
+arguments.
+
+`-h'         print this help message `-v'         print the version
+number `-i'         print the installation directory `-c'         use
+ANSI colors `-b'         don't use ANSI colors `-l'         don't use
+the last screen character `-p'         pass the remaining arguments to
+ps(1)
+
+   Running `gitps' it is self explanatory.  Use the `arrows', `PageUp',
+`PageDown', `Home', `End', `^N', `^P', `^V', `ESC v', `Space' and
+`Backspace' to move in the list, `^L' to refresh it, `Enter' to change
+the default signal and `F10', `q' or `^X ^C' to leave.
+
+   You can change these keys, just read the GITPS-Setup, GITPS-Color,
+GITPS-Monochrome and GITPS-Keys sections in the configuration files
+`.gitrc.TERM'.
+
+
+File: git.info,  Node: gitview,  Next: gitkeys,  Prev: gitps,  Up: Description
+
+3.3 The GIT ASCII/HEX file viewer
+=================================
+
+`gitview' is an ASCII/HEX file viewer.  Use the `arrows', `PageUp',
+`PageDown', `Home', `End', `^N', `^P', `^V', `ESC v', `Space' and
+`Backspace' to move in the file, `^L' to refresh the screen and `F10',
+`q' or `^X ^C' to leave.
+
+   You can change these keys, just read the GITVIEW-Setup,
+GITVIEW-Color, GITVIEW-Monochrome and GITVIEW-Keys sections in the
+configuration files `.gitrc.TERM'.
+
+   Here is a brief description of the command line arguments:
+
+`-h'         print this help message `-v'         print the version
+number `-i'         print the installation directory `-c'         use
+ANSI colors `-b'         don't use ANSI colors `-l'         don't use
+the last screen character
+
+
+File: git.info,  Node: gitkeys,  Next: gitwipe,  Prev: gitview,  Up: Description
+
+3.4 The GIT key sequences display utility
+=========================================
+
+`gitkeys' is a program that displays the key sequence sent by the
+pressed key.  This is the key sequence received by `GIT' tools, so this
+program is useful when setting up the `.gitrc.TERM' configuration files.
+
+
+File: git.info,  Node: gitwipe,  Next: gitmount,  Prev: gitkeys,  Up: Description
+
+3.5 The GIT wipe file utility
+=============================
+
+`gitwipe' is an utility for wiping files.  It overwrites the file
+contents with a random sequence of numbers and then calls `sync'().
+
+   Note that `gitwipe' does *not* remove the wiped file since (under
+`Linux' at least) the `sync'() system call might return before actually
+writing the new file contents to disk.  Removing the file might be
+dangerous because some file systems can detect that the blocks in the
+removed wiped file are no longer used and never write them back to disk
+in order to improve performance.  It is up to you to remove the file(s)
+at a later moment.
+
+
+File: git.info,  Node: gitmount,  Next: gitaction,  Prev: gitwipe,  Up: Description
+
+3.6 The GIT mount utility
+=========================
+
+`gitmount' is a script that allows you to mount a list of block devices
+(specified in the command line), without specifying the file system
+type.  With a command like `gitmount fd0 cdrom' the first floppy will
+be mounted in `/mnt/fd0' and the cdrom will be mounted in `/mnt/cdrom'.
+Make sure your `/etc/fstab' settings are correct.
+
+   You don't need to know the file system type anymore.  If you want to
+use `gitmount' with the block device `/dev/xxx' then the directory
+`/mnt/xxx' is created if it doesn't exist.  `gitmount' will attempt to
+create the necessary directories, but root permissions might be
+required.
+
+
+File: git.info,  Node: gitaction,  Next: gitunpack,  Prev: gitmount,  Up: Description
+
+3.7 The GIT per file type action script
+=======================================
+
+`gitaction' is a script that executes a different action for each file
+type specified.  It is called by the `gitfm' program when pressing
+`F2', `ESC 2' or `^Xa'.
+
+   The first parameter is the current directory name and the second one
+is the file name to be matched against the default patterns.  The
+matching is done using the shell 'case' statement.
+
+   If you press `F2', `ESC 2' or `^Xa' on a `*.c' file, `gitfm' will
+compile it, if you press `F2', `ESC 2' or `^Xa' on a `*.tar.gz' file,
+`gitfm' will list the tar archive contents, if you press the same keys
+on a `*.gz' file, `gitfm' will display its uncompressed contents on the
+screen, etc ...
+
+   If you want to find out what the default action for each file type is
+(or if you want to modify it), just read/modify the `gitaction' script.
+If no pattern is found, the file is displayed using `more'.
+
+   If you press `F2', `ESC 2' or `^Xa' on a `*.gif' file or `*.jpg'
+file and you have the `zgv' utility installed, you will be able to see
+it.  If you want to change the gif/jpeg viewer, all you need to do is
+to change its name in the `gitaction' script.
+
+   Also, you can add a `.gitaction' shell script in your home directory
+and/or in any other directory.  Before trying to match a file name,
+`gitaction' will attempt to execute `./.gitaction'.  If that one fails
+to match the file name against its patterns, it backs up to
+`$HOME/.gitaction'.  When this one fails too the patterns in
+`gitaction' are tried.  For an example of how to write .gitaction
+scripts take a look at the `.gitaction' shell script provided as part
+of the distribution and installed in the `/usr/share/doc/git/examples/'
+directory.
+
+
+File: git.info,  Node: gitunpack,  Next: gitrgrep,  Prev: gitaction,  Up: Description
+
+3.8 Unified archive unpacking
+=============================
+
+`gitunpack' is a shell script that accepts a directory and a set of
+archives as its command line parameters, and then attempts to unpack
+those archives in the given directory, selecting the utility used to
+unpack the archives based on the archive extensions.
+
+
+File: git.info,  Node: gitrgrep,  Prev: gitunpack,  Up: Description
+
+3.9 The GIT recursive grep script
+=================================
+
+`gitrgrep' is a very small script that calls `grep' recursively.  It
+accepts `grep' like options / parameters, the only difference being
+that file specifications should be quoted:
+
+     	`gitrgrep' main '*.c'
+
+     or
+
+     	`gitrgrep' errno '*.c *.h'
+
+   `gitregrep' and `gitrfgrep' are recursive versions of the egrep and
+fgrep programs.
+
+
+File: git.info,  Node: Customization,  Next: Limitations,  Prev: Description,  Up: Top
+
+4 Customizing GNU Interactive Tools
+***********************************
+
+* Menu:
+
+* Environment Variables::       Environment variables used by GIT
+* Configuration Files::         GIT's configuration files
+
+
+File: git.info,  Node: Environment Variables,  Next: Configuration Files,  Up: Customization
+
+4.1 Environment Variables
+=========================
+
+The configuration files use shell environment variables to call the
+shell, editor, mail reader, html viewer, compress and virtual memory
+status utility.  That means that if you set GIT_SHELL, GIT_EDITOR,
+GIT_RMAIL, GIT_BROWSER, or GIT_VMSTAT to some value, that value will be
+used instead of the default one.  The defaults are:
+
+     	GIT_SHELL='/bin/sh'
+     	GIT_EDITOR='sensible-editor'
+     	GIT_RMAIL='emacs -f rmail'
+     	GIT_PAGER='sensible-pager'
+     	GIT_VMSTAT='free'
+     	GIT_BROWSER='sensible-browser'
+
+   If SHELL is defined, GIT_SHELL will be set to that value.  If EDITOR
+is defined, GIT_EDITOR will be set to that value.  If you want to
+change the default settings, put something like this into your
+`.profile':
+
+     	export GIT_SHELL='/usr/local/bin/bash'
+     	export GIT_EDITOR='emacs'
+     	export GIT_RMAIL='elm'
+     	export GIT_PAGER='less'
+     	export GIT_VMSTAT='vmstat'
+     	export GIT_BROWSER='netscape'
+   
+
+File: git.info,  Node: Configuration Files,  Prev: Environment Variables,  Up: Customization
+
+4.2 Configuration Files
+=======================
+
+There is one configuration file per terminal type in `GIT'.  The
+configuration file(s) reside in the user's home directory or (the
+default versions) in the directory `/usr/share/git/').
+
+   Their generic name is `.gitrc.TERM'.  `GIT' allows each terminal
+type to have its own configuration file (TERM is the value of the TERM
+environment variable (e.g `vt102'); for the `Linux' console the
+configuration file is `.gitrc.console').  
+
+   Since most of the key bindings are common to all the terminal types,
+a configuration file called `.gitrc.common' is parsed before parsing
+the normal `.gitrc.TERM' configuration file, the later one defining
+only those keys that are terminal specific.  However, if a key binding
+is redefined in the `.gitrc.TERM' file, that binding will be used.
+
+   If the `GIT' package have been compiled without passing the
+`--enable-terminfo' option to the `configure' script and your system
+has a huge `termcap' database (`/etc/termcap'), you can copy the
+termcap definition(s) of your terminal(s) in a file called, lets say
+`.termcap' and put it in your home directory.  After that, set your
+TERMCAP environment variable to point to it.  You should add something
+like this to your `.profile':
+
+     TERMCAP=`/home/mike/.termcap'
+
+   The interactive programs in the `GIT' package can run without such a
+file, but on systems with huge `termcap' databases, copying the
+definitions of the most used terminals in a local `.termcap' file will
+lead to a faster start.
+
+   The `.gitrc.TERM' it is first time searched in the home directory
+then, if not found, in the directory `/usr/share/git/').  The
+configuration file is structured in sections, each section containing
+variables in the following format:
+
+     	`variable-name' = `first-field';`second-field'; ...
+
+   After the `variable-name' at least one space or tab is required.
+All characters after a `#' are ignored and if you comment a section
+name, the whole section is ignored.
+
+   Section names are enclosed in rectangular brackets (`[' and `]').
+Note that this manual don't include them while refering to section
+names.
+
+   The `GIT' package contains three major programs: `gitfm', `gitps'
+and `gitview'.  Each one has its own sections in the configuration
+files.  There is also a global setup section called `Setup' that is
+used by all these programs.
+
+   Note that now `git' has been renamed to `gitfm', the corresponding
+sections have been renamed to `GITFM', however for backwards
+compatibility, the old name (`GIT') is still checked if the `GITFM'
+section is not found.
+
+* Menu:
+
+* Key Sequences::               How to write a key sequence.
+
+* Setup::                       The global setup section.
+
+* gitfm Sections::              gitfm's sections.
+* gitps Sections::              gitps's Sections.
+* gitview Sections::            gitview's Sections.
+
+
+File: git.info,  Node: Key Sequences,  Next: Setup,  Up: Configuration Files
+
+4.2.1 Writing key sequences
+---------------------------
+
+`GIT' contains three interactive programs.  Their names are: `gitfm'
+(this is the file system browser), `gitps' (this is the process
+viewer/killer and `gitview' (this is the ASCII/HEX file viewer).  Each
+one of these programs has its own set of key bindings.
+
+   The convention used in describing key bindings are very simple.  Here
+there are some examples that will help you to understand them.  The
+corresponding `Emacs' conventions will help you even more.
+
+   `^A' means keeping the Ctrl key down and pressing the `a' key
+(`C-a').
+
+   The `ESC' character is represented as `^[' so that you can use the
+meta character (`M-' ) where available (or the `ESC' key):
+
+   `^[a' corresponds to `M-a' (pressing the `ESC' key and then `a').
+
+   The `^' character is represented as `^^'.
+
+   The `backspace' character is represented as `^_'.
+
+   The `Ctrl-SPACE' character (`C-SPC') is represented as `^$'.
+
+   The space (`SPC') character is represented as `^@'.
+
+   Note that the key bindings notation described here is only used in
+the configuration files.  For the sake of readability this manual uses
+`ESC' for the `ESC' key, `SPC' for the `SPACE' key and `RET' for the
+`RETURN' (`ENTER') key.
+
+
+File: git.info,  Node: Setup,  Next: gitfm Sections,  Prev: Key Sequences,  Up: Configuration Files
+
+4.2.2 The global setup section
+------------------------------
+
+In this section the variables have only one field.
+
+`AnsiColors'
+
+   This variable should be set to `ON' if the terminal supports
+standard `ANSI' color sequences.  Otherwise it should be `OFF'.  If
+`AnsiColors' is `ON', `GITxxx-Color' sections will be used in the
+configuration files `.gitrc.TERM'.  Otherwise, `GIT' interactive
+programs will use the `GITxxx-Monochrome' sections.  
+
+`UseLastScreenChar'
+
+   This variable is used for terminals that can't write on the last
+character of the screen without scrolling the entire screen.  If your
+terminal has no problem writing there (`Linux' console, vt100, vt102,
+xterm, ...)  set it to `ON'.  Otherwise (hpterm), it should be `OFF'.  
+
+`StartupScrollStep'
+
+   This variable specifies the scroll step initial value for both
+panels.  
+
+
+File: git.info,  Node: gitfm Sections,  Next: gitps Sections,  Prev: Setup,  Up: Configuration Files
+
+4.2.3 gitfm Sections
+--------------------
+
+* Menu:
+
+* GITFM-Setup::                 gitfm's setup section.
+* GITFM-Color::                 gitfm's color section.
+* GITFM-Monochrome::            gitfm's monochrome section.
+* GITFM-Keys::                  gitfm's keys section.
+* GITFM-FTI::                   gitfm's file type information section.
+
+
+File: git.info,  Node: GITFM-Setup,  Next: GITFM-Color,  Up: gitfm Sections
+
+4.2.3.1 gitfm Setup
+...................
+
+In this section the variables have only one field.
+
+`StartupFileDisplayMode'
+
+   This variable specifies the file specific information displayed at
+startup.  It can be any of `OwnerGroup', `DateTime', `Size', `Mode' or
+`FullName'.  Its value initially affects both panels but it can be
+changed separately afterward.  
+
+`StartupFileSortMethod'
+
+   This variable specifies the startup sort method.  It can be any of
+`Name', `Extension', `Size', `Date', `Mode', `OwnerId', `GroupId',
+`OwnerName' or `GroupName'.  Its value initially affects both panels
+but it can be changed separately afterward.  
+
+`ConfirmOnExit'
+
+   If this variable is `ON', the user is prompted for confirmation at
+exit.  
+
+`HistoryFile'
+
+   This variable specifies the history file name.  The default value is
+`~/.githistory'.  
+
+`InfoDisplay'
+
+   If this variable is `OFF', auxiliary file informations are not
+displayed.  This can be useful if you are using a very slow terminal.  
+
+`LeadingDotMatch'
+
+   If this variable is `OFF' when matching files for
+select-files-matching-pattern / unselect-files-matching-pattern then the
+leading '.' in the file name is matched only explicitly.  
+
+`TypeSensitivity'
+
+   If this variable is `OFF', colors are not used when displaying
+files.  Normally, the information in the `GITFM-FTI' section is used to
+display files with different colors, depending on their types.  Note
+that `TypeSensitivity' is automatically set to `OFF' when `AnsiColors'
+is `OFF'.  *Note GITFM-FTI::, for mor information.  
+
+`NormalModeHelp' `CommandLineModeHelp'
+
+   These variables describe the status bar contents for each `gitfm'
+mode when no errors occurred.  `gitfm' can display on the status bar a
+help string and/or some system information (system type, hostname,
+machine type and the current date) using escape characters:
+
+     	\s      ->      the system type
+     	\h      ->      the host name
+     	\m      ->      the machine type
+     	\d      ->      the current date
+   *Note Modes::, for more information.  
+
+
+File: git.info,  Node: GITFM-Color,  Next: GITFM-Monochrome,  Prev: GITFM-Setup,  Up: gitfm Sections
+
+4.2.3.2 Using gitfm on colors displays
+......................................
+
+In this sections the variables have only one field.
+
+   These section allows you to customize the colors of `gitfm'.  Reading
+the `.gitrc.TERM' configuration file is self explanatory.
+
+
+File: git.info,  Node: GITFM-Monochrome,  Next: GITFM-Keys,  Prev: GITFM-Color,  Up: gitfm Sections
+
+4.2.3.3 Using gitfm on monochrome displays
+..........................................
+
+In this sections the variables have only one field.
+
+   These section allows you to customize the appearance of `gitfm' on
+monochrome displays.  Reading the `.gitrc.TERM' configuration file is
+self explanatory.
+
+
+File: git.info,  Node: GITFM-Keys,  Next: GITFM-FTI,  Prev: GITFM-Monochrome,  Up: gitfm Sections
+
+4.2.3.4 Defining keys
+.....................
+
+These section describes the actions `gitfm' takes when a specified key
+is pressed.  A variable can have up to 6 fields separated by ';'.  Each
+line in this section looks like:
+
+     `key-sequence' = `command-name';`formatted-command';`new-dir';
+     	       `save-screen';`pause';`hide'
+
+   Note that you can't continue the variable fields description on the
+next line.
+
+* Menu:
+
+* key-sequence::                The key-sequence field.
+* command-name::                The command-name field.
+* formatted-command::           The formatted-command field.
+* new-dir::                     The new-dir field.
+* save-screen::                 The save-screen field.
+* pause::                       The pause field.
+* hide::                        The hide field.
+
+
+File: git.info,  Node: key-sequence,  Next: command-name,  Up: GITFM-Keys
+
+4.2.3.5 The key-sequence field
+..............................
+
+`key-sequence' is the key sequence associated with the given command.
+You can use any key sequence that doesn't start with an ascii character
+(0x20 to 0x7e).
+
+   Symbolic key names (`F0', `F1', `F2', ... `F10', `UP', `DOWN',
+`RIGHT', `LEFT', `INS', `DEL', `HOME', `END', `PGUP' and `PGDOWN') can
+be used instead of the key sequence.  If some keys don't have a
+`termcap'/ `terminfo' description (like the `F11'/`F12' keys on the
+`Linux' console) you can specify the key sequence in the usual way.
+
+
+File: git.info,  Node: command-name,  Next: formatted-command,  Prev: key-sequence,  Up: GITFM-Keys
+
+4.2.3.6 The command-name field
+..............................
+
+`command-name' is a command generic name.  Even if it is not always
+used, the `command-name' must be present (if a command is associated
+with a `key-sequence').  If it is not, no action will be taken when
+pressing `key-sequence'.
+
+   There are two types of commands in `gitfm': built-in commands and
+user defined commands.  If the `command-name' section contains a
+built-in command specification, the other fields are ignored.
+
+   Note that by convention built-in command names contain only lower
+case letters while user defined command names contain only upper case
+letters.
+
+
+File: git.info,  Node: formatted-command,  Next: new-dir,  Prev: command-name,  Up: GITFM-Keys
+
+4.2.3.7 The formatted-command field
+...................................
+
+- `formatted-command' is a shell command which can contain some scanf
+like format specifiers.  They are used to get the current entry name,
+owner, group, mode, etc.
+
+   Note that using uppercase `format specifiers' you will be able to
+access the other panel path, file and directory names, etc.
+
+   These are the available `format specifiers':
+
+* Menu:
+
+* %s::                          The %s format specifier.
+* %f::                          The %f format specifier.
+* %d::                          The %d format specifier.
+* %l::                          The %l format specifier.
+* %t::                          The %t format specifier.
+* %z::                          The %z format specifier.
+* %a::                          The %a format specifier.
+* %m::                          The %m format specifier.
+* %g::                          The %g format specifier.
+* %o::                          The %o format specifier.
+* %p::                          The %p format specifier.
+* %b::                          The %b format specifier.
+* %i::                          The %i format specifier.
+* %?::                          The %? format specifier.
+
+
+File: git.info,  Node: %s,  Next: %f,  Up: formatted-command
+
+4.2.3.8 The %s format specifier
+...............................
+
+The format of %s is:  %s{question,default_answer}.
+
+   When `gitfm' encounters a %s in the `formatted-command' it asks the
+user the question `question' whose default answer is `default_answer'
+and replaces the `%s{ , }' with the user's answer.  Both `question' and
+`default_answer' can contain any other `format specifiers' except %s.
+
+   Note that there should be no spaces between %s and '{'.
+
+
+File: git.info,  Node: %f,  Next: %d,  Prev: %s,  Up: formatted-command
+
+4.2.3.9 The %f format specifier
+...............................
+
+`gitfm' will replace %f with the current directory entry name only if
+it is a file (not a directory).
+
+
+File: git.info,  Node: %d,  Next: %l,  Prev: %f,  Up: formatted-command
+
+4.2.3.10 The %d format specifier
+................................
+
+`gitfm' will replace %d with the current directory entry name only if
+it is a directory (not a file).
+
+
+File: git.info,  Node: %l,  Next: %t,  Prev: %d,  Up: formatted-command
+
+4.2.3.11 The %l format specifier
+................................
+
+`gitfm' will replace %l with the current directory entry name only if
+it is a symbolic link with no target.
+
+
+File: git.info,  Node: %t,  Next: %z,  Prev: %l,  Up: formatted-command
+
+4.2.3.12 The %t format specifier
+................................
+
+`gitfm' will replace %t with the current directory entry name only if
+it is a named pipe.
+
+
+File: git.info,  Node: %z,  Next: %a,  Prev: %t,  Up: formatted-command
+
+4.2.3.13 The %z format specifier
+................................
+
+`gitfm' will replace %z with the current directory entry name only if
+it is a socket.
+
+
+File: git.info,  Node: %a,  Next: %m,  Prev: %z,  Up: formatted-command
+
+4.2.3.14 The %a format specifier
+................................
+
+`gitfm' will always replace %a with the current directory entry name.
+
+
+File: git.info,  Node: %m,  Next: %g,  Prev: %a,  Up: formatted-command
+
+4.2.3.15 The %m format specifier
+................................
+
+`gitfm' will always replace %m with the current file mode.
+
+
+File: git.info,  Node: %g,  Next: %o,  Prev: %m,  Up: formatted-command
+
+4.2.3.16 The %g format specifier
+................................
+
+`gitfm' will always replace %g with the current file group.
+
+
+File: git.info,  Node: %o,  Next: %p,  Prev: %g,  Up: formatted-command
+
+4.2.3.17 The %o format specifier
+................................
+
+`gitfm' will always replace %o with the current file owner.
+
+
+File: git.info,  Node: %p,  Next: %b,  Prev: %o,  Up: formatted-command
+
+4.2.3.18 The %p format specifier
+................................
+
+`gitfm' will always replace %p with the current panel path.
+
+
+File: git.info,  Node: %b,  Next: %i,  Prev: %p,  Up: formatted-command
+
+4.2.3.19 The %b format specifier
+................................
+
+`gitfm' will always replace %b with the current panel directory name.
+
+
+File: git.info,  Node: %i,  Next: %?,  Prev: %b,  Up: formatted-command
+
+4.2.3.20 The %i format specifier
+................................
+
+`gitfm' will always replace %i with all the current panel selected
+entry names.
+
+
+File: git.info,  Node: %?,  Prev: %i,  Up: formatted-command
+
+4.2.3.21 The %? format specifier
+................................
+
+The format of %? is: %?{confirmation}.
+
+   `gitfm' uses this format specifier only to ask for confirmation
+before expanding / executing the current command.  The `confirmation'
+string is displayed and, if the user doesn't confirm, the command is
+aborted.  Otherwise, %?{confirmation} expands to a null string and the
+command is expanded / executed normally.
+
+
+File: git.info,  Node: new-dir,  Next: save-screen,  Prev: formatted-command,  Up: GITFM-Keys
+
+4.2.3.22 The new-dir field
+..........................
+
+If the `formatted-command' successfully exits (exit code = 0) or it has
+no body and this field is present then `new-dir' will become the
+current panel directory.
+
+   The character '~' used at the beginning of the `new-dir' field is
+replaced by the user's home directory.
+
+
+File: git.info,  Node: save-screen,  Next: pause,  Prev: new-dir,  Up: GITFM-Keys
+
+4.2.3.23 The save-screen field
+..............................
+
+This field is a character (usually 'y' or 'n') that tells `gitfm' to
+save ('y') or not to save ('n') the terminal's screen after executing
+the `formatted-command'.  Saving the screen is not necessary while
+editing or viewing a file because the information left after the editor
+or the viewer exits is not important.  Saving the screen means that that
+screen will be restored before the execution of the next command.
+Currently this field is used only if you are working as a super user
+under `Linux' on a virtual console.  Its default value is 'y'.
+
+
+File: git.info,  Node: pause,  Next: hide,  Prev: save-screen,  Up: GITFM-Keys
+
+4.2.3.24 The pause field
+........................
+
+Users may wish to read some commands's results before repainting the
+panels.  If this field is present gitfm will wait for a key to be
+pressed before restoring the panels.  Its default value is 'n'.
+
+
+File: git.info,  Node: hide,  Prev: pause,  Up: GITFM-Keys
+
+4.2.3.25 The hide field
+.......................
+
+Some commands that don't displaying any useful information if
+successfully complete their execution: `mount', `chmod', `chown',
+`chgrp', `sync' ... and, if an error occurs, a line or two are sent to
+stderr.  If this option is 'y', the stdout and stderr will be
+redirected to some files (`git.1.pid' and `git.2.pid', where pid is
+`gitfm''s pid) and only if the command's exit code is not 0, the
+`git.2.pid' file will be displayed, line by line, onto the status bar.
+This way the panels will not be deleted and then repainted and the
+command appears to be built-in.  `git.1.pid' and `git.2.pid' are
+created in the temporary directory specified in the `TMPDIR'
+environment variable (or "/tmp" if `TMPDIR' is not defined).  The
+default value of the `hide' field is 'n'.
+
+
+File: git.info,  Node: GITFM-FTI,  Prev: GITFM-Keys,  Up: gitfm Sections
+
+4.2.4 Setting up colors for different file types
+------------------------------------------------
+
+This sections contains entries of the form:
+
+     `pattern' = `foreground'; `background'; `brightness'
+
+where `pattern' is a file name matching pattern, `foreground',
+`background' and `brightness' are the color specification to be used
+when a file whose name match the given `pattern' is displayed in a
+panel.  Colors can be turned off using the `TypeSensitivity' variable
+in the `GITFM-Setup' seection.
+
+
+File: git.info,  Node: gitps Sections,  Next: gitview Sections,  Prev: gitfm Sections,  Up: Configuration Files
+
+4.2.5 gitps Sections
+--------------------
+
+* Menu:
+
+* GITPS-Setup::                 gitps's setup section.
+* GITPS-Color::                 gitps's color section.
+* GITPS-Monochrome::            gitps's monochrome section.
+* GITPS-Keys::                  gitps's keys section.
+
+
+File: git.info,  Node: GITPS-Setup,  Next: GITPS-Color,  Up: gitps Sections
+
+4.2.5.1 gitps Setup
+...................
+
+In this section the variables have only one field.
+
+`Help'
+
+   This variable describe `gitps''s status bar contents.
+
+
+File: git.info,  Node: GITPS-Color,  Next: GITPS-Monochrome,  Prev: GITPS-Setup,  Up: gitps Sections
+
+4.2.5.2 Using gitps on color displays
+.....................................
+
+In this sections the variables have only one field.
+
+   These section allows you to customize the colors of `gitps'.
+Reading the `.gitrc.TERM' configuration file is self explanatory.
+
+
+File: git.info,  Node: GITPS-Monochrome,  Next: GITPS-Keys,  Prev: GITPS-Color,  Up: gitps Sections
+
+4.2.5.3 Using gitps on monochrome displays
+..........................................
+
+In this sections the variables have only one field.
+
+   These section allows you to customize the appearance of `gitps' on
+monochrome displays.  Reading the `.gitrc.TERM' configuration file is
+self explanatory.
+
+
+File: git.info,  Node: GITPS-Keys,  Prev: GITPS-Monochrome,  Up: gitps Sections
+
+4.2.5.4 Defining keys
+.....................
+
+
+File: git.info,  Node: gitview Sections,  Prev: gitps Sections,  Up: Configuration Files
+
+4.2.6 gitview Sections
+----------------------
+
+* Menu:
+
+* GITVIEW-Setup::               gitview's setup section.
+* GITVIEW-Color::               gitview's color section.
+* GITVIEW-Monochrome::          gitview's monochrome section.
+* GITVIEW-Keys::                gitview's keys section.
+
+
+File: git.info,  Node: GITVIEW-Setup,  Next: GITVIEW-Color,  Up: gitview Sections
+
+4.2.6.1 gitview Setup
+.....................
+
+In this section the variables have only one field.
+
+`Help'
+
+   This variable describe `gitps''s status bar contents.
+
+
+File: git.info,  Node: GITVIEW-Color,  Next: GITVIEW-Monochrome,  Prev: GITVIEW-Setup,  Up: gitview Sections
+
+4.2.6.2 Using gitview on color displays
+.......................................
+
+In this sections the variables have only one field.
+
+   These section allows you to customize the colors of `gitview'.
+Reading the `.gitrc.TERM' configuration file is self explanatory.
+
+
+File: git.info,  Node: GITVIEW-Monochrome,  Next: GITVIEW-Keys,  Prev: GITVIEW-Color,  Up: gitview Sections
+
+4.2.6.3 Using gitview on monochrome displays
+............................................
+
+In this sections the variables have only one field.
+
+   These section allows you to customize the appearance of `gitview' on
+monochrome displays.  Reading the `.gitrc.TERM' configuration file is
+self explanatory.
+
+
+File: git.info,  Node: GITVIEW-Keys,  Prev: GITVIEW-Monochrome,  Up: gitview Sections
+
+4.2.6.4 Defining keys
+.....................
+
+
+File: git.info,  Node: Limitations,  Next: Bugs,  Prev: Customization,  Up: Top
+
+5 GNU Interactive Tools limitations
+***********************************
+
+Background commands (& terminated)can be specified in the configuration
+file but their result (stdout and stderr redirection), will be
+overwritten by the result of newer commands and, if an error occurs, it
+will not be seen.
+
+   When `gitfm' is compiled for `Linux', the default built-in color
+descriptions are for color monitors, so you can't (decently) run
+`gitfm' on a b/w monitor without the `.gitrc.TERM' file correctly
+configured.  `.gitrc.TERM' should be configured with `AnsiColors' =
+OFF. However, if your system knows about the linux-m terminal type,
+using that may be a better solution.
+
+   Job support is implemented only in `gitfm'.
+
+   Due to the fact that the ';' character is used as a field separator
+in the configuration files, you can't write something like that in the
+`.gitrc.TERM' files:
+
+   ^AAA = SHOW-USERS-AND-GROUPS; more /etc/passwd; more /etc/group
+
+because 'more /etc/group' will be considered as a directory to switch
+to.  You must write a small script instead:
+
+   #! /bin/sh
+
+   more /etc/passwd more /etc/group
+
+   Supposing the script name is `show_ug', the `.gitrc.TERM' line will
+look like this:
+
+   ^AAA = SHOW-USERS-AND-GROUPS; show_ug
+
+   There is no support for appearance modes on magic-cookie terminals.
+
+
+File: git.info,  Node: Bugs,  Prev: Limitations,  Up: Top
+
+6 GNU Interactive Tools bugs
+****************************
+
+Any questions, comments, or bug reports, should be emailed to `Tudor
+Hulubei <tudor@cs.unh.edu>'.  Please include the version number.
+
+
+File: git.info,  Node: Key Index,  Next: Command Index,  Prev: Distrib,  Up: Top
+
+Key Index
+*********
+
+ [index ]
+* Menu:
+
+* ^[]:                                   Modes.                (line 68)
+* ^]:                                    Modes.                (line 68)
+* ^A:                                    Moving Point.         (line 20)
+* ^B, LEFT:                              Moving Point.         (line  8)
+* ^C -:                                  Archive Files.        (line 26)
+* ^C .:                                  Compressing Files.    (line 34)
+* ^C /:                                  Splitting Files.      (line  9)
+* ^C 2 a:                                Mail.                 (line  9)
+* ^C 2 b:                                Mail.                 (line 17)
+* ^C 2 m:                                Mail.                 (line 26)
+* ^C =:                                  Comparing Files.      (line 10)
+* ^C a:                                  Archive Files.        (line  9)
+* ^C B:                                  Comparing Files.      (line 19)
+* ^C b -:                                Archive Files.        (line 31)
+* ^C b .:                                Compressing Files.    (line 38)
+* ^C b /:                                Splitting Files.      (line 14)
+* ^C b 2 a:                              Mail.                 (line 13)
+* ^C b 2 b:                              Mail.                 (line 21)
+* ^C b 2 m:                              Mail.                 (line 30)
+* ^C b a:                                Archive Files.        (line 13)
+* ^C b C:                                Copying Files.        (line 13)
+* ^C b C (for directories):              Copying Dirs.         (line 14)
+* ^C b d:                                Comparing Dirs.       (line 31)
+* ^C b D:                                Deleting Files.       (line 12)
+* ^C b D (for directories):              Deleting Dirs.        (line 13)
+* ^C b E:                                Encoding Files.       (line 19)
+* ^C b e:                                Encoding Files.       (line 12)
+* ^C b f Z:                              Compressing Files.    (line 30)
+* ^C b G:                                Inode.                (line 43)
+* ^C b H:                                Linking Files.        (line 13)
+* ^C b i:                                RPM Packages.         (line 27)
+* ^C b I:                                RPM Packages.         (line 19)
+* ^C b K:                                Encoding Files.       (line 33)
+* ^C b k:                                Encoding Files.       (line 26)
+* ^C b M:                                Inode.                (line 12)
+* ^C b m D:                              MSDOS Files.          (line 33)
+* ^C b m F:                              MSDOS Files.          (line 43)
+* ^C b m G:                              MSDOS Files.          (line 26)
+* ^C b m K:                              MSDOS Files.          (line 59)
+* ^C b m M:                              MSDOS Files.          (line 50)
+* ^C b m P:                              MSDOS Files.          (line 17)
+* ^C b m R:                              MSDOS Files.          (line 67)
+* ^C b N:                                RPM Packages.         (line 35)
+* ^C b o:                                Compressing Files.    (line 46)
+* ^C b O:                                Inode.                (line 27)
+* ^C b R:                                Renaming Files.       (line 13)
+* ^C b R (for directories):              Renaming Dirs.        (line 13)
+* ^C b r G:                              Inode.                (line 52)
+* ^C b r M:                              Inode.                (line 20)
+* ^C b r O:                              Inode.                (line 36)
+* ^C b S:                                Linking Files.        (line 21)
+* ^C b T:                                Moving Files.         (line 13)
+* ^C b T (for directories):              Moving Dirs.          (line 14)
+* ^C b V:                                Archive Files.        (line 51)
+* ^C b X:                                Archive Files.        (line 41)
+* ^C b x:                                Archive Files.        (line 22)
+* ^C b Z:                                Compressing Files.    (line 21)
+* ^C b z:                                Compressing Files.    (line 13)
+* ^C C (for directories):                Copying Dirs.         (line 10)
+* ^C c q:                                Comparing Dirs.       (line 10)
+* ^C c t:                                Comparing Dirs.       (line 15)
+* ^C d:                                  Comparing Dirs.       (line 25)
+* ^C D (for directories):                Deleting Dirs.        (line  9)
+* ^C E:                                  Encoding Files.       (line 15)
+* ^C e:                                  Encoding Files.       (line  8)
+* ^C ESC =:                              Comparing Files.      (line 15)
+* ^C f d:                                Comparing Dirs.       (line 20)
+* ^C f Z:                                Compressing Files.    (line 25)
+* ^C G:                                  Inode.                (line 39)
+* ^C H:                                  Linking Files.        (line  9)
+* ^C i:                                  RPM Packages.         (line 23)
+* ^C I:                                  RPM Packages.         (line 15)
+* ^C J:                                  Printing Files.       (line 14)
+* ^C j:                                  Printing Files.       (line  9)
+* ^C K:                                  Encoding Files.       (line 29)
+* ^C k:                                  Encoding Files.       (line 22)
+* ^C M:                                  Inode.                (line  8)
+* ^C m D:                                MSDOS Files.          (line 29)
+* ^C m d, ^C m ^D:                       MSDOS Files.          (line  9)
+* ^C m F:                                MSDOS Files.          (line 39)
+* ^C m G:                                MSDOS Files.          (line 21)
+* ^C m K:                                MSDOS Files.          (line 54)
+* ^C m L:                                MSDOS Files.          (line 36)
+* ^C m M:                                MSDOS Files.          (line 46)
+* ^C m P:                                MSDOS Files.          (line 13)
+* ^C m R:                                MSDOS Files.          (line 63)
+* ^C m T:                                MSDOS Files.          (line 71)
+* ^C N:                                  RPM Packages.         (line 31)
+* ^C n d:                                Renaming Files.       (line 17)
+* ^C n u:                                Renaming Files.       (line 21)
+* ^C o:                                  Compressing Files.    (line 42)
+* ^C O:                                  Inode.                (line 23)
+* ^C P:                                  Encrypting Files.     (line 11)
+* ^C p:                                  Encrypting Files.     (line  8)
+* ^C q:                                  RPM Packages.         (line 40)
+* ^C R:                                  Renaming Files.       (line  9)
+* ^C R (for directories):                Renaming Dirs.        (line  9)
+* ^C r G:                                Inode.                (line 47)
+* ^C r M:                                Inode.                (line 16)
+* ^C r O:                                Inode.                (line 31)
+* ^C S:                                  Linking Files.        (line 17)
+* ^C s:                                  Selecting.            (line 16)
+* ^C t:                                  File Types.           (line  9)
+* ^C T (for directories):                Moving Dirs.          (line 10)
+* ^C U:                                  Dirs Usage.           (line  9)
+* ^C u:                                  Selecting.            (line 23)
+* ^C V:                                  Archive Files.        (line 46)
+* ^C W:                                  Wiping Files.         (line  9)
+* ^C X:                                  Archive Files.        (line 36)
+* ^C x:                                  Archive Files.        (line 17)
+* ^C Z:                                  Compressing Files.    (line 17)
+* ^C z:                                  Compressing Files.    (line  9)
+* ^C ~:                                  Packing Files.        (line 27)
+* ^E:                                    Moving Point.         (line 23)
+* ^F, RIGHT:                             Moving Point.         (line 11)
+* ^H, BKSPC:                             Erasing.              (line 11)
+* ^K:                                    Erasing.              (line 28)
+* ^L:                                    Refreshing.           (line 20)
+* ^O, ESC o:                             Modes.                (line 32)
+* ^R, ^Xr:                               Isearch.              (line 25)
+* ^S, ^Xs:                               Isearch.              (line 18)
+* ^SPC:                                  Setting Mark.         (line  8)
+* ^U:                                    Erasing.              (line 24)
+* ^W:                                    Erasing.              (line 41)
+* ^X 0:                                  Modes.                (line 21)
+* ^X 1:                                  Modes.                (line 26)
+* ^X 2:                                  Modes.                (line 29)
+* ^X 4 a:                                Editing Files.        (line 21)
+* ^X ^F:                                 Editing Files.        (line 17)
+* ^X ^I:                                 Inserting Text.       (line 24)
+* ^X ^L:                                 Resetting.            (line  9)
+* ^X ^P:                                 Dirs History.         (line 23)
+* ^X ^R:                                 Dirs History.         (line 28)
+* ^X ^X:                                 Setting Mark.         (line 12)
+* ^X b m:                                Compiling.            (line 13)
+* ^X d, ^X ^D:                           Changing Dirs.        (line 10)
+* ^X E:                                  Environment.          (line  9)
+* ^X e:                                  Editing Files.        (line 13)
+* ^X G:                                  Grep.                 (line 13)
+* ^X g:                                  Grep.                 (line  9)
+* ^X h:                                  Documentation.        (line 17)
+* ^X H:                                  Environment.          (line 13)
+* ^X I:                                  Spell Checking Files. (line  9)
+* ^X k:                                  Processes.            (line 50)
+* ^X N:                                  Dirs History.         (line 19)
+* ^X p:                                  Locking.              (line 12)
+* ^X P:                                  Moving.               (line 49)
+* ^X q:                                  Documentation.        (line  8)
+* ^X S:                                  Sync.                 (line  9)
+* ^X T:                                  Sysinfo.              (line  9)
+* ^X v:                                  Viewing Files.        (line 13)
+* ^X W:                                  Searching Files.      (line 20)
+* ^X w:                                  Searching Files.      (line 17)
+* ^X z:                                  Shell.                (line  9)
+* ^Y:                                    Yanking.              (line  9)
+* DEL, ^D:                               Erasing.              (line  8)
+* DOWN, ^N:                              Moving.               (line 16)
+* END, ESC >:                            Moving.               (line 23)
+* ESC %:                                 Searching Files.      (line  9)
+* ESC &:                                 Searching Files.      (line 13)
+* ESC +:                                 Selecting.            (line 28)
+* ESC -:                                 Selecting.            (line 33)
+* ESC .:                                 Hot Keys.             (line 14)
+* ESC /:                                 Hot Keys.             (line 11)
+* ESC 5 (for directories):               Copying Dirs.         (line 10)
+* ESC 6 (for directories):               Moving Dirs.          (line 10)
+* ESC 8 (for directories):               Deleting Dirs.        (line  9)
+* ESC \:                                 Erasing.              (line 36)
+* ESC a c:                               Changing Dirs.        (line 15)
+* ESC a o:                               Changing Dirs.        (line 19)
+* ESC b:                                 Moving Point.         (line 14)
+* ESC BKSPC:                             Erasing.              (line 14)
+* ESC c:                                 Case Changes.         (line 17)
+* ESC d:                                 Erasing.              (line 17)
+* ESC e a:                               Modes.                (line 63)
+* ESC e d:                               Modes.                (line 48)
+* ESC e f:                               Modes.                (line 57)
+* ESC e m:                               Modes.                (line 54)
+* ESC e o:                               Modes.                (line 45)
+* ESC e s:                               Modes.                (line 51)
+* ESC ESC 1:                             Hot Keys.             (line 23)
+* ESC ESC 2:                             Hot Keys.             (line 26)
+* ESC ESC RET:                           Inserting Text.       (line 20)
+* ESC f:                                 Moving Point.         (line 17)
+* ESC g:                                 Moving.               (line 32)
+* ESC h:                                 Hot Keys.             (line 17)
+* ESC i:                                 Hot Keys.             (line 20)
+* ESC j:                                 Moving.               (line 35)
+* ESC k:                                 Erasing.              (line 20)
+* ESC l:                                 Case Changes.         (line  9)
+* ESC m a:                               Mounting.             (line 25)
+* ESC m b:                               Mounting.             (line 29)
+* ESC m c:                               Mounting.             (line 33)
+* ESC m f:                               Mounting.             (line 37)
+* ESC m j:                               Mounting.             (line 45)
+* ESC m t:                               Mounting.             (line 51)
+* ESC m z:                               Mounting.             (line 41)
+* ESC n:                                 History.              (line 19)
+* ESC p:                                 History.              (line 15)
+* ESC P a, ESC P l, ESC P u:             Processes.            (line 42)
+* ESC P b, ESC P c, ESC P e:             Processes.            (line 35)
+* ESC P T:                               Processes.            (line 46)
+* ESC P x, ESC P y:                      Processes.            (line 42)
+* ESC r a:                               Mounting.             (line 55)
+* ESC r b:                               Mounting.             (line 59)
+* ESC r c:                               Mounting.             (line 63)
+* ESC r f:                               Mounting.             (line 68)
+* ESC r j:                               Mounting.             (line 76)
+* ESC r t:                               Mounting.             (line 83)
+* ESC r z:                               Mounting.             (line 72)
+* ESC RET:                               Inserting Text.       (line 16)
+* ESC s d:                               Sorting.              (line 24)
+* ESC s e:                               Sorting.              (line 16)
+* ESC S f:                               Sysinfo.              (line 13)
+* ESC s g i:                             Sorting.              (line 36)
+* ESC s g n:                             Sorting.              (line 44)
+* ESC S m:                               Sysinfo.              (line 17)
+* ESC s m:                               Sorting.              (line 28)
+* ESC s n:                               Sorting.              (line 12)
+* ESC s o i:                             Sorting.              (line 32)
+* ESC s o n:                             Sorting.              (line 40)
+* ESC S q:                               Sysinfo.              (line 21)
+* ESC S s:                               Sysinfo.              (line 25)
+* ESC s s:                               Sorting.              (line 20)
+* ESC S u:                               Sysinfo.              (line 29)
+* ESC s u:                               Sorting.              (line 49)
+* ESC S v:                               Sysinfo.              (line 35)
+* ESC S w:                               Sysinfo.              (line 40)
+* ESC SPC:                               Erasing.              (line 32)
+* ESC u:                                 Case Changes.         (line 13)
+* ESC w:                                 Erasing.              (line 45)
+* ESC x r m:                             Mail.                 (line 34)
+* F1, ESC 1, ^X i:                       Documentation.        (line 12)
+* F10, ESC 0, ^X ^C, ^X c:               Exit.                 (line  8)
+* F2, ESC 2, ^X a:                       Actions.              (line 20)
+* F3, ESC 3:                             Viewing Files.        (line  9)
+* F4, ESC 4:                             Editing Files.        (line  9)
+* F5 (for directories):                  Copying Dirs.         (line 10)
+* F5, ESC 5, ^C C:                       Copying Files.        (line  9)
+* F6 (for directories):                  Moving Dirs.          (line 10)
+* F6, ESC 6, ^C T:                       Moving Files.         (line  9)
+* F7, ESC 7, ^X M:                       Creating Dirs.        (line  9)
+* F8 (for directories):                  Deleting Dirs.        (line  9)
+* F8, ESC 8, ^C D:                       Deleting Files.       (line  8)
+* F9, ESC 9, ^X m:                       Compiling.            (line  9)
+* HOME, ESC <:                           Moving.               (line 20)
+* INS, ^T, ^X \, ^\:                     Selecting.            (line  9)
+* PGDOWN, ^V:                            Moving.               (line 29)
+* PGUP, ESC v:                           Moving.               (line 26)
+* TAB, ^I, ^X o:                         Moving.               (line 45)
+* UP, ^P:                                Moving.               (line 13)
+
+
+File: git.info,  Node: Command Index,  Next: Variable Index,  Prev: Key Index,  Up: Top
+
+Command Index
+*************
+
+ [index ]
+* Menu:
+
+* adapt-current-directory:               Changing Dirs.        (line 15)
+* Adapt-other-directory:                 Changing Dirs.        (line 19)
+* ASCII-MAIL:                            Mail.                 (line  9)
+* B-ASCII-MAIL:                          Mail.                 (line 13)
+* B-BINARY-MAIL:                         Mail.                 (line 21)
+* B-BZIP2-COMPRESS:                      Compressing Files.    (line 38)
+* B-BZIP2-UNCOMPRESS:                    Compressing Files.    (line 46)
+* B-CHGRP:                               Inode.                (line 43)
+* B-CHMOD:                               Inode.                (line 12)
+* B-CHOWN:                               Inode.                (line 27)
+* B-COMPRESS:                            Compressing Files.    (line 13)
+* B-COPY:                                Copying Files.        (line 13)
+* B-COPY (for directories):              Copying Dirs.         (line 14)
+* B-DELETE:                              Deleting Files.       (line 12)
+* B-DELETE (for directories):            Deleting Dirs.        (line 13)
+* B-DIRR-DIFF:                           Comparing Dirs.       (line 31)
+* B-GENERIC-UNPACK:                      Archive Files.        (line 41)
+* B-GENERIC-UNPACK-INTO:                 Archive Files.        (line 51)
+* B-LINK:                                Linking Files.        (line 13)
+* B-MAKE:                                Compiling.            (line 13)
+* B-MIME-MAIL:                           Mail.                 (line 30)
+* B-MIME-PACK:                           Encoding Files.       (line 26)
+* B-MIME-UNPACK:                         Encoding Files.       (line 33)
+* B-MOVE:                                Moving Files.         (line 13)
+* B-MOVE (for directories):              Moving Dirs.          (line 14)
+* B-MTOOLS-DELETE:                       MSDOS Files.          (line 33)
+* B-MTOOLS-FORMAT:                       MSDOS Files.          (line 43)
+* B-MTOOLS-GET:                          MSDOS Files.          (line 26)
+* B-MTOOLS-MKDIR:                        MSDOS Files.          (line 50)
+* B-MTOOLS-PUT:                          MSDOS Files.          (line 17)
+* B-MTOOLS-RENAME:                       MSDOS Files.          (line 67)
+* B-MTOOLS-RMDIR:                        MSDOS Files.          (line 59)
+* B-R-CHGRP:                             Inode.                (line 52)
+* B-R-CHMOD:                             Inode.                (line 20)
+* B-R-CHOWN:                             Inode.                (line 36)
+* B-RENAME:                              Renaming Files.       (line 13)
+* B-RENAME (for directories):            Renaming Dirs.        (line 13)
+* B-RPM-INSTALL:                         RPM Packages.         (line 19)
+* B-RPM-UNINSTALL:                       RPM Packages.         (line 27)
+* B-RPM-UPGRADE:                         RPM Packages.         (line 35)
+* B-SPLIT:                               Splitting Files.      (line 14)
+* B-SYMLINK:                             Linking Files.        (line 21)
+* B-TAR:                                 Archive Files.        (line 13)
+* B-TAR-BZIP2:                           Archive Files.        (line 31)
+* B-TAR-COMPRESS:                        Archive Files.        (line 22)
+* B-UNCOMPRESS:                          Compressing Files.    (line 21)
+* B-UUDECODE:                            Encoding Files.       (line 19)
+* B-UUENCODE:                            Encoding Files.       (line 12)
+* backward-char:                         Moving Point.         (line  8)
+* backward-delete-char:                  Erasing.              (line 11)
+* backward-kill-word:                    Erasing.              (line 14)
+* backward-word:                         Moving Point.         (line 14)
+* beginning-of-line:                     Moving Point.         (line 20)
+* beginning-of-panel:                    Moving.               (line 20)
+* BF-UNCOMPRESS:                         Compressing Files.    (line 30)
+* bin-packing:                           Packing Files.        (line 27)
+* BINARY-MAIL:                           Mail.                 (line 17)
+* BZIP2-COMPRESS:                        Compressing Files.    (line 34)
+* BZIP2-UNCOMPRESS:                      Compressing Files.    (line 42)
+* capitalize-word:                       Case Changes.         (line 17)
+* change-directory:                      Changing Dirs.        (line 10)
+* CHANGE-LOG:                            Editing Files.        (line 21)
+* CHGRP:                                 Inode.                (line 39)
+* CHMOD:                                 Inode.                (line  8)
+* CHOWN:                                 Inode.                (line 23)
+* compare:                               Comparing Files.      (line 19)
+* COMPRESS:                              Compressing Files.    (line  9)
+* copy:                                  Copying Files.        (line  9)
+* copy (for directories):                Copying Dirs.         (line 10)
+* DATE:                                  Sysinfo.              (line  9)
+* DECRYPT:                               Encrypting Files.     (line 11)
+* delete:                                Deleting Files.       (line  8)
+* delete (for directories):              Deleting Dirs.        (line  9)
+* delete-char:                           Erasing.              (line  8)
+* delete-horizontal-space:               Erasing.              (line 36)
+* DIFF:                                  Comparing Files.      (line 10)
+* DIRECTORY-USAGE:                       Dirs Usage.           (line  9)
+* DIRR-DIFF:                             Comparing Dirs.       (line 25)
+* DISK-FREE-SPACE:                       Sysinfo.              (line 25)
+* downcase-word:                         Case Changes.         (line  9)
+* EDIT:                                  Editing Files.        (line  9)
+* ENCRYPT:                               Encrypting Files.     (line  8)
+* end-of-line:                           Moving Point.         (line 23)
+* end-of-panel:                          Moving.               (line 23)
+* enlarge-other-panel:                   Modes.                (line 21)
+* enlarge-panel:                         Modes.                (line 26)
+* entry-to-input-line:                   Inserting Text.       (line 16)
+* ENV:                                   Environment.          (line  9)
+* exchange-point-and-mark:               Setting Mark.         (line 12)
+* exit:                                  Exit.                 (line  8)
+* F-UNCOMPRESS:                          Compressing Files.    (line 25)
+* FAST-DIFF:                             Comparing Dirs.       (line 20)
+* FILE-ACTION:                           Actions.              (line 20)
+* FILE-CREATE:                           Editing Files.        (line 17)
+* FILE-TYPE:                             File Types.           (line  9)
+* FIND:                                  Searching Files.      (line  9)
+* FINGER:                                Sysinfo.              (line 13)
+* FIRST-FLOPPY-DIR:                      Hot Keys.             (line 23)
+* forward-char:                          Moving Point.         (line 11)
+* forward-word:                          Moving Point.         (line 17)
+* GENERIC-UNPACK:                        Archive Files.        (line 36)
+* GENERIC-UNPACK-INTO:                   Archive Files.        (line 46)
+* GITPS, PS:                             Processes.            (line 35)
+* GREP:                                  Grep.                 (line  9)
+* HOME-DIR:                              Hot Keys.             (line 17)
+* horizontal-scroll-left:                Moving.               (line 32)
+* horizontal-scroll-right:               Moving.               (line 35)
+* HTML:                                  Documentation.        (line 17)
+* INCLUDE-DIR:                           Hot Keys.             (line 20)
+* INFO:                                  Documentation.        (line 12)
+* isearch-backward:                      Isearch.              (line 25)
+* isearch-forward:                       Isearch.              (line 18)
+* ISPELL:                                Spell Checking Files. (line  9)
+* just-one-space:                        Erasing.              (line 32)
+* KILL:                                  Processes.            (line 50)
+* kill-line:                             Erasing.              (line 20)
+* kill-region:                           Erasing.              (line 41)
+* kill-ring-save:                        Erasing.              (line 45)
+* kill-to-beginning-of-line:             Erasing.              (line 24)
+* kill-to-end-of-line:                   Erasing.              (line 28)
+* kill-word:                             Erasing.              (line 17)
+* LAST-BACKUP-DIFF:                      Comparing Files.      (line 15)
+* LINK:                                  Linking Files.        (line  9)
+* LOCATE:                                Searching Files.      (line 13)
+* lock:                                  Locking.              (line 12)
+* MAKE:                                  Compiling.            (line  9)
+* make-directory:                        Creating Dirs.        (line  9)
+* MAN:                                   Documentation.        (line  8)
+* MIME-MAIL:                             Mail.                 (line 26)
+* MOUNT-A:                               Mounting.             (line 25)
+* MOUNT-B:                               Mounting.             (line 29)
+* MOUNT-CDROM:                           Mounting.             (line 33)
+* MOUNT-FLOPPY:                          Mounting.             (line 37)
+* MOUNT-JAZ:                             Mounting.             (line 45)
+* MOUNT-THESE:                           Mounting.             (line 51)
+* MOUNT-ZIP:                             Mounting.             (line 41)
+* MOUNTED-FILE-SYSTEMS:                  Sysinfo.              (line 17)
+* move:                                  Moving Files.         (line  9)
+* move (for directories):                Moving Dirs.          (line 10)
+* MPACK:                                 Encoding Files.       (line 22)
+* MTOOLS-CHDIR:                          MSDOS Files.          (line  9)
+* MTOOLS-DELETE:                         MSDOS Files.          (line 29)
+* MTOOLS-DIR:                            MSDOS Files.          (line 36)
+* MTOOLS-FORMAT:                         MSDOS Files.          (line 39)
+* MTOOLS-GET:                            MSDOS Files.          (line 21)
+* MTOOLS-MKDIR:                          MSDOS Files.          (line 46)
+* MTOOLS-PUT:                            MSDOS Files.          (line 13)
+* MTOOLS-RENAME:                         MSDOS Files.          (line 63)
+* MTOOLS-RMDIR:                          MSDOS Files.          (line 54)
+* MTOOLS-TYPE:                           MSDOS Files.          (line 71)
+* MULTIPLE-EDIT:                         Editing Files.        (line 13)
+* MULTIPLE-VIEW:                         Viewing Files.        (line 13)
+* MUNPACK:                               Encoding Files.       (line 29)
+* name-downcase:                         Renaming Files.       (line 17)
+* name-upcase:                           Renaming Files.       (line 21)
+* next-directory:                        Dirs History.         (line 19)
+* next-history-element:                  History.              (line 19)
+* next-line:                             Moving.               (line 16)
+* other-panel:                           Moving.               (line 45)
+* other-path-to-input-line:              Inserting Text.       (line 20)
+* panel-enable-all:                      Modes.                (line 63)
+* panel-enable-date-time:                Modes.                (line 48)
+* panel-enable-full-name:                Modes.                (line 57)
+* panel-enable-mode:                     Modes.                (line 54)
+* panel-enable-next-mode:                Modes.                (line 68)
+* panel-enable-owner-group:              Modes.                (line 45)
+* panel-enable-size:                     Modes.                (line 51)
+* panel-sort-by-date:                    Sorting.              (line 24)
+* panel-sort-by-extension:               Sorting.              (line 16)
+* panel-sort-by-group-id:                Sorting.              (line 36)
+* panel-sort-by-group-name:              Sorting.              (line 44)
+* panel-sort-by-mode:                    Sorting.              (line 28)
+* panel-sort-by-name:                    Sorting.              (line 12)
+* panel-sort-by-owner-id:                Sorting.              (line 32)
+* panel-sort-by-owner-name:              Sorting.              (line 40)
+* panel-sort-by-size:                    Sorting.              (line 20)
+* panel-sort-next-method:                Sorting.              (line 49)
+* previous-directory:                    Dirs History.         (line 23)
+* previous-history-element:              History.              (line 15)
+* previous-line:                         Moving.               (line 13)
+* PRINT-JOB:                             Printing Files.       (line  9)
+* PRINT-JOB-LIST:                        Printing Files.       (line 14)
+* PSTREE:                                Processes.            (line 46)
+* quick-compare-panels:                  Comparing Dirs.       (line 10)
+* QUOTA:                                 Sysinfo.              (line 21)
+* R-CHGRP:                               Inode.                (line 47)
+* R-CHMOD:                               Inode.                (line 16)
+* R-CHOWN:                               Inode.                (line 31)
+* READ-MAIL:                             Mail.                 (line 34)
+* RECURSIVE-GREP:                        Grep.                 (line 13)
+* refresh:                               Refreshing.           (line 20)
+* RENAME:                                Renaming Files.       (line  9)
+* RENAME (for directories):              Renaming Dirs.        (line  9)
+* reset-directory-history:               Dirs History.         (line 28)
+* ROOT-DIR:                              Hot Keys.             (line 11)
+* RPM-INSTALL:                           RPM Packages.         (line 15)
+* RPM-QUERY:                             RPM Packages.         (line 40)
+* RPM-UNINSTALL:                         RPM Packages.         (line 23)
+* RPM-UPGRADE:                           RPM Packages.         (line 31)
+* scroll-down:                           Moving.               (line 26)
+* scroll-up:                             Moving.               (line 29)
+* SECOND-FLOPPY-DIR:                     Hot Keys.             (line 26)
+* select-entry:                          Selecting.            (line  9)
+* select-extension:                      Selecting.            (line 28)
+* select-files-matching-pattern:         Selecting.            (line 16)
+* selected-entries-to-input-line:        Inserting Text.       (line 24)
+* set-mark:                              Setting Mark.         (line  8)
+* set-scroll-step:                       Moving.               (line 42)
+* SPLIT:                                 Splitting Files.      (line  9)
+* SUB-SHELL:                             Shell.                (line  9)
+* switch-panels:                         Moving.               (line 49)
+* SYMLINK:                               Linking Files.        (line 17)
+* SYNC:                                  Sync.                 (line  9)
+* TAR:                                   Archive Files.        (line  9)
+* TAR-BZIP2:                             Archive Files.        (line 26)
+* TAR-COMPRESS:                          Archive Files.        (line 17)
+* thoroughly-compare-panels:             Comparing Dirs.       (line 15)
+* tty-mode:                              Modes.                (line 32)
+* TTY-RESET:                             Resetting.            (line  9)
+* two-panel-mode:                        Modes.                (line 29)
+* UMOUNT-A:                              Mounting.             (line 55)
+* UMOUNT-B:                              Mounting.             (line 59)
+* UMOUNT-FLOPPY:                         Mounting.             (line 68)
+* UMOUNT-JAZ:                            Mounting.             (line 76)
+* UMOUNT-THESE:                          Mounting.             (line 83)
+* UMOUNT-ZIP:                            Mounting.             (line 72)
+* UNCOMPRESS:                            Compressing Files.    (line 17)
+* unselect-extension:                    Selecting.            (line 33)
+* unselect-files-matching-pattern:       Selecting.            (line 23)
+* up-one-dir:                            Hot Keys.             (line 14)
+* upcase-word:                           Case Changes.         (line 13)
+* USERS:                                 Sysinfo.              (line 29)
+* UUDECODE:                              Encoding Files.       (line 15)
+* UUENCODE:                              Encoding Files.       (line  8)
+* VIEW:                                  Viewing Files.        (line  9)
+* VIRTUAL-MEMORY-STATUS:                 Sysinfo.              (line 35)
+* WHEREIS:                               Searching Files.      (line 17)
+* WHICH:                                 Searching Files.      (line 20)
+* WHO:                                   Sysinfo.              (line 40)
+* WIPE:                                  Wiping Files.         (line  9)
+* XHOST:                                 Environment.          (line 13)
+* yank:                                  Yanking.              (line  9)
+
+
+File: git.info,  Node: Variable Index,  Next: Concept Index,  Prev: Command Index,  Up: Top
+
+Variable Index
+**************
+
+ [index ]
+* Menu:
+
+* AnsiColors:                            Setup.                (line 14)
+* CommandLineModeHelp:                   GITFM-Setup.          (line 62)
+* ConfirmOnExit:                         GITFM-Setup.          (line 25)
+* EDITOR:                                Environment Variables.
+                                                               (line 30)
+* GIT_BROWSER:                           Environment Variables.
+                                                               (line 30)
+* GIT_EDITOR:                            Environment Variables.
+                                                               (line 30)
+* GIT_RMAIL:                             Environment Variables.
+                                                               (line 30)
+* GIT_SHELL:                             Environment Variables.
+                                                               (line 30)
+* GIT_VMSTAT:                            Environment Variables.
+                                                               (line 30)
+* HistoryFile:                           GITFM-Setup.          (line 30)
+* InfoDisplay:                           GITFM-Setup.          (line 35)
+* LeadingDotMatch:                       GITFM-Setup.          (line 41)
+* NormalModeHelp:                        GITFM-Setup.          (line 62)
+* SHELL:                                 Environment Variables.
+                                                               (line 30)
+* StartupFileDisplayMode:                GITFM-Setup.          (line 13)
+* StartupFileSortMethod:                 GITFM-Setup.          (line 20)
+* StartupScrollStep:                     Setup.                (line 26)
+* TERM:                                  Configuration Files.  (line 13)
+* TypeSensitivity:                       GITFM-Setup.          (line 49)
+* UseLastScreenChar:                     Setup.                (line 21)
+
+
+File: git.info,  Node: Concept Index,  Next: Description,  Prev: Variable Index,  Up: Top
+
+Concept Index
+*************
+
+ [index ]
+* Menu:
+
+* Adapt directory:                       Changing Dirs.        (line 15)
+* Adding and removing hosts:             Environment.          (line 13)
+* Archive:                               Archive Files.        (line  9)
+* Background directory copy:             Copying Dirs.         (line 14)
+* Background directory delete:           Deleting Dirs.        (line 13)
+* Background directory diff:             Comparing Dirs.       (line 31)
+* Background directory move:             Moving Dirs.          (line 14)
+* Background directory rename:           Renaming Dirs.        (line 13)
+* Background file copy:                  Copying Files.        (line 13)
+* Background file delete:                Deleting Files.       (line 12)
+* Background file move:                  Moving Files.         (line 13)
+* Background file rename:                Renaming Files.       (line 13)
+* Background file split:                 Splitting Files.      (line 14)
+* Background make:                       Compiling.            (line 13)
+* Backward char:                         Moving Point.         (line  8)
+* Backward delete char:                  Erasing.              (line 11)
+* Backward kill word:                    Erasing.              (line 14)
+* Backward word:                         Moving Point.         (line 14)
+* bash:                                  Shell.                (line  9)
+* Beginning of line:                     Moving Point.         (line 20)
+* Beginning of panel:                    Moving.               (line 20)
+* Binary comparison:                     Comparing Files.      (line 19)
+* Binary files by mail:                  Mail.                 (line 17)
+* Browsing through the process list:     Processes.            (line 35)
+* bzip2:                                 Compressing Files.    (line 34)
+* Capitalize word:                       Case Changes.         (line 17)
+* Change the current panel directory:    Changing Dirs.        (line 15)
+* Change the other panel directory:      Changing Dirs.        (line 19)
+* Changing directory:                    Changing Dirs.        (line 10)
+* Changing the current directory:        Changing Dirs.        (line 10)
+* Changing the directory:                Changing Dirs.        (line 10)
+* Changing the file's group:             Inode.                (line 39)
+* Changing the file's mode:              Inode.                (line  8)
+* Changing the file's owner:             Inode.                (line 23)
+* Changing the group in background:      Inode.                (line 43)
+* Changing the group recursively:        Inode.                (line 47)
+* Changing the group recursively in background: Inode.         (line 52)
+* Changing the inode's group:            Inode.                (line 39)
+* Changing the inode's mode:             Inode.                (line  8)
+* Changing the inode's owner:            Inode.                (line 23)
+* Changing the mode in background:       Inode.                (line 12)
+* Changing the mode recursively:         Inode.                (line 16)
+* Changing the mode recursively in background: Inode.          (line 20)
+* Changing the owner in background:      Inode.                (line 27)
+* Changing the owner recursively:        Inode.                (line 31)
+* Changing the owner recursively in background: Inode.         (line 36)
+* chdir:                                 Changing Dirs.        (line 10)
+* chgrp:                                 Inode.                (line 39)
+* chmod:                                 Inode.                (line  8)
+* chown:                                 Inode.                (line 23)
+* Comparing directories quickly:         Comparing Dirs.       (line 10)
+* Comparing directories thoroughly:      Comparing Dirs.       (line 15)
+* Comparing panels quickly:              Comparing Dirs.       (line 10)
+* Comparing panels thoroughly:           Comparing Dirs.       (line 15)
+* Compile:                               Compiling.            (line  9)
+* Compiling programs:                    Compiling.            (line  9)
+* compress:                              Compressing Files.    (line  9)
+* Compressing directories:               Compressing Files.    (line  9)
+* Compressing directories in background: Compressing Files.    (line 13)
+* Compressing files:                     Compressing Files.    (line  9)
+* Compressing files in background:       Compressing Files.    (line 13)
+* Console lock:                          Locking.              (line 12)
+* Convert to lower case:                 Case Changes.         (line  9)
+* Convert to upper case:                 Case Changes.         (line 13)
+* Copy entry name to input line.:        Inserting Text.       (line 16)
+* Copying directories:                   Copying Dirs.         (line 10)
+* Copying directories in background:     Copying Dirs.         (line 14)
+* Copying files:                         Copying Files.        (line  9)
+* Copying files in background:           Copying Files.        (line 13)
+* Create directory:                      Creating Dirs.        (line  9)
+* Create file:                           Editing Files.        (line 17)
+* Creating a directory:                  Creating Dirs.        (line  9)
+* Creating bzip2 compressed tar archives: Archive Files.       (line 26)
+* Creating bzip2 compressed tar archives in background: Archive Files.
+                                                               (line 31)
+* Creating compressed tar archives:      Archive Files.        (line 17)
+* Creating compressed tar archives in background: Archive Files.
+                                                               (line 22)
+* Creating tar archives:                 Archive Files.        (line  9)
+* Creating tar archives in background:   Archive Files.        (line 13)
+* csh:                                   Shell.                (line  9)
+* Current disk quota:                    Sysinfo.              (line 21)
+* Cursor backward:                       Moving Point.         (line  8)
+* Cursor backward one word:              Moving Point.         (line 14)
+* Cursor down one entry:                 Moving.               (line 16)
+* Cursor down one page:                  Moving.               (line 26)
+* Cursor end:                            Moving.               (line 23)
+* Cursor forward:                        Moving Point.         (line 11)
+* Cursor forward one word:               Moving Point.         (line 17)
+* Cursor home:                           Moving.               (line 20)
+* Cursor to BOL:                         Moving Point.         (line 20)
+* Cursor to EOL:                         Moving Point.         (line 23)
+* Cursor to the other panel:             Moving.               (line 45)
+* Cursor up one entry:                   Moving.               (line 13)
+* Cursor up one page:                    Moving.               (line 29)
+* date:                                  Sysinfo.              (line  9)
+* Date and time:                         Modes.                (line 48)
+* Date, time:                            Modes.                (line 48)
+* Decoding files:                        Encoding Files.       (line 15)
+* Decoding files in background:          Encoding Files.       (line 19)
+* Decompressing directories:             Compressing Files.    (line 17)
+* Decompressing directories in background: Compressing Files.  (line 21)
+* Decompressing directories/links:       Compressing Files.    (line 25)
+* Decompressing directories/links in background: Compressing Files.
+                                                               (line 30)
+* Decompressing files:                   Compressing Files.    (line 17)
+* Decompressing files in background:     Compressing Files.    (line 21)
+* Decompressing files/links:             Compressing Files.    (line 25)
+* Decompressing files/links in background: Compressing Files.  (line 30)
+* Decrypting the current file:           Encrypting Files.     (line 11)
+* Delete char:                           Erasing.              (line  8)
+* Delete horizontal space:               Erasing.              (line 36)
+* Delete line:                           Erasing.              (line 20)
+* Delete spaces:                         Erasing.              (line 36)
+* Delete word backward:                  Erasing.              (line 14)
+* Delete word forward:                   Erasing.              (line 17)
+* Deleting directories:                  Deleting Dirs.        (line  9)
+* Deleting directories in background:    Deleting Dirs.        (line 13)
+* Deleting files:                        Deleting Files.       (line  8)
+* Deleting files in background:          Deleting Files.       (line 12)
+* diff:                                  Comparing Files.      (line 10)
+* Differences between ascii files:       Comparing Files.      (line 10)
+* Differences between directories:       Comparing Dirs.       (line 20)
+* Differences between file and backup:   Comparing Files.      (line 15)
+* Differences between two directories:   Comparing Dirs.       (line 25)
+* Directory copy:                        Copying Dirs.         (line 10)
+* Directory delete:                      Deleting Dirs.        (line  9)
+* Directory diff:                        Comparing Dirs.       (line 20)
+* Directory history reset:               Dirs History.         (line 28)
+* Directory mode:                        Modes.                (line 54)
+* Directory move:                        Moving Dirs.          (line 10)
+* Directory rename:                      Renaming Dirs.        (line  9)
+* Directory size:                        Modes.                (line 51)
+* Directory usage:                       Dirs Usage.           (line  9)
+* Disk free space:                       Sysinfo.              (line 25)
+* Downcase file names:                   Renaming Files.       (line 17)
+* Downcase word:                         Case Changes.         (line  9)
+* du:                                    Dirs Usage.           (line  9)
+* Editing a file:                        Editing Files.        (line  9)
+* Editing multiple files:                Editing Files.        (line 13)
+* Editing the ChangeLog:                 Editing Files.        (line 21)
+* Emacs rmail:                           Mail.                 (line 34)
+* Enable all:                            Modes.                (line 63)
+* Enable next mode:                      Modes.                (line 68)
+* Encoding files:                        Encoding Files.       (line  8)
+* Encoding files in background:          Encoding Files.       (line 12)
+* Encrypting the current file:           Encrypting Files.     (line  8)
+* End of line:                           Moving Point.         (line 23)
+* End of panel:                          Moving.               (line 23)
+* Enlarge other panel:                   Modes.                (line 21)
+* Enlarge panel:                         Modes.                (line 26)
+* Entire screen:                         Modes.                (line 15)
+* env:                                   Environment.          (line  9)
+* Exchange point and mark:               Setting Mark.         (line 12)
+* Exiting:                               Exit.                 (line  8)
+* Extracting files from archives:        Archive Files.        (line 36)
+* File action:                           Actions.              (line 20)
+* File copy:                             Copying Files.        (line  9)
+* File create:                           Editing Files.        (line 17)
+* File delete:                           Deleting Files.       (line  8)
+* File edit:                             Editing Files.        (line  9)
+* File mode:                             Modes.                (line 54)
+* File move:                             Moving Files.         (line  9)
+* File or directory mode:                Modes.                (line 54)
+* File or directory size:                Modes.                (line 51)
+* File rename:                           Renaming Files.       (line  9)
+* File search:                           Searching Files.      (line  9)
+* File size:                             Modes.                (line 51)
+* File split:                            Splitting Files.      (line  9)
+* File system status:                    Sysinfo.              (line 25)
+* File view:                             Viewing Files.        (line  9)
+* File wipe:                             Wiping Files.         (line  9)
+* find:                                  Searching Files.      (line  9)
+* finger:                                Sysinfo.              (line 13)
+* First entry:                           Moving.               (line 20)
+* Forward char:                          Moving Point.         (line 11)
+* Forward word:                          Moving Point.         (line 17)
+* Free disk space:                       Sysinfo.              (line 25)
+* Full directory info:                   Modes.                (line 63)
+* Full directory name:                   Modes.                (line 57)
+* Full file info:                        Modes.                (line 63)
+* Full file name:                        Modes.                (line 57)
+* Full file or directory name:           Modes.                (line 57)
+* Full info:                             Modes.                (line 63)
+* Full name:                             Modes.                (line 57)
+* gitaction:                             gitaction.            (line  6)
+* gitfm:                                 gitfm.                (line  6)
+* gitkeys:                               gitkeys.              (line  6)
+* gitmount:                              gitmount.             (line  6)
+* gitps:                                 gitps.                (line  6)
+* gitregrep:                             gitrgrep.             (line  6)
+* gitrfgrep:                             gitrgrep.             (line  6)
+* gitrgrep:                              gitrgrep.             (line  6)
+* gitunpack:                             gitunpack.            (line  6)
+* gitview:                               gitview.              (line  6)
+* gitwipe:                               gitwipe.              (line  6)
+* Go to ..:                              Hot Keys.             (line 14)
+* Go to /:                               Hot Keys.             (line 11)
+* Go to the $HOME directory:             Hot Keys.             (line 17)
+* Go to the /usr/include directory:      Hot Keys.             (line 20)
+* Go to the first floppy mount point:    Hot Keys.             (line 23)
+* Go to the home directory:              Hot Keys.             (line 17)
+* Go to the include directory:           Hot Keys.             (line 20)
+* Go to the other panel:                 Moving.               (line 45)
+* Go to the parent directory:            Hot Keys.             (line 14)
+* Go to the root directory:              Hot Keys.             (line 11)
+* Go to the second floppy mount point:   Hot Keys.             (line 26)
+* Go to the ~ directory:                 Hot Keys.             (line 17)
+* Go up one directory:                   Hot Keys.             (line 14)
+* grep:                                  Grep.                 (line  9)
+* Group and owner:                       Modes.                (line 45)
+* Group, owner:                          Modes.                (line 45)
+* gunzip:                                Compressing Files.    (line 17)
+* gzip:                                  Compressing Files.    (line  9)
+* Half screen:                           Modes.                (line 15)
+* Hard links to files:                   Linking Files.        (line  9)
+* Hot Keys:                              Hot Keys.             (line  7)
+* Incremental search backward:           Isearch.              (line 25)
+* Incremental search forward:            Isearch.              (line 18)
+* Isearch backward:                      Isearch.              (line 25)
+* Isearch forward:                       Isearch.              (line 18)
+* ispell:                                Spell Checking Files. (line  9)
+* Just one space:                        Erasing.              (line 32)
+* Kill line:                             Erasing.              (line 20)
+* Kill region:                           Erasing.              (line 41)
+* Kill ring save:                        Erasing.              (line 45)
+* Kill to beginning of line:             Erasing.              (line 24)
+* Kill to end of line:                   Erasing.              (line 28)
+* kill word:                             Erasing.              (line 17)
+* Killing processes:                     Processes.            (line 50)
+* Last backup diff:                      Comparing Files.      (line 15)
+* Last entry:                            Moving.               (line 23)
+* Linking files in background:           Linking Files.        (line 13)
+* locate:                                Searching Files.      (line 13)
+* Locating files:                        Searching Files.      (line 13)
+* Locking the console:                   Locking.              (line 12)
+* Logged in users:                       Sysinfo.              (line 29)
+* Looking at the environment:            Environment.          (line  9)
+* lpr:                                   Printing Files.       (line  9)
+* Major modes:                           Modes.                (line 15)
+* make:                                  Compiling.            (line  9)
+* Make directory:                        Creating Dirs.        (line  9)
+* Making a directory:                    Creating Dirs.        (line  9)
+* Mark entry:                            Selecting.            (line  9)
+* Mime encoded files by mail:            Mail.                 (line 26)
+* Minor modes:                           Modes.                (line 41)
+* mount:                                 Mounting.             (line 51)
+* Mounted file systems list:             Sysinfo.              (line 17)
+* Mounting subdirectories:               Mounting.             (line 51)
+* Mounting the cdrom:                    Mounting.             (line 33)
+* Mounting the first floppy:             Mounting.             (line 25)
+* Mounting the floppy:                   Mounting.             (line 25)
+* Mounting the jaz drive:                Mounting.             (line 45)
+* Mounting the second floppy:            Mounting.             (line 29)
+* Mounting the zip drive:                Mounting.             (line 41)
+* Mounting these file systems:           Mounting.             (line 51)
+* Moving directories:                    Moving Dirs.          (line 10)
+* Moving directories in background:      Moving Dirs.          (line 14)
+* Moving files:                          Moving Files.         (line  9)
+* Moving files in background:            Moving Files.         (line 13)
+* mpack:                                 Encoding Files.       (line 22)
+* Multiple edit:                         Editing Files.        (line 13)
+* munpack:                               Encoding Files.       (line 29)
+* Next directory history entry:          Dirs History.         (line 19)
+* Next history element:                  History.              (line 19)
+* Next sort method:                      Sorting.              (line 49)
+* No panels mode:                        Modes.                (line 32)
+* One panel:                             Modes.                (line 21)
+* Other panel path to input line:        Inserting Text.       (line 20)
+* Owner and group:                       Modes.                (line 45)
+* Owner, group:                          Modes.                (line 45)
+* Pack files into bins:                  Packing Files.        (line 27)
+* Previous directory history entry:      Dirs History.         (line 23)
+* Previous history element:              History.              (line 15)
+* printing:                              Printing Files.       (line  9)
+* Printining files:                      Printing Files.       (line  9)
+* Program search:                        Searching Files.      (line 17)
+* Quota:                                 Sysinfo.              (line 21)
+* Re-reading directories.:               Refreshing.           (line 20)
+* Reading mail:                          Mail.                 (line 34)
+* Reading the html documentation:        Documentation.        (line 17)
+* Reading the info documentation:        Documentation.        (line 12)
+* Reading the manual pages:              Documentation.        (line  8)
+* Recursive grep:                        Grep.                 (line 13)
+* Refreshing the screen.:                Refreshing.           (line 20)
+* regexp:                                Grep.                 (line  9)
+* Renaming directories:                  Renaming Dirs.        (line  9)
+* Renaming directories in background:    Renaming Dirs.        (line 13)
+* Renaming files:                        Renaming Files.       (line  9)
+* Renaming files in background:          Renaming Files.       (line 13)
+* Reset the directory history:           Dirs History.         (line 28)
+* Resetting the terminal:                Resetting.            (line  9)
+* Save and delete region:                Erasing.              (line 41)
+* Save into the kill ring:               Erasing.              (line 45)
+* Scroll left:                           Moving.               (line 32)
+* Scroll right:                          Moving.               (line 35)
+* Scroll step:                           Moving.               (line 42)
+* Searching binaries:                    Searching Files.      (line 20)
+* Searching files:                       Searching Files.      (line  9)
+* Searching patterns in files:           Grep.                 (line  9)
+* Searching programs:                    Searching Files.      (line 20)
+* Searching regular expressions:         Grep.                 (line  9)
+* Select entry:                          Selecting.            (line  9)
+* Selected entries to input line:        Inserting Text.       (line 24)
+* Selects files matching extension:      Selecting.            (line 28)
+* Selects files matching pattern:        Selecting.            (line 16)
+* Sending ascii mail:                    Mail.                 (line  9)
+* Sending ascii mail in background:      Mail.                 (line 13)
+* Sending binary mail:                   Mail.                 (line 17)
+* Sending binary mail in background:     Mail.                 (line 21)
+* Sending files by mail:                 Mail.                 (line 13)
+* Sending mail:                          Mail.                 (line 13)
+* Sending mime mail:                     Mail.                 (line 26)
+* Sending mime mail in background:       Mail.                 (line 30)
+* Sending text by mail:                  Mail.                 (line  9)
+* Set mark:                              Setting Mark.         (line  8)
+* Set the mark:                          Setting Mark.         (line  8)
+* sh:                                    Shell.                (line  9)
+* Shell:                                 Shell.                (line  9)
+* Sorted by date:                        Sorting.              (line 24)
+* Sorted by extension:                   Sorting.              (line 16)
+* Sorted by group id:                    Sorting.              (line 36)
+* Sorted by group name:                  Sorting.              (line 44)
+* Sorted by mode:                        Sorting.              (line 28)
+* Sorted by name:                        Sorting.              (line 12)
+* Sorted by owner id:                    Sorting.              (line 32)
+* Sorted by owner name:                  Sorting.              (line 40)
+* Sorted by size:                        Sorting.              (line 20)
+* Sorting:                               Sorting.              (line  6)
+* Sorting by date:                       Sorting.              (line 24)
+* Sorting by extension:                  Sorting.              (line 16)
+* Sorting by group id:                   Sorting.              (line 36)
+* Sorting by group name:                 Sorting.              (line 44)
+* Sorting by mode:                       Sorting.              (line 28)
+* Sorting by name:                       Sorting.              (line 12)
+* Sorting by owner id:                   Sorting.              (line 32)
+* Sorting by owner name:                 Sorting.              (line 40)
+* Sorting by size:                       Sorting.              (line 20)
+* Spell checking:                        Spell Checking Files. (line  9)
+* Splitting files:                       Splitting Files.      (line  9)
+* Splitting files in background:         Splitting Files.      (line 14)
+* Swapping:                              Sysinfo.              (line 35)
+* Switch panels:                         Moving.               (line 49)
+* Symbolic links to files:               Linking Files.        (line 17)
+* sync:                                  Sync.                 (line  9)
+* Synchronizing file systems:            Sync.                 (line  9)
+* System users:                          Sysinfo.              (line 29)
+* Tar archive:                           Archive Files.        (line  9)
+* tcsh:                                  Shell.                (line  9)
+* Terminal reset:                        Resetting.            (line  9)
+* Time and date:                         Modes.                (line 48)
+* Time, date:                            Modes.                (line 48)
+* Toggle flag:                           Selecting.            (line  9)
+* Toggle panels:                         Moving.               (line 49)
+* tty mode:                              Modes.                (line 32)
+* Two panel mode:                        Modes.                (line 29)
+* Two panels:                            Modes.                (line 29)
+* Type specific file action:             Actions.              (line 20)
+* umount:                                Mounting.             (line 55)
+* Uncompressing directories:             Compressing Files.    (line 17)
+* Uncompressing directories in background: Compressing Files.  (line 21)
+* Uncompressing directories/links:       Compressing Files.    (line 25)
+* Uncompressing directories/links in background: Compressing Files.
+                                                               (line 30)
+* Uncompressing files:                   Compressing Files.    (line 17)
+* Uncompressing files in background:     Compressing Files.    (line 21)
+* Uncompressing files/links:             Compressing Files.    (line 25)
+* Uncompressing files/links in background: Compressing Files.  (line 30)
+* Unmark entry:                          Selecting.            (line  9)
+* Unmounting subdirectories:             Mounting.             (line 83)
+* Unmounting the cdrom:                  Mounting.             (line 63)
+* Unmounting the first floppy:           Mounting.             (line 55)
+* Unmounting the floppy:                 Mounting.             (line 55)
+* Unmounting the jaz drive:              Mounting.             (line 76)
+* Unmounting the second floppy:          Mounting.             (line 59)
+* Unmounting the zip drive:              Mounting.             (line 72)
+* Unmounting these file systems:         Mounting.             (line 83)
+* Unselects files matching extension:    Selecting.            (line 33)
+* Unselects files matching pattern:      Selecting.            (line 23)
+* Upcase file names:                     Renaming Files.       (line 21)
+* Upcase word:                           Case Changes.         (line 13)
+* uudecode:                              Encoding Files.       (line 15)
+* uuencode:                              Encoding Files.       (line  8)
+* Viewing files:                         Viewing Files.        (line  9)
+* Viewing multiple files:                Viewing Files.        (line 13)
+* Viewing processes:                     Processes.            (line 35)
+* Viewing the process tree:              Processes.            (line 46)
+* Virtual memory status:                 Sysinfo.              (line 35)
+* whereis:                               Searching Files.      (line 17)
+* which:                                 Searching Files.      (line 20)
+* who:                                   Sysinfo.              (line 40)
+* Wiping files:                          Wiping Files.         (line  9)
+* Wrapped incremental search:            Isearch.              (line 10)
+* Wrapped isearch:                       Isearch.              (line 10)
+* Wrapped search:                        Isearch.              (line 10)
+* xhost:                                 Environment.          (line 13)
+* Yanking, reinserting:                  Yanking.              (line  9)
+
+
 
 Tag Table:
-(Indirect)
-Node: Top1007
-Node: Introduction1879
-Node: Distrib3190
-Node: Description4863
-Node: git5709
-Node: Conventions8222
-Node: Command line10100
-Node: Modes11183
-Node: Sorting13426
-Node: Moving14672
-Node: Selecting16232
-Node: Isearch17606
-Node: Input Line18696
-Node: Inserting Text19784
-Node: Moving Point20670
-Node: Erasing21231
-Node: Case Changes22458
-Node: History22867
-Node: Setting Mark23583
-Node: Yanking23894
-Node: Selecting Files24147
-Node: Files25049
-Node: Copying Files26699
-Node: Moving Files27043
-Node: Creating Files27408
-Node: Deleting Files27752
-Node: Linking Files28074
-Node: Renaming Files28699
-Node: Splitting Files29258
-Node: Packing Files29738
-Node: Inode31282
-Node: Editing Files32906
-Node: Viewing Files33606
-Node: Compressing Files33967
-Node: Encoding Files35318
-Node: Encrypting Files36217
-Node: Comparing Files36484
-Node: Spell Checking Files37122
-Node: Printing Files37357
-Node: Wiping Files37796
-Node: Searching Files38110
-Node: Archive Files38621
-Node: RPM Packages40403
-Node: File Types41749
-Node: MSDOS Files41945
-Node: Actions43972
-Node: Directories44880
-Node: Creating Dirs45627
-Node: Copying Dirs45881
-Node: Deleting Dirs46337
-Node: Moving Dirs46750
-Node: Renaming Dirs47203
-Node: Comparing Dirs47620
-Node: Dirs Usage48819
-Node: Changing Dirs49072
-Node: Dirs History49722
-Node: Hot Keys50765
-Node: Compiling51353
-Node: Mail51731
-Node: Shell52848
-Node: Grep53117
-Node: Locking53522
-Node: Refreshing53900
-Node: Reseting54616
-Node: Mounting54846
-Node: Sysinfo57888
-Node: Environment59115
-Node: Processes59500
-Node: Sync61563
-Node: Documentation61795
-Node: Exit62264
-Node: gitps62463
-Node: gitview63468
-Node: gitkeys64310
-Node: gitwipe64686
-Node: gitmount65404
-Node: gitaction66158
-Node: gitunpack67966
-Node: gitrgrep68371
-Node: Customization68857
-Node: Environment Variables69150
-Node: Configuration Files70197
-Node: Key Sequences72993
-Node: Setup74311
-Node: git Sections75244
-Node: GIT-Setup75668
-Node: GIT-Color77755
-Node: GIT-Monochrome78096
-Node: GIT-Keys78471
-Node: key-sequence79351
-Node: command-name79974
-Node: formatted-command80700
-Node: %s82009
-Node: %f82519
-Node: %d82747
-Node: %l82975
-Node: %t83209
-Node: %z83425
-Node: %a83637
-Node: %m83833
-Node: %g84018
-Node: %o84204
-Node: %p84390
-Node: %b84576
-Node: %i84772
-Node: %?84978
-Node: new-dir85450
-Node: save-screen85857
-Node: pause86536
-Node: hide86850
-Node: GIT-FTI87709
-Node: gitps Sections88272
-Node: GITPS-Setup88650
-Node: GITPS-Color88875
-Node: GITPS-Monochrome89227
-Node: GITPS-Keys89616
-Node: gitview Sections89728
-Node: GITVIEW-Setup90097
-Node: GITVIEW-Color90332
-Node: GITVIEW-Monochrome90698
-Node: GITVIEW-Keys91101
-Node: Limitations91219
-Node: Bugs92515
-Node: Key Index92769
-Node: Command Index106214
-Node: Variable Index119190
-Node: Concept Index120448
+Node: Top1005
+Node: Introduction1876
+Node: Distrib3188
+Node: Description4862
+Node: gitfm5709
+Node: Conventions8231
+Node: Command line10122
+Node: Modes11179
+Node: Sorting13460
+Node: Moving14747
+Node: Selecting16353
+Node: Isearch17756
+Node: Input Line18879
+Node: Inserting Text19980
+Node: Moving Point20890
+Node: Erasing21485
+Node: Case Changes22761
+Node: History23195
+Node: Setting Mark23929
+Node: Yanking24262
+Node: Selecting Files24534
+Node: Files25449
+Node: Copying Files27113
+Node: Moving Files27479
+Node: Creating Files27866
+Node: Deleting Files28223
+Node: Linking Files28567
+Node: Renaming Files29220
+Node: Splitting Files29807
+Node: Packing Files30309
+Node: Inode31648
+Node: Editing Files33324
+Node: Viewing Files34054
+Node: Compressing Files34439
+Node: Encoding Files35838
+Node: Encrypting Files36779
+Node: Comparing Files37070
+Node: Spell Checking Files37735
+Node: Printing Files37991
+Node: Wiping Files38454
+Node: Searching Files38788
+Node: Archive Files39329
+Node: RPM Packages41159
+Node: File Types42542
+Node: MSDOS Files42759
+Node: Actions44855
+Node: Directories45781
+Node: Creating Dirs46544
+Node: Copying Dirs46819
+Node: Deleting Dirs47299
+Node: Moving Dirs47736
+Node: Renaming Dirs48213
+Node: Comparing Dirs48654
+Node: Dirs Usage49886
+Node: Changing Dirs50160
+Node: Dirs History50836
+Node: Hot Keys51907
+Node: Compiling52534
+Node: Mail52933
+Node: Shell54087
+Node: Grep54374
+Node: Locking54800
+Node: Refreshing55196
+Node: Resetting55931
+Node: Mounting56183
+Node: Sysinfo59281
+Node: Environment60547
+Node: Processes60954
+Node: Sync63044
+Node: Documentation63295
+Node: Exit63789
+Node: gitps64007
+Node: gitview65013
+Node: gitkeys65855
+Node: gitwipe66236
+Node: gitmount66959
+Node: gitaction67717
+Node: gitunpack69553
+Node: gitrgrep69963
+Node: Customization70444
+Node: Environment Variables70741
+Node: Configuration Files71831
+Node: Key Sequences74813
+Node: Setup76142
+Node: gitfm Sections77092
+Node: GITFM-Setup77544
+Node: GITFM-Color79677
+Node: GITFM-Monochrome80045
+Node: GITFM-Keys80447
+Node: key-sequence81350
+Node: command-name81987
+Node: formatted-command82730
+Node: %s84054
+Node: %f84579
+Node: %d84822
+Node: %l85067
+Node: %t85318
+Node: %z85551
+Node: %a85780
+Node: %m85993
+Node: %g86195
+Node: %o86398
+Node: %p86601
+Node: %b86804
+Node: %i87017
+Node: %?87240
+Node: new-dir87730
+Node: save-screen88154
+Node: pause88852
+Node: hide89185
+Node: GITFM-FTI90063
+Node: gitps Sections90643
+Node: GITPS-Setup91035
+Node: GITPS-Color91273
+Node: GITPS-Monochrome91638
+Node: GITPS-Keys92040
+Node: gitview Sections92168
+Node: GITVIEW-Setup92549
+Node: GITVIEW-Color92797
+Node: GITVIEW-Monochrome93176
+Node: GITVIEW-Keys93592
+Node: Limitations93726
+Node: Bugs95130
+Node: Key Index95385
+Node: Command Index113835
+Node: Variable Index131643
+Node: Concept Index133699
 
 End Tag Table

@@ -1,28 +1,29 @@
-### $Id: .gitrc.generic,v 1.2 2005-10-22 15:29:16 ianb Exp $
+### $Id: .gitrc.minix,v 1.2 2005-10-22 15:29:16 ianb Exp $
 
 ###############################################################################
 ###									    ###
-###	        GNU Interactive Tools 4.3.21 configuration file		    ###
+###	        GNU Interactive Tools @VERSION@ configuration file	    ###
 ###          Copyright (c) 1993-2000 Free Software Foundation, Inc.         ###
 ###									    ###
 ###############################################################################
 
 
 ###
-### Generic configuration file.
+### minix configuration file.
 ###
 
 
 ###
 ### If your terminal supports the standard ANSI color sequences, set
-### AnsiColors to ON ([GITxxx-Color] descriptions will be used).  If
-### it doesn't, AnsiColors should be OFF ([GITxxx-Monochrome]
-### descriptions will be used instead).
+### AnsiColors to ON ([GITxxx-Color] descriptions will be used).  If it
+### doesn't, AnsiColors should be OFF ([GITxxx-Monochrome] descriptions
+### will be used instead).  Ansi terminals usually support color
+### sequences so AnsiColors is ON here.
 ###
 
 
 [Setup]
-AnsiColors		= OFF	# empty means OFF
+AnsiColors		= ON	# empty means OFF
 UseLastScreenChar	= OFF	# use the last character on the screen
 StartupScrollStep	=	# empty means half the number of lines
 
@@ -61,9 +62,9 @@ Help = Arrows/PgUp/PgDown/Home/End-MOVE ^L-REFRESH ^X^C/F10-QUIT 0-9/a-f/A-F-OFF
 [GITFM-FTI]
 
 
-######################################
-### Generic tty with color monitor ###
-######################################
+################################
+### minix with color monitor ###
+################################
 
 
 [GITFM-Color]
@@ -142,9 +143,9 @@ StatusBackground		= BLUE
 StatusBrightness		= ON
 
 
-######################################################
-### Generic tty with monochrome monitor or b/w tty ###
-######################################################
+################################################
+### minix with monochrome monitor or b/w tty ###
+################################################
 
 
 [GITFM-Monochrome]

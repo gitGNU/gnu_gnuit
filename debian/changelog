@@ -1,3 +1,9 @@
+git (4.9.1-1) unstable; urgency=low
+
+  * New upstream beta version.
+
+ -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Thu, 19 Oct 2006 00:20:42 +0100
+
 git (4.3.20-10) unstable; urgency=low
 
   * Change git.transition so it runs git-scm if run non-interactively.

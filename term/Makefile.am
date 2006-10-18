@@ -1,8 +1,8 @@
 # $Id: Makefile.am,v 1.2 2005-12-07 13:56:05 ianb Exp $
-EXTRA_DIST = .gitrc.aixterm .gitrc.ansi .gitrc.common.in\
-	     .gitrc.generic .gitrc.hft .gitrc.hpterm .gitrc.linux\
-	     .gitrc.mach .gitrc.minix .gitrc.thix .gitrc.vt100\
-	     .gitrc.vt102 .gitrc.xterm .gitrc.xterm-color .gitrc.linux-m
+EXTRA_DIST = .gitrc.aixterm.in .gitrc.ansi.in .gitrc.common.in\
+	     .gitrc.generic.in .gitrc.hft.in .gitrc.hpterm.in .gitrc.linux.in\
+	     .gitrc.mach.in .gitrc.minix.in .gitrc.thix.in .gitrc.vt100.in\
+	     .gitrc.vt102.in .gitrc.xterm.in .gitrc.xterm-color.in .gitrc.linux-m.in
 pkgdata_DATA = .gitrc.aixterm .gitrc.ansi .gitrc.common\
 	       .gitrc.generic .gitrc.hft .gitrc.hpterm .gitrc.linux\
 	       .gitrc.mach .gitrc.minix .gitrc.thix .gitrc.vt100\
