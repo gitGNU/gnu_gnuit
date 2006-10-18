@@ -37,6 +37,10 @@
 #include <stddef.h>
 #endif
 
+#ifdef HAVE_LOCALE_H
+#include <locale.h>
+#endif
+
 #include <ctype.h>
 #include <limits.h>
 #include "file.h"
@@ -969,6 +973,10 @@ main(argc, argv)
     int i, no_of_arguments, exit_code = 0, r1, r2;
     int need_update, need_update_all, old_current_process;
     int c, ansi_colors = -1, use_last_screen_character = ON;
+
+#ifdef HAVE_SETLOCALE
+    setlocale(LC_ALL,"");
+#endif
 
     /* Make sure we don't get signals before we are ready to handle
        them.  */
