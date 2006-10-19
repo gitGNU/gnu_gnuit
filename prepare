@@ -9,7 +9,7 @@ AMFLAGS=
 
 if [ "$1" = "-a" ]
 then
-#    gnulib-tool --import fsusage getopt strcase strstr memmove fnmatch fnmatch-gnu rename readlink putenv xalloc ; echo -n .
+#    gnulib-tool --import fsusage getopt idcache strcase strstr memmove fnmatch fnmatch-gnu rename readlink putenv xalloc ; echo -n .
     gnulib-tool --update; echo -n .
     patch -p0 < lib-Makefile.am.patch ; echo -n .
     AMFLAGS="--add-missing --force-missing --copy"

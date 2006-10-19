@@ -9940,6 +9940,14 @@ fi
 
 
 
+  case " $LIBOBJS " in
+  *" idcache.$ac_objext "* ) ;;
+  *) LIBOBJS="$LIBOBJS idcache.$ac_objext"
+ ;;
+esac
+
+
+
 
 
   :

@@ -47,19 +47,20 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/absolute-header.m4 \
 	$(top_srcdir)/m4/error.m4 $(top_srcdir)/m4/exitfail.m4 \
 	$(top_srcdir)/m4/fnmatch.m4 $(top_srcdir)/m4/fsusage.m4 \
 	$(top_srcdir)/m4/getopt.m4 $(top_srcdir)/m4/gnulib-comp.m4 \
-	$(top_srcdir)/m4/longlong.m4 $(top_srcdir)/m4/mbchar.m4 \
-	$(top_srcdir)/m4/mbiter.m4 $(top_srcdir)/m4/mbrtowc.m4 \
-	$(top_srcdir)/m4/mbstate_t.m4 $(top_srcdir)/m4/memchr.m4 \
-	$(top_srcdir)/m4/memmove.m4 $(top_srcdir)/m4/onceonly_2_57.m4 \
-	$(top_srcdir)/m4/putenv.m4 $(top_srcdir)/m4/readlink.m4 \
-	$(top_srcdir)/m4/rename.m4 $(top_srcdir)/m4/safe-read.m4 \
-	$(top_srcdir)/m4/safe-write.m4 $(top_srcdir)/m4/ssize_t.m4 \
-	$(top_srcdir)/m4/stdbool.m4 $(top_srcdir)/m4/stdint.m4 \
-	$(top_srcdir)/m4/strcase.m4 $(top_srcdir)/m4/strndup.m4 \
-	$(top_srcdir)/m4/strnlen.m4 $(top_srcdir)/m4/strstr.m4 \
-	$(top_srcdir)/m4/unistd_h.m4 $(top_srcdir)/m4/wchar_t.m4 \
-	$(top_srcdir)/m4/wcwidth.m4 $(top_srcdir)/m4/xalloc.m4 \
-	$(top_srcdir)/m4/xstrndup.m4 $(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/idcache.m4 $(top_srcdir)/m4/longlong.m4 \
+	$(top_srcdir)/m4/mbchar.m4 $(top_srcdir)/m4/mbiter.m4 \
+	$(top_srcdir)/m4/mbrtowc.m4 $(top_srcdir)/m4/mbstate_t.m4 \
+	$(top_srcdir)/m4/memchr.m4 $(top_srcdir)/m4/memmove.m4 \
+	$(top_srcdir)/m4/onceonly_2_57.m4 $(top_srcdir)/m4/putenv.m4 \
+	$(top_srcdir)/m4/readlink.m4 $(top_srcdir)/m4/rename.m4 \
+	$(top_srcdir)/m4/safe-read.m4 $(top_srcdir)/m4/safe-write.m4 \
+	$(top_srcdir)/m4/ssize_t.m4 $(top_srcdir)/m4/stdbool.m4 \
+	$(top_srcdir)/m4/stdint.m4 $(top_srcdir)/m4/strcase.m4 \
+	$(top_srcdir)/m4/strndup.m4 $(top_srcdir)/m4/strnlen.m4 \
+	$(top_srcdir)/m4/strstr.m4 $(top_srcdir)/m4/unistd_h.m4 \
+	$(top_srcdir)/m4/wchar_t.m4 $(top_srcdir)/m4/wcwidth.m4 \
+	$(top_srcdir)/m4/xalloc.m4 $(top_srcdir)/m4/xstrndup.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -72,7 +73,7 @@ am_gitfm_OBJECTS = git.$(OBJEXT) tty.$(OBJEXT) window.$(OBJEXT) \
 	inputline.$(OBJEXT) status.$(OBJEXT) panel.$(OBJEXT) \
 	title.$(OBJEXT) configure.$(OBJEXT) misc.$(OBJEXT) \
 	signals.$(OBJEXT) xmalloc.$(OBJEXT) xio.$(OBJEXT) \
-	xid.$(OBJEXT) xstack.$(OBJEXT) system.$(OBJEXT)
+	xstack.$(OBJEXT) system.$(OBJEXT)
 gitfm_OBJECTS = $(am_gitfm_OBJECTS)
 gitfm_DEPENDENCIES =
 am_gitkeys_OBJECTS = gitkeys.$(OBJEXT)
@@ -265,7 +266,7 @@ gitfm_SOURCES = git.c tty.c tty.h window.c window.h inputline.c inputline.h\
 	      status.c status.h panel.c panel.h title.c title.h\
 	      configure.c configure.h misc.c misc.h signals.c signals.h\
 	      xmalloc.c xmalloc.h xstring.h xio.c xio.h\
-	      xid.c xid.h xstack.c xstack.h system.c system.h
+	      xstack.c xstack.h system.c system.h
 
 gitps_SOURCES = gitps.c tty.c tty.h window.c window.h misc.c misc.h\
 		configure.c configure.h signals.c signals.h xio.c xio.h\
@@ -398,7 +399,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/title.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tty.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/window.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xid.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xio.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xmalloc.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/xstack.Po@am__quote@

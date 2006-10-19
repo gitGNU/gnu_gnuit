@@ -102,7 +102,6 @@ extern int errno;
 #include "xstring.h"
 #include "xmalloc.h"
 #include "xio.h"
-#include "xid.h"
 #include "fsusage.h"
 #include "window.h"
 #include "status.h"
@@ -117,6 +116,9 @@ extern int errno;
 #include "misc.h"
 #include "stat.h"
 
+/* prototypes from gnulib idcache.c (no idcache.h for some reason) */
+char *getuser  PROTO ((uid_t uid));
+char *getgroup PROTO ((gid_t gid));
 
 extern int AnsiColors;
 extern int TypeSensitivity;
@@ -875,8 +877,9 @@ panel_load_inode(this, entry)
     int sz, hour;
     struct stat s;
     struct tm *time;
-
-
+    char *owner;
+    char *group;
+    
     memset(&s, 0, sizeof(s));
 
     xlstat(this->dir_entry[entry].name, &s);
@@ -963,8 +966,29 @@ panel_load_inode(this, entry)
 	this->dir_entry[entry].size = (sz == -1) ? 0 : sz;
     }
 
-    this->dir_entry[entry].owner = xgetpwuid(s.st_uid);
-    this->dir_entry[entry].group = xgetgrgid(s.st_gid);
+    owner=getuser(s.st_uid);
+    if(owner)
+    {
+	this->dir_entry[entry].owner=xmalloc(1 + max(strlen(owner),8));
+	sprintf(this->dir_entry[entry].owner,"%-7s", owner);
+    }
+    else
+    {
+	this->dir_entry[entry].owner=xmalloc(32);
+	sprintf(this->dir_entry[entry].owner,"%-7u",s.st_uid);
+    }
+
+    group=getgroup(s.st_gid);
+    if(group)
+    {
+	this->dir_entry[entry].group=xmalloc(1 + max(strlen(group),8));
+	sprintf(this->dir_entry[entry].group,"%-7s", group);
+    }
+    else
+    {
+	this->dir_entry[entry].group=xmalloc(32);
+	sprintf(this->dir_entry[entry].group,"%-7u",s.st_gid);
+    }
 
     this->dir_entry[entry].mtime = s.st_mtime;
     time = localtime(&s.st_mtime);

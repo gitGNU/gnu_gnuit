@@ -42,6 +42,7 @@ AC_DEFUN([gl_INIT],
   gl_FUNC_FNMATCH_GNU
   gl_FSUSAGE
   gl_GETOPT
+  gl_IDCACHE
   gl_MBCHAR
   gl_MBITER
   gl_FUNC_MEMCHR
@@ -95,6 +96,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/getopt_.h
   lib/getopt_int.h
   lib/gettext.h
+  lib/idcache.c
   lib/mbchar.c
   lib/mbchar.h
   lib/mbuiter.h
@@ -137,6 +139,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/fnmatch.m4
   m4/fsusage.m4
   m4/getopt.m4
+  m4/idcache.m4
   m4/longlong.m4
   m4/mbchar.m4
   m4/mbiter.m4
