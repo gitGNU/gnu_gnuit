@@ -1992,8 +1992,8 @@ vcs_io(buf, op)
     char vcs_name[16];
     char vcsa_name[16];
 
-    strcpy(vcs_name, "/dev/vcsX");
-    strcpy(vcsa_name, "/dev/vcsaX");
+    strcpy(vcs_name, "/dev/vcsXX");
+    strcpy(vcsa_name, "/dev/vcsaXX");
 
     if (op == VCS_READ)
     {
@@ -2012,7 +2012,8 @@ vcs_io(buf, op)
     vcs_is_monochrome = 0;
 
     /* First attempt: /dev/vcsaX.  */
-    vcsa_name[9] = tty_device[tty_device_length - 1];
+    vcsa_name[9] = tty_device[8];
+    vcsa_name[10] = tty_device[9];
     vcsfd = open(vcsa_name, flag);
 
     if (vcsfd != -1)
@@ -2032,6 +2033,7 @@ vcs_io(buf, op)
 
     /* Second attempt: /dev/vcsa0.  */
     vcsa_name[9] = '0';
+    vcsa_name[10] = '\0';
     vcsfd = open(vcsa_name, flag);
 
     if (vcsfd != -1)
@@ -2046,7 +2048,8 @@ vcs_io(buf, op)
 	tty_clear();
 
     /* Third attempt: /dev/vcsX (B/W).  */
-    vcs_name[8] = tty_device[tty_device_length - 1];
+    vcs_name[8] = tty_device[8];
+    vcs_name[9] = tty_device[9];
     vcsfd = open(vcs_name, flag);
 
     if (vcsfd != -1)
@@ -2068,6 +2071,7 @@ vcs_io(buf, op)
 
     /* Fourth attempt: /dev/vcs0 (B/W).  */
     vcs_name[8] = '0';
+    vcs_name[9] = '\0';
     vcsfd = open(vcs_name, flag);
 
     if (vcsfd != -1)
@@ -2186,8 +2190,8 @@ tty_get_capabilities()
 
 #ifdef HAVE_LINUX
     fstat(TTY_OUTPUT, &statbuf);
-    if ((statbuf.st_rdev >> 8) == LINUX_VC_MAJOR &&
-	((unsigned)(statbuf.st_rdev & 0xFF)) <= 8)
+    /* dropped test for minor <= 8 - linux now has unlimited VCs */
+    if ((statbuf.st_rdev >> 8) == LINUX_VC_MAJOR)
 	LinuxConsole = 1;
     else
 	LinuxConsole = 0;
