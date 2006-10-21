@@ -2432,6 +2432,9 @@ main(argc, argv)
 
 		alarm(0);
 		tty_put_screen(screen);
+		/* exiting/entering cursor addressable mode */
+		/* (which saves/restores the screen on xterm) */
+		/* with ^O may be cheating, but seems to work */
 		tty_end_cursorapp();
 
 		status(CommandLineModeHelp, STATUS_OK, STATUS_CENTERED);

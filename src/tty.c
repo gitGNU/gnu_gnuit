@@ -863,6 +863,8 @@ tty_io_clear()
     tty_flush();
 }
 
+/* uses the ti/te capability to signal we are entering/exiting a cursor */
+/* addressable app (which saves/restores the screen, at least on xterm) */
 void
 tty_start_cursorapp()
 {
@@ -900,6 +902,7 @@ tty_end(screen)
     tty_end_cursorapp();
     tty_io_goto(tty_lines, 0);
     tty_flush();
+    printf("\n");
 }
 
 

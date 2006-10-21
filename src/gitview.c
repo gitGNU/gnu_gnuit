@@ -769,6 +769,8 @@ main(argc, argv)
 
     configuration_end();
 
+    tty_start_cursorapp();
+
     title_window  = window_init();
     header_window = window_init();
     file_window = window_init();

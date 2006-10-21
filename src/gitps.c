@@ -1119,6 +1119,8 @@ main(argc, argv)
     if (ps(arguments) == 0)
 	return 1;
 
+    tty_start_cursorapp();
+
     title_window  = window_init();
     header_window = window_init();
     processes_window = window_init();
