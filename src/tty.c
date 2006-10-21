@@ -286,8 +286,8 @@ typedef struct
 } tty_capability_t;
 
 
-#define TTY_CAPABILITIES_USED   36
-#define TTY_FIRST_SYMBOL_KEY    15
+#define TTY_CAPABILITIES_USED   38
+#define TTY_FIRST_SYMBOL_KEY    17
 
 static tty_capability_t tty_capability[TTY_CAPABILITIES_USED] =
 {
@@ -306,6 +306,8 @@ static tty_capability_t tty_capability[TTY_CAPABILITIES_USED] =
     { "ms", NULL, 0, 0, NULL },		/* Safe to move in standout mode.  */
     { "co", NULL, 0, 0, NULL },		/* The number of columns.  */
     { "li", NULL, 0, 0, NULL },		/* The number of lines.  */
+    { "ti", NULL, 0, 0, NULL },		/* Begin program that uses cursor motion.  */
+    { "te", NULL, 0, 0, NULL },		/* End program that uses cursor motion.  */
     { "ku", NULL, 0, 0, "UP" },		/* (UP) */
     { "kd", NULL, 0, 0, "DOWN" },	/* (DOWN) */
     { "kr", NULL, 0, 0, "RIGHT" },	/* (RIGHT) */
@@ -346,24 +348,27 @@ static tty_capability_t tty_capability[TTY_CAPABILITIES_USED] =
 #define TTY_MS_FLAG		(tty_capability[12].integer)
 #define TTY_COLUMNS		(tty_capability[13].integer)
 #define TTY_LINES		(tty_capability[14].integer)
-
+#define TTY_START_CURSORAPP	(tty_capability[15].string)
+#define TTY_END_CURSORAPP	(tty_capability[16].string)
 
 /* Some more nice aliases...  */
-#define TTY_ATTRIBUTES_OFF_NAME (tty_capability[0].name)
-#define TTY_REVERSE_ON_NAME     (tty_capability[1].name)
-#define TTY_BRIGHT_ON_NAME      (tty_capability[2].name)
-#define TTY_CURSOR_OFF_NAME     (tty_capability[3].name)
-#define TTY_CURSOR_ON_NAME      (tty_capability[4].name)
-#define TTY_CLEAR_SCREEN_NAME   (tty_capability[5].name)
-#define TTY_CURSOR_MOVE_NAME    (tty_capability[6].name)
-#define TTY_PAD_CHAR_NAME       (tty_capability[7].name)
-#define TTY_UP_ONE_LINE_NAME    (tty_capability[8].name)
-#define TTY_LEFT_ONE_SPACE_NAME (tty_capability[9].name)
-#define TTY_STANDOUT_ON_NAME	(tty_capability[10].name)
-#define TTY_MAGIC_COOKIE_NAME	(tty_capability[11].name)
-#define TTY_MS_FLAG_NAME	(tty_capability[12].name)
-#define TTY_COLUMNS_NAME	(tty_capability[13].name)
-#define TTY_LINES_NAME		(tty_capability[14].name)
+#define TTY_ATTRIBUTES_OFF_NAME 	(tty_capability[0].name)
+#define TTY_REVERSE_ON_NAME     	(tty_capability[1].name)
+#define TTY_BRIGHT_ON_NAME      	(tty_capability[2].name)
+#define TTY_CURSOR_OFF_NAME     	(tty_capability[3].name)
+#define TTY_CURSOR_ON_NAME      	(tty_capability[4].name)
+#define TTY_CLEAR_SCREEN_NAME   	(tty_capability[5].name)
+#define TTY_CURSOR_MOVE_NAME    	(tty_capability[6].name)
+#define TTY_PAD_CHAR_NAME       	(tty_capability[7].name)
+#define TTY_UP_ONE_LINE_NAME    	(tty_capability[8].name)
+#define TTY_LEFT_ONE_SPACE_NAME 	(tty_capability[9].name)
+#define TTY_STANDOUT_ON_NAME		(tty_capability[10].name)
+#define TTY_MAGIC_COOKIE_NAME		(tty_capability[11].name)
+#define TTY_MS_FLAG_NAME		(tty_capability[12].name)
+#define TTY_COLUMNS_NAME		(tty_capability[13].name)
+#define TTY_LINES_NAME			(tty_capability[14].name)
+#define TTY_START_CURSORAPP_NAME	(tty_capability[15].name)
+#define TTY_END_CURSORAPP_NAME		(tty_capability[16].name)
 
 
 #ifdef HAVE_LIBTERMCAP
@@ -385,6 +390,7 @@ static void tty_io_background PROTO ((int));
 static void tty_io_brightness PROTO ((int));
 static void tty_io_reversevid PROTO ((int));
 static void tty_io_colors PROTO ((int));
+static int  tty_is_xterm PROTO ((char *));
 
 
 extern void fatal PROTO ((char *));
@@ -857,6 +863,20 @@ tty_io_clear()
     tty_flush();
 }
 
+void
+tty_start_cursorapp()
+{
+    tputs(TTY_START_CURSORAPP,tty_lines-1,tty_writec);
+    tty_flush();
+}
+
+void
+tty_end_cursorapp()
+{
+    tputs(TTY_END_CURSORAPP,tty_lines-1,tty_writec);
+    tty_flush();
+}
+
 
 /*
  * This function is called to restore the canonic mode at exit.  It also
@@ -873,17 +893,13 @@ tty_end(screen)
 
     tty_defaults();
 
-    if (screen)
-    {
 #ifdef HAVE_LINUX
-	if (LinuxConsole)
-	    tty_put_screen(screen);
-	else
-	    tty_io_clear();
+    if(screen && LinuxConsole)
+	tty_put_screen(screen);
 #endif
-    }
-    else
-	tty_io_clear();
+    tty_end_cursorapp();
+    tty_io_goto(tty_lines, 0);
+    tty_flush();
 }
 
 
@@ -2235,29 +2251,21 @@ tty_get_capabilities()
 		"%s: can't find the terminal type %s in the %s database.\n",
 		g_program, termtype, term_database);
 
-	/* Try something resonable, given the current value.  Add here
-	   as needed...  */
-	if (strcmp(termtype, "xterm-color")  == 0 ||
-	    strcmp(termtype, "xterms")       == 0 ||
-	    strcmp(termtype, "xterm-debian") == 0 ||
-	    strcmp(termtype, "rxvt")         == 0 ||
-	    strcmp(termtype, "aixterm")      == 0 ||
-	    strcmp(termtype, "dtterm")       == 0)
-	{
-	    fprintf(stderr, "%s: trying xterm...\n", g_program);
-	    termtype = "xterm";
-	    goto retry;
-	}
-
 	if (strcmp(termtype, "iris-ansi") == 0)
 	{
 	    fprintf(stderr, "%s: trying ansi...\n", g_program);
 	    termtype = "ansi";
 	    goto retry;
 	}
+	
+	if (tty_is_xterm(termtype))
+	{
+	    fprintf(stderr, "%s: trying xterm...\n", g_program);
+	    termtype = "xterm";
+	    goto retry;
+	}
 
-	if (strcmp(termtype, "vt102") == 0 ||
-	    strcmp(termtype, "vt220") == 0 ||
+	if (strcmp(termtype, "vt220") == 0 ||
 	    strcmp(termtype, "vt320") == 0)
 	{
 	    fprintf(stderr, "%s: trying vt100...\n", g_program);
@@ -2323,6 +2331,9 @@ tty_get_capabilities()
 
     TTY_CLEAR_SCREEN = tgetstr(TTY_CLEAR_SCREEN_NAME, &capability_buf);
     TTY_CURSOR_MOVE  = tgetstr(TTY_CURSOR_MOVE_NAME,  &capability_buf);
+
+    TTY_START_CURSORAPP = tgetstr(TTY_START_CURSORAPP_NAME, &capability_buf);
+    TTY_END_CURSORAPP = tgetstr(TTY_END_CURSORAPP_NAME, &capability_buf);
 
     for (i = TTY_FIRST_SYMBOL_KEY; i < TTY_CAPABILITIES_USED; i++)
 	tty_capability[i].string = tgetstr(tty_capability[i].name,
@@ -2406,11 +2417,7 @@ void
 tty_update_title(string)
     char *string;
 {
-    if ((strcmp(tty_type, "xterm")       == 0) ||
-	(strcmp(tty_type, "xterm-color") == 0) ||
-	(strcmp(tty_type, "aixterm")     == 0) ||
-	(strcmp(tty_type, "iris-ansi")   == 0) ||
-	(strcmp(tty_type, "dtterm")      == 0))
+    if (tty_is_xterm(tty_type))
     {
 	size_t len = strlen(string);
 	char *temp = xmalloc(128 + len + 1);
@@ -2434,4 +2441,20 @@ tty_update_title(string)
 	xfree(temp);
 	fflush(stdout);
     }
+}
+
+static int
+tty_is_xterm(term)
+    char *term;
+{
+    if (strncmp(term, "xterm", 5)     == 0 ||
+	strncmp(term, "rxvt", 4)      == 0 ||
+	strncmp(term, "iris-ansi", 9) == 0 ||
+	strcmp(term, "aixterm")       == 0 ||
+	strcmp(term, "Eterm")         == 0 ||
+	strcmp(term, "dtterm")        == 0)
+    {
+	return 1;
+    }
+    return 0;
 }

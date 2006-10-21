@@ -143,6 +143,9 @@ extern void tty_set_last_char_flag PROTO ((int));
 extern int tty_set_optimization_level PROTO ((int));
 extern void tty_update_title PROTO ((char *));
 
+extern void tty_start_cursorapp PROTO (());
+extern void tty_end_cursorapp PROTO (());
+
 extern void tty_io_clear PROTO (());
 
 /*

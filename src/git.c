@@ -2006,6 +2006,7 @@ main(argc, argv)
     if (current_path == NULL)
 	fatal("`getcwd' failed: permission denied");
 
+    tty_start_cursorapp();
     title_init();
     il_init();
     status_init(NormalModeHelp);
@@ -2431,6 +2432,8 @@ main(argc, argv)
 
 		alarm(0);
 		tty_put_screen(screen);
+		tty_end_cursorapp();
+
 		status(CommandLineModeHelp, STATUS_OK, STATUS_CENTERED);
 		tty_update();
 
@@ -2566,6 +2569,7 @@ main(argc, argv)
 		}
 
 	      end_tty_mode:
+		tty_start_cursorapp();
 		panel_no_optimizations(src_panel);
 		panel_no_optimizations(dst_panel);
 		tty_touch();
