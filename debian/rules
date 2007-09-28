@@ -48,7 +48,7 @@ config.status: configure
 	# remove source files now part of gnulib in lib/ 
 	#-rm -f src/fsusage.[ch] src/history.[ch] src/tilde.[ch] src/fnmatch.[ch] src/getopt.[ch]
 
-	CFLAGS="$(CFLAGS)" ./configure --with-terminfo --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info $(CONFFLAGS)
+	CFLAGS="$(CFLAGS)" ./configure --with-terminfo --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --disable-transition $(CONFFLAGS)
 
 build: build-stamp
 
@@ -103,7 +103,6 @@ install: build
 		install -c $$i $(BUILDDIR)/usr/share/doc/git/$$nfile; \
 		gzip -9f $(BUILDDIR)/usr/share/doc/git/$$nfile; \
 	done
-
 	touch build-stamp
 
 
