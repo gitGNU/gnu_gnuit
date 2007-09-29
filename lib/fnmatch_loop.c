@@ -1,6 +1,5 @@
 /* Copyright (C) 1991,1992,1993,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006
-   Free Software Foundation, Inc.
-   This file is part of the GNU C Library.
+	Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -234,7 +233,8 @@ FCT (const CHAR *pattern, const CHAR *string, const CHAR *string_end,
 		    c = FOLD ((UCHAR) *p);
 		    ++p;
 
-		    goto normal_bracket;
+		    if (c == fn)
+		      goto matched;
 		  }
 		else if (c == L_('[') && *p == L_(':'))
 		  {
@@ -494,31 +494,24 @@ FCT (const CHAR *pattern, const CHAR *string, const CHAR *string_end,
 
 			    idx = 0;
 			    elem = hash % table_size;
-			    if (symb_table[2 * elem] != 0)
+			    second = hash % (table_size - 2);
+			    while (symb_table[2 * elem] != 0)
 			      {
-				second = hash % (table_size - 2) + 1;
-
-				do
+				/* First compare the hashing value.  */
+				if (symb_table[2 * elem] == hash
+				    && c1 == extra[symb_table[2 * elem + 1]]
+				    && memcmp (str,
+					       &extra[symb_table[2 * elem + 1]
+						     + 1], c1) == 0)
 				  {
-				    /* First compare the hashing value.  */
-				    if (symb_table[2 * elem] == hash
-					&& (c1
-					    == extra[symb_table[2 * elem + 1]])
-					&& memcmp (str,
-						   &extra[symb_table[2 * elem
-								     + 1]
-							  + 1], c1) == 0)
-				      {
-					/* Yep, this is the entry.  */
-					idx = symb_table[2 * elem + 1];
-					idx += 1 + extra[idx];
-					break;
-				      }
-
-				    /* Next entry.  */
-				    elem += second;
+				    /* Yep, this is the entry.  */
+				    idx = symb_table[2 * elem + 1];
+				    idx += 1 + extra[idx];
+				    break;
 				  }
-				while (symb_table[2 * elem] != 0);
+
+				/* Next entry.  */
+				elem += second;
 			      }
 
 			    if (symb_table[2 * elem] != 0)
@@ -598,12 +591,6 @@ FCT (const CHAR *pattern, const CHAR *string, const CHAR *string_end,
 
 			if (!is_range && c == fn)
 			  goto matched;
-
-#if _LIBC
-			/* This is needed if we goto normal_bracket; from
-			   outside of is_seqval's scope.  */
-			is_seqval = false;
-#endif
 
 			cold = c;
 			c = *p++;
@@ -716,30 +703,25 @@ FCT (const CHAR *pattern, const CHAR *string, const CHAR *string_end,
 
 				idx = 0;
 				elem = hash % table_size;
-				if (symb_table[2 * elem] != 0)
+				second = hash % (table_size - 2);
+				while (symb_table[2 * elem] != 0)
 				  {
-				    second = hash % (table_size - 2) + 1;
-
-				    do
+				/* First compare the hashing value.  */
+				    if (symb_table[2 * elem] == hash
+					&& (c1
+					    == extra[symb_table[2 * elem + 1]])
+					&& memcmp (str,
+						   &extra[symb_table[2 * elem + 1]
+							 + 1], c1) == 0)
 				      {
-					/* First compare the hashing value.  */
-					if (symb_table[2 * elem] == hash
-					    && (c1
-						== extra[symb_table[2 * elem + 1]])
-					    && memcmp (str,
-						       &extra[symb_table[2 * elem + 1]
-							      + 1], c1) == 0)
-					  {
-					    /* Yep, this is the entry.  */
-					    idx = symb_table[2 * elem + 1];
-					    idx += 1 + extra[idx];
-					    break;
-					  }
-
-					/* Next entry.  */
-					elem += second;
+					/* Yep, this is the entry.  */
+					idx = symb_table[2 * elem + 1];
+					idx += 1 + extra[idx];
+					break;
 				      }
-				    while (symb_table[2 * elem] != 0);
+
+				    /* Next entry.  */
+				    elem += second;
 				  }
 
 				if (symb_table[2 * elem] != 0)

@@ -56,10 +56,9 @@
 # include "full-read.h"
 #endif
 
-/* The results of open() in this file are not used with fchdir,
-   therefore save some unnecessary work in fchdir.c.  */
-#undef open
-#undef close
+#ifndef UINTMAX_MAX
+# define UINTMAX_MAX ((uintmax_t) -1)
+#endif
 
 /* Many space usage primitives use all 1 bits to denote a value that is
    not applicable or unknown.  Propagate this information by returning
@@ -70,7 +69,7 @@
     && (~ (x) == (sizeof (x) < sizeof (int) \
 		  ? - (1 << (sizeof (x) * CHAR_BIT)) \
 		  : 0))) \
-   ? UINTMAX_MAX : (uintmax_t) (x))
+   ? UINTMAX_MAX : (x))
 
 /* Extract the top bit of X as an uintmax_t value.  */
 #define EXTRACT_TOP_BIT(x) ((x) \

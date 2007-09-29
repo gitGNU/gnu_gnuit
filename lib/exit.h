@@ -1,4 +1,5 @@
-/* Copyright (C) 2001, 2006 Free Software Foundation, Inc.
+/* exit() function.
+   Copyright (C) 1995, 2001 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -12,25 +13,20 @@
 
    You should have received a copy of the GNU General Public License
    along with this program; if not, write to the Free Software Foundation,
-   Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
+   Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
 
+#ifndef _EXIT_H
+#define _EXIT_H
 
-#include <config.h>
+/* Get exit() declaration.  */
+#include <stdlib.h>
 
-#include <limits.h>
+/* Some systems do not define EXIT_*, despite otherwise supporting C89.  */
+#ifndef EXIT_SUCCESS
+# define EXIT_SUCCESS 0
+#endif
+#ifndef EXIT_FAILURE
+# define EXIT_FAILURE 1
+#endif
 
-#include "mbchar.h"
-
-#if IS_BASIC_ASCII
-
-/* Bit table of characters in the ISO C "basic character set".  */
-unsigned int is_basic_table [UCHAR_MAX / 32 + 1] =
-{
-  0x00001a00,		/* '\t' '\v' '\f' */
-  0xffffffef,		/* ' '...'#' '%'...'?' */
-  0xfffffffe,		/* 'A'...'Z' '[' '\\' ']' '^' '_' */
-  0x7ffffffe		/* 'a'...'z' '{' '|' '}' '~' */
-  /* The remaining bits are 0.  */
-};
-
-#endif /* IS_BASIC_ASCII */
+#endif /* _EXIT_H */
