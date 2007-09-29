@@ -707,6 +707,8 @@ MAINTAINER_MODE_FALSE
 MAINT
 TRANSITION_TRUE
 TRANSITION_FALSE
+DEBIAN_TRUE
+DEBIAN_FALSE
 GREP
 EGREP
 GL_COND_LIBTOOL_TRUE
@@ -1350,6 +1352,7 @@ Optional Features:
   --enable-maintainer-mode  enable make rules and dependencies not useful
 			  (and sometimes confusing) to the casual installer
   --enable-transition     install transitional /usr/bin/git
+  --enable-debian         Enable Debian-specific customisations
   --enable-smp            enable parallel compilation (Linux only)
   --enable-gcc-warnings   more gcc warnings for debugging purposes
   --enable-efence         link against the Electric Fence library
@@ -4085,6 +4088,26 @@ if test "$TRANSITIONOPT" = yes; then
 else
   TRANSITION_TRUE='#'
   TRANSITION_FALSE=
+fi
+
+
+DEBIANOPT=yes
+# Check whether --enable-debian was given.
+if test "${enable_debian+set}" = set; then
+  enableval=$enable_debian; DEBIANOPT="$enableval"
+else
+  DEBIANOPT=no
+fi
+
+
+
+
+if test "$DEBIANOPT" = yes; then
+  DEBIAN_TRUE=
+  DEBIAN_FALSE='#'
+else
+  DEBIAN_TRUE='#'
+  DEBIAN_FALSE=
 fi
 
 
@@ -15540,6 +15563,13 @@ echo "$as_me: error: conditional \"TRANSITION\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
+if test -z "${DEBIAN_TRUE}" && test -z "${DEBIAN_FALSE}"; then
+  { { echo "$as_me:$LINENO: error: conditional \"DEBIAN\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+echo "$as_me: error: conditional \"DEBIAN\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
 if test -z "${GL_COND_LIBTOOL_TRUE}" && test -z "${GL_COND_LIBTOOL_FALSE}"; then
   { { echo "$as_me:$LINENO: error: conditional \"GL_COND_LIBTOOL\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
@@ -16203,14 +16233,14 @@ MAINTAINER_MODE_FALSE!$MAINTAINER_MODE_FALSE$ac_delim
 MAINT!$MAINT$ac_delim
 TRANSITION_TRUE!$TRANSITION_TRUE$ac_delim
 TRANSITION_FALSE!$TRANSITION_FALSE$ac_delim
+DEBIAN_TRUE!$DEBIAN_TRUE$ac_delim
+DEBIAN_FALSE!$DEBIAN_FALSE$ac_delim
 GREP!$GREP$ac_delim
 EGREP!$EGREP$ac_delim
 GL_COND_LIBTOOL_TRUE!$GL_COND_LIBTOOL_TRUE$ac_delim
 GL_COND_LIBTOOL_FALSE!$GL_COND_LIBTOOL_FALSE$ac_delim
 ALLOCA!$ALLOCA$ac_delim
 ALLOCA_H!$ALLOCA_H$ac_delim
-LIBOBJS!$LIBOBJS$ac_delim
-FNMATCH_H!$FNMATCH_H$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -16252,6 +16282,8 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+LIBOBJS!$LIBOBJS$ac_delim
+FNMATCH_H!$FNMATCH_H$ac_delim
 GETOPT_H!$GETOPT_H$ac_delim
 STDBOOL_H!$STDBOOL_H$ac_delim
 HAVE__BOOL!$HAVE__BOOL$ac_delim
@@ -16295,7 +16327,7 @@ CLEANFILES!$CLEANFILES$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 41; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 43; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

@@ -1,3 +1,90 @@
+2007-09-30  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
+
+	* add --enable-debian flag to set defaults
+	for debian (sensible-browser, etc).
+
+2007-09-29  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
+
+	* renamed package to gnu-interactive-tools.
+	* added missing tty_end_cursorapp() calls.
+	* dont wrap tty mode in tty_{start,end}cursorapp(), it leaves
+	  the cursor bold when we exit in xterm.
+	* src/panel.c(panel_compare_files): handle special files.
+
+2007-09-28  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
+
+	* updated config.{guess,sub}.
+	* added .gitignore (that's git the vcs).
+
+2006-10-21  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
+
+	* src/tty.c(tty_put/get_screen): fix to work with > 8 vcs.
+	* use ti/te codes which save/restore screen under xterm.
+
+2006-10-19  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
+
+	* added setlocale calls to gitps and gitview.
+	* set version to 4.9.1.
+	* converted all .gitrc to .gitrc.*.in to pick up version in comment.
+	* replaced xid.c with gnulib idcache.
+
+2006-10-18  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
+
+	* check if copy/mv/rm/command aborted by signal.
+	* removed -traditional from warning flags.
+	* fixed remaining warnings in src/.
+
+2006-10-17  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
+
+	* src/title.c: added mail checking to title.
+
+2006-10-16  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
+
+	* src/git.c: Initial setlocale support.
+	* add rxvt-unicode to color xterms.
+
+2006-10-07  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
+
+	* src/panel.c: fix copying symlinks.
+
+2006-10-06  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
+
+	* freebsd fixes + AM_MAINTAINER_MODE.
+	* only define _LARGEFILE64_SOURCE if not already defined.
+	* use texi2html for html docs but fall back on makeinfo.
+
+2006-10-04  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
+
+	* configure.ac:  add --enable-transition option.
+	* */Makefile.am: DESTDIR fixes.
+
+2006-10-03  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
+
+	* INSTALL: updated.
+	* mkinstalldirs, update-gnulib: removed (use prepare instead).
+	* added cygwin as ansi term.
+	* src/gitview.c: fix warning.
+
+2006-10-02  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
+
+	* configure:
+	* lib-Makefile.am.patch:
+	* lib/Makefile.am:
+	* lib/Makefile.in: FIXME
+	* prepare: include tilde/history in make dist;
+	* configure.ac: deprecate termcap and look for ncursesw
+	* src/xmalloc.c: call abort() in xalloc_die to silence gcc warning
+
+2006-10-01  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
+
+	* configure.ac: bumped AC_PREREQ to 2.59 for gnulib.
+	* converted as much as possible to use gnulib.
+	* src/inputline.c: fix inputline to use GITFM-Setup.
+
+2006-09-30  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
+
+	* removed config.h.{top,bot} - now in configure.ac.
+
 2001-06-02  Tudor Hulubei  <tudor.hulubei@ecora.com>
 
 	* panel.c: Added support for displaying file sizes >2Gb.

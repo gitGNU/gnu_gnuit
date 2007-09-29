@@ -38,6 +38,7 @@ build_triplet = @build@
 host_triplet = @host@
 bin_PROGRAMS = gitfm$(EXEEXT) gitps$(EXEEXT) gitview$(EXEEXT) \
 	gitwipe$(EXEEXT) gitkeys$(EXEEXT) gitwhich$(EXEEXT)
+@DEBIAN_TRUE@am__append_1 = -DDEBIAN
 subdir = src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in ChangeLog
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -137,6 +138,8 @@ CLEANFILES = @CLEANFILES@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
 CYGPATH_W = @CYGPATH_W@
+DEBIAN_FALSE = @DEBIAN_FALSE@
+DEBIAN_TRUE = @DEBIAN_TRUE@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
 ECHO_C = @ECHO_C@
@@ -282,7 +285,8 @@ gitwhich_SOURCES = gitwhich.c xmalloc.c xmalloc.h
 gitfm_LDADD = -L../lib -lgnu 
 gitps_LDADD = -L../lib -lgnu
 gitview_LDADD = -L../lib -lgnu
-AM_CPPFLAGS = -I$(srcdir)/.. -I.. -I$(top_srcdir)/lib -I$(top_srcdir)/src
+AM_CPPFLAGS = -I$(srcdir)/.. -I.. -I$(top_srcdir)/lib \
+	-I$(top_srcdir)/src $(am__append_1)
 all: all-am
 
 .SUFFIXES:

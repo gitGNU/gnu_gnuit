@@ -103,7 +103,6 @@ int TypeSensitivity = ON;
 #define GIT_SCREEN_MODE         0
 #define GIT_TERMINAL_MODE       1
 
-
 char *g_home;
 char *g_program;
 char *version = VERSION;
@@ -1913,12 +1912,18 @@ main(argc, argv)
 
     printf(copyright);
 
+#ifdef DEBIAN
     add_to_environment("GIT_EDITOR",  "EDITOR",     "sensible-editor");
+    add_to_environment("GIT_PAGER",   (char *)NULL, "sensible-pager");
+    add_to_environment("GIT_BROWSER", (char *)NULL, "sensible-browser");
+#else /* DEBIAN */
+    add_to_environment("GIT_EDITOR",  "EDITOR",     "vi");
+    add_to_environment("GIT_PAGER",   (char *)NULL, "more");
+    add_to_environment("GIT_BROWSER", (char *)NULL, "lynx");
+#endif /* DEBIAN */
     add_to_environment("GIT_SHELL",   "SHELL",      "/bin/sh");
     add_to_environment("GIT_RMAIL",   (char *)NULL, "mail");
-    add_to_environment("GIT_PAGER",   (char *)NULL, "sensible-pager");
     add_to_environment("GIT_VMSTAT",  (char *)NULL, "free");
-    add_to_environment("GIT_BROWSER", (char *)NULL, "sensible-browser");
 
     tty_init(TTY_RESTRICTED_INPUT);
 

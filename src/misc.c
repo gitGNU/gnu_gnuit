@@ -284,7 +284,7 @@ use_section(section)
 	  /* If we are looking for [GITFM-something,
 	     accept [GIT-something for backwards compatibility */
 	  if(strncmp(section,gitfmprefix,strlen(gitfmprefix)) == 0)
-	  {	
+	  {
 	       char *newsection=xmalloc(strlen(gitprefix) +
 					strlen(section+strlen(gitprefix)) + 1);
 	       strcpy(newsection,gitprefix);
@@ -297,7 +297,7 @@ use_section(section)
 	       }
 	       xfree(newsection);
 	  }
-	  
+
 	  fprintf(stderr,
 		  "%s: can't find section %s in the configuration file.\n",
 		  g_program, section);

@@ -8,12 +8,31 @@
 * Version 4.9.1
 ================
 
+** Renamed package to gnu-interactive-tools.
+
+** Renamed git file manager binary to gitfm.
+   Config file sections now start with "[GITFM-", but
+   "[GIT-" is still accepted.
+
 ** Added 64bit I/O support.
+
+** New terminals: rxvt-unicode, linux-m, cygwin, Eterm.
+
+** Support comparing special files in gitfm.
+
+** Restore screen when exiting.
+
+** Fix copying symlinks.
+
+** Add mail checking to title.
 
 ** Fixed a scrolling inconsistency in gitview.
 
 ** Fixed a segmentation fault related to directory names containing
    printf-like sequences.
+
+** Fixed a segmentation fault in gitps when killed process left you
+   off the end of the list.
 
 ** Moved the info and documentation files in /usr/share.
 

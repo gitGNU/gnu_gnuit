@@ -63,6 +63,16 @@ AC_ARG_ENABLE(
 
 AM_CONDITIONAL(TRANSITION, test "$TRANSITIONOPT" = yes)
 
+dnl whether to enable debian customisations (sensible-browser, etc)
+DEBIANOPT=yes
+AC_ARG_ENABLE(
+    debian,
+    AS_HELP_STRING([--enable-debian], [Enable Debian-specific customisations]),
+    DEBIANOPT="$enableval",
+    DEBIANOPT=no)
+
+AM_CONDITIONAL(DEBIAN, test "$DEBIANOPT" = yes)
+
 dnl Check for SMP compilation.
 AC_ARG_ENABLE(
     smp,

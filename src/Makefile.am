@@ -30,6 +30,9 @@ gitps_LDADD = -L../lib -lgnu
 gitview_LDADD = -L../lib -lgnu
 
 AM_CPPFLAGS = -I$(srcdir)/.. -I.. -I$(top_srcdir)/lib -I$(top_srcdir)/src
+if DEBIAN
+AM_CPPFLAGS += -DDEBIAN
+endif
 
 install-exec-hook:
 if TRANSITION
