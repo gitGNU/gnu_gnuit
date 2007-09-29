@@ -18,11 +18,10 @@ DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 
 CFLAGS = -Wall -g
 
-
 export DEB_HOST_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 export DEB_BUILD_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 
-# FOR AUTOCONF 2.52 AND NEWER ONLY - 
+# FOR AUTOCONF 2.52 AND NEWER ONLY -
 ifeq ($(DEB_BUILD_GNU_TYPE), $(DEB_HOST_GNU_TYPE))
   confflags += --build $(DEB_HOST_GNU_TYPE)
 else
@@ -41,13 +40,6 @@ endif
 config.status: configure
 	dh_testdir
 
-	# force rebuild of info files, to work around fact number of info files
-	# output has changed, and dpkg-source/diff ignores deleted files
-	#-rm -f doc/git.info*
-
-	# remove source files now part of gnulib in lib/ 
-	#-rm -f src/fsusage.[ch] src/history.[ch] src/tilde.[ch] src/fnmatch.[ch] src/getopt.[ch]
-
 	CFLAGS="$(CFLAGS)" ./configure --with-terminfo --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --disable-transition $(CONFFLAGS)
 
 build: build-stamp
@@ -60,14 +52,10 @@ build-stamp:  config.status
 clean:
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp 
+	rm -f build-stamp
 
 	# Add here commands to clean up after the build process.
 	-$(MAKE) distclean
-
-	# force rebuild of info files, to work around fact number of info files
-	# output has changed, and dpkg-source/diff ignores deleted files
-	-rm -f doc/git.info*
 
 	# update arch guess files
 ifneq "$(wildcard /usr/share/misc/config.sub)" ""
@@ -78,14 +66,14 @@ ifneq "$(wildcard /usr/share/misc/config.guess)" ""
 endif
 
 	# avoid buildd timestamp problems
-	touch configure.in && \
+	touch configure.ac && \
 	touch Makefile.am src/Makefile.am term/Makefile.am doc/Makefile.am && \
 	touch aclocal.m4 && \
 	touch config.h.in && \
 	touch Makefile.in src/Makefile.in term/Makefile.in doc/Makefile.in && \
 	touch configure
 
-	dh_clean 
+	dh_clean
 
 install: build
 	dh_testdir
@@ -121,24 +109,12 @@ binary-arch: build install
 	dh_installexamples debian/gitaction
 	rm -f debian/gitaction
 
-#	dh_install
-#	dh_installmenu
-#	dh_installdebconf	
-#	dh_installlogrotate
-#	dh_installemacsen
-#	dh_installpam
-#	dh_installmime
-#	dh_installinit
-#	dh_installcron
 	dh_installinfo -n doc/git.info
 	dh_installman
 	dh_link
 	dh_strip
 	dh_compress -Xgit.html
 	dh_fixperms
-#	dh_perl
-#	dh_python
-#	dh_makeshlibs
 	dh_installdeb
 	dh_shlibdeps
 	dh_gencontrol
@@ -146,4 +122,4 @@ binary-arch: build install
 	dh_builddeb
 
 binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary install 
+.PHONY: build clean binary-indep binary-arch binary install
