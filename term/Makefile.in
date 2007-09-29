@@ -453,80 +453,80 @@ uninstall-am: uninstall-info-am uninstall-local uninstall-pkgdataDATA
 install-data-hook:
 	for i in $(GIT_XTERMS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
-	    ln -s $(datadir)/git/.gitrc.xterm $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
+	    ln -s $(datadir)/gnu-interactive-tools/.gitrc.xterm $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_COLOR_XTERMS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
-	    ln -s $(datadir)/git/.gitrc.xterm-color $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
+	    ln -s $(datadir)/gnu-interactive-tools/.gitrc.xterm-color $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_HPTERMS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
-	    ln -s $(datadir)/git/.gitrc.hpterm $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
+	    ln -s $(datadir)/gnu-interactive-tools/.gitrc.hpterm $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_GENERICS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
-	    ln -s $(datadir)/git/.gitrc.generic $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
+	    ln -s $(datadir)/gnu-interactive-tools/.gitrc.generic $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_VT100S);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
-	    ln -s $(datadir)/git/.gitrc.vt100 $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
+	    ln -s $(datadir)/gnu-interactive-tools/.gitrc.vt100 $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_ANSIS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
-	    ln -s $(datadir)/git/.gitrc.ansi $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
+	    ln -s $(datadir)/gnu-interactive-tools/.gitrc.ansi $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_LINUXS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
-	    ln -s $(datadir)/git/.gitrc.linux $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
+	    ln -s $(datadir)/gnu-interactive-tools/.gitrc.linux $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 
 uninstall-local:
 	for i in $(GIT_XTERMS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_COLOR_XTERMS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_HPTERMS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_GENERICS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_VT100S);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_ANSIS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_LINUXS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

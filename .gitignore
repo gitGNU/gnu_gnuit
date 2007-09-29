@@ -12,7 +12,9 @@ stamp-h1
 version.h
 debian/files
 debian/git.substvars
+debian/gnu-interactive-tools.substvars
 debian/git
+debian/gnu-interactive-tools
 doc/git.html
 lib/Makefile
 lib/alloca.h

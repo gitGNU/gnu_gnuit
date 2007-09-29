@@ -21,78 +21,78 @@ GIT_VT100S	 = .gitrc.vt125 .gitrc.vt200 .gitrc.vt201 .gitrc.vt220\
 install-data-hook:
 	for i in $(GIT_XTERMS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
-	    ln -s $(datadir)/git/.gitrc.xterm $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
+	    ln -s $(datadir)/gnu-interactive-tools/.gitrc.xterm $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_COLOR_XTERMS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
-	    ln -s $(datadir)/git/.gitrc.xterm-color $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
+	    ln -s $(datadir)/gnu-interactive-tools/.gitrc.xterm-color $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_HPTERMS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
-	    ln -s $(datadir)/git/.gitrc.hpterm $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
+	    ln -s $(datadir)/gnu-interactive-tools/.gitrc.hpterm $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_GENERICS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
-	    ln -s $(datadir)/git/.gitrc.generic $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
+	    ln -s $(datadir)/gnu-interactive-tools/.gitrc.generic $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_VT100S);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
-	    ln -s $(datadir)/git/.gitrc.vt100 $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
+	    ln -s $(datadir)/gnu-interactive-tools/.gitrc.vt100 $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_ANSIS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
-	    ln -s $(datadir)/git/.gitrc.ansi $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
+	    ln -s $(datadir)/gnu-interactive-tools/.gitrc.ansi $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_LINUXS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
-	    ln -s $(datadir)/git/.gitrc.linux $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
+	    ln -s $(datadir)/gnu-interactive-tools/.gitrc.linux $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 
 uninstall-local:
 	for i in $(GIT_XTERMS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_COLOR_XTERMS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_HPTERMS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_GENERICS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_VT100S);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_ANSIS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_LINUXS);\
 	do\
-	    rm -f $(DESTDIR)$(datadir)/git/$$i;\
+	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done

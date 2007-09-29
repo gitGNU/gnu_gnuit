@@ -1,8 +1,9 @@
-git (4.9.1-1) unstable; urgency=low
+gnu-interactive-tools (4.9.1-1) unstable; urgency=low
 
   * New upstream beta version.
+  * Package name changed to gnu-interactive-tools.
 
- -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Thu, 19 Oct 2006 00:20:42 +0100
+ -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Sat, 29 Sep 2007 20:41:08 +0100
 
 git (4.3.20-10) unstable; urgency=low
 

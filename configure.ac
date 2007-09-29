@@ -6,7 +6,7 @@ dnl #####################################################################
 
 dnl Initialize the autoconf & automake stuff.
 AC_REVISION($Revision: 1.7 $)
-AC_INIT(git, 4.9.1, ianb@nessie.mcc.ac.uk)
+AC_INIT(gnu-interactive-tools, 4.9.1, ianb@nessie.mcc.ac.uk)
 AC_CONFIG_SRCDIR([config.h.in])
 AM_INIT_AUTOMAKE
 AC_PROG_MAKE_SET
@@ -15,9 +15,9 @@ AM_CONFIG_HEADER([config.h])
 AC_PREREQ(2.59)
 AC_CANONICAL_HOST
 AC_PROG_CC
-gl_EARLY	
+gl_EARLY
 AC_PROG_CPP
-AC_PROG_RANLIB	
+AC_PROG_RANLIB
 AC_PROG_INSTALL
 AC_REQUIRE_CPP
 HOST=$host
@@ -146,7 +146,7 @@ AC_CHECK_HEADERS([sys/mount.h],[],[],
 #include<sys/param.h>
 #endif
 ])
-    
+
 gl_INIT
 
 AC_FUNC_ALLOCA

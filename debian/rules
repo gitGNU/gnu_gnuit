@@ -8,7 +8,7 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-BUILDDIR=$(CURDIR)/debian/git
+BUILDDIR=$(CURDIR)/debian/gnu-interactive-tools
 
 # These are used for cross-compiling and for saving the configure script
 # from having to guess our platform (since we know it already)
@@ -78,18 +78,17 @@ endif
 install: build
 	dh_testdir
 	dh_testroot
-	dh_clean -k 
+	dh_clean -k
 	dh_installdirs
 
-	# Add here commands to install the package into debian/git.
-	$(MAKE) install DESTDIR="$(BUILDDIR)" htmldir=/usr/share/doc/git
+	$(MAKE) install DESTDIR="$(BUILDDIR)" htmldir=/usr/share/doc/gnu-interactive-tools
 
 	# install changelogs from subdirs
-	install -d $(BUILDDIR)/usr/share/doc/git
+	install -d $(BUILDDIR)/usr/share/doc/gnu-interactive-tools
 	set -e ; for i in */ChangeLog; do \
 		nfile=`echo $$i | sed -e 's|\(.*\)/\(.*\)|\L\2\E.\1|'`; \
-		install -c $$i $(BUILDDIR)/usr/share/doc/git/$$nfile; \
-		gzip -9f $(BUILDDIR)/usr/share/doc/git/$$nfile; \
+		install -c $$i $(BUILDDIR)/usr/share/doc/gnu-interactive-tools/$$nfile; \
+		gzip -9f $(BUILDDIR)/usr/share/doc/gnu-interactive-tools/$$nfile; \
 	done
 	touch build-stamp
 
