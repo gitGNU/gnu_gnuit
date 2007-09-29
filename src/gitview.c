@@ -967,6 +967,7 @@ main(argc, argv)
 
   end:
     tty_set_mode(TTY_CANONIC);
+    tty_end_cursorapp();
     tty_end(screen);
     return 0;
 }

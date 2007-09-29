@@ -675,6 +675,7 @@ update_all()
 void
 clean_up()
 {
+    tty_end_cursorapp();
     tty_end(NULL);
     remove_log();
 }
