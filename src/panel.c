@@ -3553,7 +3553,8 @@ panel_act_REGET(this, aux_info)
 
 /*
  * Compare the file at index `this_entry' into `this' with the file at
- * index `other_entry' into `other'.
+ * index `other_entry' into `other'. File sizes are written into
+ * *this_size and *other_size.
  *
  * Return:
  *   CF_ABORT if aborted,
@@ -3563,40 +3564,67 @@ panel_act_REGET(this, aux_info)
  *   CF_OPEN2 if couldn't open the second file,
  * or return the offset of the first difference encountered.
  *
- * FIXME: This needs work in order to be useful in comparing
- * special files (block devices).
  */
 off64_t
-panel_compare(this, this_entry, other, other_entry)
+panel_compare(this, this_entry, this_size, other, other_entry, other_size)
     panel_t *this;
     int this_entry;
+    off64_t *this_size;
     panel_t *other;
     int other_entry;
+    off64_t *other_size;
 {
     off64_t n;
     char *msg;
     int fd1, fd2;
     char *buf1, *buf2;
+    int read1, read2;
     int aborted = 0;
-    int bytes_to_compare;
     char *name1 = this->dir_entry[this_entry].name;
     char *name2 = other->dir_entry[other_entry].name;
     char *file1 = name1;
     char *file2;
+    int is_special1=0;
+    int is_special2=0;
+    int mismatch=0;
 
-    /* Make sure we initialize size to the smaller size.  We might be
-       required to compare files of different length.  */
-    off64_t size = min(this->dir_entry[this_entry].size,
-                       other->dir_entry[other_entry].size);
+    *this_size = *other_size = 0;
 
-    if (size == 0)
+    if(IS_SPECIAL(this->dir_entry[this_entry].mode))
+    {
+	is_special1=1;
+	fprintf(stderr,"file1 is special\n");
+    }
+    if(IS_SPECIAL(other->dir_entry[this_entry].mode))
+    {
+	is_special2=1;
+	fprintf(stderr,"file2 is special\n");
+    }
+
+    /* If either is a special file, use the length of the other. */
+    /* size is only used for calculating percentage done */
+    off64_t size=0;
+    if(is_special1 && is_special2)
+	size=0;
+    else if(is_special1)
+	size=(off64_t)other->dir_entry[other_entry].size;
+    else if(is_special2)
+	size=(off64_t)this->dir_entry[this_entry].size;
+    else /* neither are special files */
+	size=(off64_t)max(this->dir_entry[this_entry].size,
+			  other->dir_entry[other_entry].size);
+    fprintf(stderr,"initial size: %Lu \n",size);
+    if ((size == 0) && !(is_special1&&is_special2))
 	return 0;
 
     file2 = xmalloc(strlen(other->path) + 1 + strlen(name2) + 1);
     sprintf(file2, "%s/%s", other->path, name2);
 
     msg = xmalloc(32 + strlen(file1) + 1);
-    sprintf(msg, "(CMP) [  0%%] %s", file1);
+    if(!size)
+	sprintf(msg, "(CMP) %s", file1);
+    else
+	sprintf(msg, "(CMP) [  0%%] %s", file1);
     status(msg, STATUS_WARNING, STATUS_LEFT);
     tty_update();
     xfree(msg);
@@ -3618,9 +3646,10 @@ panel_compare(this, this_entry, other, other_entry)
 
     msg = xmalloc(32 + strlen(file1) + 1);
 
-    for (n = 0; n < size; n += bytes_to_compare)
+    for(n=0 ; ; )
     {
-	int read1, read2, bytes_read;
+	int bytes_read;
+	fprintf(stderr,"n: %Lu size: %Lu\n",n,size);
 
 	if (canceled())
 	{
@@ -3628,23 +3657,37 @@ panel_compare(this, this_entry, other, other_entry)
 	    break;
 	}
 
-	bytes_to_compare = min(size - n, CMP_BUFFER_SIZE);
-
 	signals(ON);
-	read1 = read(fd1, buf1, bytes_to_compare);
+	read1 = read(fd1, buf1, CMP_BUFFER_SIZE);
 	signals(OFF);
 
 	if (read1 < 0)
+	{
+	    close(fd1);
+	    close(fd2);
 	    return CF_READ1;
+	}
+	*this_size += read1;
 
 	signals(ON);
-	read2 = read(fd2, buf2, bytes_to_compare);
+	read2 = read(fd2, buf2, CMP_BUFFER_SIZE);
 	signals(OFF);
 
 	if (read2 < 0)
+	{
+	    close(fd1);
+	    close(fd2);
 	    return CF_READ2;
+	}
+	*other_size += read2;
+
+	fprintf(stderr,"read1: %u\n",read1);
+	fprintf(stderr,"read2: %u\n",read2);
 
 	bytes_read = min(read1, read2);
+
+	if(bytes_read == 0)
+	    break;
 
 	if (memcmp(buf1, buf2, bytes_read) != 0)
 	{
@@ -3656,20 +3699,49 @@ panel_compare(this, this_entry, other, other_entry)
 		    break;
 
 	    n += i;
+	    mismatch=1;
 	    break;
 	}
 
-	if ((read1 != bytes_to_compare) ||
-	    (read2 != bytes_to_compare))
-	{
-	    n += bytes_read;
-	    break;
-	}
+	n += bytes_read;
 
-	sprintf(msg, "(CMP) [%3d%%] %s",
-		panel_percent(n + bytes_to_compare, size), file1);
+	if(!size)
+	    sprintf(msg, "(CMP) %s", file1);
+	else
+	    sprintf(msg, "(CMP) [%3d%%] %s",
+		    panel_percent(n, size), file1);
 	status(msg, STATUS_WARNING, STATUS_LEFT);
 	tty_update();
+    }
+
+    if(mismatch)
+    {
+	/* we aborted the compare before eof. We need to make sure
+	   this_size and other_size are right. If they are special files,
+	   we need to keep reading to get the size */
+	if(is_special1)
+	{
+	    signals(ON);
+	    do
+	    {
+		read1 = read(fd1, buf1, CMP_BUFFER_SIZE);
+	    } while((read1 > 0) && (*this_size += read1));
+	    signals(OFF);
+	}
+	else
+	    *this_size=this->dir_entry[this_entry].size;
+
+	if(is_special2)
+	{
+	    signals(ON);
+	    do
+	    {
+		read2 = read(fd2, buf2, CMP_BUFFER_SIZE);
+	    } while((read2 > 0) && (*other_size += read2));
+	    signals(OFF);
+	}
+	else
+	    *other_size=other->dir_entry[other_entry].size;
     }
 
     xfree(msg);
@@ -3712,8 +3784,10 @@ panel_act_COMPARE(this, other)
     if (this->dir_entry[this_entry].type == FILE_ENTRY &&
 	other->dir_entry[other_entry].type == FILE_ENTRY)
     {
-	if (this->dir_entry[this_entry].size !=
-	    other->dir_entry[other_entry].size)
+	if ((this->dir_entry[this_entry].size !=
+	     other->dir_entry[other_entry].size) &&
+	    (!(IS_SPECIAL(this->dir_entry[this_entry].mode) ||
+	       IS_SPECIAL(other->dir_entry[other_entry].mode))))
 	{
 	    /* Ask for permission to continue if the files have
 	       different size.  */
@@ -3724,8 +3798,9 @@ panel_act_COMPARE(this, other)
 
 	if (permission)
 	{
+	    off64_t this_size,other_size;
 	    off64_t result =
-                panel_compare(this, this_entry, other, other_entry);
+                panel_compare(this, this_entry, &this_size, other, other_entry, &other_size);
 
 	    switch ((int)result)
 	    {
@@ -3761,12 +3836,18 @@ panel_act_COMPARE(this, other)
 		    break;
 
 		default:
-		    if (result == min(this->dir_entry[this_entry].size,
-				      other->dir_entry[other_entry].size))
+		    if ((result == this_size) && (this_size == other_size))
+		    {
+			/* files are identical */
+			panel_1s_message("Compare OK. ", (char *)NULL,
+					 IL_BEEP | IL_SAVE);
+		    }
+		    else if (result == min(this_size, other_size))
 		    {
 			/* The files appear to be equal, if we ignore
 			   the difference in size.  */
-			panel_1s_message("Compare OK. ", (char *)NULL,
+			panel_1s_message("Files are different sizes but are identical up to the size of the smallest.",
+					 (char *)NULL,
 					 IL_BEEP | IL_SAVE);
 		    }
 		    else
@@ -3859,12 +3940,15 @@ panel_act_CMPDIR(this, other, quick)
 			}
 			else
 			{
-			    off64_t result = panel_compare(this, i, other, j);
+			    off64_t this_size, other_size;
+			    off64_t result = panel_compare(this,  i, &this_size,
+							   other, j, &other_size);
 
 			    if (result == CF_ABORT)
 				goto done;
 
-			    if (result == this->dir_entry[i].size)
+			    if ((result == this_size) &&
+				(result == other_size))
 				goto unhilight_both;
 			}
 		    }

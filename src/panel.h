@@ -56,6 +56,7 @@
 #include "xstack.h"
 #include "file.h"
 
+#define IS_SPECIAL(x) ( ! (S_ISLNK((x)) || S_ISDIR((x)) || S_ISREG((x))))
 
 /* Panel actions.  */
 #define act_NOACTION			 0
