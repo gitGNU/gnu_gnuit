@@ -1,9 +1,9 @@
---- lib/Makefile.am.orig	2006-10-05 02:32:41.000000000 +0100
-+++ lib/Makefile.am	2006-10-05 02:34:02.000000000 +0100
-@@ -17,7 +17,7 @@
- libgnu_a_SOURCES =
- libgnu_a_LIBADD = $(LIBOBJS)
+--- olib/Makefile.am	2007-09-29 20:05:28.000000000 +0100
++++ lib/Makefile.am	2007-09-29 20:06:59.000000000 +0100
+@@ -16,7 +16,7 @@
  noinst_HEADERS =
+ noinst_LIBRARIES =
+ noinst_LTLIBRARIES =
 -EXTRA_DIST =
 +EXTRA_DIST = tilde.c tilde.h history.c history.h
  BUILT_SOURCES =
