@@ -2,11 +2,4 @@
 
 set -e
 
-if [ "$1" != "upgrade" ]
-then
-  update-alternatives --remove git /usr/bin/git.transition
-fi
-
-install-info --quiet --remove /usr/share/info/git.info.gz
-
 #DEBHELPER#

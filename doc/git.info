@@ -1,5 +1,6 @@
 This is git.info, produced by makeinfo version 4.8 from git.texinfo.
 
+INFO-DIR-SECTION Utilities
 START-INFO-DIR-ENTRY
 * GIT: (git).         GNU Interactive Tools
 END-INFO-DIR-ENTRY
@@ -735,6 +736,7 @@ File: git.info,  Node: Files,  Next: Directories,  Prev: Input Line,  Up: gitfm
 * Wiping Files::                How to wipe a file.
 * Searching Files::             How to search a file.
 * Archive Files::               How to manage tar based archive files.
+* DEB Packages::                How to work with DEB packages.
 * RPM Packages::                How to install and uninstall RPM packages.
 * File Types::                  How to figure out the file type.
 * MSDOS Files::                 How to access msdos floppies.
@@ -1143,7 +1145,7 @@ File: git.info,  Node: Searching Files,  Next: Archive Files,  Prev: Wiping File
      Locate a command; display its pathname or alias (`WHICH').
    
 
-File: git.info,  Node: Archive Files,  Next: RPM Packages,  Prev: Searching Files,  Up: Files
+File: git.info,  Node: Archive Files,  Next: DEB Packages,  Prev: Searching Files,  Up: Files
 
 3.1.9.20 Managing tar based archive files
 .........................................
@@ -1195,9 +1197,99 @@ File: git.info,  Node: Archive Files,  Next: RPM Packages,  Prev: Searching File
      performed in background (`B-GENERIC-UNPACK-INTO').
    
 
-File: git.info,  Node: RPM Packages,  Next: File Types,  Prev: Archive Files,  Up: Files
+File: git.info,  Node: DEB Packages,  Next: RPM Packages,  Prev: Archive Files,  Up: Files
 
-3.1.9.21 Installing and Uninstalling RPM packages
+3.1.9.21 Working with DPKG
+..........................
+
+`dpkg' provides commands for manipulating and querying the dpkg
+database, `gitfm''s DPKG commands allow quick access to most of those
+which operate on binary packages, files, or require package names as
+arguments. All commands expecting package names can also be given
+binary packages, the package names will be automatically extracted.
+Most commands use their single character `dpkg' option letter as the
+key command.
+
+`^C ^D i'
+     Install the `deb' file(s) selected or pointed by the cursor
+     (`DPKG-INSTALL').
+   
+`^C ^D R i'
+     Recursively install the `deb' file(s) in the directories selected or
+     pointed by the cursor (`R-DPKG-INSTALL').
+   
+`^C ^D u'
+     Unpack the `deb' file(s) selected or pointed by the cursor, but
+     don't configure it (`DPKG-UNPACK').
+   
+`^C ^D R u'
+     Recursively unpack the `deb' file(s) in the directories selected or
+     pointed by the cursor, but don't configure them (`R-DPKG-UNPACK').
+   
+`^C ^D C'
+     Configure the unpacked package(s) selected or pointed by the cursor
+     (`DPKG-CONFIGURE').
+   
+`^C ^D r'
+     Remove the package(s) selected or pointed by the cursor
+     (`DPKG-REMOVE').
+   
+`^C ^D P'
+     Purge the package(s) selected or pointed by the cursor
+     (`DPKG-PURGE').
+   
+`^C ^D A'
+     Update dpkg and dselect's idea of which packages are available with
+     information from the `deb' file(s) selected or pointed by the
+     cursor (`DPKG-RECORDAVAIL').
+   
+`^C ^D R A'
+     Recursively update dpkg and dselect's idea of which packages are
+     available with information from the `deb' file(s) in the directories
+     selected or pointed by the cursor (`R-DPKG-RECORDAVAIL').
+   
+`^C ^D h'
+     Display quick help file for GIT's DPKG commands.
+     (`DPKG-HELP').
+   
+`^C ^D c'
+     Lists the contents of the filesystem tree archive portion of the
+     `deb' file pointed by the cursor (`DPKG-CONTENTS').
+   
+`^C ^D f'
+     Extracts control file information from a `deb' file pointed by
+     the cursor (`DPKG-FIELD'). You are presented with the file name and
+     can either hit ENTER to see all fields, or add control file field names
+     (space separated) to see only those fields.
+   
+`^C ^D I'
+     Provides information about a `deb' file pointed by the cursor
+     (`DPKG-INFO').
+   
+`^C ^D l'
+     List the package(s) selected or pointed by the cursor
+     (`DPKG-LISTPKGS').
+   
+`^C ^D s'
+     Display status details for the package(s) selected or pointed by the
+     cursor (`DPKG-STATUS').
+   
+`^C ^D L'
+     List files owned by the package(s) selected or pointed by the cursor
+     (`DPKG-LISTFILES').
+   
+`^C ^D S'
+     Find package owning file pointed to by the cursor
+     (`DPKG-SEARCH').
+   
+`^C ^D p'
+     Display available version details of package(s) selected or pointed by
+     the cursor (`DPKG-PRINTAVAIL').
+   
+
+File: git.info,  Node: RPM Packages,  Next: File Types,  Prev: DEB Packages,  Up: Files
+
+3.1.9.22 Installing and Uninstalling RPM packages
 .................................................
 
 Red Hat Linux Distributions use a very powerful package manager called
@@ -1238,7 +1330,7 @@ software package.  The packages used by `rpm' use the extension `.rpm'.
 
 File: git.info,  Node: File Types,  Next: MSDOS Files,  Prev: RPM Packages,  Up: Files
 
-3.1.9.22 File Types
+3.1.9.23 File Types
 ...................
 
 `^C t'
@@ -1248,7 +1340,7 @@ File: git.info,  Node: File Types,  Next: MSDOS Files,  Prev: RPM Packages,  Up:
 
 File: git.info,  Node: MSDOS Files,  Next: Actions,  Prev: File Types,  Up: Files
 
-3.1.9.23 Accessing MSDOS Files
+3.1.9.24 Accessing MSDOS Files
 ..............................
 
 `^C m d', `^C m ^D'
@@ -1320,7 +1412,7 @@ File: git.info,  Node: MSDOS Files,  Next: Actions,  Prev: File Types,  Up: File
 
 File: git.info,  Node: Actions,  Prev: MSDOS Files,  Up: Files
 
-3.1.9.24 A different action for each file type
+3.1.9.25 A different action for each file type
 ..............................................
 
 Many files on `UNIX' systems have one or more extensions specifying
@@ -2803,6 +2895,24 @@ Key Index
 * ^C 2 b:                                Mail.                 (line 17)
 * ^C 2 m:                                Mail.                 (line 26)
 * ^C =:                                  Comparing Files.      (line 10)
+* ^C ^D A:                               DEB Packages.         (line 46)
+* ^C ^D c:                               DEB Packages.         (line 59)
+* ^C ^D C:                               DEB Packages.         (line 33)
+* ^C ^D f:                               DEB Packages.         (line 65)
+* ^C ^D h:                               DEB Packages.         (line 55)
+* ^C ^D I:                               DEB Packages.         (line 69)
+* ^C ^D i:                               DEB Packages.         (line 17)
+* ^C ^D L:                               DEB Packages.         (line 81)
+* ^C ^D l:                               DEB Packages.         (line 73)
+* ^C ^D p:                               DEB Packages.         (line 89)
+* ^C ^D P:                               DEB Packages.         (line 41)
+* ^C ^D r:                               DEB Packages.         (line 37)
+* ^C ^D R A:                             DEB Packages.         (line 51)
+* ^C ^D R i:                             DEB Packages.         (line 21)
+* ^C ^D R u:                             DEB Packages.         (line 29)
+* ^C ^D S:                               DEB Packages.         (line 85)
+* ^C ^D s:                               DEB Packages.         (line 77)
+* ^C ^D u:                               DEB Packages.         (line 25)
 * ^C a:                                  Archive Files.        (line  9)
 * ^C B:                                  Comparing Files.      (line 19)
 * ^C b -:                                Archive Files.        (line 31)
@@ -3133,6 +3243,21 @@ Command Index
 * DIRR-DIFF:                             Comparing Dirs.       (line 25)
 * DISK-FREE-SPACE:                       Sysinfo.              (line 25)
 * downcase-word:                         Case Changes.         (line  9)
+* DPKG-CONFIGURE:                        DEB Packages.         (line 33)
+* DPKG-CONTENTS:                         DEB Packages.         (line 59)
+* DPKG-FIELD:                            DEB Packages.         (line 65)
+* DPKG-HELP:                             DEB Packages.         (line 55)
+* DPKG-INFO:                             DEB Packages.         (line 69)
+* DPKG-INSTALL:                          DEB Packages.         (line 17)
+* DPKG-LISTFILES:                        DEB Packages.         (line 81)
+* DPKG-LISTPKGS:                         DEB Packages.         (line 73)
+* DPKG-PRINTAVAIL:                       DEB Packages.         (line 89)
+* DPKG-PURGE:                            DEB Packages.         (line 41)
+* DPKG-RECORDAVAIL:                      DEB Packages.         (line 46)
+* DPKG-REMOVE:                           DEB Packages.         (line 37)
+* DPKG-SEARCH:                           DEB Packages.         (line 85)
+* DPKG-STATUS:                           DEB Packages.         (line 77)
+* DPKG-UNPACK:                           DEB Packages.         (line 25)
 * EDIT:                                  Editing Files.        (line  9)
 * ENCRYPT:                               Encrypting Files.     (line  8)
 * end-of-line:                           Moving Point.         (line 23)
@@ -3241,6 +3366,9 @@ Command Index
 * R-CHGRP:                               Inode.                (line 47)
 * R-CHMOD:                               Inode.                (line 16)
 * R-CHOWN:                               Inode.                (line 31)
+* R-DPKG-INSTALL:                        DEB Packages.         (line 21)
+* R-DPKG-RECORDAVAIL:                    DEB Packages.         (line 51)
+* R-DPKG-UNPACK:                         DEB Packages.         (line 29)
 * READ-MAIL:                             Mail.                 (line 34)
 * RECURSIVE-GREP:                        Grep.                 (line 13)
 * refresh:                               Refreshing.           (line 20)
@@ -3743,132 +3871,133 @@ Concept Index
 
 
 Tag Table:
-Node: Top1005
-Node: Introduction1876
-Node: Distrib3188
-Node: Description4862
-Node: gitfm5709
-Node: Conventions8231
-Node: Command line10122
-Node: Modes11179
-Node: Sorting13460
-Node: Moving14747
-Node: Selecting16353
-Node: Isearch17756
-Node: Input Line18879
-Node: Inserting Text19980
-Node: Moving Point20890
-Node: Erasing21485
-Node: Case Changes22761
-Node: History23195
-Node: Setting Mark23929
-Node: Yanking24262
-Node: Selecting Files24534
-Node: Files25449
-Node: Copying Files27113
-Node: Moving Files27479
-Node: Creating Files27866
-Node: Deleting Files28223
-Node: Linking Files28567
-Node: Renaming Files29220
-Node: Splitting Files29807
-Node: Packing Files30309
-Node: Inode31648
-Node: Editing Files33324
-Node: Viewing Files34054
-Node: Compressing Files34439
-Node: Encoding Files35838
-Node: Encrypting Files36779
-Node: Comparing Files37070
-Node: Spell Checking Files37735
-Node: Printing Files37991
-Node: Wiping Files38454
-Node: Searching Files38788
-Node: Archive Files39329
-Node: RPM Packages41159
-Node: File Types42542
-Node: MSDOS Files42759
-Node: Actions44855
-Node: Directories45781
-Node: Creating Dirs46544
-Node: Copying Dirs46819
-Node: Deleting Dirs47299
-Node: Moving Dirs47736
-Node: Renaming Dirs48213
-Node: Comparing Dirs48654
-Node: Dirs Usage49886
-Node: Changing Dirs50160
-Node: Dirs History50836
-Node: Hot Keys51907
-Node: Compiling52534
-Node: Mail52933
-Node: Shell54087
-Node: Grep54374
-Node: Locking54800
-Node: Refreshing55196
-Node: Resetting55931
-Node: Mounting56183
-Node: Sysinfo59281
-Node: Environment60547
-Node: Processes60954
-Node: Sync63044
-Node: Documentation63295
-Node: Exit63789
-Node: gitps64007
-Node: gitview65013
-Node: gitkeys65855
-Node: gitwipe66236
-Node: gitmount66959
-Node: gitaction67717
-Node: gitunpack69553
-Node: gitrgrep69963
-Node: Customization70444
-Node: Environment Variables70741
-Node: Configuration Files71831
-Node: Key Sequences74813
-Node: Setup76142
-Node: gitfm Sections77092
-Node: GITFM-Setup77544
-Node: GITFM-Color79677
-Node: GITFM-Monochrome80045
-Node: GITFM-Keys80447
-Node: key-sequence81350
-Node: command-name81987
-Node: formatted-command82730
-Node: %s84054
-Node: %f84579
-Node: %d84822
-Node: %l85067
-Node: %t85318
-Node: %z85551
-Node: %a85780
-Node: %m85993
-Node: %g86195
-Node: %o86398
-Node: %p86601
-Node: %b86804
-Node: %i87017
-Node: %?87240
-Node: new-dir87730
-Node: save-screen88154
-Node: pause88852
-Node: hide89185
-Node: GITFM-FTI90063
-Node: gitps Sections90643
-Node: GITPS-Setup91035
-Node: GITPS-Color91273
-Node: GITPS-Monochrome91638
-Node: GITPS-Keys92040
-Node: gitview Sections92168
-Node: GITVIEW-Setup92549
-Node: GITVIEW-Color92797
-Node: GITVIEW-Monochrome93176
-Node: GITVIEW-Keys93592
-Node: Limitations93726
-Node: Bugs95130
-Node: Key Index95385
-Node: Command Index113835
-Node: Variable Index131643
-Node: Concept Index133699
+Node: Top1032
+Node: Introduction1903
+Node: Distrib3215
+Node: Description4889
+Node: gitfm5736
+Node: Conventions8258
+Node: Command line10149
+Node: Modes11206
+Node: Sorting13487
+Node: Moving14774
+Node: Selecting16380
+Node: Isearch17783
+Node: Input Line18906
+Node: Inserting Text20007
+Node: Moving Point20917
+Node: Erasing21512
+Node: Case Changes22788
+Node: History23222
+Node: Setting Mark23956
+Node: Yanking24289
+Node: Selecting Files24561
+Node: Files25476
+Node: Copying Files27203
+Node: Moving Files27569
+Node: Creating Files27956
+Node: Deleting Files28313
+Node: Linking Files28657
+Node: Renaming Files29310
+Node: Splitting Files29897
+Node: Packing Files30399
+Node: Inode31738
+Node: Editing Files33414
+Node: Viewing Files34144
+Node: Compressing Files34529
+Node: Encoding Files35928
+Node: Encrypting Files36869
+Node: Comparing Files37160
+Node: Spell Checking Files37825
+Node: Printing Files38081
+Node: Wiping Files38544
+Node: Searching Files38878
+Node: Archive Files39419
+Node: DEB Packages41249
+Node: RPM Packages44213
+Node: File Types45595
+Node: MSDOS Files45812
+Node: Actions47908
+Node: Directories48834
+Node: Creating Dirs49597
+Node: Copying Dirs49872
+Node: Deleting Dirs50352
+Node: Moving Dirs50789
+Node: Renaming Dirs51266
+Node: Comparing Dirs51707
+Node: Dirs Usage52939
+Node: Changing Dirs53213
+Node: Dirs History53889
+Node: Hot Keys54960
+Node: Compiling55587
+Node: Mail55986
+Node: Shell57140
+Node: Grep57427
+Node: Locking57853
+Node: Refreshing58249
+Node: Resetting58984
+Node: Mounting59236
+Node: Sysinfo62334
+Node: Environment63600
+Node: Processes64007
+Node: Sync66097
+Node: Documentation66348
+Node: Exit66842
+Node: gitps67060
+Node: gitview68066
+Node: gitkeys68908
+Node: gitwipe69289
+Node: gitmount70012
+Node: gitaction70770
+Node: gitunpack72606
+Node: gitrgrep73016
+Node: Customization73497
+Node: Environment Variables73794
+Node: Configuration Files74884
+Node: Key Sequences77866
+Node: Setup79195
+Node: gitfm Sections80145
+Node: GITFM-Setup80597
+Node: GITFM-Color82730
+Node: GITFM-Monochrome83098
+Node: GITFM-Keys83500
+Node: key-sequence84403
+Node: command-name85040
+Node: formatted-command85783
+Node: %s87107
+Node: %f87632
+Node: %d87875
+Node: %l88120
+Node: %t88371
+Node: %z88604
+Node: %a88833
+Node: %m89046
+Node: %g89248
+Node: %o89451
+Node: %p89654
+Node: %b89857
+Node: %i90070
+Node: %?90293
+Node: new-dir90783
+Node: save-screen91207
+Node: pause91905
+Node: hide92238
+Node: GITFM-FTI93116
+Node: gitps Sections93696
+Node: GITPS-Setup94088
+Node: GITPS-Color94326
+Node: GITPS-Monochrome94691
+Node: GITPS-Keys95093
+Node: gitview Sections95221
+Node: GITVIEW-Setup95602
+Node: GITVIEW-Color95850
+Node: GITVIEW-Monochrome96229
+Node: GITVIEW-Keys96645
+Node: Limitations96779
+Node: Bugs98183
+Node: Key Index98438
+Node: Command Index118202
+Node: Variable Index137324
+Node: Concept Index139380
 
 End Tag Table

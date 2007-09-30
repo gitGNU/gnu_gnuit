@@ -6,6 +6,30 @@ gnu-interactive-tools (4.9.1-1) unstable; urgency=low
 
  -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Sun, 30 Sep 2007 15:59:54 +0100
 
+git (4.3.20-12) unstable; urgency=low
+
+  * Use debhelper to handle install-info calls.
+  * Bump debhelper version to 5.
+  * Stop ignoring make distclean return code.
+  * git.texinfo: add @dircategory Utilities.
+
+ -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Mon, 06 Aug 2007 20:00:43 +0100
+
+git (4.3.20-11) unstable; urgency=low
+
+  * Finish /usr/bin/git transition (Closes: #379982, #405641):
+    + No longer provide /usr/bin/git, use gitfm instead.
+    + preinst: remove alternatives if upgrading from version before 4.3.20-11.
+    + prerm, postinst: drop alternatives manipulation.
+    + Add explanation to NEWS.Debian.
+  * Thanks to Bruce Sass for the following patches:
+    + Add ^C^D commands to manipulate .deb files (Closes: #396797).
+    + Fix ^Xh help documentation (Closes: #396794).
+  * Add gitdpkgname helper script for ^C^D commands that work on packages.
+  * rules: remove unused debhelper calls.
+
+ -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Tue,  1 May 2007 01:57:38 +0100
+
 git (4.3.20-10) unstable; urgency=low
 
   * Change git.transition so it runs git-scm if run non-interactively.

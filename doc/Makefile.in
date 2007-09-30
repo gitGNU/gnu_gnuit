@@ -35,6 +35,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
+@TRANSITION_TRUE@am__append_1 = git.1
 subdir = doc
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in texinfo.tex
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -232,13 +233,14 @@ target_alias = @target_alias@
 
 # $Id: Makefile.am,v 1.5 2005-12-07 13:56:05 ianb Exp $
 info_TEXINFOS = git.texinfo
-man_MANS = gitfm.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 gitunpack.1 \
-           git.transition.1 gitps.1 gitinternal.1 gitwipe.1 gitview.1
-
+man_MANS = gitfm.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 \
+	gitunpack.1 gitps.1 gitinternal.1 gitwipe.1 gitview.1 \
+	gitdpkgname.1 $(am__append_1)
 BUILT_SOURCES = git.html
 html_DATA = git.html
 EXTRA_DIST = gitfm.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 gitunpack.1\
-	     git.html git.transition.1 gitps.1 gitview.1 gitwipe.1 gitinternal.1
+	     git.html git.1 gitps.1 gitview.1 gitwipe.1 gitinternal.1 \
+	     dpkg-help.txt
 
 GIT_INTERNAL_MANS = gitwhich gitmkdirs gitxgrep
 GIT_GREPS = gitregrep gitrfgrep
@@ -622,6 +624,7 @@ html:
 dist-hook: html
 
 install-data-hook:
+	$(INSTALL_PROGRAM) -m 644 $(srcdir)/dpkg-help.txt $(DESTDIR)/$(datadir)/gnu-interactive-tools/dpkg-help.txt
 	for i in $(GIT_GREPS);\
 	do\
 	    rm -f $(DESTDIR)$(mandir)/man1/$${i}.1;\

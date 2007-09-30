@@ -20,6 +20,8 @@
 
 ** New terminals: rxvt-unicode, linux-m, cygwin, Eterm.
 
+** Added commands to manipulate .deb files (Thanks to Bruce Sass).
+
 ** Support comparing special files in gitfm.
 
 ** Restore screen when exiting.

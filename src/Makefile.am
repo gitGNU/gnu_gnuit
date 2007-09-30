@@ -4,7 +4,7 @@ EXTRA_DIST = gitaction gitmkdirs gitmount gitrgrep gitunpack gitxgrep\
 
 bin_PROGRAMS = gitfm gitps gitview gitwipe gitkeys gitwhich
 bin_SCRIPTS = gitaction gitmkdirs gitmount gitrgrep gitunpack gitxgrep\
-	      .gitaction
+	      .gitaction gitdpkgname
 
 # We're not including tilde.c & tilde.h here because they are
 # automagically detected (configure.in includes them in LIBOBJS).
@@ -17,7 +17,7 @@ gitfm_SOURCES = git.c tty.c tty.h window.c window.h inputline.c inputline.h\
 	      xstack.c xstack.h system.c system.h
 gitps_SOURCES = gitps.c tty.c tty.h window.c window.h misc.c misc.h\
 		configure.c configure.h signals.c signals.h xio.c xio.h\
-		xmalloc.c xmalloc.h xstring.h 
+		xmalloc.c xmalloc.h xstring.h
 gitview_SOURCES = gitview.c tty.c tty.h window.c window.h misc.c misc.h\
 		  configure.c configure.h signals.c signals.h xio.c xio.h\
 		  xmalloc.c xmalloc.h xstring.h
@@ -25,7 +25,7 @@ gitwipe_SOURCES = gitwipe.c
 gitkeys_SOURCES = gitkeys.c
 gitwhich_SOURCES = gitwhich.c xmalloc.c xmalloc.h
 
-gitfm_LDADD = -L../lib -lgnu 
+gitfm_LDADD = -L../lib -lgnu
 gitps_LDADD = -L../lib -lgnu
 gitview_LDADD = -L../lib -lgnu
 

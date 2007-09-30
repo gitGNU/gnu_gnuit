@@ -1,3 +1,11 @@
+git (4.3.20-11) unstable; urgency=low
+
+  * The /usr/bin/git transition is now complete, git longer provides
+    /usr/bin/git. To run the GNU Interactive Tools filemanager, use
+    the command 'gitfm'.
+
+ -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Mon, 30 Apr 2007 17:48:50 +0100
+
 git (4.3.20-8) unstable; urgency=low
 
   * git, the filemanager with GNU Interactive Tools, is now called gitfm.
@@ -7,7 +15,7 @@ git (4.3.20-8) unstable; urgency=low
     git, so we are forced to change our name. The name gitfm has been
     chosen for consistency with the other git* tools (gitps, gitmount,
     gitrgrep, etc.).
-  
+
     Until after etch, /usr/bin/git points to a transition script that
     warns the user and then runs gitfm.
 

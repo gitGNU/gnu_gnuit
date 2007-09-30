@@ -17,6 +17,7 @@
 @end iftex
 
 @ifinfo
+@dircategory Utilities
 @format
 START-INFO-DIR-ENTRY
 * GIT: (git).         GNU Interactive Tools
@@ -1250,6 +1251,7 @@ unselected files will become selected.
 * Wiping Files::                How to wipe a file.
 * Searching Files::             How to search a file.
 * Archive Files::               How to manage tar based archive files.
+* DEB Packages::                How to work with DEB packages.
 * RPM Packages::                How to install and uninstall RPM packages.
 * File Types::                  How to figure out the file type.
 * MSDOS Files::                 How to access msdos floppies.
@@ -2086,7 +2088,7 @@ Locate a command; display its pathname or alias (@samp{WHICH}).
 @kindex ^X W
 
 
-@node Archive Files, RPM Packages, Searching Files, Files
+@node Archive Files, DEB Packages, Searching Files, Files
 @subsubsection Managing tar based archive files
 
 @noindent
@@ -2197,7 +2199,185 @@ performed in background (@samp{B-GENERIC-UNPACK-INTO}).
 @kindex ^C b V
 
 
-@node RPM Packages, File Types, Archive Files, Files
+@node DEB Packages, RPM Packages, Archive Files, Files
+@subsubsection Working with DPKG
+
+@code{dpkg} provides commands for manipulating and querying the dpkg
+database, @code{gitfm}'s DPKG commands allow quick access to most of
+those which operate on binary packages, files, or require package
+names as arguments. All commands expecting package names can also be
+given binary packages, the package names will be automatically
+extracted. Most commands use their single character @code{dpkg} option
+letter as the key command.
+
+@noindent
+@kbd{^C ^D i}
+@display
+Install the @code{deb} file(s) selected or pointed by the cursor
+(@samp{DPKG-INSTALL}).
+@end display
+@findex DPKG-INSTALL
+@kindex ^C ^D i
+
+@noindent
+@kbd{^C ^D R i}
+@display
+Recursively install the @code{deb} file(s) in the directories selected or
+pointed by the cursor (@samp{R-DPKG-INSTALL}).
+@end display
+@findex R-DPKG-INSTALL
+@kindex ^C ^D R i
+
+@noindent
+@kbd{^C ^D u}
+@display
+Unpack the @code{deb} file(s) selected or pointed by the cursor, but
+don't configure it (@samp{DPKG-UNPACK}).
+@end display
+@findex DPKG-UNPACK
+@kindex ^C ^D u
+
+@noindent
+@kbd{^C ^D R u}
+@display
+Recursively unpack the @code{deb} file(s) in the directories selected or
+pointed by the cursor, but don't configure them (@samp{R-DPKG-UNPACK}).
+@end display
+@findex R-DPKG-UNPACK
+@kindex ^C ^D R u
+
+@noindent
+@kbd{^C ^D C}
+@display
+Configure the unpacked package(s) selected or pointed by the cursor
+(@samp{DPKG-CONFIGURE}).
+@end display
+@findex DPKG-CONFIGURE
+@kindex ^C ^D C
+
+@noindent
+@kbd{^C ^D r}
+@display
+Remove the package(s) selected or pointed by the cursor
+(@samp{DPKG-REMOVE}).
+@end display
+@findex DPKG-REMOVE
+@kindex ^C ^D r
+
+@noindent
+@kbd{^C ^D P}
+@display
+Purge the package(s) selected or pointed by the cursor
+(@samp{DPKG-PURGE}).
+@end display
+@findex DPKG-PURGE
+@kindex ^C ^D P
+
+@noindent
+@kbd{^C ^D A}
+@display
+Update dpkg and dselect's idea of which packages are available with
+information from the @code{deb} file(s) selected or pointed by the
+cursor (@samp{DPKG-RECORDAVAIL}).
+@end display
+@findex DPKG-RECORDAVAIL
+@kindex ^C ^D A
+
+@noindent
+@kbd{^C ^D R A}
+@display
+Recursively update dpkg and dselect's idea of which packages are
+available with information from the @code{deb} file(s) in the directories
+selected or pointed by the cursor (@samp{R-DPKG-RECORDAVAIL}).
+@end display
+@findex R-DPKG-RECORDAVAIL
+@kindex ^C ^D R A
+
+@noindent
+@kbd{^C ^D h}
+@display
+Display quick help file for GIT's DPKG commands.
+(@samp{DPKG-HELP}).
+@end display
+@findex DPKG-HELP
+@kindex ^C ^D h
+
+@noindent
+@kbd{^C ^D c}
+@display
+Lists the contents of the filesystem tree archive portion of the
+@code{deb} file pointed by the cursor (@samp{DPKG-CONTENTS}).
+@end display
+@findex DPKG-CONTENTS
+@kindex ^C ^D c
+
+@noindent
+@kbd{^C ^D f}
+@display
+Extracts control file information from a @code{deb} file pointed by
+the cursor (@samp{DPKG-FIELD}). You are presented with the file name and
+can either hit ENTER to see all fields, or add control file field names
+(space separated) to see only those fields.
+@end display
+@findex DPKG-FIELD
+@kindex ^C ^D f
+
+@noindent
+@kbd{^C ^D I}
+@display
+Provides information about a @code{deb} file pointed by the cursor
+(@samp{DPKG-INFO}).
+@end display
+@findex DPKG-INFO
+@kindex ^C ^D I
+
+@noindent
+@kbd{^C ^D l}
+@display
+List the package(s) selected or pointed by the cursor
+(@samp{DPKG-LISTPKGS}).
+@end display
+@findex DPKG-LISTPKGS
+@kindex ^C ^D l
+
+@noindent
+@kbd{^C ^D s}
+@display
+Display status details for the package(s) selected or pointed by the
+cursor (@samp{DPKG-STATUS}).
+@end display
+@findex DPKG-STATUS
+@kindex ^C ^D s
+
+@noindent
+@kbd{^C ^D L}
+@display
+List files owned by the package(s) selected or pointed by the cursor
+(@samp{DPKG-LISTFILES}).
+@end display
+@findex DPKG-LISTFILES
+@kindex ^C ^D L
+
+@noindent
+@kbd{^C ^D S}
+@display
+Find package owning file pointed to by the cursor
+(@samp{DPKG-SEARCH}).
+@end display
+@findex DPKG-SEARCH
+@kindex ^C ^D S
+
+@noindent
+@kbd{^C ^D p}
+@display
+Display available version details of package(s) selected or pointed by
+the cursor (@samp{DPKG-PRINTAVAIL}).
+@end display
+@findex DPKG-PRINTAVAIL
+@kindex ^C ^D p
+
+
+@node RPM Packages, File Types, DEB Packages, Files
 @subsubsection Installing and Uninstalling RPM packages
 
 Red Hat Linux Distributions use a very powerful package manager called
@@ -3785,7 +3965,7 @@ The @code{GIT} package contains three major programs: @code{gitfm},
 configuration files.  There is also a global setup section called
 @samp{Setup} that is used by all these programs.
 
-Note that now @code{git} has been renamed to @code{gitfm}, 
+Note that now @code{git} has been renamed to @code{gitfm},
 the corresponding sections have been renamed to @code{GITFM},
 however for backwards compatibility, the old name (@code{GIT})
 is still checked if the @code{GITFM} section is not found.

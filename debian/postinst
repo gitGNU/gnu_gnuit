@@ -1,10 +1,4 @@
 #!/bin/sh
 set -e
 
-update-alternatives --install /usr/bin/git git /usr/bin/git.transition 90 \
-  --slave /usr/share/man/man1/git.1.gz git.1.gz /usr/share/man/man1/git.transition.1.gz
-
-install-info --quiet --section "General commands" "General commands" \
-	/usr/share/info/git.info.gz
-
 #DEBHELPER#

@@ -1,8 +1,8 @@
 .\" +----------
 .\" |
-.\" |			  GIT/GITPS/GITVIEW man page
+.\" |			       git.transition man page
 .\" |
-.\" |	      Copyright 1993-1999 Free Software Foundation, Inc.
+.\" |	       Copyright 1993-2005 Free Software Foundation, Inc.
 .\" |
 .\" |	This file is part of GIT (GNU Interactive Tools)
 .\" |
@@ -20,111 +20,38 @@
 .\" | with GIT; see the file COPYING. If not, write to the Free Software
 .\" | Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 .\" |
-.\" | $Id: git.1,v 1.2 1999/10/21 13:09:34 tudor Exp $
-.TH git 1
+.\" | $Id: git.transition.1,v 1.1 2005-10-22 15:29:15 ianb Exp $
+.TH git.transition 1
 .SH NAME
-git \- GNU Interactive Tools
+git.transition \- GNU Interactive Tools \- git transition script
 .SH SYNTAX
-.I git
-[options] [path1] [path2]
-.br
-.I gitps
-[options]
-.br
-.I gitview
-[options] filename
-
-.SH NOTE
-The main configuration file of the
-.I GIT
-package is
-.B ".gitrc.TERM"
-where
-.B TERM
-is the value of the environment
-variable
-.BR "" ' TERM '
-e.g for Linux console your environment contains something like
-.BR "" ' "TERM=console" '
-so the configuration file name is
-.BR ".gitrc.console" "."
-You can (and should) have a configuration file for each terminal type you use.
+.I git [arguments to gitfm]
 
 .SH DESCRIPTION
-.I git
-is a
-.B file system browser
-with some shell facilities which was designed to make your work
-easier and more efficient.
 
-.I gitps
-is an interactive process viewer/killer. It calls internally the
-.IR ps (1)
-utility so that's the reason why
-.I gitps
-parameters are in fact
-.IR ps (1)
-ones. Running
-.I gitps
-it is self explanatory. Use the
-arrows, PageUp, PageDown, Home, End, ^N, ^P, ^V, ESC v to move in
-the list, ^L to refresh it and F10 or ^G to leave. You can change
-these keys, just read the sections
-.B [GITPS-Setup], [GITPS-Color], [GITPS-Monochrome] and [GITPS-Keys]
-in the configuration file
-.BR ".gitrc.TERM" .
-See also
-.BR "CONFIGURATION FILES" .
+The filemanager with GNU Interactive Tools (git) is now called
+.I gitfm
 
-.I gitview
-is an hex/ascii file viewer. Use the arrows, PageUp, PageDown, Home,
-End, ^N, ^P, ^V, ESC v to move in the file, ^L to refresh the screen
-and F10 or ^G to leave. You can change those keys, just read the
-sections
-.B [GITVIEW-Setup], [GITVIEW-Color], [GITVIEW-Monochrome] and [GITVIEW-Keys]
-in the configuration file
-.BR ".gitrc.TERM" .
-See also
-.BR "CONFIGURATION FILES" .
+git.transition is a very small script that replaces /usr/bin/git.
+The script warns the user of the rename, and then runs gitfm(1),
+passing any supplied arguments.
 
-.SH FILE-SYSTEM BROWSER
-.I git
-is made of two panels. The left one and the right one. Each
-one contains a file system directory. You can browse the
-directory tree with the usual cursor keys and pressing
-.B ENTER
-when you want to enter or leave a directory.
-You may change the panels by pressing
-.BR TAB .
-See also
-.BR "BUILT-IN COMMANDS" .
+git was renamed to gitfm to avoid confusion with Linus Torvalds'
+content tracker, also called git.
 
-.SH INPUT LINE
-Under the two panels there is a shell like input line which
-you can use to type normal shell commands. The input line
-supports unlimited characters and keeps a history of the typed
-commands. GIT uses the GNU history library for that.
-See also
-.BR "BUILT-IN COMMANDS" .
+If you wish to complete the transition early, install git-core
+and (as root) use:
 
-.SH WARNINGS AND ERRORS REPORTING
-Under the input line there is a status bar. You can see there
-the status of the currently executed command, the warnings and
-errors and you will be prompted if a decision has to be taken.
-
-.SH BUGS
-These manual page is incomplete.  Only the GIT's info documentation is
-being updated.
-
-Please send bug reports to:
-.br
-.I Tudor Hulubei <tudor@cs.unh.edu>
+ update-alternatives \-\-config git
 
 .SH SEE ALSO
-termcap(5) terminfo(5) sh(1) ps(1) mount(8) umount(8) gitaction(1) gitmount(1)
-gitkeys(1) gitrgrep(1) gitunpack(1)
+gitfm(1)
+
+git(7) (part of the git-core package)
 
 .SH AUTHORS
 .I Tudor Hulubei <tudor@cs.unh.edu>
 .br
 .I Andrei Pitis <pink@pub.ro>
+.br
+.I Ian Beckwith <ianb@nessie.mcc.ac.uk> (Debian modifications)

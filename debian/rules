@@ -55,7 +55,7 @@ clean:
 	rm -f build-stamp
 
 	# Add here commands to clean up after the build process.
-	-$(MAKE) distclean
+	[ ! -f Makefile ]  || $(MAKE) distclean
 
 	# update arch guess files
 ifneq "$(wildcard /usr/share/misc/config.sub)" ""
@@ -110,7 +110,8 @@ binary-arch: build install
 	dh_installexamples debian/gitaction
 	rm -f debian/gitaction
 
-	dh_installinfo -n doc/git.info
+	dh_installinfo doc/git.info
+	dh_install
 	dh_link
 	dh_strip
 	dh_compress -Xgit.html

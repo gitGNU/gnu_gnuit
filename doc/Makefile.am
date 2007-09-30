@@ -1,13 +1,18 @@
 # $Id: Makefile.am,v 1.5 2005-12-07 13:56:05 ianb Exp $
 info_TEXINFOS = git.texinfo
 man_MANS = gitfm.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 gitunpack.1 \
-           git.transition.1 gitps.1 gitinternal.1 gitwipe.1 gitview.1
+           gitps.1 gitinternal.1 gitwipe.1 gitview.1 gitdpkgname.1
 infodir = $(prefix)/share/info
 htmldir = $(prefix)/share/doc/git-$(VERSION)
 BUILT_SOURCES = git.html
 html_DATA = git.html
 EXTRA_DIST = gitfm.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 gitunpack.1\
-	     git.html git.transition.1 gitps.1 gitview.1 gitwipe.1 gitinternal.1
+	     git.html git.1 gitps.1 gitview.1 gitwipe.1 gitinternal.1 \
+	     dpkg-help.txt
+
+if TRANSITION
+man_MANS += git.1
+endif
 
 GIT_INTERNAL_MANS=gitwhich gitmkdirs gitxgrep
 GIT_GREPS=gitregrep gitrfgrep
@@ -31,6 +36,7 @@ endif
 dist-hook: html
 
 install-data-hook:
+	$(INSTALL_PROGRAM) -m 644 $(srcdir)/dpkg-help.txt $(DESTDIR)/$(datadir)/gnu-interactive-tools/dpkg-help.txt
 	for i in $(GIT_GREPS);\
 	do\
 	    rm -f $(DESTDIR)$(mandir)/man1/$${i}.1;\
