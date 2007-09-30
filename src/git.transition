@@ -4,15 +4,10 @@ cat >&2 << EOT
 
 git, the filemanager with GNU Interactive Tools, is now called gitfm.
 
-If you are looking for git, Linus Torvald's content tracker, install
-the cogito and git-core packages and see README.Debian and git(7).
+If you are looking for git, Linus Torvald's content tracker,
+go to http://git.or.cz/. If it is already installed see git(7).
 
-This transition script will be removed in the debian stable
-release after etch.
-
-If you wish to complete the transition early, install git-core
-and use (as root):
- update-alternatives --config git
+This transition script will be removed in a later release.
 
 EOT
 
