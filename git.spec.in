@@ -1,17 +1,17 @@
 Summary: A set of GNU Interactive Tools.
-Name: git
+Name: gnu-interactive-tools
 Version: @VERSION@
 Release: 1
 Copyright: GNU
 Group: Applications/File
-Source: ftp://ftp.gnu.org:/pub/gnu/git/git-%{version}.tar.gz
-URL: http://www.cs.unh.edu/~tudor
-Packager: Tudor Hulubei <tudor@hulubei.net>
+Source: http://nessie.mcc.ac.uk/~ianb/projects/git/gnu-interactive-tools-%{version}.tar.gz
+URL: http://nessie.mcc.ac.uk/~ianb/projects/git/
+Packager: Ian Beckwith <ianb@nessie.mcc.ac.uk>
 BuildRoot: /var/tmp/git-root
 Prereq: /sbin/install-info
 
 %description
-GIT (GNU Interactive Tools) provides an extensible file system browser,
+GNU Interactive Tools provides an extensible file system browser,
 an ASCII/hexadecimal file viewer, a process viewer/killer and other
 related utilities and shell scripts.  GIT can be used to increase the
 speed and efficiency of copying and moving files and directories, invoking
@@ -19,8 +19,8 @@ editors, compressing and uncompressing files, creating and expanding
 archives, compiling programs, sending mail and more.  GIT uses standard
 ANSI color sequences, if they are available.
 
-You should install the git package if you are interested in using its file
-management capabilities.
+You should install the gnu-interactive-tools package if you are
+interested in using its file management capabilities.
 
 %prep
 rm -rf $RPM_BUILD_ROOT
@@ -41,7 +41,9 @@ gzip -9nf $RPM_BUILD_ROOT/usr/share/info/git.info*
 /usr/bin/.gitaction
 /usr/man/man1/*
 /usr/share/info/git*
-/usr/share/git/.gitrc*
+/usr/share/gnu-interactive-tools/.gitrc*
+/usr/share/gnu-interactive-tools/*
+/usr/share/doc/gnu-interactive-tools/*
 
 %clean
 rm -rf $RPM_BUILD_ROOT
