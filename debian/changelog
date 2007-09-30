@@ -1,10 +1,11 @@
 gnu-interactive-tools (4.9.1-1) unstable; urgency=low
 
-  * New upstream beta version.
+  * New upstream version.
   * Package name changed to gnu-interactive-tools.
   * Added transitional git package.
+  * Removed unneeded postinst and prerm.
 
- -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Sun, 30 Sep 2007 15:59:54 +0100
+ -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Sun, 30 Sep 2007 19:32:33 +0100
 
 git (4.3.20-12) unstable; urgency=low
 
