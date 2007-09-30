@@ -4,16 +4,12 @@
 * GNU Interactive Tools TODO
 ============================
 
-** 4.3.21
-=========
-
+*** Unicode support.
 *** Look in the email for Tom Bates' nsr-tandem-* port.
 *** GIT crashes on switch to a new dir (^X d).
     The statvfs() syscall overwrites the path parameter to
     get_fs_usage().  It probably has something to do with 64bit I/O.
 *** F2 should work on *.info.gz files.
-*** Make install doesn't work.
-*** Make dist doesn't work.
 
 *** CYGWIN compilation:
 *** git isn't displaying the title properly under cygwin.
@@ -22,6 +18,7 @@
 *** Make sure configuration_getline() works.  Text vs. binary?
 *** There is a refresh problem, but is most likely because there is
     no .gitrc.XXXX for the CYGWIN terminal.  Add one.
+    [ Added one (ansi) but untested --ianb ]
 
 
 *** Read previous emails about problems/improvements reported by Xax.
@@ -30,16 +27,11 @@
 *** 64bit I/O.
 
 *** Test w/ redhat 6.2.  Where?  Vmware?
-*** For special files, size should be ignored in comparisons.
 *** LONG_LONG_MAX on other platforms?
 *** %Ld vs %lld.  They're the same thing in GCC.  How about other compilers?
 *** How do we detect/implement support for 64bit I/O on Solaris?
 *** Test it on Solaris 64 too (including creating files >2Gb).  Add
     Solaris to NEWS.
-
-
-** 4.3.22
-=========
 
 *** Hide the . directories/files.
 *** The second bug reported by Xax (the mv -- '-tutu' gogu problem).
@@ -60,11 +52,6 @@
     whether or not I want to overwrite it, which doesn't make much
     sense, since it will copy the source directory _inside_ the
     destination directory anyway.
-
-*** When I copy a file which is in fact a link, it will copy it with
-    the permissions of the link (+ umask).
-
-*** Directories that are symbolic links are copied as 0-length files!
 
 *** What happens if the size of the files is large, but also the
     number of the files in that directory is very large?  The
