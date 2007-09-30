@@ -2,7 +2,7 @@
 .\" First parameter, NAME, should be all caps
 .\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
 .\" other parameters are allowed: see man(7), man(1)
-.TH GITPS 1 "Feb 19, 2004"
+.TH GITPS 1 "Sep 30, 2007"
 .\" Please adjust this date whenever revising the manpage.
 .\"
 .\" Some roff macros, for reference:
@@ -19,19 +19,12 @@
 gitps \- A process viewer/killer
 .SH SYNOPSIS
 .B gitps
-.RI [ -hvcblp ] 
+.RI [ -hvcblp ]
 
 .SH DESCRIPTION
 This manual page documents briefly the
 .B gitps
 command.
-This manual page was written for the Debian distribution
-because the original program does not have a manual page.
-Instead, it has documentation in the GNU Info format; see below.
-.PP
-.\" TeX users may be more comfortable with the \fB<whatever>\fP and
-.\" \fI<whatever>\fP escape sequences to invode bold face and italics, 
-.\" respectively.
 
 \fBgitps\fP is an interactive process viewer/killer.  It calls
 internally the \fBps\fP(1) utility.
@@ -50,7 +43,7 @@ GITPS-Monochrome and GITPS-Keys sections in the configuration files
 
 .PP
 .B gitps
-is part of \fBgit\fP(1), the GNU Interactive Tools.
+is part of the GNU Interactive Tools.
 
 .SH OPTIONS
 A summary of options is included below.
@@ -74,11 +67,14 @@ Don't use last screen character.
 .B \-p
 Pass the remaining arguments to ps(1).
 .SH SEE ALSO
-.BR git (1)
+.BR gitfm (1)
 .PP
-\fBgitps\fP and \fBgit\fP are documented fully by
+\fBgitps\fP and \fBgitfm\fP are documented fully by
 .IR "GNU Interactive Tools" ,
 available via the Info system.
-.SH AUTHOR
-This manual page was written by Ian Beckwith <ianb@nessie.mcc.ac.uk>,
-for the Debian project (but may be used by others).
+.SH AUTHORS
+.I Tudor Hulubei <tudor@cs.unh.edu>
+.br
+.I Andrei Pitis <pink@pub.ro>
+.br
+.I Ian Beckwith <ianb@nessie.mcc.ac.uk> (current maintainer)

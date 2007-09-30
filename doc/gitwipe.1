@@ -2,7 +2,7 @@
 .\" First parameter, NAME, should be all caps
 .\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
 .\" other parameters are allowed: see man(7), man(1)
-.TH GITWIPE 1 "Feb 19, 2004"
+.TH GITWIPE 1 "Sep 30, 2007"
 .\" Please adjust this date whenever revising the manpage.
 .\"
 .\" Some roff macros, for reference:
@@ -25,14 +25,6 @@ gitwipe \- An utility for wiping files
 This manual page documents briefly the
 .B gitwipe
 command.
-This manual page was written for the Debian distribution
-because the original program does not have a manual page.
-Instead, it has documentation in the GNU Info format; see below.
-.PP
-.\" TeX users may be more comfortable with the \fB<whatever>\fP and
-.\" \fI<whatever>\fP escape sequences to invode bold face and italics, 
-.\" respectively.
-
 
 \fBgitwipe\fP is an utility for wiping files.  It overwrites the file
 contents with a random sequence of numbers and then calls `sync'().
@@ -48,14 +40,17 @@ at a later moment.
 
 .PP
 .B gitwipe
-is part of \fBgit\fP(1), the GNU Interactive Tools.
+is part of the GNU Interactive Tools.
 
 .SH SEE ALSO
-.BR git (1)
+.BR gitfm (1)
 .PP
-\fBgitwipe\fP and \fBgit\fP are documented fully by
+\fBgitwipe\fP and \fBgitfm\fP are documented fully by
 .IR "GNU Interactive Tools" ,
 available via the Info system.
-.SH AUTHOR
-This manual page was written by Ian Beckwith <ianb@nessie.mcc.ac.uk>,
-for the Debian project (but may be used by others).
+.SH AUTHORS
+.I Tudor Hulubei <tudor@cs.unh.edu>
+.br
+.I Andrei Pitis <pink@pub.ro>
+.br
+.I Ian Beckwith <ianb@nessie.mcc.ac.uk> (current maintainer)

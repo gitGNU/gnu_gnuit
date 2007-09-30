@@ -83,6 +83,8 @@ install: build
 
 	$(MAKE) install DESTDIR="$(BUILDDIR)" htmldir=/usr/share/doc/gnu-interactive-tools
 
+	# remove man symlinks - dh_link will recreate properly
+	rm -f $(BUILDDIR)/usr/share/man/man1/git{which,mkdirs,{x,re,rf}grep}.1
 	# install changelogs from subdirs
 	install -d $(BUILDDIR)/usr/share/doc/gnu-interactive-tools
 	set -e ; for i in */ChangeLog; do \
@@ -109,7 +111,6 @@ binary-arch: build install
 	rm -f debian/gitaction
 
 	dh_installinfo -n doc/git.info
-	dh_installman
 	dh_link
 	dh_strip
 	dh_compress -Xgit.html
