@@ -250,10 +250,9 @@ libgnu_a_SOURCES = exit.h full-read.h full-read.c full-write.h \
 	xstrndup.c
 libgnu_a_LIBADD = $(LIBOBJS) @ALLOCA@
 noinst_HEADERS = 
-EXTRA_DIST = tilde.c tilde.h history.c history.h alloca_.h dirname.h \
-	exitfail.h fnmatch_.h fnmatch_loop.c fsusage.h getopt_.h \
-	getopt_int.h safe-read.h safe-write.h stdbool_.h stdint_.h \
-	strndup.h strnlen.h xalloc.h
+EXTRA_DIST = alloca_.h dirname.h exitfail.h fnmatch_.h fnmatch_loop.c \
+	fsusage.h getopt_.h getopt_int.h safe-read.h safe-write.h \
+	stdbool_.h stdint_.h strndup.h strnlen.h xalloc.h
 BUILT_SOURCES = $(ALLOCA_H) $(FNMATCH_H) $(GETOPT_H) $(STDBOOL_H) \
 	$(STDINT_H) $(UNISTD_H)
 SUFFIXES = 

@@ -234,7 +234,9 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 AUTOMAKE_OPTIONS = 1.9
 EXTRA_DIST = PLATFORMS PROBLEMS LSM.in version version.h.in\
-	     git.spec.in mkvcs prepare lib-Makefile.am.patch
+	     git.spec.in mkvcs prepare lib-Makefile.am.patch \
+	     lib/tilde.c lib/tilde.h lib/history.c lib/history.h \
+	     m4/gnulib-tool.m4 m4/gnulib-cache.m4
 
 SUBDIRS = lib src term doc
 ACLOCAL_AMFLAGS = -I m4
@@ -435,7 +437,7 @@ distclean-tags:
 distdir: $(DISTFILES)
 	$(am__remove_distdir)
 	mkdir $(distdir)
-	$(mkdir_p) $(distdir)/. $(distdir)/m4 $(distdir)/term
+	$(mkdir_p) $(distdir)/. $(distdir)/lib $(distdir)/m4 $(distdir)/term
 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
 	list='$(DISTFILES)'; for file in $$list; do \

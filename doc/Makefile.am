@@ -8,7 +8,7 @@ BUILT_SOURCES = git.html
 html_DATA = git.html
 EXTRA_DIST = gitfm.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 gitunpack.1\
 	     git.html git.1 gitps.1 gitview.1 gitwipe.1 gitinternal.1 \
-	     dpkg-help.txt
+	     gitdpkgname.1 dpkg-help.txt
 
 if TRANSITION
 man_MANS += git.1
