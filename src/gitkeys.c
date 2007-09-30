@@ -19,7 +19,6 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: gitkeys.c,v 1.7 2001/06/02 16:34:04 tudor Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

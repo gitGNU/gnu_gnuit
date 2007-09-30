@@ -3,8 +3,6 @@
 # Prepare a freshly checked out copy of
 # the CVS tree for compilation.
 
-# $Id: prepare,v 1.6 2004/01/28 00:08:20 tudor Exp $
-
 AMFLAGS=
 
 if [ "$1" = "-a" ]

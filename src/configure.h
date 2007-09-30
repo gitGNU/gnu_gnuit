@@ -17,7 +17,6 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: configure.h,v 1.6 2000/07/31 03:10:01 tudor Exp $ */
 
 #ifndef _GIT_CONFIGURE_H
 #define _GIT_CONFIGURE_H

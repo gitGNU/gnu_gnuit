@@ -18,7 +18,6 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: gitwipe.c,v 1.11 2003/06/21 22:45:08 tudor Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

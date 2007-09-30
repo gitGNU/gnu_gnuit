@@ -19,7 +19,6 @@
    with Bash; see the file COPYING.  If not, write to the Free Software
    Foundation, 675 Mass Ave, Cambridge, MA 02139, USA. */
 
-/* $Id: ansi_stdlib.h,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $ */
 
 #if !defined (_STDLIB_H_)
 #define _STDLIB_H_ 1

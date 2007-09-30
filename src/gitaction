@@ -10,8 +10,6 @@
 ###									    ###
 ###############################################################################
 
-### $Id: gitaction,v 1.40 2003/10/05 02:20:58 tudor Exp $
-
 ###
 ### This script executes a different action for each file type
 ### specified.  It tries to match the second parameter against the

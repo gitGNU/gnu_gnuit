@@ -21,8 +21,6 @@
    have a copy of the license, write to the Free Software Foundation,
    675 Mass Ave, Cambridge, MA 02139, USA. */
 
-/* $Id: tilde.h,v 1.2 1998/03/02 08:33:18 tudor Exp $ */
-
 #ifndef _TILDE_H_
 #define _TILDE_H_
 

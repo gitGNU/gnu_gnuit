@@ -1,4 +1,3 @@
-# $Id: Makefile.am,v 1.2 2005-12-07 13:56:05 ianb Exp $
 EXTRA_DIST = .gitrc.aixterm.in .gitrc.ansi.in .gitrc.common.in\
 	     .gitrc.generic.in .gitrc.hft.in .gitrc.hpterm.in .gitrc.linux.in\
 	     .gitrc.mach.in .gitrc.minix.in .gitrc.thix.in .gitrc.vt100.in\

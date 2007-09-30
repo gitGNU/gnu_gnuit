@@ -17,7 +17,6 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: inputline.c,v 1.10 2000/05/02 02:28:46 tudor Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

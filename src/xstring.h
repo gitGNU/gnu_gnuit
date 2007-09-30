@@ -17,7 +17,6 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: xstring.h,v 1.1.1.1 2004-11-10 17:44:38 ianb Exp $ */
 
 #ifndef _GIT_XSTRING_H
 #define _GIT_XSTRING_H

@@ -1,6 +1,5 @@
 #! /bin/sh
 
-# $Id: mkvcs,v 1.2 1998/03/02 08:33:14 tudor Exp $
 
 # Check for Linux
 if test `uname` != Linux; then

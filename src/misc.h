@@ -17,7 +17,6 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: misc.h,v 1.10 2002/09/26 17:58:52 tudor Exp $ */
 
 #ifndef _GIT_MISC_H
 #define _GIT_MISC_H

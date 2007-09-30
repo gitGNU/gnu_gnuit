@@ -23,7 +23,7 @@
 /* The goal is to make the implementation transparent, so that you
    don't have to know what data types are used, just what functions
    you can call.  I think I have done that. */
-/* $Id: history.c,v 1.2 1998/03/02 08:33:16 tudor Exp $ */
+
 #define READLINE_LIBRARY
 
 #ifdef HAVE_CONFIG_H

@@ -19,7 +19,6 @@
 /* Written by Tudor Hulubei and Andrei Pitis.  */
 /* Patched by Gregory Gerard <ggerard@ssl.sel.sony.com> to display on
    the entire screen.  */
-/* $Id: gitview.c,v 1.23 2003/06/21 22:45:08 tudor Exp $ */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

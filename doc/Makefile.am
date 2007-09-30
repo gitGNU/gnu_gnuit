@@ -1,4 +1,3 @@
-# $Id: Makefile.am,v 1.5 2005-12-07 13:56:05 ianb Exp $
 info_TEXINFOS = git.texinfo
 man_MANS = gitfm.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 gitunpack.1 \
            gitps.1 gitinternal.1 gitwipe.1 gitview.1 gitdpkgname.1

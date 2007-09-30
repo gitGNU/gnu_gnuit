@@ -17,7 +17,6 @@
    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
-/* $Id: tty.h,v 1.9 2001/06/02 17:33:30 tudor Exp $ */
 
 #ifndef _GIT_TTY_H
 #define _GIT_TTY_H

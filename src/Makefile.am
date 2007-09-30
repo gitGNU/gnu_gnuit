@@ -1,4 +1,3 @@
-# $Id: Makefile.am,v 1.5 2005-12-07 13:56:05 ianb Exp $
 EXTRA_DIST = gitaction gitmkdirs gitmount gitrgrep gitunpack gitxgrep\
 	     .gitaction .gdbinit git.transition gitdpkgname
 
