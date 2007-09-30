@@ -67,11 +67,9 @@
 
 2006-10-02  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
 
-	* configure:
-	* lib-Makefile.am.patch:
-	* lib/Makefile.am:
-	* lib/Makefile.in: FIXME
-	* prepare: include tilde/history in make dist;
+	* work round autotools stubbornness: put tilde and history in
+	  lib/, patch lib/Makefile.am to include them in EXTRA_DIST with
+	  lib-Makefile.am.patch.
 	* configure.ac: deprecate termcap and look for ncursesw
 	* src/xmalloc.c: call abort() in xalloc_die to silence gcc warning
 

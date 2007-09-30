@@ -12,7 +12,9 @@
 
 ** Renamed git file manager binary to gitfm.
    Config file sections now start with "[GITFM-", but
-   "[GIT-" is still accepted.
+   "[GIT-" is still accepted. A transitional script to warn
+   users is installed unless configured otherwise with
+   ./configure --disable-transition.
 
 ** Added 64bit I/O support.
 
