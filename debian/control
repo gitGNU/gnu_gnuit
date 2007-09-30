@@ -9,7 +9,9 @@ Standards-Version: 3.7.2
 Package: gnu-interactive-tools
 Architecture: any
 Depends: ${shlibs:Depends}
-Conflicts: git (<< 4.9.2)
+Provides: git
+Replaces:  git (<< 4.9.1-1)
+Conflicts: git (<< 4.9.1-1)
 Description: GNU Interactive Tools, a file browser/viewer and process viewer/killer
  git (GNU Interactive Tools) is a set of interactive text-mode tools,
  closely integrated with the shell.  It contains an extensible file
@@ -25,3 +27,8 @@ Description: GNU Interactive Tools, a file browser/viewer and process viewer/kil
  limited to a given set of commands.  The configuration file can be
  easily enhanced, allowing the user to add new commands or file
  operations, depending on its needs or preferences.
+
+Package: git
+Architecture: all
+Depends: gnu-interactive-tools
+Description: transitional dummy package which can be safely removed
