@@ -13,7 +13,7 @@ Description:	GIT (GNU Interactive Tools) provides an extensible file
 Keywords:       File browser, Process viewer, Hex viewer, Interactive Tools.
 Author:         tudor@cs.unh.edu (Tudor Hulubei)
 		pink@roedu.net (Andrei Pitis)
-Maintained-by:  tudor@cs.unh.edu (Tudor Hulubei)
+Maintained-by:  ianb@nessie.mcc.ac.uk (Ian Beckwith)
 Primary-site:   ftp.cs.unh.edu /pub/grads/tudor/git
 		415k gnu-interactive-tools-@VERSION@.tar.gz
 Alternate-site: ftp.gnu.org /pub/gnu/git

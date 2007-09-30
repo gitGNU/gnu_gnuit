@@ -16,14 +16,14 @@ To install the GIT package just type:
 	make
 	make install
 
-If you want to install striped binaries (smaller), type
+If you want to install stripped binaries (smaller), type
 	make install-strip
 instead of
 	make install
 
 The configure script first checks for the termcap library.  If the
-termcap library is not found, some terminfo libraries will be
-searched: ncurses, curses, termlib, tinfo, terminfo.  If you want to
+termcap library is not found, some terminfo libraries will be searched:
+ncursesw, ncurses, curses, termlib, tinfo, terminfo.  If you want to
 change this default behavior and search for terminfo libraries before
 searching the termcap library, run
 
@@ -34,6 +34,10 @@ instead of
 	./configure
 
 Note that it is best to use terminfo instead of termcap under HP-UX.
+
+The filemanager has recently changed name from 'git' to 'gitfm'.
+A transitional script that warns users is installed as 'git'.
+To disable this, use the --disable-transition flag to ./configure.
 
 For more information about the 'configure' script please read the
 INSTALL file in this directory.
@@ -58,8 +62,9 @@ m. .gitrc.mach		- mach configuration file (for the GNU Hurd)
 etc.
 
 When git/gitps/gitview are started, they search a file named
-.gitrc.TERM first in the home directory and then in the $(prefix)/lib
-directory (usually /usr/local/lib) (see INSTALL).
+.gitrc.TERM first in the home directory and then in the
+$(datadir)/gnu-interactive-tools directory
+($(datadir) is usually /usr/local/share) (see INSTALL).
 
 TERM is the value of your 'TERM' environment variable, e.g. vt102; if
 TERM=vt102, your configuration file should be .gitrc.vt102.  The
@@ -142,4 +147,4 @@ Good luck!
 Tudor & Andi
 
 ----------------------------------------------------------------------
-Please send bug reports to tudor@cs.unh.edu
+Please send bug reports to ianb@nessie.mcc.ac.uk

@@ -159,7 +159,7 @@ fatal_signal(signum)
 		    "%s: got a stupid signal (%d). Unless it was a joke ...\n",
 		    g_program, signum);
 	  ask_report:
-	    fprintf(stderr, "%s: please report to tudor@cs.unh.edu\n",
+	    fprintf(stderr, "%s: please report to ianb@nessie.mcc.ac.uk\n",
 		    g_program);
 	    break;
     }
