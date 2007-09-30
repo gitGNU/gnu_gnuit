@@ -4235,8 +4235,7 @@ panel_act_BIN_PACKING(this, other, bin_size)
 
 	fsu.fsu_blocks = (uintmax_t) -1;
 
-	/* get_fs_usage will fail on SVR2 (needs disk
-	   instead of NULL) but we are Debian */
+	/* get_fs_usage will fail on SVR2 (needs disk instead of NULL) */
 
 	if (get_fs_usage(other->path, NULL, &fsu) >= 0 && fsu.fsu_blocks != (uintmax_t) -1)
 	{
