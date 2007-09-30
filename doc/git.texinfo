@@ -3825,7 +3825,8 @@ to @code{$HOME/.gitaction}.  When this one fails too the patterns in
 @code{gitaction} are tried.  For an example of how to write .gitaction
 scripts take a look at the @code{.gitaction} shell script provided as
 part of the distribution and installed in the
-@file{/usr/share/doc/git/examples/} directory.
+@samp{$(prefix)/bin} directory. Debian users will find it in
+@samp{/usr/share/doc/gnu-interactive-tools/examples/}.
 
 @node gitunpack, gitrgrep, gitaction, Description
 @section Unified archive unpacking
@@ -3879,10 +3880,19 @@ default one.  The defaults are:
 
 @display
 	GIT_SHELL='/bin/sh'
-	GIT_EDITOR='sensible-editor'
+	GIT_EDITOR='vi'
 	GIT_RMAIL='emacs -f rmail'
-	GIT_PAGER='sensible-pager'
+	GIT_PAGER='more
 	GIT_VMSTAT='free'
+	GIT_BROWSER='lynx'
+@end display
+
+if the @code{configure} script is passed @samp{--enable-debian}, some of
+the defaults are changed as follows:
+
+@display
+	GIT_EDITOR='sensible-editor'
+	GIT_PAGER='sensible-pager'
 	GIT_BROWSER='sensible-browser'
 @end display
 
@@ -3899,6 +3909,7 @@ your @file{.profile}:
 	export GIT_VMSTAT='vmstat'
 	export GIT_BROWSER='netscape'
 @end display
+
 @vindex GIT_SHELL
 @vindex GIT_EDITOR
 @vindex GIT_RMAIL
@@ -3912,7 +3923,7 @@ your @file{.profile}:
 
 There is one configuration file per terminal type in @code{GIT}.  The
 configuration file(s) reside in the user's home directory or (the
-default versions) in the directory @file{/usr/share/git/}).
+default versions) in the directory @file{/usr/share/gnu-interactive-tools/}).
 
 Their generic name is @file{.gitrc.TERM}.  @code{GIT} allows each
 terminal type to have its own configuration file (@var{TERM} is the
@@ -3943,10 +3954,10 @@ a file, but on systems with huge @samp{termcap} databases, copying the
 definitions of the most used terminals in a local @file{.termcap} file
 will lead to a faster start.
 
-The @file{.gitrc.TERM} it is first time searched in the home directory
-then, if not found, in the directory @file{/usr/share/git/}).  The
-configuration file is structured in sections, each section containing
-variables in the following format:
+The @file{.gitrc.TERM} is first searched for in the home directory then,
+if not found, in the directory @file{/usr/share/gnu-interactive-tools/}).
+The configuration file is structured in sections, each section
+containing variables in the following format:
 
 @display
 	@samp{variable-name} = @samp{first-field};@samp{second-field}; ...

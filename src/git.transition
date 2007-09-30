@@ -15,11 +15,11 @@ EOT
 if [ -t 0 ] && [ -t 1 ];then
    echo "Press RETURN to run gitfm" >&2
    read
-   exec /usr/bin/gitfm "$@"
+   exec gitfm "$@"
 else
 	if [ -x /usr/bin/git-scm ]
 	then
-		exec -a git /usr/bin/git-scm "$@"
+		exec -a git git-scm "$@"
 	fi
 fi
 
