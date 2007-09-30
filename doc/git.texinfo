@@ -28,7 +28,7 @@ GIT: A set of interactive tools, by Tudor Hulubei and Andrei Pitis.
 
 This file documents the GNU Interactive Tools package.
 
-Copyright (C) 1993-1998 Free Software Foundation, Inc.
+Copyright (C) 1993-1998, 2006-2007 Free Software Foundation, Inc.
 
 Permission is granted to make and distribute verbatim copies of
 this manual provided the copyright notice and this permission notice
@@ -65,7 +65,7 @@ approved by the Foundation.
 
 @page
 @vskip 0pt plus 1filll
-Copyright @copyright{} 1993-1998 Free Software Foundation, Inc.
+Copyright @copyright{} 1993-1998, 2006-2007 Free Software Foundation, Inc.
 
 Permission is granted to make and distribute verbatim copies of this
 manual provided the copyright notice and this permission notice are

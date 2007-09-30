@@ -1,6 +1,6 @@
 dnl #####################################################################
 dnl #          Autoconf input file for GNU Interactive Tools            #
-dnl #      Copyright (C) 1993-2003 Free Software Foundation, Inc.       #
+dnl # Copyright (C) 1993-2003, 2006-2007 Free Software Foundation, Inc. #
 dnl #####################################################################
 
 

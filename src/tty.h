@@ -1,6 +1,6 @@
 /* tty.h -- Data structures & function prototypes for tty.c stuff.  */
 
-/* Copyright (C) 1993-2000 Free Software Foundation, Inc.
+/* Copyright (C) 1993-2000, 2006-2007 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
