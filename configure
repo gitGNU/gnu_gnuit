@@ -840,7 +840,6 @@ HAVE_WCTYPE_H
 WCTYPE_H
 LIBGNU_LIBDEPS
 LIBGNU_LTLIBDEPS
-LIBOBJS
 TEXI2DVI
 TEXI2HTML
 HTMLDOCS_TEXI2HTML_TRUE
@@ -853,6 +852,7 @@ MAKE
 INSTALL
 INCLUDES
 CLEANFILES
+LIBOBJS
 LTLIBOBJS
 gl_LIBOBJS
 gl_LTLIBOBJS'
@@ -16110,263 +16110,6 @@ _ACEOF
     fi
 fi
 
-
-
-{ echo "$as_me:$LINENO: checking for tilde_expand in -lreadline" >&5
-echo $ECHO_N "checking for tilde_expand in -lreadline... $ECHO_C" >&6; }
-if test "${ac_cv_lib_readline_tilde_expand+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_check_lib_save_LIBS=$LIBS
-LIBS="-lreadline  $LIBS"
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char tilde_expand ();
-int
-main ()
-{
-return tilde_expand ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (ac_try="$ac_link"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_link") 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && {
-	 test -z "$ac_c_werror_flag" ||
-	 test ! -s conftest.err
-       } && test -s conftest$ac_exeext &&
-       $as_test_x conftest$ac_exeext; then
-  ac_cv_lib_readline_tilde_expand=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-	ac_cv_lib_readline_tilde_expand=no
-fi
-
-rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
-      conftest$ac_exeext conftest.$ac_ext
-LIBS=$ac_check_lib_save_LIBS
-fi
-{ echo "$as_me:$LINENO: result: $ac_cv_lib_readline_tilde_expand" >&5
-echo "${ECHO_T}$ac_cv_lib_readline_tilde_expand" >&6; }
-if test $ac_cv_lib_readline_tilde_expand = yes; then
-  cat >>confdefs.h <<_ACEOF
-#define HAVE_LIBREADLINE 1
-_ACEOF
-
-  LIBS="-lreadline $LIBS"
-
-fi
-
-{ echo "$as_me:$LINENO: checking for tilde_expand" >&5
-echo $ECHO_N "checking for tilde_expand... $ECHO_C" >&6; }
-if test "${ac_cv_func_tilde_expand+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-/* Define tilde_expand to an innocuous variant, in case <limits.h> declares tilde_expand.
-   For example, HP-UX 11i <limits.h> declares gettimeofday.  */
-#define tilde_expand innocuous_tilde_expand
-
-/* System header to define __stub macros and hopefully few prototypes,
-    which can conflict with char tilde_expand (); below.
-    Prefer <limits.h> to <assert.h> if __STDC__ is defined, since
-    <limits.h> exists even on freestanding compilers.  */
-
-#ifdef __STDC__
-# include <limits.h>
-#else
-# include <assert.h>
-#endif
-
-#undef tilde_expand
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char tilde_expand ();
-/* The GNU C library defines this for functions which it implements
-    to always fail with ENOSYS.  Some functions are actually named
-    something starting with __ and the normal name is an alias.  */
-#if defined __stub_tilde_expand || defined __stub___tilde_expand
-choke me
-#endif
-
-int
-main ()
-{
-return tilde_expand ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (ac_try="$ac_link"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_link") 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && {
-	 test -z "$ac_c_werror_flag" ||
-	 test ! -s conftest.err
-       } && test -s conftest$ac_exeext &&
-       $as_test_x conftest$ac_exeext; then
-  ac_cv_func_tilde_expand=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-	ac_cv_func_tilde_expand=no
-fi
-
-rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
-      conftest$ac_exeext conftest.$ac_ext
-fi
-{ echo "$as_me:$LINENO: result: $ac_cv_func_tilde_expand" >&5
-echo "${ECHO_T}$ac_cv_func_tilde_expand" >&6; }
-if test $ac_cv_func_tilde_expand = yes; then
-  :
-else
-  case " $LIBOBJS " in
-  *" tilde.$ac_objext "* ) ;;
-  *) LIBOBJS="$LIBOBJS tilde.$ac_objext"
- ;;
-esac
-
-fi
-
-{ echo "$as_me:$LINENO: checking for using_history" >&5
-echo $ECHO_N "checking for using_history... $ECHO_C" >&6; }
-if test "${ac_cv_func_using_history+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-/* Define using_history to an innocuous variant, in case <limits.h> declares using_history.
-   For example, HP-UX 11i <limits.h> declares gettimeofday.  */
-#define using_history innocuous_using_history
-
-/* System header to define __stub macros and hopefully few prototypes,
-    which can conflict with char using_history (); below.
-    Prefer <limits.h> to <assert.h> if __STDC__ is defined, since
-    <limits.h> exists even on freestanding compilers.  */
-
-#ifdef __STDC__
-# include <limits.h>
-#else
-# include <assert.h>
-#endif
-
-#undef using_history
-
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char using_history ();
-/* The GNU C library defines this for functions which it implements
-    to always fail with ENOSYS.  Some functions are actually named
-    something starting with __ and the normal name is an alias.  */
-#if defined __stub_using_history || defined __stub___using_history
-choke me
-#endif
-
-int
-main ()
-{
-return using_history ();
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (ac_try="$ac_link"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_link") 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && {
-	 test -z "$ac_c_werror_flag" ||
-	 test ! -s conftest.err
-       } && test -s conftest$ac_exeext &&
-       $as_test_x conftest$ac_exeext; then
-  ac_cv_func_using_history=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-	ac_cv_func_using_history=no
-fi
-
-rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
-      conftest$ac_exeext conftest.$ac_ext
-fi
-{ echo "$as_me:$LINENO: result: $ac_cv_func_using_history" >&5
-echo "${ECHO_T}$ac_cv_func_using_history" >&6; }
-if test $ac_cv_func_using_history = yes; then
-  :
-else
-  case " $LIBOBJS " in
-  *" history.$ac_objext "* ) ;;
-  *) LIBOBJS="$LIBOBJS history.$ac_objext"
- ;;
-esac
-
-fi
-
-
 { echo "$as_me:$LINENO: checking for dumb C compiler" >&5
 echo $ECHO_N "checking for dumb C compiler... $ECHO_C" >&6; }
 if test "${git_cv_dumb_cc+set}" = set; then
@@ -18626,7 +18369,6 @@ HAVE_WCTYPE_H!$HAVE_WCTYPE_H$ac_delim
 WCTYPE_H!$WCTYPE_H$ac_delim
 LIBGNU_LIBDEPS!$LIBGNU_LIBDEPS$ac_delim
 LIBGNU_LTLIBDEPS!$LIBGNU_LTLIBDEPS$ac_delim
-LIBOBJS!$LIBOBJS$ac_delim
 TEXI2DVI!$TEXI2DVI$ac_delim
 TEXI2HTML!$TEXI2HTML$ac_delim
 HTMLDOCS_TEXI2HTML_TRUE!$HTMLDOCS_TEXI2HTML_TRUE$ac_delim
@@ -18639,6 +18381,7 @@ MAKE!$MAKE$ac_delim
 INSTALL!$INSTALL$ac_delim
 INCLUDES!$INCLUDES$ac_delim
 CLEANFILES!$CLEANFILES$ac_delim
+LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 gl_LIBOBJS!$gl_LIBOBJS$ac_delim
 gl_LTLIBOBJS!$gl_LTLIBOBJS$ac_delim

@@ -46,7 +46,6 @@ extern struct passwd *getpwuid (), *getpwnam ();
 #endif /* USG && !defined (HAVE_GETPW_DECLS) */
 
 #if !defined (savestring)
-extern char *xmalloc ();
 #  ifndef strcpy
 extern char *strcpy ();
 #  endif

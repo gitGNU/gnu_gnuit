@@ -2005,7 +2005,7 @@ vcs_io(buf, op)
     char *buf;
     int op;
 {
-    int (*fn)();
+    ssize_t (*fn)();
     int vcsfd, flag;
     char vcs_name[16];
     char vcsa_name[16];

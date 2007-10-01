@@ -1,13 +1,19 @@
-2007-09-30  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
+2007-10-01  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
 
 	* Remove leading dot from system copy of config files.
+	* FreeBSD fixes.
+	* tilde.[ch] and history.[ch] were not getting included
+	  when needed. Autotools weirdness, I suspect gnulib.
+	  Moved them back to src/ and now use them unconditionally.
+
+2007-09-30  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
+
 	* add --enable-debian flag to set defaults
 	  for debian (sensible-browser, etc).
 	* merged debian manpages (gitps, gitview, gitwipe, etc) upstream.
 	* merged Bruce Sass's patches for manipulating .deb files
 	* Updated RPM spec file. Warning: untested.
 	* Remove CVS $Id$ tags as we are now using git.
-	* FreeBSD fixes.
 
 2007-09-29  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
 

@@ -13,7 +13,8 @@ gitfm_SOURCES = git.c tty.c tty.h window.c window.h inputline.c inputline.h\
 	      status.c status.h panel.c panel.h title.c title.h\
 	      configure.c configure.h misc.c misc.h signals.c signals.h\
 	      xmalloc.c xmalloc.h xstring.h xio.c xio.h\
-	      xstack.c xstack.h system.c system.h
+	      xstack.c xstack.h system.c system.h \
+	      tilde.c tilde.h history.c history.h
 gitps_SOURCES = gitps.c tty.c tty.h window.c window.h misc.c misc.h\
 		configure.c configure.h signals.c signals.h xio.c xio.h\
 		xmalloc.c xmalloc.h xstring.h
@@ -27,6 +28,7 @@ gitwhich_SOURCES = gitwhich.c xmalloc.c xmalloc.h
 gitfm_LDADD = -L../lib -lgnu
 gitps_LDADD = -L../lib -lgnu
 gitview_LDADD = -L../lib -lgnu
+gitwhich_LDADD = -L../lib -lgnu
 
 AM_CPPFLAGS = -I$(srcdir)/.. -I.. -I$(top_srcdir)/lib -I$(top_srcdir)/src
 if DEBIAN
