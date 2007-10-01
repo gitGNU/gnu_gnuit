@@ -41,7 +41,6 @@ gzip -9nf $RPM_BUILD_ROOT/usr/share/info/git.info*
 /usr/bin/.gitaction
 /usr/man/man1/*
 /usr/share/info/git*
-/usr/share/gnu-interactive-tools/.gitrc*
 /usr/share/gnu-interactive-tools/*
 /usr/share/doc/gnu-interactive-tools/*
 

@@ -4,6 +4,7 @@ gnu-interactive-tools (4.9.1-1) unstable; urgency=low
   * Package name changed to gnu-interactive-tools.
   * Added transitional git package.
   * Removed unneeded postinst and prerm.
+  * Updated NEWS.Debian with user-visible changes.
 
  -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Sun, 30 Sep 2007 19:32:33 +0100
 

@@ -1,3 +1,14 @@
+gnu-interactive-tools (4.9.1-1) unstable; urgency=low
+
+  * The package has been renamed to gnu-interactive-tools.
+    The old git transitional package can be safely removed.
+
+  * System copies of gitrc files in /usr/share/gnu-interactive-tools
+    no longer have a leading dot. User copies in home directories
+    should still have a "." at the start.
+
+ -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Mon, 01 Oct 2007 02:56:02 +0100
+
 git (4.3.20-11) unstable; urgency=low
 
   * The /usr/bin/git transition is now complete, git longer provides

@@ -36,15 +36,15 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 subdir = term
-DIST_COMMON = $(srcdir)/.gitrc.aixterm.in $(srcdir)/.gitrc.ansi.in \
-	$(srcdir)/.gitrc.common.in $(srcdir)/.gitrc.generic.in \
-	$(srcdir)/.gitrc.hft.in $(srcdir)/.gitrc.hpterm.in \
-	$(srcdir)/.gitrc.linux-m.in $(srcdir)/.gitrc.linux.in \
-	$(srcdir)/.gitrc.mach.in $(srcdir)/.gitrc.minix.in \
-	$(srcdir)/.gitrc.thix.in $(srcdir)/.gitrc.vt100.in \
-	$(srcdir)/.gitrc.vt102.in $(srcdir)/.gitrc.xterm-color.in \
-	$(srcdir)/.gitrc.xterm.in $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in ChangeLog
+DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
+	$(srcdir)/gitrc.aixterm.in $(srcdir)/gitrc.ansi.in \
+	$(srcdir)/gitrc.common.in $(srcdir)/gitrc.generic.in \
+	$(srcdir)/gitrc.hft.in $(srcdir)/gitrc.hpterm.in \
+	$(srcdir)/gitrc.linux-m.in $(srcdir)/gitrc.linux.in \
+	$(srcdir)/gitrc.mach.in $(srcdir)/gitrc.minix.in \
+	$(srcdir)/gitrc.thix.in $(srcdir)/gitrc.vt100.in \
+	$(srcdir)/gitrc.vt102.in $(srcdir)/gitrc.xterm-color.in \
+	$(srcdir)/gitrc.xterm.in ChangeLog
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/alloca.m4 \
 	$(top_srcdir)/m4/codeset.m4 $(top_srcdir)/m4/dirname.m4 \
@@ -78,10 +78,10 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
-CONFIG_CLEAN_FILES = .gitrc.common .gitrc.aixterm .gitrc.ansi \
-	.gitrc.generic .gitrc.hft .gitrc.hpterm .gitrc.linux \
-	.gitrc.linux-m .gitrc.mach .gitrc.minix .gitrc.thix \
-	.gitrc.vt100 .gitrc.vt102 .gitrc.xterm .gitrc.xterm-color
+CONFIG_CLEAN_FILES = gitrc.common gitrc.aixterm gitrc.ansi \
+	gitrc.generic gitrc.hft gitrc.hpterm gitrc.linux gitrc.linux-m \
+	gitrc.mach gitrc.minix gitrc.thix gitrc.vt100 gitrc.vt102 \
+	gitrc.xterm gitrc.xterm-color
 SOURCES =
 DIST_SOURCES =
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
@@ -331,25 +331,25 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-EXTRA_DIST = .gitrc.aixterm.in .gitrc.ansi.in .gitrc.common.in\
-	     .gitrc.generic.in .gitrc.hft.in .gitrc.hpterm.in .gitrc.linux.in\
-	     .gitrc.mach.in .gitrc.minix.in .gitrc.thix.in .gitrc.vt100.in\
-	     .gitrc.vt102.in .gitrc.xterm.in .gitrc.xterm-color.in .gitrc.linux-m.in
+EXTRA_DIST = gitrc.aixterm.in gitrc.ansi.in gitrc.common.in\
+	     gitrc.generic.in gitrc.hft.in gitrc.hpterm.in gitrc.linux.in\
+	     gitrc.mach.in gitrc.minix.in gitrc.thix.in gitrc.vt100.in\
+	     gitrc.vt102.in gitrc.xterm.in gitrc.xterm-color.in gitrc.linux-m.in
 
-pkgdata_DATA = .gitrc.aixterm .gitrc.ansi .gitrc.common\
-	       .gitrc.generic .gitrc.hft .gitrc.hpterm .gitrc.linux\
-	       .gitrc.mach .gitrc.minix .gitrc.thix .gitrc.vt100\
-	       .gitrc.vt102 .gitrc.xterm .gitrc.xterm-color .gitrc.linux-m
+pkgdata_DATA = gitrc.aixterm gitrc.ansi gitrc.common\
+	       gitrc.generic gitrc.hft gitrc.hpterm gitrc.linux\
+	       gitrc.mach gitrc.minix gitrc.thix gitrc.vt100\
+	       gitrc.vt102 gitrc.xterm gitrc.xterm-color gitrc.linux-m
 
-GIT_GENERICS = .gitrc.sun .gitrc.sun-cmd .gitrc.eterm .gitrc.pc3
-GIT_XTERMS = .gitrc.xterms
-GIT_ANSIS = .gitrc.iris-ansi .gitrc.iris-ansi-net .gitrc.cygwin
-GIT_COLOR_XTERMS = .gitrc.dtterm .gitrc.rxvt .gitrc.xterm-debian .gitrc.Eterm .gitrc.rxvt-unicode
-GIT_LINUXS = .gitrc.console
-GIT_HPTERMS = .gitrc.hp
-GIT_VT100S = .gitrc.vt125 .gitrc.vt200 .gitrc.vt201 .gitrc.vt220\
-		   .gitrc.vt240 .gitrc.vt300 .gitrc.vt320 .gitrc.vt400\
-		   .gitrc.vt420 .gitrc.screen
+GIT_GENERICS = gitrc.sun gitrc.sun-cmd gitrc.eterm gitrc.pc3
+GIT_XTERMS = gitrc.xterms
+GIT_ANSIS = gitrc.iris-ansi gitrc.iris-ansi-net gitrc.cygwin
+GIT_COLOR_XTERMS = gitrc.dtterm gitrc.rxvt gitrc.xterm-debian gitrc.Eterm gitrc.rxvt-unicode
+GIT_LINUXS = gitrc.console
+GIT_HPTERMS = gitrc.hp
+GIT_VT100S = gitrc.vt125 gitrc.vt200 gitrc.vt201 gitrc.vt220\
+		   gitrc.vt240 gitrc.vt300 gitrc.vt320 gitrc.vt400\
+		   gitrc.vt420 gitrc.screen
 
 all: all-am
 
@@ -383,35 +383,35 @@ $(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
-.gitrc.common: $(top_builddir)/config.status $(srcdir)/.gitrc.common.in
+gitrc.common: $(top_builddir)/config.status $(srcdir)/gitrc.common.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
-.gitrc.aixterm: $(top_builddir)/config.status $(srcdir)/.gitrc.aixterm.in
+gitrc.aixterm: $(top_builddir)/config.status $(srcdir)/gitrc.aixterm.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
-.gitrc.ansi: $(top_builddir)/config.status $(srcdir)/.gitrc.ansi.in
+gitrc.ansi: $(top_builddir)/config.status $(srcdir)/gitrc.ansi.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
-.gitrc.generic: $(top_builddir)/config.status $(srcdir)/.gitrc.generic.in
+gitrc.generic: $(top_builddir)/config.status $(srcdir)/gitrc.generic.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
-.gitrc.hft: $(top_builddir)/config.status $(srcdir)/.gitrc.hft.in
+gitrc.hft: $(top_builddir)/config.status $(srcdir)/gitrc.hft.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
-.gitrc.hpterm: $(top_builddir)/config.status $(srcdir)/.gitrc.hpterm.in
+gitrc.hpterm: $(top_builddir)/config.status $(srcdir)/gitrc.hpterm.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
-.gitrc.linux: $(top_builddir)/config.status $(srcdir)/.gitrc.linux.in
+gitrc.linux: $(top_builddir)/config.status $(srcdir)/gitrc.linux.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
-.gitrc.linux-m: $(top_builddir)/config.status $(srcdir)/.gitrc.linux-m.in
+gitrc.linux-m: $(top_builddir)/config.status $(srcdir)/gitrc.linux-m.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
-.gitrc.mach: $(top_builddir)/config.status $(srcdir)/.gitrc.mach.in
+gitrc.mach: $(top_builddir)/config.status $(srcdir)/gitrc.mach.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
-.gitrc.minix: $(top_builddir)/config.status $(srcdir)/.gitrc.minix.in
+gitrc.minix: $(top_builddir)/config.status $(srcdir)/gitrc.minix.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
-.gitrc.thix: $(top_builddir)/config.status $(srcdir)/.gitrc.thix.in
+gitrc.thix: $(top_builddir)/config.status $(srcdir)/gitrc.thix.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
-.gitrc.vt100: $(top_builddir)/config.status $(srcdir)/.gitrc.vt100.in
+gitrc.vt100: $(top_builddir)/config.status $(srcdir)/gitrc.vt100.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
-.gitrc.vt102: $(top_builddir)/config.status $(srcdir)/.gitrc.vt102.in
+gitrc.vt102: $(top_builddir)/config.status $(srcdir)/gitrc.vt102.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
-.gitrc.xterm: $(top_builddir)/config.status $(srcdir)/.gitrc.xterm.in
+gitrc.xterm: $(top_builddir)/config.status $(srcdir)/gitrc.xterm.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
-.gitrc.xterm-color: $(top_builddir)/config.status $(srcdir)/.gitrc.xterm-color.in
+gitrc.xterm-color: $(top_builddir)/config.status $(srcdir)/gitrc.xterm-color.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 uninstall-info-am:
 install-pkgdataDATA: $(pkgdata_DATA)
@@ -560,43 +560,43 @@ install-data-hook:
 	for i in $(GIT_XTERMS);\
 	do\
 	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
-	    ln -s $(datadir)/gnu-interactive-tools/.gitrc.xterm $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
+	    ln -s $(datadir)/gnu-interactive-tools/gitrc.xterm $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_COLOR_XTERMS);\
 	do\
 	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
-	    ln -s $(datadir)/gnu-interactive-tools/.gitrc.xterm-color $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
+	    ln -s $(datadir)/gnu-interactive-tools/gitrc.xterm-color $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_HPTERMS);\
 	do\
 	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
-	    ln -s $(datadir)/gnu-interactive-tools/.gitrc.hpterm $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
+	    ln -s $(datadir)/gnu-interactive-tools/gitrc.hpterm $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_GENERICS);\
 	do\
 	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
-	    ln -s $(datadir)/gnu-interactive-tools/.gitrc.generic $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
+	    ln -s $(datadir)/gnu-interactive-tools/gitrc.generic $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_VT100S);\
 	do\
 	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
-	    ln -s $(datadir)/gnu-interactive-tools/.gitrc.vt100 $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
+	    ln -s $(datadir)/gnu-interactive-tools/gitrc.vt100 $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_ANSIS);\
 	do\
 	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
-	    ln -s $(datadir)/gnu-interactive-tools/.gitrc.ansi $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
+	    ln -s $(datadir)/gnu-interactive-tools/gitrc.ansi $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 	\
 	for i in $(GIT_LINUXS);\
 	do\
 	    rm -f $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
-	    ln -s $(datadir)/gnu-interactive-tools/.gitrc.linux $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
+	    ln -s $(datadir)/gnu-interactive-tools/gitrc.linux $(DESTDIR)$(datadir)/gnu-interactive-tools/$$i;\
 	done
 
 uninstall-local:

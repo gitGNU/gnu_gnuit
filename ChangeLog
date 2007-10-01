@@ -1,5 +1,6 @@
 2007-09-30  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
 
+	* Remove leading dot from system copy of config files.
 	* add --enable-debian flag to set defaults
 	  for debian (sensible-browser, etc).
 	* merged debian manpages (gitps, gitview, gitwipe, etc) upstream.

@@ -45,26 +45,26 @@ INSTALL file in this directory.
 
 ** There are many configuration files in GIT:
 
-a. .gitrc.generic	- generic configuration file
-b. .gitrc.linux		- Linux console configuration file
-c. .gitrc.vt100		- vt100 configuration file
-d. .gitrc.vt102		- vt102 configuration file (same as vt100)
-e. .gitrc.xterm		- xterm configuration file
-f. .gitrc.xterm-color	- xterm configuration file
-g. .gitrc.hpterm	- hpterm configuration file
-h. .gitrc.aixterm	- aixterm configuration file
-i. .gitrc.hft		- hft configuration file
-j. .gitrc.thix		- thix configuration file
-k. .gitrc.ansi		- ansi configuration file
-l. .gitrc.minix		- minix configuration file
-m. .gitrc.mach		- mach configuration file (for the GNU Hurd)
+a. gitrc.generic        - generic configuration file
+b. gitrc.linux          - Linux console configuration file
+c. gitrc.vt100          - vt100 configuration file
+d. gitrc.vt102          - vt102 configuration file (same as vt100)
+e. gitrc.xterm          - xterm configuration file
+f. gitrc.xterm-color    - xterm configuration file
+g. gitrc.hpterm         - hpterm configuration file
+h. gitrc.aixterm        - aixterm configuration file
+i. gitrc.hft            - hft configuration file
+j. gitrc.thix           - thix configuration file
+k. gitrc.ansi           - ansi configuration file
+l. gitrc.minix          - minix configuration file
+m. gitrc.mach           - mach configuration file (for the GNU Hurd)
 .....
 etc.
 
-When git/gitps/gitview are started, they search a file named
-.gitrc.TERM first in the home directory and then in the
-$(datadir)/gnu-interactive-tools directory
-($(datadir) is usually /usr/local/share) (see INSTALL).
+When git/gitps/gitview are started, they search a file named .gitrc.TERM
+first in the home directory and then (without the leading dot) in the
+$(datadir)/gnu-interactive-tools directory ($(datadir) is usually
+/usr/local/share) (see INSTALL).
 
 TERM is the value of your 'TERM' environment variable, e.g. vt102; if
 TERM=vt102, your configuration file should be .gitrc.vt102.  The
@@ -74,7 +74,7 @@ configuration file for it copying and modifying one of them.
 
 Put a suitable configuration file in your home directory if you want
 to overwrite the default configuration file.  If you don't have a
-configuration file for your terminal, .gitrc.generic will be used.
+configuration file for your terminal, gitrc.generic will be used.
 
 If your terminal supports standard ANSI color sequences, set
 AnsiColors to ON in the [Setup] section of .gitrc.TERM.  Otherwise,
@@ -84,7 +84,7 @@ AnsiColors should be OFF.
 disks with gitmount (an auto-mount script).  This works for Linux, on
 other systems it might be different.
 
-** Read the .gitrc.TERM files to find out how to configure GIT's
+** Read the gitrc.TERM files to find out how to configure GIT's
 colors, keys ...
 
 **  If you are using termcap and your system has a huge termcap
@@ -137,10 +137,8 @@ to OFF in the configuration files.
 ** If your terminal or terminal emulator supports ANSI colors
 (color_xterm & rxvt under Linux, aixterm under AIX, xterm under
 ULTRIX) you might want to set AnsiColors to ON in the appropriate
-configuration file (.gitrc.xterm).  If your terminal emulator does not
+configuration file (gitrc.xterm).  If your terminal emulator does not
 support ANSI color sequences, it is best to set AnsiColors to OFF.
-Don't use color_xterm under Linux, it has bugs in the color handling
-mechanism.  Please see the file PROBLEMS for more details.
 
 
 Good luck!

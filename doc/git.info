@@ -1768,7 +1768,7 @@ systems.  *Note gitmount::, for more information.
 
    The default key bindings set has been designed to work under
 `Linux', but it can be easily changed for other `UNIX' systems with
-different device names.  Reading the configuration file `.gitrc.common'
+different device names.  Reading the configuration file `gitrc.common'
 should be enough.  *Note Hot Keys::, for more information.
 
    As a convention, the `/mnt' directory is used to store an empty
@@ -2005,7 +2005,7 @@ the default signal and `F10', `q' or `^X ^C' to leave.
 
    You can change these keys, just read the GITPS-Setup, GITPS-Color,
 GITPS-Monochrome and GITPS-Keys sections in the configuration files
-`.gitrc.TERM'.
+`gitrc.TERM'.
 
 
 File: git.info,  Node: gitview,  Next: gitkeys,  Prev: gitps,  Up: Description
@@ -2020,7 +2020,7 @@ File: git.info,  Node: gitview,  Next: gitkeys,  Prev: gitps,  Up: Description
 
    You can change these keys, just read the GITVIEW-Setup,
 GITVIEW-Color, GITVIEW-Monochrome and GITVIEW-Keys sections in the
-configuration files `.gitrc.TERM'.
+configuration files `gitrc.TERM'.
 
    Here is a brief description of the command line arguments:
 
@@ -2202,17 +2202,18 @@ File: git.info,  Node: Configuration Files,  Prev: Environment Variables,  Up: C
 There is one configuration file per terminal type in `GIT'.  The
 configuration file(s) reside in the user's home directory or (the
 default versions) in the directory `/usr/share/gnu-interactive-tools/').
+Files in the user's home directory start with a leading "."
 
-   Their generic name is `.gitrc.TERM'.  `GIT' allows each terminal
-type to have its own configuration file (TERM is the value of the TERM
+   Their generic name is `gitrc.TERM'.  `GIT' allows each terminal type
+to have its own configuration file (TERM is the value of the TERM
 environment variable (e.g `vt102'); for the `Linux' console the
-configuration file is `.gitrc.console').  
+configuration file is `gitrc.console').  
 
    Since most of the key bindings are common to all the terminal types,
-a configuration file called `.gitrc.common' is parsed before parsing
-the normal `.gitrc.TERM' configuration file, the later one defining
-only those keys that are terminal specific.  However, if a key binding
-is redefined in the `.gitrc.TERM' file, that binding will be used.
+a configuration file called `gitrc.common' is parsed before parsing the
+normal `.gitrc.TERM' configuration file, the later one defining only
+those keys that are terminal specific.  However, if a key binding is
+redefined in the `gitrc.TERM' file, that binding will be used.
 
    If the `GIT' package have been compiled without passing the
 `--enable-terminfo' option to the `configure' script and your system
@@ -2231,8 +2232,8 @@ lead to a faster start.
 
    The `.gitrc.TERM' is first searched for in the home directory then,
 if not found, in the directory `/usr/share/gnu-interactive-tools/').
-The configuration file is structured in sections, each section
-containing variables in the following format:
+(without the leading ".").  The configuration file is structured in
+sections, each section containing variables in the following format:
 
      	`variable-name' = `first-field';`second-field'; ...
 
@@ -2313,7 +2314,7 @@ In this section the variables have only one field.
    This variable should be set to `ON' if the terminal supports
 standard `ANSI' color sequences.  Otherwise it should be `OFF'.  If
 `AnsiColors' is `ON', `GITxxx-Color' sections will be used in the
-configuration files `.gitrc.TERM'.  Otherwise, `GIT' interactive
+configuration files `gitrc.TERM'.  Otherwise, `GIT' interactive
 programs will use the `GITxxx-Monochrome' sections.  
 
 `UseLastScreenChar'
@@ -2415,7 +2416,7 @@ File: git.info,  Node: GITFM-Color,  Next: GITFM-Monochrome,  Prev: GITFM-Setup,
 In this sections the variables have only one field.
 
    These section allows you to customize the colors of `gitfm'.  Reading
-the `.gitrc.TERM' configuration file is self explanatory.
+the `gitrc.TERM' configuration file is self explanatory.
 
 
 File: git.info,  Node: GITFM-Monochrome,  Next: GITFM-Keys,  Prev: GITFM-Color,  Up: gitfm Sections
@@ -2426,7 +2427,7 @@ File: git.info,  Node: GITFM-Monochrome,  Next: GITFM-Keys,  Prev: GITFM-Color, 
 In this sections the variables have only one field.
 
    These section allows you to customize the appearance of `gitfm' on
-monochrome displays.  Reading the `.gitrc.TERM' configuration file is
+monochrome displays.  Reading the `gitrc.TERM' configuration file is
 self explanatory.
 
 
@@ -2760,7 +2761,7 @@ File: git.info,  Node: GITPS-Color,  Next: GITPS-Monochrome,  Prev: GITPS-Setup,
 In this sections the variables have only one field.
 
    These section allows you to customize the colors of `gitps'.
-Reading the `.gitrc.TERM' configuration file is self explanatory.
+Reading the `gitrc.TERM' configuration file is self explanatory.
 
 
 File: git.info,  Node: GITPS-Monochrome,  Next: GITPS-Keys,  Prev: GITPS-Color,  Up: gitps Sections
@@ -2771,7 +2772,7 @@ File: git.info,  Node: GITPS-Monochrome,  Next: GITPS-Keys,  Prev: GITPS-Color, 
 In this sections the variables have only one field.
 
    These section allows you to customize the appearance of `gitps' on
-monochrome displays.  Reading the `.gitrc.TERM' configuration file is
+monochrome displays.  Reading the `gitrc.TERM' configuration file is
 self explanatory.
 
 
@@ -2814,7 +2815,7 @@ File: git.info,  Node: GITVIEW-Color,  Next: GITVIEW-Monochrome,  Prev: GITVIEW-
 In this sections the variables have only one field.
 
    These section allows you to customize the colors of `gitview'.
-Reading the `.gitrc.TERM' configuration file is self explanatory.
+Reading the `gitrc.TERM' configuration file is self explanatory.
 
 
 File: git.info,  Node: GITVIEW-Monochrome,  Next: GITVIEW-Keys,  Prev: GITVIEW-Color,  Up: gitview Sections
@@ -2825,7 +2826,7 @@ File: git.info,  Node: GITVIEW-Monochrome,  Next: GITVIEW-Keys,  Prev: GITVIEW-C
 In this sections the variables have only one field.
 
    These section allows you to customize the appearance of `gitview' on
-monochrome displays.  Reading the `.gitrc.TERM' configuration file is
+monochrome displays.  Reading the `gitrc.TERM' configuration file is
 self explanatory.
 
 
@@ -2847,16 +2848,16 @@ will not be seen.
 
    When `gitfm' is compiled for `Linux', the default built-in color
 descriptions are for color monitors, so you can't (decently) run
-`gitfm' on a b/w monitor without the `.gitrc.TERM' file correctly
-configured.  `.gitrc.TERM' should be configured with `AnsiColors' =
-OFF. However, if your system knows about the linux-m terminal type,
-using that may be a better solution.
+`gitfm' on a b/w monitor without the `gitrc.TERM' file correctly
+configured.  `gitrc.TERM' should be configured with `AnsiColors' = OFF.
+However, if your system knows about the linux-m terminal type, using
+that may be a better solution.
 
    Job support is implemented only in `gitfm'.
 
    Due to the fact that the ';' character is used as a field separator
 in the configuration files, you can't write something like that in the
-`.gitrc.TERM' files:
+`gitrc.TERM' files:
 
    ^AAA = SHOW-USERS-AND-GROUPS; more /etc/passwd; more /etc/group
 
@@ -2867,7 +2868,7 @@ to.  You must write a small script instead:
 
    more /etc/passwd more /etc/group
 
-   Supposing the script name is `show_ug', the `.gitrc.TERM' line will
+   Supposing the script name is `show_ug', the `gitrc.TERM' line will
 look like this:
 
    ^AAA = SHOW-USERS-AND-GROUPS; show_ug
@@ -3465,7 +3466,7 @@ Variable Index
 * StartupFileDisplayMode:                GITFM-Setup.          (line 13)
 * StartupFileSortMethod:                 GITFM-Setup.          (line 20)
 * StartupScrollStep:                     Setup.                (line 26)
-* TERM:                                  Configuration Files.  (line 13)
+* TERM:                                  Configuration Files.  (line 14)
 * TypeSensitivity:                       GITFM-Setup.          (line 49)
 * UseLastScreenChar:                     Setup.                (line 21)
 
@@ -3945,67 +3946,67 @@ Node: Locking57864
 Node: Refreshing58260
 Node: Resetting58995
 Node: Mounting59247
-Node: Sysinfo62345
-Node: Environment63611
-Node: Processes64018
-Node: Sync66108
-Node: Documentation66359
-Node: Exit66853
-Node: gitps67071
-Node: gitview68077
-Node: gitkeys68919
-Node: gitwipe69300
-Node: gitmount70023
-Node: gitaction70781
-Node: gitunpack72681
-Node: gitrgrep73091
-Node: Customization73572
-Node: Environment Variables73869
-Node: Configuration Files75130
-Node: Key Sequences78143
-Node: Setup79472
-Node: gitfm Sections80422
-Node: GITFM-Setup80874
-Node: GITFM-Color83007
-Node: GITFM-Monochrome83375
-Node: GITFM-Keys83777
-Node: key-sequence84680
-Node: command-name85317
-Node: formatted-command86060
-Node: %s87384
-Node: %f87909
-Node: %d88152
-Node: %l88397
-Node: %t88648
-Node: %z88881
-Node: %a89110
-Node: %m89323
-Node: %g89525
-Node: %o89728
-Node: %p89931
-Node: %b90134
-Node: %i90347
-Node: %?90570
-Node: new-dir91060
-Node: save-screen91484
-Node: pause92182
-Node: hide92515
-Node: GITFM-FTI93393
-Node: gitps Sections93973
-Node: GITPS-Setup94365
-Node: GITPS-Color94603
-Node: GITPS-Monochrome94968
-Node: GITPS-Keys95370
-Node: gitview Sections95498
-Node: GITVIEW-Setup95879
-Node: GITVIEW-Color96127
-Node: GITVIEW-Monochrome96506
-Node: GITVIEW-Keys96922
-Node: Limitations97056
-Node: Bugs98460
-Node: Key Index98718
-Node: Command Index118482
-Node: Variable Index137604
-Node: Concept Index139660
+Node: Sysinfo62344
+Node: Environment63610
+Node: Processes64017
+Node: Sync66107
+Node: Documentation66358
+Node: Exit66852
+Node: gitps67070
+Node: gitview68075
+Node: gitkeys68916
+Node: gitwipe69297
+Node: gitmount70020
+Node: gitaction70778
+Node: gitunpack72678
+Node: gitrgrep73088
+Node: Customization73569
+Node: Environment Variables73866
+Node: Configuration Files75127
+Node: Key Sequences78224
+Node: Setup79553
+Node: gitfm Sections80502
+Node: GITFM-Setup80954
+Node: GITFM-Color83087
+Node: GITFM-Monochrome83454
+Node: GITFM-Keys83855
+Node: key-sequence84758
+Node: command-name85395
+Node: formatted-command86138
+Node: %s87462
+Node: %f87987
+Node: %d88230
+Node: %l88475
+Node: %t88726
+Node: %z88959
+Node: %a89188
+Node: %m89401
+Node: %g89603
+Node: %o89806
+Node: %p90009
+Node: %b90212
+Node: %i90425
+Node: %?90648
+Node: new-dir91138
+Node: save-screen91562
+Node: pause92260
+Node: hide92593
+Node: GITFM-FTI93471
+Node: gitps Sections94051
+Node: GITPS-Setup94443
+Node: GITPS-Color94681
+Node: GITPS-Monochrome95045
+Node: GITPS-Keys95446
+Node: gitview Sections95574
+Node: GITVIEW-Setup95955
+Node: GITVIEW-Color96203
+Node: GITVIEW-Monochrome96581
+Node: GITVIEW-Keys96996
+Node: Limitations97130
+Node: Bugs98530
+Node: Key Index98788
+Node: Command Index118552
+Node: Variable Index137674
+Node: Concept Index139730
 
 End Tag Table

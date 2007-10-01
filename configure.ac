@@ -685,21 +685,21 @@ AC_OUTPUT([
     Makefile
     src/Makefile
     term/Makefile
-    term/.gitrc.common
-    term/.gitrc.aixterm
-    term/.gitrc.ansi
-    term/.gitrc.generic
-    term/.gitrc.hft
-    term/.gitrc.hpterm
-    term/.gitrc.linux
-    term/.gitrc.linux-m
-    term/.gitrc.mach
-    term/.gitrc.minix
-    term/.gitrc.thix
-    term/.gitrc.vt100
-    term/.gitrc.vt102
-    term/.gitrc.xterm
-    term/.gitrc.xterm-color
+    term/gitrc.common
+    term/gitrc.aixterm
+    term/gitrc.ansi
+    term/gitrc.generic
+    term/gitrc.hft
+    term/gitrc.hpterm
+    term/gitrc.linux
+    term/gitrc.linux-m
+    term/gitrc.mach
+    term/gitrc.minix
+    term/gitrc.thix
+    term/gitrc.vt100
+    term/gitrc.vt102
+    term/gitrc.xterm
+    term/gitrc.xterm-color
     doc/Makefile
     lib/Makefile
     git.spec

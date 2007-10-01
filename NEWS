@@ -16,6 +16,9 @@
    users is installed unless configured otherwise with
    ./configure --disable-transition.
 
+** Dropped leading dots from system copies of gitrc files
+   Files in home directory still start with ".".
+
 ** Added 64bit I/O support.
 
 ** New terminals: rxvt-unicode, linux-m, cygwin, Eterm.

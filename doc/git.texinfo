@@ -3252,7 +3252,7 @@ file systems.  @xref{gitmount}, for more information.
 The default key bindings set has been designed to work under
 @code{Linux}, but it can be easily changed for other @code{UNIX} systems
 with different device names.  Reading the configuration file
-@file{.gitrc.common} should be enough.  @xref{Hot Keys}, for more
+@file{gitrc.common} should be enough.  @xref{Hot Keys}, for more
 information.
 
 As a convention, the @samp{/mnt} directory is used to store an empty
@@ -3708,7 +3708,7 @@ and @kbd{F10}, @kbd{q} or @kbd{^X ^C} to leave.
 
 You can change these keys, just read the GITPS-Setup, GITPS-Color,
 GITPS-Monochrome and GITPS-Keys sections in the configuration files
-@file{.gitrc.TERM}.
+@file{gitrc.TERM}.
 
 
 @node gitview, gitkeys, gitps, Description
@@ -3723,7 +3723,7 @@ file, @kbd{^L} to refresh the screen and @kbd{F10}, @kbd{q} or @kbd{^X
 
 You can change these keys, just read the GITVIEW-Setup, GITVIEW-Color,
 GITVIEW-Monochrome and GITVIEW-Keys sections in the configuration files
-@file{.gitrc.TERM}.
+@file{gitrc.TERM}.
 
 Here is a brief description of the command line arguments:
 
@@ -3922,18 +3922,19 @@ your @file{.profile}:
 There is one configuration file per terminal type in @code{GIT}.  The
 configuration file(s) reside in the user's home directory or (the
 default versions) in the directory @file{/usr/share/gnu-interactive-tools/}).
+Files in the user's home directory start with a leading ``.''
 
-Their generic name is @file{.gitrc.TERM}.  @code{GIT} allows each
+Their generic name is @file{gitrc.TERM}.  @code{GIT} allows each
 terminal type to have its own configuration file (@var{TERM} is the
 value of the @var{TERM} environment variable (e.g @samp{vt102}); for the
-@code{Linux} console the configuration file is @file{.gitrc.console}).
+@code{Linux} console the configuration file is @file{gitrc.console}).
 @vindex TERM
 
 Since most of the key bindings are common to all the terminal types, a
-configuration file called @file{.gitrc.common} is parsed before parsing
+configuration file called @file{gitrc.common} is parsed before parsing
 the normal @file{.gitrc.TERM} configuration file, the later one defining
 only those keys that are terminal specific.  However, if a key binding
-is redefined in the @file{.gitrc.TERM} file, that binding will be used.
+is redefined in the @file{gitrc.TERM} file, that binding will be used.
 
 If the @code{GIT} package have been compiled without passing the
 @samp{--enable-terminfo} option to the @code{configure} script and your
@@ -3954,6 +3955,7 @@ will lead to a faster start.
 
 The @file{.gitrc.TERM} is first searched for in the home directory then,
 if not found, in the directory @file{/usr/share/gnu-interactive-tools/}).
+(without the leading ``.'').
 The configuration file is structured in sections, each section
 containing variables in the following format:
 
@@ -4037,7 +4039,7 @@ In this section the variables have only one field.
 This variable should be set to @samp{ON} if the terminal supports
 standard @samp{ANSI} color sequences.  Otherwise it should be
 @samp{OFF}.  If @samp{AnsiColors} is @samp{ON}, @samp{GITxxx-Color}
-sections will be used in the configuration files @file{.gitrc.TERM}.
+sections will be used in the configuration files @file{gitrc.TERM}.
 Otherwise, @code{GIT} interactive programs will use the
 @samp{GITxxx-Monochrome} sections.
 @vindex AnsiColors
@@ -4169,7 +4171,7 @@ machine type and the current date) using escape characters:
 In this sections the variables have only one field.
 
 These section allows you to customize the colors of @code{gitfm}.  Reading
-the @file{.gitrc.TERM} configuration file is self explanatory.
+the @file{gitrc.TERM} configuration file is self explanatory.
 
 
 @node GITFM-Monochrome, GITFM-Keys, GITFM-Color, gitfm Sections
@@ -4178,7 +4180,7 @@ the @file{.gitrc.TERM} configuration file is self explanatory.
 In this sections the variables have only one field.
 
 These section allows you to customize the appearance of @code{gitfm} on
-monochrome displays.  Reading the @file{.gitrc.TERM} configuration file
+monochrome displays.  Reading the @file{gitrc.TERM} configuration file
 is self explanatory.
 
 
@@ -4468,7 +4470,7 @@ This variable describe @code{gitps}'s status bar contents.
 In this sections the variables have only one field.
 
 These section allows you to customize the colors of @code{gitps}.
-Reading the @file{.gitrc.TERM} configuration file is self explanatory.
+Reading the @file{gitrc.TERM} configuration file is self explanatory.
 
 
 @node GITPS-Monochrome, GITPS-Keys, GITPS-Color, gitps Sections
@@ -4477,7 +4479,7 @@ Reading the @file{.gitrc.TERM} configuration file is self explanatory.
 In this sections the variables have only one field.
 
 These section allows you to customize the appearance of @code{gitps} on
-monochrome displays.  Reading the @file{.gitrc.TERM} configuration file
+monochrome displays.  Reading the @file{gitrc.TERM} configuration file
 is self explanatory.
 
 
@@ -4513,7 +4515,7 @@ This variable describe @code{gitps}'s status bar contents.
 In this sections the variables have only one field.
 
 These section allows you to customize the colors of @code{gitview}.
-Reading the @file{.gitrc.TERM} configuration file is self explanatory.
+Reading the @file{gitrc.TERM} configuration file is self explanatory.
 
 
 @node GITVIEW-Monochrome, GITVIEW-Keys, GITVIEW-Color, gitview Sections
@@ -4522,7 +4524,7 @@ Reading the @file{.gitrc.TERM} configuration file is self explanatory.
 In this sections the variables have only one field.
 
 These section allows you to customize the appearance of @code{gitview}
-on monochrome displays.  Reading the @file{.gitrc.TERM} configuration
+on monochrome displays.  Reading the @file{gitrc.TERM} configuration
 file is self explanatory.
 
 @node GITVIEW-Keys, , GITVIEW-Monochrome, gitview Sections
@@ -4539,8 +4541,8 @@ will not be seen.
 
 When @code{gitfm} is compiled for @code{Linux}, the default built-in color
 descriptions are for color monitors, so you can't (decently) run
-@code{gitfm} on a b/w monitor without the @file{.gitrc.TERM} file
-correctly configured.  @file{.gitrc.TERM} should be configured with
+@code{gitfm} on a b/w monitor without the @file{gitrc.TERM} file
+correctly configured.  @file{gitrc.TERM} should be configured with
 @samp{AnsiColors} = OFF. However, if your system knows about the linux-m
 terminal type, using that may be a better solution.
 
@@ -4548,7 +4550,7 @@ Job support is implemented only in @code{gitfm}.
 
 Due to the fact that the ';' character is used as a field separator in
 the configuration files, you can't write something like that in the
-@file{.gitrc.TERM} files:
+@file{gitrc.TERM} files:
 
 ^AAA = SHOW-USERS-AND-GROUPS; more /etc/passwd; more /etc/group
 
@@ -4561,7 +4563,7 @@ to.  You must write a small script instead:
 more /etc/passwd
 more /etc/group
 
-Supposing the script name is @code{show_ug}, the @file{.gitrc.TERM} line
+Supposing the script name is @code{show_ug}, the @file{gitrc.TERM} line
 will look like this:
 
 ^AAA = SHOW-USERS-AND-GROUPS; show_ug

@@ -52,7 +52,8 @@
 #include "misc.h"
 
 
-static char CONFIGFILE_PREFIX[] = "/.gitrc.";
+static char SYSTEM_CONFIGFILE_PREFIX[] = "/gitrc.";
+static char   USER_CONFIGFILE_PREFIX[] = "/.gitrc.";
 
 static char *termdir;
 static char *bindir;
@@ -210,15 +211,15 @@ common_configuration_init()
 {
     /* Load the global .gitrc.common file.  */
     char *configfile = xmalloc(strlen(termdir) + 1 +
-			       strlen(CONFIGFILE_PREFIX) +
+			       strlen(SYSTEM_CONFIGFILE_PREFIX) +
 			       sizeof("common") + 1);
     strcpy(configfile, termdir);
-    strcat(configfile, CONFIGFILE_PREFIX);
+    strcat(configfile, SYSTEM_CONFIGFILE_PREFIX);
     strcat(configfile, "common");
 
     if (configuration_init(configfile) == 0)
     {
-	/* Give up if global .gitrc.common is not found.  */
+	/* Give up if global gitrc.common is not found.  */
 	configuration_fatal_error(configfile);
 	exit(1);
     }
@@ -228,20 +229,20 @@ common_configuration_init()
 int
 specific_configuration_init()
 {
-    char *configfile = xmalloc(strlen(g_home) + 1 + strlen(CONFIGFILE_PREFIX) +
+    char *configfile = xmalloc(strlen(g_home) + 1 + strlen(USER_CONFIGFILE_PREFIX) +
 			       strlen(tty_type) + 1);
     strcpy(configfile, g_home);
-    strcat(configfile, CONFIGFILE_PREFIX);
+    strcat(configfile, USER_CONFIGFILE_PREFIX);
     strcat(configfile, tty_type);
 
     if (configuration_init(configfile) == 0)
     {
 	xfree(configfile);
 	configfile = xmalloc(strlen(termdir) + 1 +
-			     strlen(CONFIGFILE_PREFIX) +
+			     strlen(SYSTEM_CONFIGFILE_PREFIX) +
 			     strlen(tty_type) + 1);
 	strcpy(configfile, termdir);
-	strcat(configfile, CONFIGFILE_PREFIX);
+	strcat(configfile, SYSTEM_CONFIGFILE_PREFIX);
 	strcat(configfile, tty_type);
 
 	if (configuration_init(configfile) == 0)
@@ -250,10 +251,10 @@ specific_configuration_init()
 
 	    xfree(configfile);
 	    configfile = xmalloc(strlen(termdir) + 1 +
-				 strlen(CONFIGFILE_PREFIX) +
+				 strlen(SYSTEM_CONFIGFILE_PREFIX) +
 				 sizeof("generic") + 1);
 	    strcpy(configfile, termdir);
-	    strcat(configfile, CONFIGFILE_PREFIX);
+	    strcat(configfile, SYSTEM_CONFIGFILE_PREFIX);
 	    strcat(configfile, "generic");
 
 	    if (configuration_init(configfile) == 0)
