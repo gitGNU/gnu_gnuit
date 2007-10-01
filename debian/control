@@ -32,3 +32,6 @@ Package: git
 Architecture: all
 Depends: gnu-interactive-tools
 Description: transitional dummy package which can be safely removed
+ This is a transitional dummy package to pull in the renamed
+ gnu-interactive-tools package. It can be safely removed.
+ 
