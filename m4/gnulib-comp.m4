@@ -1,4 +1,5 @@
-# Copyright (C) 2004-2006 Free Software Foundation, Inc.
+# DO NOT EDIT! GENERATED AUTOMATICALLY!
+# Copyright (C) 2004-2007 Free Software Foundation, Inc.
 #
 # This file is free software, distributed under the terms of the GNU
 # General Public License.  As a special exception to the GNU General
@@ -21,14 +22,20 @@ AC_DEFUN([gl_EARLY],
 [
   m4_pattern_forbid([^gl_[A-Z]])dnl the gnulib macro namespace
   m4_pattern_allow([^gl_ES$])dnl a valid locale name
+  m4_pattern_allow([^gl_LIBOBJS$])dnl a variable
+  m4_pattern_allow([^gl_LTLIBOBJS$])dnl a variable
   AC_REQUIRE([AC_PROG_RANLIB])
-  AC_REQUIRE([AC_GNU_SOURCE])
+  AC_REQUIRE([AM_PROG_CC_C_O])
+  AC_REQUIRE([gl_USE_SYSTEM_EXTENSIONS])
 ])
 
 # This macro should be invoked from ./configure.ac, in the section
 # "Check for header files, types and library functions".
 AC_DEFUN([gl_INIT],
 [
+  m4_pushdef([AC_LIBOBJ], m4_defn([gl_LIBOBJ]))
+  m4_pushdef([AC_REPLACE_FUNCS], m4_defn([gl_REPLACE_FUNCS]))
+  m4_pushdef([AC_LIBSOURCES], m4_defn([gl_LIBSOURCES]))
   AM_CONDITIONAL([GL_COND_LIBTOOL], [false])
   gl_cond_libtool=false
   gl_libdeps=
@@ -36,50 +43,114 @@ AC_DEFUN([gl_INIT],
   gl_source_base='lib'
   gl_FUNC_ALLOCA
   gl_DIRNAME
+  gl_DOUBLE_SLASH_ROOT
   gl_ERROR
   gl_EXITFAIL
+  AC_C_FLEXIBLE_ARRAY_MEMBER
   # No macro. You should also use one of fnmatch-posix or fnmatch-gnu.
   gl_FUNC_FNMATCH_GNU
   gl_FSUSAGE
   gl_GETOPT
+  AC_SUBST([LIBINTL])
+  AC_SUBST([LTLIBINTL])
   gl_IDCACHE
+  gl_INLINE
+  gl_LOCALCHARSET
+  gl_FUNC_MALLOC_POSIX
+  gl_STDLIB_MODULE_INDICATOR([malloc-posix])
+  gl_MALLOCA
   gl_MBCHAR
+  gl_FUNC_MBSLEN
+  gl_STRING_MODULE_INDICATOR([mbslen])
+  gl_FUNC_MBSSTR
+  gl_STRING_MODULE_INDICATOR([mbsstr])
   gl_MBITER
   gl_FUNC_MEMCHR
   gl_FUNC_MEMMOVE
   gl_FUNC_PUTENV
   gl_FUNC_READLINK
+  gl_UNISTD_MODULE_INDICATOR([readlink])
   gl_FUNC_RENAME
   gl_SAFE_READ
   gl_SAFE_WRITE
   gt_TYPE_SSIZE_T
   AM_STDBOOL_H
   gl_STDINT_H
+  gl_STDLIB_H
   gl_STRCASE
+  gl_FUNC_STRERROR
+  gl_STRING_MODULE_INDICATOR([strerror])
+  gl_HEADER_STRING_H
   gl_FUNC_STRNDUP
+  gl_STRING_MODULE_INDICATOR([strndup])
   gl_FUNC_STRNLEN
-  gl_FUNC_STRSTR
-  gl_HEADER_UNISTD
+  gl_STRING_MODULE_INDICATOR([strnlen])
+  gl_UNISTD_H
+  gl_WCHAR_H
+  gl_WCTYPE_H
   gl_FUNC_WCWIDTH
+  gl_WCHAR_MODULE_INDICATOR([wcwidth])
   gl_XALLOC
   gl_XSTRNDUP
   LIBGNU_LIBDEPS="$gl_libdeps"
   AC_SUBST([LIBGNU_LIBDEPS])
   LIBGNU_LTLIBDEPS="$gl_ltlibdeps"
   AC_SUBST([LIBGNU_LTLIBDEPS])
+  m4_popdef([AC_LIBSOURCES])
+  m4_popdef([AC_REPLACE_FUNCS])
+  m4_popdef([AC_LIBOBJ])
+  AC_CONFIG_COMMANDS_PRE([
+    gl_libobjs=
+    gl_ltlibobjs=
+    if test -n "$gl_LIBOBJS"; then
+      # Remove the extension.
+      sed_drop_objext='s/\.o$//;s/\.obj$//'
+      for i in `for i in $gl_LIBOBJS; do echo "$i"; done | sed "$sed_drop_objext" | sort | uniq`; do
+        gl_libobjs="$gl_libobjs $i.$ac_objext"
+        gl_ltlibobjs="$gl_ltlibobjs $i.lo"
+      done
+    fi
+    AC_SUBST([gl_LIBOBJS], [$gl_libobjs])
+    AC_SUBST([gl_LTLIBOBJS], [$gl_ltlibobjs])
+  ])
+])
+
+# Like AC_LIBOBJ, except that the module name goes
+# into gl_LIBOBJS instead of into LIBOBJS.
+AC_DEFUN([gl_LIBOBJ], [
+  AS_LITERAL_IF([$1], [gl_LIBSOURCES([$1.c])])dnl
+  gl_LIBOBJS="$gl_LIBOBJS $1.$ac_objext"
+])
+
+# Like AC_REPLACE_FUNCS, except that the module name goes
+# into gl_LIBOBJS instead of into LIBOBJS.
+AC_DEFUN([gl_REPLACE_FUNCS], [
+  m4_foreach_w([gl_NAME], [$1], [AC_LIBSOURCES(gl_NAME[.c])])dnl
+  AC_CHECK_FUNCS([$1], , [gl_LIBOBJ($ac_func)])
+])
+
+# Like AC_LIBSOURCES, except check for typos now.
+# We rely on EXTRA_lib..._SOURCES instead.
+AC_DEFUN([gl_LIBSOURCES], [
+  m4_foreach([_gl_NAME], [$1], [
+    m4_syscmd([test -r lib/]_gl_NAME[ || test ! -d lib])dnl
+    m4_if(m4_sysval, [0], [],
+      [AC_FATAL([missing lib/]_gl_NAME)])
+  ])
 ])
 
 # This macro records the list of files which have been installed by
 # gnulib-tool and may be removed by future gnulib-tool invocations.
 AC_DEFUN([gl_FILE_LIST], [
+  build-aux/link-warning.h
   lib/alloca.c
   lib/alloca_.h
   lib/basename.c
+  lib/config.charset
   lib/dirname.c
   lib/dirname.h
   lib/error.c
   lib/error.h
-  lib/exit.h
   lib/exitfail.c
   lib/exitfail.h
   lib/fnmatch.c
@@ -97,13 +168,24 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/getopt_int.h
   lib/gettext.h
   lib/idcache.c
+  lib/idcache.h
+  lib/localcharset.c
+  lib/localcharset.h
+  lib/malloc.c
+  lib/malloca.c
+  lib/malloca.h
+  lib/malloca.valgrind
   lib/mbchar.c
   lib/mbchar.h
+  lib/mbslen.c
+  lib/mbsstr.c
   lib/mbuiter.h
   lib/memchr.c
   lib/memmove.c
   lib/putenv.c
   lib/readlink.c
+  lib/ref-add.sin
+  lib/ref-del.sin
   lib/rename.c
   lib/safe-read.c
   lib/safe-read.h
@@ -111,19 +193,25 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/safe-write.h
   lib/stdbool_.h
   lib/stdint_.h
-  lib/strcase.h
+  lib/stdlib_.h
   lib/strcasecmp.c
+  lib/streq.h
+  lib/strerror.c
+  lib/string_.h
   lib/stripslash.c
   lib/strncasecmp.c
   lib/strndup.c
-  lib/strndup.h
   lib/strnlen.c
-  lib/strnlen.h
   lib/strnlen1.c
   lib/strnlen1.h
-  lib/strstr.c
-  lib/strstr.h
-  lib/wcwidth.h
+  lib/unistd_.h
+  lib/unitypes.h
+  lib/uniwidth.h
+  lib/uniwidth/cjk.h
+  lib/uniwidth/width.c
+  lib/wchar_.h
+  lib/wctype_.h
+  lib/wcwidth.c
   lib/xalloc-die.c
   lib/xalloc.h
   lib/xmalloc.c
@@ -131,19 +219,32 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/xstrndup.h
   m4/absolute-header.m4
   m4/alloca.m4
+  m4/codeset.m4
   m4/dirname.m4
   m4/dos.m4
   m4/double-slash-root.m4
+  m4/eealloc.m4
   m4/error.m4
   m4/exitfail.m4
+  m4/extensions.m4
+  m4/flexmember.m4
   m4/fnmatch.m4
   m4/fsusage.m4
   m4/getopt.m4
+  m4/glibc21.m4
+  m4/gnulib-common.m4
   m4/idcache.m4
+  m4/include_next.m4
+  m4/inline.m4
+  m4/localcharset.m4
   m4/longlong.m4
+  m4/malloc.m4
+  m4/malloca.m4
   m4/mbchar.m4
   m4/mbiter.m4
   m4/mbrtowc.m4
+  m4/mbslen.m4
+  m4/mbsstr.m4
   m4/mbstate_t.m4
   m4/memchr.m4
   m4/memmove.m4
@@ -156,13 +257,19 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/ssize_t.m4
   m4/stdbool.m4
   m4/stdint.m4
+  m4/stdlib_h.m4
   m4/strcase.m4
+  m4/strerror.m4
+  m4/string_h.m4
   m4/strndup.m4
   m4/strnlen.m4
-  m4/strstr.m4
+  m4/ulonglong.m4
   m4/unistd_h.m4
+  m4/wchar.m4
   m4/wchar_t.m4
+  m4/wctype.m4
   m4/wcwidth.m4
+  m4/wint_t.m4
   m4/xalloc.m4
   m4/xstrndup.m4
 ])

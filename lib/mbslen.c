@@ -1,5 +1,6 @@
-/* Searching in a string.
-   Copyright (C) 2001-2003, 2005 Free Software Foundation, Inc.
+/* Counting the multibyte characters in a string.
+   Copyright (C) 2007 Free Software Foundation, Inc.
+   Written by Bruno Haible <bruno@clisp.org>, 2007.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -15,23 +16,34 @@
    along with this program; if not, write to the Free Software Foundation,
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
 
+#include <config.h>
 
-/* Include string.h: on glibc systems, it contains a macro definition of
-   strstr() that would collide with our definition if included afterwards.  */
+/* Specification.  */
 #include <string.h>
 
-#ifdef __cplusplus
-extern "C" {
+#include <stdlib.h>
+
+#if HAVE_MBRTOWC
+# include "mbuiter.h"
 #endif
 
-/* No known system has a strstr() function that works correctly in
-   multibyte locales. Therefore we use our version always.  */
-#undef strstr
-#define strstr rpl_strstr
+/* Return the number of multibyte characters in the character string STRING.  */
+size_t
+mbslen (const char *string)
+{
+#if HAVE_MBRTOWC
+  if (MB_CUR_MAX > 1)
+    {
+      size_t count;
+      mbui_iterator_t iter;
 
-/* Find the first occurrence of NEEDLE in HAYSTACK.  */
-extern char *strstr (const char *haystack, const char *needle);
+      count = 0;
+      for (mbui_init (iter, string); mbui_avail (iter); mbui_advance (iter))
+	count++;
 
-#ifdef __cplusplus
+      return count;
+    }
+  else
+#endif
+    return strlen (string);
 }
-#endif

@@ -1,6 +1,6 @@
 /* idcache.c -- map user and group IDs, cached for speed
 
-   Copyright (C) 1985, 1988, 1989, 1990, 1997, 1998, 2003, 2005, 2006
+   Copyright (C) 1985, 1988, 1989, 1990, 1997, 1998, 2003, 2005-2007
    Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
@@ -19,9 +19,10 @@
 
 #include <config.h>
 
+#include "idcache.h"
+#include <stddef.h>
 #include <stdio.h>
 #include <string.h>
-#include <sys/types.h>
 #include <pwd.h>
 #include <grp.h>
 
@@ -40,36 +41,59 @@ struct userid
       uid_t u;
       gid_t g;
     } id;
-  char *name;
   struct userid *next;
+  char name[FLEXIBLE_ARRAY_MEMBER];
 };
+
+/* FIXME: provide a function to free any malloc'd storage and reset lists,
+   so that an application can use code like this just before exiting:
+   #ifdef lint
+     idcache_clear ();
+   #endif
+*/
 
 static struct userid *user_alist;
 
-/* The members of this list have names not in the local passwd file.  */
+/* Each entry on list is a user name for which the first lookup failed.  */
 static struct userid *nouser_alist;
+
+/* Use the same struct as for userids.  */
+static struct userid *group_alist;
+
+/* Each entry on list is a group name for which the first lookup failed.  */
+static struct userid *nogroup_alist;
 
 /* Translate UID to a login name, with cache, or NULL if unresolved.  */
 
 char *
 getuser (uid_t uid)
 {
-  register struct userid *tail;
-  struct passwd *pwent;
+  struct userid *tail;
+  struct userid *match = NULL;
 
   for (tail = user_alist; tail; tail = tail->next)
-    if (tail->id.u == uid)
-      return tail->name;
+    {
+      if (tail->id.u == uid)
+	{
+	  match = tail;
+	  break;
+	}
+    }
 
-  pwent = getpwuid (uid);
-  tail = xmalloc (sizeof *tail);
-  tail->id.u = uid;
-  tail->name = pwent ? xstrdup (pwent->pw_name) : NULL;
+  if (match == NULL)
+    {
+      struct passwd *pwent = getpwuid (uid);
+      char const *name = pwent ? pwent->pw_name : "";
+      match = xmalloc (offsetof (struct userid, name) + strlen (name) + 1);
+      match->id.u = uid;
+      strcpy (match->name, name);
 
-  /* Add to the head of the list, so most recently used is first.  */
-  tail->next = user_alist;
-  user_alist = tail;
-  return tail->name;
+      /* Add to the head of the list, so most recently used is first.  */
+      match->next = user_alist;
+      user_alist = match;
+    }
+
+  return match->name[0] ? match->name : NULL;
 }
 
 /* Translate USER to a UID, with cache.
@@ -80,7 +104,7 @@ getuser (uid_t uid)
 uid_t *
 getuidbyname (const char *user)
 {
-  register struct userid *tail;
+  struct userid *tail;
   struct passwd *pwent;
 
   for (tail = user_alist; tail; tail = tail->next)
@@ -91,7 +115,7 @@ getuidbyname (const char *user)
   for (tail = nouser_alist; tail; tail = tail->next)
     /* Avoid a function call for the most common case.  */
     if (*tail->name == *user && !strcmp (tail->name, user))
-      return 0;
+      return NULL;
 
   pwent = getpwnam (user);
 #ifdef __DJGPP__
@@ -104,8 +128,8 @@ getuidbyname (const char *user)
     }
 #endif
 
-  tail = xmalloc (sizeof *tail);
-  tail->name = xstrdup (user);
+  tail = xmalloc (offsetof (struct userid, name) + strlen (user) + 1);
+  strcpy (tail->name, user);
 
   /* Add to the head of the list, so most recently used is first.  */
   if (pwent)
@@ -118,34 +142,40 @@ getuidbyname (const char *user)
 
   tail->next = nouser_alist;
   nouser_alist = tail;
-  return 0;
+  return NULL;
 }
-
-/* Use the same struct as for userids.  */
-static struct userid *group_alist;
-static struct userid *nogroup_alist;
 
 /* Translate GID to a group name, with cache, or NULL if unresolved.  */
 
 char *
 getgroup (gid_t gid)
 {
-  register struct userid *tail;
-  struct group *grent;
+  struct userid *tail;
+  struct userid *match = NULL;
 
   for (tail = group_alist; tail; tail = tail->next)
-    if (tail->id.g == gid)
-      return tail->name;
+    {
+      if (tail->id.g == gid)
+	{
+	  match = tail;
+	  break;
+	}
+    }
 
-  grent = getgrgid (gid);
-  tail = xmalloc (sizeof *tail);
-  tail->id.g = gid;
-  tail->name = grent ? xstrdup (grent->gr_name) : NULL;
+  if (match == NULL)
+    {
+      struct group *grent = getgrgid (gid);
+      char const *name = grent ? grent->gr_name : "";
+      match = xmalloc (offsetof (struct userid, name) + strlen (name) + 1);
+      match->id.g = gid;
+      strcpy (match->name, name);
 
-  /* Add to the head of the list, so most recently used is first.  */
-  tail->next = group_alist;
-  group_alist = tail;
-  return tail->name;
+      /* Add to the head of the list, so most recently used is first.  */
+      match->next = group_alist;
+      group_alist = match;
+    }
+
+  return match->name[0] ? match->name : NULL;
 }
 
 /* Translate GROUP to a GID, with cache.
@@ -156,7 +186,7 @@ getgroup (gid_t gid)
 gid_t *
 getgidbyname (const char *group)
 {
-  register struct userid *tail;
+  struct userid *tail;
   struct group *grent;
 
   for (tail = group_alist; tail; tail = tail->next)
@@ -167,12 +197,12 @@ getgidbyname (const char *group)
   for (tail = nogroup_alist; tail; tail = tail->next)
     /* Avoid a function call for the most common case.  */
     if (*tail->name == *group && !strcmp (tail->name, group))
-      return 0;
+      return NULL;
 
   grent = getgrnam (group);
 #ifdef __DJGPP__
   /* We need to pretend to belong to group GROUP, to make
-     grp functions know about any arbitrary group name.  */
+     grp functions know about an arbitrary group name.  */
   if (!grent && strspn (group, digits) < strlen (group))
     {
       setenv ("GROUP", group, 1);
@@ -180,8 +210,8 @@ getgidbyname (const char *group)
     }
 #endif
 
-  tail = xmalloc (sizeof *tail);
-  tail->name = xstrdup (group);
+  tail = xmalloc (offsetof (struct userid, name) + strlen (group) + 1);
+  strcpy (tail->name, group);
 
   /* Add to the head of the list, so most recently used is first.  */
   if (grent)
@@ -194,5 +224,5 @@ getgidbyname (const char *group)
 
   tail->next = nogroup_alist;
   nogroup_alist = tail;
-  return 0;
+  return NULL;
 }
