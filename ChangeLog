@@ -4,7 +4,7 @@
 	* add --enable-debian flag to set defaults
 	  for debian (sensible-browser, etc).
 	* merged debian manpages (gitps, gitview, gitwipe, etc) upstream.
-	* merged Bruce Sass's patches for manupulating .deb files
+	* merged Bruce Sass's patches for manipulating .deb files
 	* Updated RPM spec file. Warning: untested.
 	* Remove CVS $Id$ tags as we are now using git.
 	* FreeBSD fixes.
