@@ -1,7 +1,7 @@
 2007-10-01  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
 
 	* Remove leading dot from system copy of config files.
-	* FreeBSD fixes.
+	* Portability fixes (freebsd, amd64).
 	* tilde.[ch] and history.[ch] were not getting included
 	  when needed. Autotools weirdness, I suspect gnulib.
 	  Moved them back to src/ and now use them unconditionally.
