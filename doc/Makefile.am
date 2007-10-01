@@ -50,6 +50,7 @@ install-data-hook:
 
 
 uninstall-local:
+	rm -f $(DESTDIR)/$(datadir)/gnu-interactive-tools/dpkg-help.txt
 	-rmdir $(DESTDIR)$(htmldir)
 	for i in $(GIT_GREPS);\
 	do\

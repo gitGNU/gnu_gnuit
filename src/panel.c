@@ -3586,6 +3586,7 @@ panel_compare(this, this_entry, this_size, other, other_entry, other_size)
     int is_special1=0;
     int is_special2=0;
     int mismatch=0;
+    off64_t size=0;
 
     *this_size = *other_size = 0;
 
@@ -3602,7 +3603,6 @@ panel_compare(this, this_entry, this_size, other, other_entry, other_size)
 
     /* If either is a special file, use the length of the other. */
     /* size is only used for calculating percentage done */
-    off64_t size=0;
     if(is_special1 && is_special2)
 	size=0;
     else if(is_special1)

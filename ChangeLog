@@ -7,6 +7,7 @@
 	* merged Bruce Sass's patches for manupulating .deb files
 	* Updated RPM spec file. Warning: untested.
 	* Remove CVS $Id$ tags as we are now using git.
+	* FreeBSD fixes.
 
 2007-09-29  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
 
