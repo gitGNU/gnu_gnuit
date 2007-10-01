@@ -225,7 +225,6 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-
 EXTRA_DIST = .gitrc.aixterm.in .gitrc.ansi.in .gitrc.common.in\
 	     .gitrc.generic.in .gitrc.hft.in .gitrc.hpterm.in .gitrc.linux.in\
 	     .gitrc.mach.in .gitrc.minix.in .gitrc.thix.in .gitrc.vt100.in\

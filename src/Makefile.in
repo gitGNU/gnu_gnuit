@@ -253,7 +253,6 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-
 EXTRA_DIST = gitaction gitmkdirs gitmount gitrgrep gitunpack gitxgrep\
 	     .gitaction .gdbinit git.transition gitdpkgname
 

@@ -230,7 +230,6 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-
 info_TEXINFOS = git.texinfo
 man_MANS = gitfm.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 \
 	gitunpack.1 gitps.1 gitinternal.1 gitwipe.1 gitview.1 \

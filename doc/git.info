@@ -9,7 +9,7 @@ END-INFO-DIR-ENTRY
 
    This file documents the GNU Interactive Tools package.
 
-   Copyright (C) 1993-1998 Free Software Foundation, Inc.
+   Copyright (C) 1993-1998, 2006-2007 Free Software Foundation, Inc.
 
    Permission is granted to make and distribute verbatim copies of this
 manual provided the copyright notice and this permission notice are
@@ -2110,8 +2110,9 @@ to match the file name against its patterns, it backs up to
 `$HOME/.gitaction'.  When this one fails too the patterns in
 `gitaction' are tried.  For an example of how to write .gitaction
 scripts take a look at the `.gitaction' shell script provided as part
-of the distribution and installed in the `/usr/share/doc/git/examples/'
-directory.
+of the distribution and installed in the `$(prefix)/bin' directory.
+Debian users will find it in
+`/usr/share/doc/gnu-interactive-tools/examples/'.
 
 
 File: git.info,  Node: gitunpack,  Next: gitrgrep,  Prev: gitaction,  Up: Description
@@ -2167,10 +2168,17 @@ GIT_RMAIL, GIT_BROWSER, or GIT_VMSTAT to some value, that value will be
 used instead of the default one.  The defaults are:
 
      	GIT_SHELL='/bin/sh'
-     	GIT_EDITOR='sensible-editor'
+     	GIT_EDITOR='vi'
      	GIT_RMAIL='emacs -f rmail'
-     	GIT_PAGER='sensible-pager'
+     	GIT_PAGER='more
      	GIT_VMSTAT='free'
+     	GIT_BROWSER='lynx'
+
+   if the `configure' script is passed `--enable-debian', some of the
+defaults are changed as follows:
+
+     	GIT_EDITOR='sensible-editor'
+     	GIT_PAGER='sensible-pager'
      	GIT_BROWSER='sensible-browser'
 
    If SHELL is defined, GIT_SHELL will be set to that value.  If EDITOR
@@ -2184,7 +2192,7 @@ change the default settings, put something like this into your
      	export GIT_PAGER='less'
      	export GIT_VMSTAT='vmstat'
      	export GIT_BROWSER='netscape'
-   
+
 
 File: git.info,  Node: Configuration Files,  Prev: Environment Variables,  Up: Customization
 
@@ -2193,7 +2201,7 @@ File: git.info,  Node: Configuration Files,  Prev: Environment Variables,  Up: C
 
 There is one configuration file per terminal type in `GIT'.  The
 configuration file(s) reside in the user's home directory or (the
-default versions) in the directory `/usr/share/git/').
+default versions) in the directory `/usr/share/gnu-interactive-tools/').
 
    Their generic name is `.gitrc.TERM'.  `GIT' allows each terminal
 type to have its own configuration file (TERM is the value of the TERM
@@ -2221,10 +2229,10 @@ file, but on systems with huge `termcap' databases, copying the
 definitions of the most used terminals in a local `.termcap' file will
 lead to a faster start.
 
-   The `.gitrc.TERM' it is first time searched in the home directory
-then, if not found, in the directory `/usr/share/git/').  The
-configuration file is structured in sections, each section containing
-variables in the following format:
+   The `.gitrc.TERM' is first searched for in the home directory then,
+if not found, in the directory `/usr/share/gnu-interactive-tools/').
+The configuration file is structured in sections, each section
+containing variables in the following format:
 
      	`variable-name' = `first-field';`second-field'; ...
 
@@ -2872,8 +2880,8 @@ File: git.info,  Node: Bugs,  Prev: Limitations,  Up: Top
 6 GNU Interactive Tools bugs
 ****************************
 
-Any questions, comments, or bug reports, should be emailed to `Tudor
-Hulubei <tudor@cs.unh.edu>'.  Please include the version number.
+Any questions, comments, or bug reports, should be emailed to `Ian
+Beckwith <ianbnessie.mcc.ac.uk>'.  Please include the version number.
 
 
 File: git.info,  Node: Key Index,  Next: Command Index,  Prev: Distrib,  Up: Top
@@ -3437,23 +3445,23 @@ Variable Index
 * CommandLineModeHelp:                   GITFM-Setup.          (line 62)
 * ConfirmOnExit:                         GITFM-Setup.          (line 25)
 * EDITOR:                                Environment Variables.
-                                                               (line 30)
+                                                               (line 38)
 * GIT_BROWSER:                           Environment Variables.
-                                                               (line 30)
+                                                               (line 38)
 * GIT_EDITOR:                            Environment Variables.
-                                                               (line 30)
+                                                               (line 38)
 * GIT_RMAIL:                             Environment Variables.
-                                                               (line 30)
+                                                               (line 38)
 * GIT_SHELL:                             Environment Variables.
-                                                               (line 30)
+                                                               (line 38)
 * GIT_VMSTAT:                            Environment Variables.
-                                                               (line 30)
+                                                               (line 38)
 * HistoryFile:                           GITFM-Setup.          (line 30)
 * InfoDisplay:                           GITFM-Setup.          (line 35)
 * LeadingDotMatch:                       GITFM-Setup.          (line 41)
 * NormalModeHelp:                        GITFM-Setup.          (line 62)
 * SHELL:                                 Environment Variables.
-                                                               (line 30)
+                                                               (line 38)
 * StartupFileDisplayMode:                GITFM-Setup.          (line 13)
 * StartupFileSortMethod:                 GITFM-Setup.          (line 20)
 * StartupScrollStep:                     Setup.                (line 26)
@@ -3871,133 +3879,133 @@ Concept Index
 
 
 Tag Table:
-Node: Top1032
-Node: Introduction1903
-Node: Distrib3215
-Node: Description4889
-Node: gitfm5736
-Node: Conventions8258
-Node: Command line10149
-Node: Modes11206
-Node: Sorting13487
-Node: Moving14774
-Node: Selecting16380
-Node: Isearch17783
-Node: Input Line18906
-Node: Inserting Text20007
-Node: Moving Point20917
-Node: Erasing21512
-Node: Case Changes22788
-Node: History23222
-Node: Setting Mark23956
-Node: Yanking24289
-Node: Selecting Files24561
-Node: Files25476
-Node: Copying Files27203
-Node: Moving Files27569
-Node: Creating Files27956
-Node: Deleting Files28313
-Node: Linking Files28657
-Node: Renaming Files29310
-Node: Splitting Files29897
-Node: Packing Files30399
-Node: Inode31738
-Node: Editing Files33414
-Node: Viewing Files34144
-Node: Compressing Files34529
-Node: Encoding Files35928
-Node: Encrypting Files36869
-Node: Comparing Files37160
-Node: Spell Checking Files37825
-Node: Printing Files38081
-Node: Wiping Files38544
-Node: Searching Files38878
-Node: Archive Files39419
-Node: DEB Packages41249
-Node: RPM Packages44213
-Node: File Types45595
-Node: MSDOS Files45812
-Node: Actions47908
-Node: Directories48834
-Node: Creating Dirs49597
-Node: Copying Dirs49872
-Node: Deleting Dirs50352
-Node: Moving Dirs50789
-Node: Renaming Dirs51266
-Node: Comparing Dirs51707
-Node: Dirs Usage52939
-Node: Changing Dirs53213
-Node: Dirs History53889
-Node: Hot Keys54960
-Node: Compiling55587
-Node: Mail55986
-Node: Shell57140
-Node: Grep57427
-Node: Locking57853
-Node: Refreshing58249
-Node: Resetting58984
-Node: Mounting59236
-Node: Sysinfo62334
-Node: Environment63600
-Node: Processes64007
-Node: Sync66097
-Node: Documentation66348
-Node: Exit66842
-Node: gitps67060
-Node: gitview68066
-Node: gitkeys68908
-Node: gitwipe69289
-Node: gitmount70012
-Node: gitaction70770
-Node: gitunpack72606
-Node: gitrgrep73016
-Node: Customization73497
-Node: Environment Variables73794
-Node: Configuration Files74884
-Node: Key Sequences77866
-Node: Setup79195
-Node: gitfm Sections80145
-Node: GITFM-Setup80597
-Node: GITFM-Color82730
-Node: GITFM-Monochrome83098
-Node: GITFM-Keys83500
-Node: key-sequence84403
-Node: command-name85040
-Node: formatted-command85783
-Node: %s87107
-Node: %f87632
-Node: %d87875
-Node: %l88120
-Node: %t88371
-Node: %z88604
-Node: %a88833
-Node: %m89046
-Node: %g89248
-Node: %o89451
-Node: %p89654
-Node: %b89857
-Node: %i90070
-Node: %?90293
-Node: new-dir90783
-Node: save-screen91207
-Node: pause91905
-Node: hide92238
-Node: GITFM-FTI93116
-Node: gitps Sections93696
-Node: GITPS-Setup94088
-Node: GITPS-Color94326
-Node: GITPS-Monochrome94691
-Node: GITPS-Keys95093
-Node: gitview Sections95221
-Node: GITVIEW-Setup95602
-Node: GITVIEW-Color95850
-Node: GITVIEW-Monochrome96229
-Node: GITVIEW-Keys96645
-Node: Limitations96779
-Node: Bugs98183
-Node: Key Index98438
-Node: Command Index118202
-Node: Variable Index137324
-Node: Concept Index139380
+Node: Top1043
+Node: Introduction1914
+Node: Distrib3226
+Node: Description4900
+Node: gitfm5747
+Node: Conventions8269
+Node: Command line10160
+Node: Modes11217
+Node: Sorting13498
+Node: Moving14785
+Node: Selecting16391
+Node: Isearch17794
+Node: Input Line18917
+Node: Inserting Text20018
+Node: Moving Point20928
+Node: Erasing21523
+Node: Case Changes22799
+Node: History23233
+Node: Setting Mark23967
+Node: Yanking24300
+Node: Selecting Files24572
+Node: Files25487
+Node: Copying Files27214
+Node: Moving Files27580
+Node: Creating Files27967
+Node: Deleting Files28324
+Node: Linking Files28668
+Node: Renaming Files29321
+Node: Splitting Files29908
+Node: Packing Files30410
+Node: Inode31749
+Node: Editing Files33425
+Node: Viewing Files34155
+Node: Compressing Files34540
+Node: Encoding Files35939
+Node: Encrypting Files36880
+Node: Comparing Files37171
+Node: Spell Checking Files37836
+Node: Printing Files38092
+Node: Wiping Files38555
+Node: Searching Files38889
+Node: Archive Files39430
+Node: DEB Packages41260
+Node: RPM Packages44224
+Node: File Types45606
+Node: MSDOS Files45823
+Node: Actions47919
+Node: Directories48845
+Node: Creating Dirs49608
+Node: Copying Dirs49883
+Node: Deleting Dirs50363
+Node: Moving Dirs50800
+Node: Renaming Dirs51277
+Node: Comparing Dirs51718
+Node: Dirs Usage52950
+Node: Changing Dirs53224
+Node: Dirs History53900
+Node: Hot Keys54971
+Node: Compiling55598
+Node: Mail55997
+Node: Shell57151
+Node: Grep57438
+Node: Locking57864
+Node: Refreshing58260
+Node: Resetting58995
+Node: Mounting59247
+Node: Sysinfo62345
+Node: Environment63611
+Node: Processes64018
+Node: Sync66108
+Node: Documentation66359
+Node: Exit66853
+Node: gitps67071
+Node: gitview68077
+Node: gitkeys68919
+Node: gitwipe69300
+Node: gitmount70023
+Node: gitaction70781
+Node: gitunpack72681
+Node: gitrgrep73091
+Node: Customization73572
+Node: Environment Variables73869
+Node: Configuration Files75130
+Node: Key Sequences78143
+Node: Setup79472
+Node: gitfm Sections80422
+Node: GITFM-Setup80874
+Node: GITFM-Color83007
+Node: GITFM-Monochrome83375
+Node: GITFM-Keys83777
+Node: key-sequence84680
+Node: command-name85317
+Node: formatted-command86060
+Node: %s87384
+Node: %f87909
+Node: %d88152
+Node: %l88397
+Node: %t88648
+Node: %z88881
+Node: %a89110
+Node: %m89323
+Node: %g89525
+Node: %o89728
+Node: %p89931
+Node: %b90134
+Node: %i90347
+Node: %?90570
+Node: new-dir91060
+Node: save-screen91484
+Node: pause92182
+Node: hide92515
+Node: GITFM-FTI93393
+Node: gitps Sections93973
+Node: GITPS-Setup94365
+Node: GITPS-Color94603
+Node: GITPS-Monochrome94968
+Node: GITPS-Keys95370
+Node: gitview Sections95498
+Node: GITVIEW-Setup95879
+Node: GITVIEW-Color96127
+Node: GITVIEW-Monochrome96506
+Node: GITVIEW-Keys96922
+Node: Limitations97056
+Node: Bugs98460
+Node: Key Index98718
+Node: Command Index118482
+Node: Variable Index137604
+Node: Concept Index139660
 
 End Tag Table
