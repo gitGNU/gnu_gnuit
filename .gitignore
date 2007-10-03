@@ -19,6 +19,8 @@ doc/git.html
 lib/Makefile
 lib/alloca.h
 lib/libgnu.a
+lib/.deps
+lib/uniwidth/.deps
 src/.deps
 src/gitfm
 src/gitkeys
