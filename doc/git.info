@@ -2015,6 +2015,16 @@ the default signal and `F10', `q' or `^X ^C' to leave.
 GITPS-Monochrome and GITPS-Keys sections in the configuration files
 `gitrc.TERM'.
 
+   The selected signal can also be changed by pressing its first letter
+(in uppercase), e.g. for `SIGTERM' press `T', or by pressing the key
+corresponding to the signal number. For signals > 10, prefix with `^X',
+and for signals greater than 20, prefix with `^C'. For instance, to
+select signal 15 (`SIGTERM'), press `^X5'.
+
+   Keys for signal numbers are hard-coded to the versions in i386 Linux,
+however most correspond to POSIX. Compare signal(7) or signal(5) with
+`http://linux.die.net/man/7/signal'.
+
 
 File: git.info,  Node: gitview,  Next: gitkeys,  Prev: gitps,  Up: Description
 
@@ -2032,10 +2042,17 @@ configuration files `gitrc.TERM'.
 
    Here is a brief description of the command line arguments:
 
-`-h'         print this help message `-v'         print the version
-number `-i'         print the installation directory `-c'         use
-ANSI colors `-b'         don't use ANSI colors `-l'         don't use
-the last screen character
+`-h'         print this help message
+
+`-v'         print the version number
+
+`-i'         print the installation directory
+
+`-c'         use ANSI colors
+
+`-b'         don't use ANSI colors
+
+`-l'         don't use the last screen character
 
 
 File: git.info,  Node: gitkeys,  Next: gitwipe,  Prev: gitview,  Up: Description
@@ -3961,60 +3978,60 @@ Node: Sync66125
 Node: Documentation66376
 Node: Exit66870
 Node: gitps67088
-Node: gitview68096
-Node: gitkeys68937
-Node: gitwipe69318
-Node: gitmount70041
-Node: gitaction70799
-Node: gitunpack72699
-Node: gitrgrep73109
-Node: Customization73590
-Node: Environment Variables73887
-Node: Configuration Files75148
-Node: Key Sequences78245
-Node: Setup79574
-Node: gitfm Sections80523
-Node: GITFM-Setup80975
-Node: GITFM-Color83108
-Node: GITFM-Monochrome83475
-Node: GITFM-Keys83876
-Node: key-sequence84779
-Node: command-name85416
-Node: formatted-command86159
-Node: %s87483
-Node: %f88008
-Node: %d88251
-Node: %l88496
-Node: %t88747
-Node: %z88980
-Node: %a89209
-Node: %m89422
-Node: %g89624
-Node: %o89827
-Node: %p90030
-Node: %b90233
-Node: %i90446
-Node: %?90669
-Node: new-dir91159
-Node: save-screen91583
-Node: pause92281
-Node: hide92614
-Node: GITFM-FTI93492
-Node: gitps Sections94072
-Node: GITPS-Setup94464
-Node: GITPS-Color94702
-Node: GITPS-Monochrome95066
-Node: GITPS-Keys95467
-Node: gitview Sections95595
-Node: GITVIEW-Setup95976
-Node: GITVIEW-Color96224
-Node: GITVIEW-Monochrome96602
-Node: GITVIEW-Keys97017
-Node: Limitations97151
-Node: Bugs98551
-Node: Key Index98809
-Node: Command Index118573
-Node: Variable Index137695
-Node: Concept Index139751
+Node: gitview68602
+Node: gitkeys69448
+Node: gitwipe69829
+Node: gitmount70552
+Node: gitaction71310
+Node: gitunpack73210
+Node: gitrgrep73620
+Node: Customization74101
+Node: Environment Variables74398
+Node: Configuration Files75659
+Node: Key Sequences78756
+Node: Setup80085
+Node: gitfm Sections81034
+Node: GITFM-Setup81486
+Node: GITFM-Color83619
+Node: GITFM-Monochrome83986
+Node: GITFM-Keys84387
+Node: key-sequence85290
+Node: command-name85927
+Node: formatted-command86670
+Node: %s87994
+Node: %f88519
+Node: %d88762
+Node: %l89007
+Node: %t89258
+Node: %z89491
+Node: %a89720
+Node: %m89933
+Node: %g90135
+Node: %o90338
+Node: %p90541
+Node: %b90744
+Node: %i90957
+Node: %?91180
+Node: new-dir91670
+Node: save-screen92094
+Node: pause92792
+Node: hide93125
+Node: GITFM-FTI94003
+Node: gitps Sections94583
+Node: GITPS-Setup94975
+Node: GITPS-Color95213
+Node: GITPS-Monochrome95577
+Node: GITPS-Keys95978
+Node: gitview Sections96106
+Node: GITVIEW-Setup96487
+Node: GITVIEW-Color96735
+Node: GITVIEW-Monochrome97113
+Node: GITVIEW-Keys97528
+Node: Limitations97662
+Node: Bugs99062
+Node: Key Index99320
+Node: Command Index119084
+Node: Variable Index138206
+Node: Concept Index140262
 
 End Tag Table
