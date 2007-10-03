@@ -43,3 +43,13 @@ term/gitrc.vt100
 term/gitrc.vt102
 term/gitrc.xterm
 term/gitrc.xterm-color
+debian/gnu-interactive-tools.postinst.debhelper
+debian/gnu-interactive-tools.prerm.debhelper
+lib/charset.alias
+lib/configmake.h
+lib/ref-add.sed
+lib/ref-del.sed
+lib/stdlib.h
+lib/string.h
+lib/unistd.h
+lib/uniwidth/.dirstamp

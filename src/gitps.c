@@ -223,6 +223,9 @@ static xsignal_t sigdesc[] =
     { "SIGSYS   ", SIGSYS    },
 #endif
     { "SIGTERM  ", SIGTERM   },
+#ifdef SIGSTKFLT
+    { "SIGSTKFLT", SIGSTKFLT },
+#endif
 #ifdef SIGTRAP
     { "SIGTRAP  ", SIGTRAP   },
 #endif
@@ -255,7 +258,7 @@ static xsignal_t sigdesc[] =
 };
 
 
-#define BUILTIN_OPERATIONS              46
+#define BUILTIN_OPERATIONS              47
 
 
 #define BUILTIN_previous_line            0
@@ -304,6 +307,7 @@ static xsignal_t sigdesc[] =
 #define BUILTIN_refresh                 43
 #define BUILTIN_exit                    44
 #define BUILTIN_hard_refresh            45
+#define BUILTIN_SIGSTKFLT               46
 
 
 #define MAX_BUILTIN_NAME                20
@@ -356,6 +360,7 @@ char built_in[BUILTIN_OPERATIONS][MAX_BUILTIN_NAME] =
     "refresh",
     "exit",
     "hard-refresh",
+    "SIGSTKFLT",
 };
 
 
@@ -1394,7 +1399,9 @@ main(argc, argv)
 #ifdef SIGXFSZ
 	    case BUILTIN_SIGXFSZ:   set_signal(SIGXFSZ);   break;
 #endif
-
+#ifdef SIGSTKFLT
+	    case BUILTIN_SIGSTKFLT: set_signal(SIGSTKFLT); break;
+#endif
 	    case BUILTIN_hard_refresh:
 		tty_touch();
 

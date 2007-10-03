@@ -3,6 +3,9 @@
 	* Manually expand variables in gitrc.common.IN
 	  (sed in Makefile.am), otherwise they get expanded to (eg)
 	  $(prefix)/share/doc/gnu-interactive-tools.
+	* gitps:
+	  + Added SIGSTKFLT to supported signals.
+	  + Added numbers as key bindings to select signals.
 
 2007-10-01  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
 

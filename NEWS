@@ -33,6 +33,8 @@
 
 ** Add mail checking to title.
 
+** gitps: added numbers as key bindings for signal selection.
+
 ** Fixed a scrolling inconsistency in gitview.
 
 ** Fixed a segmentation fault related to directory names containing

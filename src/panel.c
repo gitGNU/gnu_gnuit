@@ -3591,15 +3591,9 @@ panel_compare(this, this_entry, this_size, other, other_entry, other_size)
     *this_size = *other_size = 0;
 
     if(IS_SPECIAL(this->dir_entry[this_entry].mode))
-    {
 	is_special1=1;
-	fprintf(stderr,"file1 is special\n");
-    }
     if(IS_SPECIAL(other->dir_entry[this_entry].mode))
-    {
 	is_special2=1;
-	fprintf(stderr,"file2 is special\n");
-    }
 
     /* If either is a special file, use the length of the other. */
     /* size is only used for calculating percentage done */
@@ -3612,7 +3606,6 @@ panel_compare(this, this_entry, this_size, other, other_entry, other_size)
     else /* neither are special files */
 	size=(off64_t)max(this->dir_entry[this_entry].size,
 			  other->dir_entry[other_entry].size);
-    fprintf(stderr,"initial size: %Lu \n",size);
     if ((size == 0) && !(is_special1&&is_special2))
 	return 0;
 
@@ -3648,7 +3641,6 @@ panel_compare(this, this_entry, this_size, other, other_entry, other_size)
     for(n=0 ; ; )
     {
 	int bytes_read;
-	fprintf(stderr,"n: %Lu size: %Lu\n",n,size);
 
 	if (canceled())
 	{
@@ -3679,9 +3671,6 @@ panel_compare(this, this_entry, this_size, other, other_entry, other_size)
 	    return CF_READ2;
 	}
 	*other_size += read2;
-
-	fprintf(stderr,"read1: %u\n",read1);
-	fprintf(stderr,"read2: %u\n",read2);
 
 	bytes_read = min(read1, read2);
 

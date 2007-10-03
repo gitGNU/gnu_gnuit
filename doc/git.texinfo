@@ -18,7 +18,7 @@
 @dircategory Utilities
 @format
 START-INFO-DIR-ENTRY
-* GIT: (git).         GNU Interactive Tools
+* gnu-interactive-tools: (git).         GNU Interactive Tools
 END-INFO-DIR-ENTRY
 @end format
 
@@ -3687,20 +3687,26 @@ command line arguments.
 
 @noindent
 @code{-h}         print this help message
+
 @noindent
 @code{-v}         print the version number
+
 @noindent
 @code{-i}         print the installation directory
+
 @noindent
 @code{-c}         use ANSI colors
+
 @noindent
 @code{-b}         don't use ANSI colors
+
 @noindent
 @code{-l}         don't use the last screen character
+
 @noindent
 @code{-p}         pass the remaining arguments to ps(1)
 
-Running @code{gitps} it is self explanatory.  Use the @kbd{arrows},
+Running @code{gitps} is self explanatory.  Use the @kbd{arrows},
 @kbd{PageUp}, @kbd{PageDown}, @kbd{Home}, @kbd{End}, @kbd{^N}, @kbd{^P},
 @kbd{^V}, @kbd{ESC v}, @kbd{Space} and @kbd{Backspace} to move in the
 list, @kbd{^L} to refresh it, @kbd{Enter} to change the default signal
@@ -3709,6 +3715,16 @@ and @kbd{F10}, @kbd{q} or @kbd{^X ^C} to leave.
 You can change these keys, just read the GITPS-Setup, GITPS-Color,
 GITPS-Monochrome and GITPS-Keys sections in the configuration files
 @file{gitrc.TERM}.
+
+The selected signal can also be changed by pressing its first letter,
+e.g. for @samp{SIGTERM} press @kbd{t}, or by pressing the key
+corresponding to the signal number. For signals > 10, prefix with
+@kbd{^X}, and for signals greater than 20, prefix with @kbd{^C}. For
+instance, to select signal 15 (@samp{SIGTERM}), press @kbd{^X5}.
+
+Keys for signal numbers are hard-coded to the versions in i386 Linux,
+however most are specified by POSIX. Compare signal(7) or signal(5) with
+@uref{http://linux.die.net/man/7/signal}.
 
 
 @node gitview, gitkeys, gitps, Description
