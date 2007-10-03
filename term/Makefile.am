@@ -6,6 +6,7 @@ pkgdata_DATA = gitrc.aixterm gitrc.ansi gitrc.common\
 	       gitrc.generic gitrc.hft gitrc.hpterm gitrc.linux\
 	       gitrc.mach gitrc.minix gitrc.thix gitrc.vt100\
 	       gitrc.vt102 gitrc.xterm gitrc.xterm-color gitrc.linux-m
+CLEANFILES = gitrc.common
 
 GIT_GENERICS	 = gitrc.sun gitrc.sun-cmd gitrc.eterm gitrc.pc3
 GIT_XTERMS	 = gitrc.xterms
