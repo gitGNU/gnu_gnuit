@@ -1,4 +1,4 @@
-EXTRA_DIST = gitrc.aixterm.in gitrc.ansi.in gitrc.common.in\
+EXTRA_DIST = gitrc.aixterm.in gitrc.ansi.in gitrc.common.IN\
 	     gitrc.generic.in gitrc.hft.in gitrc.hpterm.in gitrc.linux.in\
 	     gitrc.mach.in gitrc.minix.in gitrc.thix.in gitrc.vt100.in\
 	     gitrc.vt102.in gitrc.xterm.in gitrc.xterm-color.in gitrc.linux-m.in
