@@ -38,13 +38,13 @@ host_triplet = @host@
 subdir = term
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/gitrc.aixterm.in $(srcdir)/gitrc.ansi.in \
-	$(srcdir)/gitrc.common.in $(srcdir)/gitrc.generic.in \
-	$(srcdir)/gitrc.hft.in $(srcdir)/gitrc.hpterm.in \
-	$(srcdir)/gitrc.linux-m.in $(srcdir)/gitrc.linux.in \
-	$(srcdir)/gitrc.mach.in $(srcdir)/gitrc.minix.in \
-	$(srcdir)/gitrc.thix.in $(srcdir)/gitrc.vt100.in \
-	$(srcdir)/gitrc.vt102.in $(srcdir)/gitrc.xterm-color.in \
-	$(srcdir)/gitrc.xterm.in ChangeLog
+	$(srcdir)/gitrc.generic.in $(srcdir)/gitrc.hft.in \
+	$(srcdir)/gitrc.hpterm.in $(srcdir)/gitrc.linux-m.in \
+	$(srcdir)/gitrc.linux.in $(srcdir)/gitrc.mach.in \
+	$(srcdir)/gitrc.minix.in $(srcdir)/gitrc.thix.in \
+	$(srcdir)/gitrc.vt100.in $(srcdir)/gitrc.vt102.in \
+	$(srcdir)/gitrc.xterm-color.in $(srcdir)/gitrc.xterm.in \
+	ChangeLog
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/alloca.m4 \
 	$(top_srcdir)/m4/codeset.m4 $(top_srcdir)/m4/dirname.m4 \
@@ -78,10 +78,10 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
-CONFIG_CLEAN_FILES = gitrc.common gitrc.aixterm gitrc.ansi \
-	gitrc.generic gitrc.hft gitrc.hpterm gitrc.linux gitrc.linux-m \
-	gitrc.mach gitrc.minix gitrc.thix gitrc.vt100 gitrc.vt102 \
-	gitrc.xterm gitrc.xterm-color
+CONFIG_CLEAN_FILES = gitrc.aixterm gitrc.ansi gitrc.generic gitrc.hft \
+	gitrc.hpterm gitrc.linux gitrc.linux-m gitrc.mach gitrc.minix \
+	gitrc.thix gitrc.vt100 gitrc.vt102 gitrc.xterm \
+	gitrc.xterm-color
 SOURCES =
 DIST_SOURCES =
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
@@ -383,8 +383,6 @@ $(top_srcdir)/configure: @MAINTAINER_MODE_TRUE@ $(am__configure_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
-gitrc.common: $(top_builddir)/config.status $(srcdir)/gitrc.common.in
-	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 gitrc.aixterm: $(top_builddir)/config.status $(srcdir)/gitrc.aixterm.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 gitrc.ansi: $(top_builddir)/config.status $(srcdir)/gitrc.ansi.in
@@ -555,6 +553,10 @@ uninstall-am: uninstall-info-am uninstall-local uninstall-pkgdataDATA
 	pdf-am ps ps-am uninstall uninstall-am uninstall-info-am \
 	uninstall-local uninstall-pkgdataDATA
 
+
+gitrc.common: Makefile $(srcdir)/gitrc.common.IN
+	sed -e 's,@htmldir\@,$(htmldir),g' \
+	    -e 's,@VERSION\@,$(VERSION),g' < $(srcdir)/gitrc.common.IN > gitrc.common
 
 install-data-hook:
 	for i in $(GIT_XTERMS);\

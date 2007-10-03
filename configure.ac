@@ -676,7 +676,6 @@ AC_OUTPUT([
     Makefile
     src/Makefile
     term/Makefile
-    term/gitrc.common
     term/gitrc.aixterm
     term/gitrc.ansi
     term/gitrc.generic

@@ -81,7 +81,7 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	$(MAKE) install DESTDIR="$(BUILDDIR)" htmldir=/usr/share/doc/gnu-interactive-tools
+	$(MAKE) install DESTDIR="$(BUILDDIR)"
 
 	# remove man symlinks - dh_link will recreate properly
 	rm -f $(BUILDDIR)/usr/share/man/man1/git{which,mkdirs,{x,re,rf}grep}.1

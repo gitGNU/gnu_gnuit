@@ -17342,7 +17342,7 @@ PRODUCT="GNU Interactive Tools"
 
 
 
-ac_config_files="$ac_config_files version.h Makefile src/Makefile term/Makefile term/gitrc.common term/gitrc.aixterm term/gitrc.ansi term/gitrc.generic term/gitrc.hft term/gitrc.hpterm term/gitrc.linux term/gitrc.linux-m term/gitrc.mach term/gitrc.minix term/gitrc.thix term/gitrc.vt100 term/gitrc.vt102 term/gitrc.xterm term/gitrc.xterm-color doc/Makefile lib/Makefile git.spec LSM"
+ac_config_files="$ac_config_files version.h Makefile src/Makefile term/Makefile term/gitrc.aixterm term/gitrc.ansi term/gitrc.generic term/gitrc.hft term/gitrc.hpterm term/gitrc.linux term/gitrc.linux-m term/gitrc.mach term/gitrc.minix term/gitrc.thix term/gitrc.vt100 term/gitrc.vt102 term/gitrc.xterm term/gitrc.xterm-color doc/Makefile lib/Makefile git.spec LSM"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -17984,7 +17984,6 @@ do
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
     "term/Makefile") CONFIG_FILES="$CONFIG_FILES term/Makefile" ;;
-    "term/gitrc.common") CONFIG_FILES="$CONFIG_FILES term/gitrc.common" ;;
     "term/gitrc.aixterm") CONFIG_FILES="$CONFIG_FILES term/gitrc.aixterm" ;;
     "term/gitrc.ansi") CONFIG_FILES="$CONFIG_FILES term/gitrc.ansi" ;;
     "term/gitrc.generic") CONFIG_FILES="$CONFIG_FILES term/gitrc.generic" ;;

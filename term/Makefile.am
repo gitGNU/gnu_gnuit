@@ -17,6 +17,11 @@ GIT_VT100S	 = gitrc.vt125 gitrc.vt200 gitrc.vt201 gitrc.vt220\
 		   gitrc.vt240 gitrc.vt300 gitrc.vt320 gitrc.vt400\
 		   gitrc.vt420 gitrc.screen
 
+
+gitrc.common: Makefile $(srcdir)/gitrc.common.IN
+	sed -e 's,@htmldir\@,$(htmldir),g' \
+	    -e 's,@VERSION\@,$(VERSION),g' < $(srcdir)/gitrc.common.IN > gitrc.common
+
 install-data-hook:
 	for i in $(GIT_XTERMS);\
 	do\

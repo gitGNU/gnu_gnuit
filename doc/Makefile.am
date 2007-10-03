@@ -2,7 +2,7 @@ info_TEXINFOS = git.texinfo
 man_MANS = gitfm.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 gitunpack.1 \
            gitps.1 gitinternal.1 gitwipe.1 gitview.1 gitdpkgname.1
 infodir = $(prefix)/share/info
-htmldir = $(prefix)/share/doc/git-$(VERSION)
+htmldir = $(prefix)/share/doc/gnu-interactive-tools
 BUILT_SOURCES = git.html
 html_DATA = git.html
 EXTRA_DIST = gitfm.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 gitunpack.1\
