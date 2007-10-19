@@ -2,7 +2,7 @@ This is git.info, produced by makeinfo version 4.8 from git.texinfo.
 
 INFO-DIR-SECTION Utilities
 START-INFO-DIR-ENTRY
-* gnu-interactive-tools: (git).         GNU Interactive Tools
+* gnuit: (git).         GNU Interactive Tools
 END-INFO-DIR-ENTRY
 
    GIT: A set of interactive tools, by Tudor Hulubei and Andrei Pitis.
@@ -2136,8 +2136,7 @@ to match the file name against its patterns, it backs up to
 `gitaction' are tried.  For an example of how to write .gitaction
 scripts take a look at the `.gitaction' shell script provided as part
 of the distribution and installed in the `$(prefix)/bin' directory.
-Debian users will find it in
-`/usr/share/doc/gnu-interactive-tools/examples/'.
+Debian users will find it in `/usr/share/doc/gnuit/examples/'.
 
 
 File: git.info,  Node: gitunpack,  Next: gitrgrep,  Prev: gitaction,  Up: Description
@@ -2226,8 +2225,8 @@ File: git.info,  Node: Configuration Files,  Prev: Environment Variables,  Up: C
 
 There is one configuration file per terminal type in `GIT'.  The
 configuration file(s) reside in the user's home directory or (the
-default versions) in the directory `/usr/share/gnu-interactive-tools/').
-Files in the user's home directory start with a leading "."
+default versions) in the directory `/usr/share/gnuit/').  Files in the
+user's home directory start with a leading "."
 
    Their generic name is `gitrc.TERM'.  `GIT' allows each terminal type
 to have its own configuration file (TERM is the value of the TERM
@@ -2256,9 +2255,9 @@ definitions of the most used terminals in a local `.termcap' file will
 lead to a faster start.
 
    The `.gitrc.TERM' is first searched for in the home directory then,
-if not found, in the directory `/usr/share/gnu-interactive-tools/').
-(without the leading ".").  The configuration file is structured in
-sections, each section containing variables in the following format:
+if not found, in the directory `/usr/share/gnuit/').  (without the
+leading ".").  The configuration file is structured in sections, each
+section containing variables in the following format:
 
      	`variable-name' = `first-field';`second-field'; ...
 
@@ -3905,133 +3904,133 @@ Concept Index
 
 
 Tag Table:
-Node: Top1061
-Node: Introduction1932
-Node: Distrib3244
-Node: Description4918
-Node: gitfm5765
-Node: Conventions8287
-Node: Command line10178
-Node: Modes11235
-Node: Sorting13516
-Node: Moving14803
-Node: Selecting16409
-Node: Isearch17812
-Node: Input Line18935
-Node: Inserting Text20036
-Node: Moving Point20946
-Node: Erasing21541
-Node: Case Changes22817
-Node: History23251
-Node: Setting Mark23985
-Node: Yanking24318
-Node: Selecting Files24590
-Node: Files25505
-Node: Copying Files27232
-Node: Moving Files27598
-Node: Creating Files27985
-Node: Deleting Files28342
-Node: Linking Files28686
-Node: Renaming Files29339
-Node: Splitting Files29926
-Node: Packing Files30428
-Node: Inode31767
-Node: Editing Files33443
-Node: Viewing Files34173
-Node: Compressing Files34558
-Node: Encoding Files35957
-Node: Encrypting Files36898
-Node: Comparing Files37189
-Node: Spell Checking Files37854
-Node: Printing Files38110
-Node: Wiping Files38573
-Node: Searching Files38907
-Node: Archive Files39448
-Node: DEB Packages41278
-Node: RPM Packages44242
-Node: File Types45624
-Node: MSDOS Files45841
-Node: Actions47937
-Node: Directories48863
-Node: Creating Dirs49626
-Node: Copying Dirs49901
-Node: Deleting Dirs50381
-Node: Moving Dirs50818
-Node: Renaming Dirs51295
-Node: Comparing Dirs51736
-Node: Dirs Usage52968
-Node: Changing Dirs53242
-Node: Dirs History53918
-Node: Hot Keys54989
-Node: Compiling55616
-Node: Mail56015
-Node: Shell57169
-Node: Grep57456
-Node: Locking57882
-Node: Refreshing58278
-Node: Resetting59013
-Node: Mounting59265
-Node: Sysinfo62362
-Node: Environment63628
-Node: Processes64035
-Node: Sync66125
-Node: Documentation66376
-Node: Exit66870
-Node: gitps67088
-Node: gitview68602
-Node: gitkeys69448
-Node: gitwipe69829
-Node: gitmount70552
-Node: gitaction71310
-Node: gitunpack73210
-Node: gitrgrep73620
-Node: Customization74101
-Node: Environment Variables74398
-Node: Configuration Files75659
-Node: Key Sequences78756
-Node: Setup80085
-Node: gitfm Sections81034
-Node: GITFM-Setup81486
-Node: GITFM-Color83619
-Node: GITFM-Monochrome83986
-Node: GITFM-Keys84387
-Node: key-sequence85290
-Node: command-name85927
-Node: formatted-command86670
-Node: %s87994
-Node: %f88519
-Node: %d88762
-Node: %l89007
-Node: %t89258
-Node: %z89491
-Node: %a89720
-Node: %m89933
-Node: %g90135
-Node: %o90338
-Node: %p90541
-Node: %b90744
-Node: %i90957
-Node: %?91180
-Node: new-dir91670
-Node: save-screen92094
-Node: pause92792
-Node: hide93125
-Node: GITFM-FTI94003
-Node: gitps Sections94583
-Node: GITPS-Setup94975
-Node: GITPS-Color95213
-Node: GITPS-Monochrome95577
-Node: GITPS-Keys95978
-Node: gitview Sections96106
-Node: GITVIEW-Setup96487
-Node: GITVIEW-Color96735
-Node: GITVIEW-Monochrome97113
-Node: GITVIEW-Keys97528
-Node: Limitations97662
-Node: Bugs99062
-Node: Key Index99320
-Node: Command Index119084
-Node: Variable Index138206
-Node: Concept Index140262
+Node: Top1045
+Node: Introduction1916
+Node: Distrib3228
+Node: Description4902
+Node: gitfm5749
+Node: Conventions8271
+Node: Command line10162
+Node: Modes11219
+Node: Sorting13500
+Node: Moving14787
+Node: Selecting16393
+Node: Isearch17796
+Node: Input Line18919
+Node: Inserting Text20020
+Node: Moving Point20930
+Node: Erasing21525
+Node: Case Changes22801
+Node: History23235
+Node: Setting Mark23969
+Node: Yanking24302
+Node: Selecting Files24574
+Node: Files25489
+Node: Copying Files27216
+Node: Moving Files27582
+Node: Creating Files27969
+Node: Deleting Files28326
+Node: Linking Files28670
+Node: Renaming Files29323
+Node: Splitting Files29910
+Node: Packing Files30412
+Node: Inode31751
+Node: Editing Files33427
+Node: Viewing Files34157
+Node: Compressing Files34542
+Node: Encoding Files35941
+Node: Encrypting Files36882
+Node: Comparing Files37173
+Node: Spell Checking Files37838
+Node: Printing Files38094
+Node: Wiping Files38557
+Node: Searching Files38891
+Node: Archive Files39432
+Node: DEB Packages41262
+Node: RPM Packages44226
+Node: File Types45608
+Node: MSDOS Files45825
+Node: Actions47921
+Node: Directories48847
+Node: Creating Dirs49610
+Node: Copying Dirs49885
+Node: Deleting Dirs50365
+Node: Moving Dirs50802
+Node: Renaming Dirs51279
+Node: Comparing Dirs51720
+Node: Dirs Usage52952
+Node: Changing Dirs53226
+Node: Dirs History53902
+Node: Hot Keys54973
+Node: Compiling55600
+Node: Mail55999
+Node: Shell57153
+Node: Grep57440
+Node: Locking57866
+Node: Refreshing58262
+Node: Resetting58997
+Node: Mounting59249
+Node: Sysinfo62346
+Node: Environment63612
+Node: Processes64019
+Node: Sync66109
+Node: Documentation66360
+Node: Exit66854
+Node: gitps67072
+Node: gitview68586
+Node: gitkeys69432
+Node: gitwipe69813
+Node: gitmount70536
+Node: gitaction71294
+Node: gitunpack73178
+Node: gitrgrep73588
+Node: Customization74069
+Node: Environment Variables74366
+Node: Configuration Files75627
+Node: Key Sequences78694
+Node: Setup80023
+Node: gitfm Sections80972
+Node: GITFM-Setup81424
+Node: GITFM-Color83557
+Node: GITFM-Monochrome83924
+Node: GITFM-Keys84325
+Node: key-sequence85228
+Node: command-name85865
+Node: formatted-command86608
+Node: %s87932
+Node: %f88457
+Node: %d88700
+Node: %l88945
+Node: %t89196
+Node: %z89429
+Node: %a89658
+Node: %m89871
+Node: %g90073
+Node: %o90276
+Node: %p90479
+Node: %b90682
+Node: %i90895
+Node: %?91118
+Node: new-dir91608
+Node: save-screen92032
+Node: pause92730
+Node: hide93063
+Node: GITFM-FTI93941
+Node: gitps Sections94521
+Node: GITPS-Setup94913
+Node: GITPS-Color95151
+Node: GITPS-Monochrome95515
+Node: GITPS-Keys95916
+Node: gitview Sections96044
+Node: GITVIEW-Setup96425
+Node: GITVIEW-Color96673
+Node: GITVIEW-Monochrome97051
+Node: GITVIEW-Keys97466
+Node: Limitations97600
+Node: Bugs99000
+Node: Key Index99258
+Node: Command Index119022
+Node: Variable Index138144
+Node: Concept Index140200
 
 End Tag Table

@@ -1,9 +1,9 @@
-gnu-interactive-tools (4.9.1-1) unstable; urgency=low
+gnuit (4.9.1-1) unstable; urgency=low
 
-  * The package has been renamed to gnu-interactive-tools.
+  * The package has been renamed to gnuit.
     The old git transitional package can be safely removed.
 
-  * System copies of gitrc files in /usr/share/gnu-interactive-tools
+  * System copies of gitrc files in /usr/share/gnuit
     no longer have a leading dot. User copies in home directories
     should still have a "." at the start.
 

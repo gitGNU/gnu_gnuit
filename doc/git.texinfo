@@ -18,7 +18,7 @@
 @dircategory Utilities
 @format
 START-INFO-DIR-ENTRY
-* gnu-interactive-tools: (git).         GNU Interactive Tools
+* gnuit: (git).         GNU Interactive Tools
 END-INFO-DIR-ENTRY
 @end format
 
@@ -3845,7 +3845,7 @@ to @code{$HOME/.gitaction}.  When this one fails too the patterns in
 scripts take a look at the @code{.gitaction} shell script provided as
 part of the distribution and installed in the
 @samp{$(prefix)/bin} directory. Debian users will find it in
-@samp{/usr/share/doc/gnu-interactive-tools/examples/}.
+@samp{/usr/share/doc/gnuit/examples/}.
 
 @node gitunpack, gitrgrep, gitaction, Description
 @section Unified archive unpacking
@@ -3942,7 +3942,7 @@ your @file{.profile}:
 
 There is one configuration file per terminal type in @code{GIT}.  The
 configuration file(s) reside in the user's home directory or (the
-default versions) in the directory @file{/usr/share/gnu-interactive-tools/}).
+default versions) in the directory @file{/usr/share/gnuit/}).
 Files in the user's home directory start with a leading ``.''
 
 Their generic name is @file{gitrc.TERM}.  @code{GIT} allows each
@@ -3975,7 +3975,7 @@ definitions of the most used terminals in a local @file{.termcap} file
 will lead to a faster start.
 
 The @file{.gitrc.TERM} is first searched for in the home directory then,
-if not found, in the directory @file{/usr/share/gnu-interactive-tools/}).
+if not found, in the directory @file{/usr/share/gnuit/}).
 (without the leading ``.'').
 The configuration file is structured in sections, each section
 containing variables in the following format:

@@ -1,7 +1,7 @@
-gnu-interactive-tools (4.9.1-1) unstable; urgency=low
+gnuit (4.9.1-1) unstable; urgency=low
 
   * New upstream version.
-  * Package name changed to gnu-interactive-tools.
+  * Package name changed to gnuit.
   * Added transitional git package.
   * Removed unneeded postinst and prerm.
   * Updated NEWS.Debian with user-visible changes.

@@ -2,7 +2,7 @@ info_TEXINFOS = git.texinfo
 man_MANS = gitfm.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 gitunpack.1 \
            gitps.1 gitinternal.1 gitwipe.1 gitview.1 gitdpkgname.1
 infodir = $(prefix)/share/info
-htmldir = $(prefix)/share/doc/gnu-interactive-tools
+htmldir = $(prefix)/share/doc/gnuit
 BUILT_SOURCES = git.html
 html_DATA = git.html
 EXTRA_DIST = gitfm.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 gitunpack.1\
@@ -35,7 +35,7 @@ endif
 dist-hook: html
 
 install-data-hook:
-	$(INSTALL_PROGRAM) -m 644 $(srcdir)/dpkg-help.txt $(DESTDIR)/$(datadir)/gnu-interactive-tools/dpkg-help.txt
+	$(INSTALL_PROGRAM) -m 644 $(srcdir)/dpkg-help.txt $(DESTDIR)/$(datadir)/gnuit/dpkg-help.txt
 	for i in $(GIT_GREPS);\
 	do\
 	    rm -f $(DESTDIR)$(mandir)/man1/$${i}.1;\
@@ -50,7 +50,7 @@ install-data-hook:
 
 
 uninstall-local:
-	rm -f $(DESTDIR)/$(datadir)/gnu-interactive-tools/dpkg-help.txt
+	rm -f $(DESTDIR)/$(datadir)/gnuit/dpkg-help.txt
 	-rmdir $(DESTDIR)$(htmldir)
 	for i in $(GIT_GREPS);\
 	do\

@@ -317,7 +317,7 @@ host_alias = @host_alias@
 host_cpu = @host_cpu@
 host_os = @host_os@
 host_vendor = @host_vendor@
-htmldir = $(prefix)/share/doc/gnu-interactive-tools
+htmldir = $(prefix)/share/doc/gnuit
 includedir = @includedir@
 infodir = $(prefix)/share/info
 install_sh = @install_sh@
@@ -728,7 +728,7 @@ html:
 dist-hook: html
 
 install-data-hook:
-	$(INSTALL_PROGRAM) -m 644 $(srcdir)/dpkg-help.txt $(DESTDIR)/$(datadir)/gnu-interactive-tools/dpkg-help.txt
+	$(INSTALL_PROGRAM) -m 644 $(srcdir)/dpkg-help.txt $(DESTDIR)/$(datadir)/gnuit/dpkg-help.txt
 	for i in $(GIT_GREPS);\
 	do\
 	    rm -f $(DESTDIR)$(mandir)/man1/$${i}.1;\
@@ -742,7 +742,7 @@ install-data-hook:
 	done
 
 uninstall-local:
-	rm -f $(DESTDIR)/$(datadir)/gnu-interactive-tools/dpkg-help.txt
+	rm -f $(DESTDIR)/$(datadir)/gnuit/dpkg-help.txt
 	-rmdir $(DESTDIR)$(htmldir)
 	for i in $(GIT_GREPS);\
 	do\

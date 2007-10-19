@@ -63,7 +63,7 @@ etc.
 
 When git/gitps/gitview are started, they search a file named .gitrc.TERM
 first in the home directory and then (without the leading dot) in the
-$(datadir)/gnu-interactive-tools directory ($(datadir) is usually
+$(datadir)/gnuit directory ($(datadir) is usually
 /usr/local/share) (see INSTALL).
 
 TERM is the value of your 'TERM' environment variable, e.g. vt102; if

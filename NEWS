@@ -8,7 +8,7 @@
 * Version 4.9.1
 ================
 
-** Renamed package to gnu-interactive-tools.
+** Renamed package to gnuit
 
 ** Renamed git file manager binary to gitfm.
    Config file sections now start with "[GITFM-", but

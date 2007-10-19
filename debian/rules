@@ -8,7 +8,7 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-BUILDDIR=$(CURDIR)/debian/gnu-interactive-tools
+BUILDDIR=$(CURDIR)/debian/gnuit
 
 # These are used for cross-compiling and for saving the configure script
 # from having to guess our platform (since we know it already)
@@ -86,11 +86,11 @@ install: build
 	# remove man symlinks - dh_link will recreate properly
 	rm -f $(BUILDDIR)/usr/share/man/man1/git{which,mkdirs,{x,re,rf}grep}.1
 	# install changelogs from subdirs
-	install -d $(BUILDDIR)/usr/share/doc/gnu-interactive-tools
+	install -d $(BUILDDIR)/usr/share/doc/gnuit
 	set -e ; for i in */ChangeLog; do \
 		nfile=`echo $$i | sed -e 's|\(.*\)/\(.*\)|\L\2\E.\1|'`; \
-		install -c $$i $(BUILDDIR)/usr/share/doc/gnu-interactive-tools/$$nfile; \
-		gzip -9f $(BUILDDIR)/usr/share/doc/gnu-interactive-tools/$$nfile; \
+		install -c $$i $(BUILDDIR)/usr/share/doc/gnuit/$$nfile; \
+		gzip -9f $(BUILDDIR)/usr/share/doc/gnuit/$$nfile; \
 	done
 	touch build-stamp
 

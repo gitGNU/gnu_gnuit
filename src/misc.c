@@ -84,7 +84,7 @@ void
 compute_directories()
 {
     char *prefix_relative_bin_dir = "/bin";
-    char *prefix_relative_term_dir = "/share/gnu-interactive-tools";
+    char *prefix_relative_term_dir = "/share/gnuit";
 
     bindir = xmalloc(strlen(PREFIX) + strlen(prefix_relative_bin_dir) + 1);
     sprintf(bindir, "%s%s", PREFIX, prefix_relative_bin_dir);

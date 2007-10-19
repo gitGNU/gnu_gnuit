@@ -1,3 +1,7 @@
+2007-10-19  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
+
+	* Rename package to gnuit.
+
 2007-10-03  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
 
 	* Manually expand variables in gitrc.common.IN

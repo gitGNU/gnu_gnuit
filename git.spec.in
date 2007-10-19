@@ -1,10 +1,10 @@
 Summary: A set of GNU Interactive Tools.
-Name: gnu-interactive-tools
+Name: gnuit
 Version: @VERSION@
 Release: 1
 Copyright: GNU
 Group: Applications/File
-Source: http://nessie.mcc.ac.uk/~ianb/projects/git/gnu-interactive-tools-%{version}.tar.gz
+Source: http://nessie.mcc.ac.uk/~ianb/projects/git/gnuit-%{version}.tar.gz
 URL: http://nessie.mcc.ac.uk/~ianb/projects/git/
 Packager: Ian Beckwith <ianb@nessie.mcc.ac.uk>
 BuildRoot: /var/tmp/git-root
@@ -19,7 +19,7 @@ editors, compressing and uncompressing files, creating and expanding
 archives, compiling programs, sending mail and more.  GIT uses standard
 ANSI color sequences, if they are available.
 
-You should install the gnu-interactive-tools package if you are
+You should install the gnuit package if you are
 interested in using its file management capabilities.
 
 %prep
@@ -41,8 +41,8 @@ gzip -9nf $RPM_BUILD_ROOT/usr/share/info/git.info*
 /usr/bin/.gitaction
 /usr/man/man1/*
 /usr/share/info/git*
-/usr/share/gnu-interactive-tools/*
-/usr/share/doc/gnu-interactive-tools/*
+/usr/share/gnuit/*
+/usr/share/doc/gnuit/*
 
 %clean
 rm -rf $RPM_BUILD_ROOT

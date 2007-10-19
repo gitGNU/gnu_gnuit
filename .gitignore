@@ -12,9 +12,9 @@ stamp-h1
 version.h
 debian/files
 debian/git.substvars
-debian/gnu-interactive-tools.substvars
+debian/gnuit.substvars
 debian/git
-debian/gnu-interactive-tools
+debian/gnuit
 doc/git.html
 lib/Makefile
 lib/alloca.h
@@ -43,8 +43,8 @@ term/gitrc.vt100
 term/gitrc.vt102
 term/gitrc.xterm
 term/gitrc.xterm-color
-debian/gnu-interactive-tools.postinst.debhelper
-debian/gnu-interactive-tools.prerm.debhelper
+debian/gnuit.postinst.debhelper
+debian/gnuit.prerm.debhelper
 lib/charset.alias
 lib/configmake.h
 lib/ref-add.sed
