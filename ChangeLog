@@ -1,6 +1,7 @@
 2007-10-19  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
 
-	* Rename package to gnuit.
+	* Renamed package to gnuit.
+	* Renamed term/gitrc.* to gnuitrc.*
 
 2007-10-03  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
 

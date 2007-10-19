@@ -52,8 +52,9 @@
 #include "misc.h"
 
 
-static char SYSTEM_CONFIGFILE_PREFIX[] = "/gitrc.";
-static char   USER_CONFIGFILE_PREFIX[] = "/.gitrc.";
+static char   SYSTEM_CONFIGFILE_PREFIX[] = "/gnuitrc.";
+static char     USER_CONFIGFILE_PREFIX[] = "/.gnuitrc.";
+static char OLD_USER_CONFIGFILE_PREFIX[] = "/.gitrc.";
 
 static char *termdir;
 static char *bindir;
@@ -192,7 +193,7 @@ configuration_warning(configfile)
 	   "%s: If the TERM environment variable is, say, vt102, your\n",
 	    g_program);
     fprintf(stderr,
-	    "%s: configuration file name is '.gitrc.vt102'.\n",
+	    "%s: configuration file name is 'gnuitrc.vt102'.\n",
 	    g_program);
     fprintf(stderr,
 	   "%s: You can copy a configuration file in your home directory\n",
@@ -201,7 +202,10 @@ configuration_warning(configfile)
 	    "%s: and modify it in order to overwrite the default one.\n",
 	    g_program);
     fprintf(stderr,
-	    "%s: Try modifying '.gitrc.generic'...\n\n",
+	    "%s: Add a dot at the start of the file, e.g. ~/.gnuitrc.xterm.\n",
+	    g_program);
+    fprintf(stderr,
+	    "%s: Try modifying 'gnuitrc.generic'...\n\n",
 	    g_program);
 }
 
@@ -209,7 +213,7 @@ configuration_warning(configfile)
 void
 common_configuration_init()
 {
-    /* Load the global .gitrc.common file.  */
+    /* Load the global gnuitrc.common file.  */
     char *configfile = xmalloc(strlen(termdir) + 1 +
 			       strlen(SYSTEM_CONFIGFILE_PREFIX) +
 			       sizeof("common") + 1);
@@ -219,7 +223,7 @@ common_configuration_init()
 
     if (configuration_init(configfile) == 0)
     {
-	/* Give up if global gitrc.common is not found.  */
+	/* Give up if global gnuitrc.common is not found.  */
 	configuration_fatal_error(configfile);
 	exit(1);
     }
@@ -238,32 +242,42 @@ specific_configuration_init()
     if (configuration_init(configfile) == 0)
     {
 	xfree(configfile);
-	configfile = xmalloc(strlen(termdir) + 1 +
-			     strlen(SYSTEM_CONFIGFILE_PREFIX) +
+	configfile = xmalloc(strlen(g_home) + 1 +
+			     strlen(OLD_USER_CONFIGFILE_PREFIX) +
 			     strlen(tty_type) + 1);
-	strcpy(configfile, termdir);
-	strcat(configfile, SYSTEM_CONFIGFILE_PREFIX);
+	strcpy(configfile, g_home);
+	strcat(configfile, OLD_USER_CONFIGFILE_PREFIX);
 	strcat(configfile, tty_type);
 
 	if (configuration_init(configfile) == 0)
 	{
-	    configuration_warning(configfile);
-
 	    xfree(configfile);
 	    configfile = xmalloc(strlen(termdir) + 1 +
 				 strlen(SYSTEM_CONFIGFILE_PREFIX) +
-				 sizeof("generic") + 1);
+				 strlen(tty_type) + 1);
 	    strcpy(configfile, termdir);
 	    strcat(configfile, SYSTEM_CONFIGFILE_PREFIX);
-	    strcat(configfile, "generic");
+	    strcat(configfile, tty_type);
 
 	    if (configuration_init(configfile) == 0)
 	    {
-		configuration_fatal_error(configfile);
-		exit(1);
-	    }
+		configuration_warning(configfile);
 
-	    return 0;
+		xfree(configfile);
+		configfile = xmalloc(strlen(termdir) + 1 +
+				     strlen(SYSTEM_CONFIGFILE_PREFIX) +
+				     sizeof("generic") + 1);
+		strcpy(configfile, termdir);
+		strcat(configfile, SYSTEM_CONFIGFILE_PREFIX);
+		strcat(configfile, "generic");
+
+		if (configuration_init(configfile) == 0)
+		{
+		    configuration_fatal_error(configfile);
+		    exit(1);
+		}
+		return 0;
+	    }
 	}
     }
 

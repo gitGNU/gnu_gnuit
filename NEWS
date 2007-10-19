@@ -16,8 +16,11 @@
    users is installed unless configured otherwise with
    ./configure --disable-transition.
 
-** Dropped leading dots from system copies of gitrc files
+** Dropped leading dots from system copies of gitrc files,
+   and renamed them to gnuitrc.*
    Files in home directory still start with ".".
+   ~/.gitrc.TERM will be tried as a fallback if ~/.gnuitrc.TERM
+   doesn't exist.
 
 ** Added 64bit I/O support.
 

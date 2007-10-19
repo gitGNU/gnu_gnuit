@@ -8,10 +8,10 @@
 ###
 ### This file contains the command bindings common for all terminal types.
 ### Don't modify it in order to define a new command for a particular terminal
-### type.  Use the the file .gitrc.TERM instead (TERM stands for your terminal
+### type.  Use the the file gnuitrc.TERM instead (TERM stands for your terminal
 ### type, e.g. vt100).  Don't copy this file to your home directory, it will
-### be ignored.  Use .gitrc.TERM instead.  The key bindings in this file can
-### be overwritten by the .gitrc.TERM key bindings.
+### be ignored.  Use .~/gnuitrc.TERM instead.  The key bindings in this file can
+### be overwritten by the ~/.gnuitrc.TERM key bindings.
 ###
 
 ###

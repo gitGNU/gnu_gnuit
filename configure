@@ -17342,7 +17342,7 @@ PRODUCT="GNU Interactive Tools"
 
 
 
-ac_config_files="$ac_config_files version.h Makefile src/Makefile term/Makefile term/gitrc.aixterm term/gitrc.ansi term/gitrc.generic term/gitrc.hft term/gitrc.hpterm term/gitrc.linux term/gitrc.linux-m term/gitrc.mach term/gitrc.minix term/gitrc.thix term/gitrc.vt100 term/gitrc.vt102 term/gitrc.xterm term/gitrc.xterm-color doc/Makefile lib/Makefile git.spec LSM"
+ac_config_files="$ac_config_files version.h Makefile src/Makefile term/Makefile term/gnuitrc.aixterm term/gnuitrc.ansi term/gnuitrc.generic term/gnuitrc.hft term/gnuitrc.hpterm term/gnuitrc.linux term/gnuitrc.linux-m term/gnuitrc.mach term/gnuitrc.minix term/gnuitrc.thix term/gnuitrc.vt100 term/gnuitrc.vt102 term/gnuitrc.xterm term/gnuitrc.xterm-color doc/Makefile lib/Makefile git.spec LSM"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -17984,20 +17984,20 @@ do
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "src/Makefile") CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
     "term/Makefile") CONFIG_FILES="$CONFIG_FILES term/Makefile" ;;
-    "term/gitrc.aixterm") CONFIG_FILES="$CONFIG_FILES term/gitrc.aixterm" ;;
-    "term/gitrc.ansi") CONFIG_FILES="$CONFIG_FILES term/gitrc.ansi" ;;
-    "term/gitrc.generic") CONFIG_FILES="$CONFIG_FILES term/gitrc.generic" ;;
-    "term/gitrc.hft") CONFIG_FILES="$CONFIG_FILES term/gitrc.hft" ;;
-    "term/gitrc.hpterm") CONFIG_FILES="$CONFIG_FILES term/gitrc.hpterm" ;;
-    "term/gitrc.linux") CONFIG_FILES="$CONFIG_FILES term/gitrc.linux" ;;
-    "term/gitrc.linux-m") CONFIG_FILES="$CONFIG_FILES term/gitrc.linux-m" ;;
-    "term/gitrc.mach") CONFIG_FILES="$CONFIG_FILES term/gitrc.mach" ;;
-    "term/gitrc.minix") CONFIG_FILES="$CONFIG_FILES term/gitrc.minix" ;;
-    "term/gitrc.thix") CONFIG_FILES="$CONFIG_FILES term/gitrc.thix" ;;
-    "term/gitrc.vt100") CONFIG_FILES="$CONFIG_FILES term/gitrc.vt100" ;;
-    "term/gitrc.vt102") CONFIG_FILES="$CONFIG_FILES term/gitrc.vt102" ;;
-    "term/gitrc.xterm") CONFIG_FILES="$CONFIG_FILES term/gitrc.xterm" ;;
-    "term/gitrc.xterm-color") CONFIG_FILES="$CONFIG_FILES term/gitrc.xterm-color" ;;
+    "term/gnuitrc.aixterm") CONFIG_FILES="$CONFIG_FILES term/gnuitrc.aixterm" ;;
+    "term/gnuitrc.ansi") CONFIG_FILES="$CONFIG_FILES term/gnuitrc.ansi" ;;
+    "term/gnuitrc.generic") CONFIG_FILES="$CONFIG_FILES term/gnuitrc.generic" ;;
+    "term/gnuitrc.hft") CONFIG_FILES="$CONFIG_FILES term/gnuitrc.hft" ;;
+    "term/gnuitrc.hpterm") CONFIG_FILES="$CONFIG_FILES term/gnuitrc.hpterm" ;;
+    "term/gnuitrc.linux") CONFIG_FILES="$CONFIG_FILES term/gnuitrc.linux" ;;
+    "term/gnuitrc.linux-m") CONFIG_FILES="$CONFIG_FILES term/gnuitrc.linux-m" ;;
+    "term/gnuitrc.mach") CONFIG_FILES="$CONFIG_FILES term/gnuitrc.mach" ;;
+    "term/gnuitrc.minix") CONFIG_FILES="$CONFIG_FILES term/gnuitrc.minix" ;;
+    "term/gnuitrc.thix") CONFIG_FILES="$CONFIG_FILES term/gnuitrc.thix" ;;
+    "term/gnuitrc.vt100") CONFIG_FILES="$CONFIG_FILES term/gnuitrc.vt100" ;;
+    "term/gnuitrc.vt102") CONFIG_FILES="$CONFIG_FILES term/gnuitrc.vt102" ;;
+    "term/gnuitrc.xterm") CONFIG_FILES="$CONFIG_FILES term/gnuitrc.xterm" ;;
+    "term/gnuitrc.xterm-color") CONFIG_FILES="$CONFIG_FILES term/gnuitrc.xterm-color" ;;
     "doc/Makefile") CONFIG_FILES="$CONFIG_FILES doc/Makefile" ;;
     "lib/Makefile") CONFIG_FILES="$CONFIG_FILES lib/Makefile" ;;
     "git.spec") CONFIG_FILES="$CONFIG_FILES git.spec" ;;

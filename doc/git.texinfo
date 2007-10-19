@@ -3252,7 +3252,7 @@ file systems.  @xref{gitmount}, for more information.
 The default key bindings set has been designed to work under
 @code{Linux}, but it can be easily changed for other @code{UNIX} systems
 with different device names.  Reading the configuration file
-@file{gitrc.common} should be enough.  @xref{Hot Keys}, for more
+@file{gnuitrc.common} should be enough.  @xref{Hot Keys}, for more
 information.
 
 As a convention, the @samp{/mnt} directory is used to store an empty
@@ -3543,13 +3543,13 @@ another that accepts combinations of 'e', 'f' and 'l' flags.  Since is
 quite difficult to test which one works fine on a given @code{UNIX}
 system, @code{gitfm} provides key bindings for both of them.  Anyway, if
 your @code{ps}(1) fails to accept the predefined combinations, please
-take a look in its manual and then modify the @file{.gitrc.TERM} file as
+take a look in its manual and then modify the @file{.gnuitrc.TERM} file as
 needed.
 
 Since the number of possible combinations of flags in the @code{ps}
 command line is quite big and *very* system dependent, there is no real
 reason to display them all here.  We are only interested in giving you
-a starting point in your search through the @file{.gitrc.TERM} file.
+a starting point in your search through the @file{.gnuitrc.TERM} file.
 
 Note also that you can display a list of processes using @code{ps}(1) or
 browse through a list of them (killing as needed) using @code{gitps}.
@@ -3714,7 +3714,7 @@ and @kbd{F10}, @kbd{q} or @kbd{^X ^C} to leave.
 
 You can change these keys, just read the GITPS-Setup, GITPS-Color,
 GITPS-Monochrome and GITPS-Keys sections in the configuration files
-@file{gitrc.TERM}.
+@file{gnuitrc.TERM}.
 
 The selected signal can also be changed by pressing its first letter (in
 uppercase), e.g. for @samp{SIGTERM} press @kbd{T}, or by pressing the
@@ -3739,7 +3739,7 @@ file, @kbd{^L} to refresh the screen and @kbd{F10}, @kbd{q} or @kbd{^X
 
 You can change these keys, just read the GITVIEW-Setup, GITVIEW-Color,
 GITVIEW-Monochrome and GITVIEW-Keys sections in the configuration files
-@file{gitrc.TERM}.
+@file{gnuitrc.TERM}.
 
 Here is a brief description of the command line arguments:
 
@@ -3769,7 +3769,7 @@ Here is a brief description of the command line arguments:
 
 @code{gitkeys} is a program that displays the key sequence sent by the
 pressed key.  This is the key sequence received by @code{GIT} tools, so
-this program is useful when setting up the @file{.gitrc.TERM}
+this program is useful when setting up the @file{.gnuitrc.TERM}
 configuration files.
 
 
@@ -3945,17 +3945,17 @@ configuration file(s) reside in the user's home directory or (the
 default versions) in the directory @file{/usr/share/gnuit/}).
 Files in the user's home directory start with a leading ``.''
 
-Their generic name is @file{gitrc.TERM}.  @code{GIT} allows each
+Their generic name is @file{gnuitrc.TERM}.  @code{GIT} allows each
 terminal type to have its own configuration file (@var{TERM} is the
 value of the @var{TERM} environment variable (e.g @samp{vt102}); for the
-@code{Linux} console the configuration file is @file{gitrc.console}).
+@code{Linux} console the configuration file is @file{gnuitrc.console}).
 @vindex TERM
 
 Since most of the key bindings are common to all the terminal types, a
-configuration file called @file{gitrc.common} is parsed before parsing
-the normal @file{.gitrc.TERM} configuration file, the later one defining
+configuration file called @file{gnuitrc.common} is parsed before parsing
+the normal @file{.gnuitrc.TERM} configuration file, the later one defining
 only those keys that are terminal specific.  However, if a key binding
-is redefined in the @file{gitrc.TERM} file, that binding will be used.
+is redefined in the @file{gnuitrc.TERM} file, that binding will be used.
 
 If the @code{GIT} package have been compiled without passing the
 @samp{--enable-terminfo} option to the @code{configure} script and your
@@ -3974,7 +3974,7 @@ a file, but on systems with huge @samp{termcap} databases, copying the
 definitions of the most used terminals in a local @file{.termcap} file
 will lead to a faster start.
 
-The @file{.gitrc.TERM} is first searched for in the home directory then,
+The @file{.gnuitrc.TERM} is first searched for in the home directory then,
 if not found, in the directory @file{/usr/share/gnuit/}).
 (without the leading ``.'').
 The configuration file is structured in sections, each section
@@ -4060,7 +4060,7 @@ In this section the variables have only one field.
 This variable should be set to @samp{ON} if the terminal supports
 standard @samp{ANSI} color sequences.  Otherwise it should be
 @samp{OFF}.  If @samp{AnsiColors} is @samp{ON}, @samp{GITxxx-Color}
-sections will be used in the configuration files @file{gitrc.TERM}.
+sections will be used in the configuration files @file{gnuitrc.TERM}.
 Otherwise, @code{GIT} interactive programs will use the
 @samp{GITxxx-Monochrome} sections.
 @vindex AnsiColors
@@ -4192,7 +4192,7 @@ machine type and the current date) using escape characters:
 In this sections the variables have only one field.
 
 These section allows you to customize the colors of @code{gitfm}.  Reading
-the @file{gitrc.TERM} configuration file is self explanatory.
+the @file{gnuitrc.TERM} configuration file is self explanatory.
 
 
 @node GITFM-Monochrome, GITFM-Keys, GITFM-Color, gitfm Sections
@@ -4201,7 +4201,7 @@ the @file{gitrc.TERM} configuration file is self explanatory.
 In this sections the variables have only one field.
 
 These section allows you to customize the appearance of @code{gitfm} on
-monochrome displays.  Reading the @file{gitrc.TERM} configuration file
+monochrome displays.  Reading the @file{gnuitrc.TERM} configuration file
 is self explanatory.
 
 
@@ -4491,7 +4491,7 @@ This variable describe @code{gitps}'s status bar contents.
 In this sections the variables have only one field.
 
 These section allows you to customize the colors of @code{gitps}.
-Reading the @file{gitrc.TERM} configuration file is self explanatory.
+Reading the @file{gnuitrc.TERM} configuration file is self explanatory.
 
 
 @node GITPS-Monochrome, GITPS-Keys, GITPS-Color, gitps Sections
@@ -4500,7 +4500,7 @@ Reading the @file{gitrc.TERM} configuration file is self explanatory.
 In this sections the variables have only one field.
 
 These section allows you to customize the appearance of @code{gitps} on
-monochrome displays.  Reading the @file{gitrc.TERM} configuration file
+monochrome displays.  Reading the @file{gnuitrc.TERM} configuration file
 is self explanatory.
 
 
@@ -4536,7 +4536,7 @@ This variable describe @code{gitps}'s status bar contents.
 In this sections the variables have only one field.
 
 These section allows you to customize the colors of @code{gitview}.
-Reading the @file{gitrc.TERM} configuration file is self explanatory.
+Reading the @file{gnuitrc.TERM} configuration file is self explanatory.
 
 
 @node GITVIEW-Monochrome, GITVIEW-Keys, GITVIEW-Color, gitview Sections
@@ -4545,7 +4545,7 @@ Reading the @file{gitrc.TERM} configuration file is self explanatory.
 In this sections the variables have only one field.
 
 These section allows you to customize the appearance of @code{gitview}
-on monochrome displays.  Reading the @file{gitrc.TERM} configuration
+on monochrome displays.  Reading the @file{gnuitrc.TERM} configuration
 file is self explanatory.
 
 @node GITVIEW-Keys, , GITVIEW-Monochrome, gitview Sections
@@ -4562,8 +4562,8 @@ will not be seen.
 
 When @code{gitfm} is compiled for @code{Linux}, the default built-in color
 descriptions are for color monitors, so you can't (decently) run
-@code{gitfm} on a b/w monitor without the @file{gitrc.TERM} file
-correctly configured.  @file{gitrc.TERM} should be configured with
+@code{gitfm} on a b/w monitor without the @file{gnuitrc.TERM} file
+correctly configured.  @file{gnuitrc.TERM} should be configured with
 @samp{AnsiColors} = OFF. However, if your system knows about the linux-m
 terminal type, using that may be a better solution.
 
@@ -4571,7 +4571,7 @@ Job support is implemented only in @code{gitfm}.
 
 Due to the fact that the ';' character is used as a field separator in
 the configuration files, you can't write something like that in the
-@file{gitrc.TERM} files:
+@file{gnuitrc.TERM} files:
 
 ^AAA = SHOW-USERS-AND-GROUPS; more /etc/passwd; more /etc/group
 
@@ -4584,7 +4584,7 @@ to.  You must write a small script instead:
 more /etc/passwd
 more /etc/group
 
-Supposing the script name is @code{show_ug}, the @file{gitrc.TERM} line
+Supposing the script name is @code{show_ug}, the @file{gnuitrc.TERM} line
 will look like this:
 
 ^AAA = SHOW-USERS-AND-GROUPS; show_ug

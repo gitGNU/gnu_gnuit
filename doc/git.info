@@ -1768,8 +1768,9 @@ systems.  *Note gitmount::, for more information.
 
    The default key bindings set has been designed to work under
 `Linux', but it can be easily changed for other `UNIX' systems with
-different device names.  Reading the configuration file `gitrc.common'
-should be enough.  *Note Hot Keys::, for more information.
+different device names.  Reading the configuration file
+`gnuitrc.common' should be enough.  *Note Hot Keys::, for more
+information.
 
    As a convention, the `/mnt' directory is used to store an empty
 subdirectory for each mountable file system.  Each file system is
@@ -1906,12 +1907,12 @@ that accepts combinations of 'e', 'f' and 'l' flags.  Since is quite
 difficult to test which one works fine on a given `UNIX' system,
 `gitfm' provides key bindings for both of them.  Anyway, if your
 `ps'(1) fails to accept the predefined combinations, please take a look
-in its manual and then modify the `.gitrc.TERM' file as needed.
+in its manual and then modify the `.gnuitrc.TERM' file as needed.
 
    Since the number of possible combinations of flags in the `ps'
 command line is quite big and *very* system dependent, there is no real
 reason to display them all here.  We are only interested in giving you
-a starting point in your search through the `.gitrc.TERM' file.
+a starting point in your search through the `.gnuitrc.TERM' file.
 
    Note also that you can display a list of processes using `ps'(1) or
 browse through a list of them (killing as needed) using `gitps'.  As a
@@ -2013,7 +2014,7 @@ the default signal and `F10', `q' or `^X ^C' to leave.
 
    You can change these keys, just read the GITPS-Setup, GITPS-Color,
 GITPS-Monochrome and GITPS-Keys sections in the configuration files
-`gitrc.TERM'.
+`gnuitrc.TERM'.
 
    The selected signal can also be changed by pressing its first letter
 (in uppercase), e.g. for `SIGTERM' press `T', or by pressing the key
@@ -2038,7 +2039,7 @@ File: git.info,  Node: gitview,  Next: gitkeys,  Prev: gitps,  Up: Description
 
    You can change these keys, just read the GITVIEW-Setup,
 GITVIEW-Color, GITVIEW-Monochrome and GITVIEW-Keys sections in the
-configuration files `gitrc.TERM'.
+configuration files `gnuitrc.TERM'.
 
    Here is a brief description of the command line arguments:
 
@@ -2062,7 +2063,8 @@ File: git.info,  Node: gitkeys,  Next: gitwipe,  Prev: gitview,  Up: Description
 
 `gitkeys' is a program that displays the key sequence sent by the
 pressed key.  This is the key sequence received by `GIT' tools, so this
-program is useful when setting up the `.gitrc.TERM' configuration files.
+program is useful when setting up the `.gnuitrc.TERM' configuration
+files.
 
 
 File: git.info,  Node: gitwipe,  Next: gitmount,  Prev: gitkeys,  Up: Description
@@ -2228,16 +2230,16 @@ configuration file(s) reside in the user's home directory or (the
 default versions) in the directory `/usr/share/gnuit/').  Files in the
 user's home directory start with a leading "."
 
-   Their generic name is `gitrc.TERM'.  `GIT' allows each terminal type
-to have its own configuration file (TERM is the value of the TERM
+   Their generic name is `gnuitrc.TERM'.  `GIT' allows each terminal
+type to have its own configuration file (TERM is the value of the TERM
 environment variable (e.g `vt102'); for the `Linux' console the
-configuration file is `gitrc.console').  
+configuration file is `gnuitrc.console').  
 
    Since most of the key bindings are common to all the terminal types,
-a configuration file called `gitrc.common' is parsed before parsing the
-normal `.gitrc.TERM' configuration file, the later one defining only
-those keys that are terminal specific.  However, if a key binding is
-redefined in the `gitrc.TERM' file, that binding will be used.
+a configuration file called `gnuitrc.common' is parsed before parsing
+the normal `.gnuitrc.TERM' configuration file, the later one defining
+only those keys that are terminal specific.  However, if a key binding
+is redefined in the `gnuitrc.TERM' file, that binding will be used.
 
    If the `GIT' package have been compiled without passing the
 `--enable-terminfo' option to the `configure' script and your system
@@ -2254,7 +2256,7 @@ file, but on systems with huge `termcap' databases, copying the
 definitions of the most used terminals in a local `.termcap' file will
 lead to a faster start.
 
-   The `.gitrc.TERM' is first searched for in the home directory then,
+   The `.gnuitrc.TERM' is first searched for in the home directory then,
 if not found, in the directory `/usr/share/gnuit/').  (without the
 leading ".").  The configuration file is structured in sections, each
 section containing variables in the following format:
@@ -2338,7 +2340,7 @@ In this section the variables have only one field.
    This variable should be set to `ON' if the terminal supports
 standard `ANSI' color sequences.  Otherwise it should be `OFF'.  If
 `AnsiColors' is `ON', `GITxxx-Color' sections will be used in the
-configuration files `gitrc.TERM'.  Otherwise, `GIT' interactive
+configuration files `gnuitrc.TERM'.  Otherwise, `GIT' interactive
 programs will use the `GITxxx-Monochrome' sections.  
 
 `UseLastScreenChar'
@@ -2440,7 +2442,7 @@ File: git.info,  Node: GITFM-Color,  Next: GITFM-Monochrome,  Prev: GITFM-Setup,
 In this sections the variables have only one field.
 
    These section allows you to customize the colors of `gitfm'.  Reading
-the `gitrc.TERM' configuration file is self explanatory.
+the `gnuitrc.TERM' configuration file is self explanatory.
 
 
 File: git.info,  Node: GITFM-Monochrome,  Next: GITFM-Keys,  Prev: GITFM-Color,  Up: gitfm Sections
@@ -2451,7 +2453,7 @@ File: git.info,  Node: GITFM-Monochrome,  Next: GITFM-Keys,  Prev: GITFM-Color, 
 In this sections the variables have only one field.
 
    These section allows you to customize the appearance of `gitfm' on
-monochrome displays.  Reading the `gitrc.TERM' configuration file is
+monochrome displays.  Reading the `gnuitrc.TERM' configuration file is
 self explanatory.
 
 
@@ -2785,7 +2787,7 @@ File: git.info,  Node: GITPS-Color,  Next: GITPS-Monochrome,  Prev: GITPS-Setup,
 In this sections the variables have only one field.
 
    These section allows you to customize the colors of `gitps'.
-Reading the `gitrc.TERM' configuration file is self explanatory.
+Reading the `gnuitrc.TERM' configuration file is self explanatory.
 
 
 File: git.info,  Node: GITPS-Monochrome,  Next: GITPS-Keys,  Prev: GITPS-Color,  Up: gitps Sections
@@ -2796,7 +2798,7 @@ File: git.info,  Node: GITPS-Monochrome,  Next: GITPS-Keys,  Prev: GITPS-Color, 
 In this sections the variables have only one field.
 
    These section allows you to customize the appearance of `gitps' on
-monochrome displays.  Reading the `gitrc.TERM' configuration file is
+monochrome displays.  Reading the `gnuitrc.TERM' configuration file is
 self explanatory.
 
 
@@ -2839,7 +2841,7 @@ File: git.info,  Node: GITVIEW-Color,  Next: GITVIEW-Monochrome,  Prev: GITVIEW-
 In this sections the variables have only one field.
 
    These section allows you to customize the colors of `gitview'.
-Reading the `gitrc.TERM' configuration file is self explanatory.
+Reading the `gnuitrc.TERM' configuration file is self explanatory.
 
 
 File: git.info,  Node: GITVIEW-Monochrome,  Next: GITVIEW-Keys,  Prev: GITVIEW-Color,  Up: gitview Sections
@@ -2850,7 +2852,7 @@ File: git.info,  Node: GITVIEW-Monochrome,  Next: GITVIEW-Keys,  Prev: GITVIEW-C
 In this sections the variables have only one field.
 
    These section allows you to customize the appearance of `gitview' on
-monochrome displays.  Reading the `gitrc.TERM' configuration file is
+monochrome displays.  Reading the `gnuitrc.TERM' configuration file is
 self explanatory.
 
 
@@ -2872,16 +2874,16 @@ will not be seen.
 
    When `gitfm' is compiled for `Linux', the default built-in color
 descriptions are for color monitors, so you can't (decently) run
-`gitfm' on a b/w monitor without the `gitrc.TERM' file correctly
-configured.  `gitrc.TERM' should be configured with `AnsiColors' = OFF.
-However, if your system knows about the linux-m terminal type, using
-that may be a better solution.
+`gitfm' on a b/w monitor without the `gnuitrc.TERM' file correctly
+configured.  `gnuitrc.TERM' should be configured with `AnsiColors' =
+OFF. However, if your system knows about the linux-m terminal type,
+using that may be a better solution.
 
    Job support is implemented only in `gitfm'.
 
    Due to the fact that the ';' character is used as a field separator
 in the configuration files, you can't write something like that in the
-`gitrc.TERM' files:
+`gnuitrc.TERM' files:
 
    ^AAA = SHOW-USERS-AND-GROUPS; more /etc/passwd; more /etc/group
 
@@ -2892,7 +2894,7 @@ to.  You must write a small script instead:
 
    more /etc/passwd more /etc/group
 
-   Supposing the script name is `show_ug', the `gitrc.TERM' line will
+   Supposing the script name is `show_ug', the `gnuitrc.TERM' line will
 look like this:
 
    ^AAA = SHOW-USERS-AND-GROUPS; show_ug
@@ -3125,26 +3127,26 @@ Key Index
 * ESC j:                                 Moving.               (line 35)
 * ESC k:                                 Erasing.              (line 20)
 * ESC l:                                 Case Changes.         (line  9)
-* ESC m a:                               Mounting.             (line 25)
-* ESC m b:                               Mounting.             (line 29)
-* ESC m c:                               Mounting.             (line 33)
-* ESC m f:                               Mounting.             (line 37)
-* ESC m j:                               Mounting.             (line 45)
-* ESC m t:                               Mounting.             (line 51)
-* ESC m z:                               Mounting.             (line 41)
+* ESC m a:                               Mounting.             (line 26)
+* ESC m b:                               Mounting.             (line 30)
+* ESC m c:                               Mounting.             (line 34)
+* ESC m f:                               Mounting.             (line 38)
+* ESC m j:                               Mounting.             (line 46)
+* ESC m t:                               Mounting.             (line 52)
+* ESC m z:                               Mounting.             (line 42)
 * ESC n:                                 History.              (line 19)
 * ESC p:                                 History.              (line 15)
 * ESC P a, ESC P l, ESC P u:             Processes.            (line 42)
 * ESC P b, ESC P c, ESC P e:             Processes.            (line 35)
 * ESC P T:                               Processes.            (line 46)
 * ESC P x, ESC P y:                      Processes.            (line 42)
-* ESC r a:                               Mounting.             (line 55)
-* ESC r b:                               Mounting.             (line 59)
-* ESC r c:                               Mounting.             (line 63)
-* ESC r f:                               Mounting.             (line 68)
-* ESC r j:                               Mounting.             (line 76)
-* ESC r t:                               Mounting.             (line 83)
-* ESC r z:                               Mounting.             (line 72)
+* ESC r a:                               Mounting.             (line 56)
+* ESC r b:                               Mounting.             (line 60)
+* ESC r c:                               Mounting.             (line 64)
+* ESC r f:                               Mounting.             (line 69)
+* ESC r j:                               Mounting.             (line 77)
+* ESC r t:                               Mounting.             (line 84)
+* ESC r z:                               Mounting.             (line 73)
 * ESC RET:                               Inserting Text.       (line 16)
 * ESC s d:                               Sorting.              (line 24)
 * ESC s e:                               Sorting.              (line 16)
@@ -3340,13 +3342,13 @@ Command Index
 * make-directory:                        Creating Dirs.        (line  9)
 * MAN:                                   Documentation.        (line  8)
 * MIME-MAIL:                             Mail.                 (line 26)
-* MOUNT-A:                               Mounting.             (line 25)
-* MOUNT-B:                               Mounting.             (line 29)
-* MOUNT-CDROM:                           Mounting.             (line 33)
-* MOUNT-FLOPPY:                          Mounting.             (line 37)
-* MOUNT-JAZ:                             Mounting.             (line 45)
-* MOUNT-THESE:                           Mounting.             (line 51)
-* MOUNT-ZIP:                             Mounting.             (line 41)
+* MOUNT-A:                               Mounting.             (line 26)
+* MOUNT-B:                               Mounting.             (line 30)
+* MOUNT-CDROM:                           Mounting.             (line 34)
+* MOUNT-FLOPPY:                          Mounting.             (line 38)
+* MOUNT-JAZ:                             Mounting.             (line 46)
+* MOUNT-THESE:                           Mounting.             (line 52)
+* MOUNT-ZIP:                             Mounting.             (line 42)
 * MOUNTED-FILE-SYSTEMS:                  Sysinfo.              (line 17)
 * move:                                  Moving Files.         (line  9)
 * move (for directories):                Moving Dirs.          (line 10)
@@ -3434,12 +3436,12 @@ Command Index
 * tty-mode:                              Modes.                (line 32)
 * TTY-RESET:                             Resetting.            (line  9)
 * two-panel-mode:                        Modes.                (line 29)
-* UMOUNT-A:                              Mounting.             (line 55)
-* UMOUNT-B:                              Mounting.             (line 59)
-* UMOUNT-FLOPPY:                         Mounting.             (line 68)
-* UMOUNT-JAZ:                            Mounting.             (line 76)
-* UMOUNT-THESE:                          Mounting.             (line 83)
-* UMOUNT-ZIP:                            Mounting.             (line 72)
+* UMOUNT-A:                              Mounting.             (line 56)
+* UMOUNT-B:                              Mounting.             (line 60)
+* UMOUNT-FLOPPY:                         Mounting.             (line 69)
+* UMOUNT-JAZ:                            Mounting.             (line 77)
+* UMOUNT-THESE:                          Mounting.             (line 84)
+* UMOUNT-ZIP:                            Mounting.             (line 73)
 * UNCOMPRESS:                            Compressing Files.    (line 17)
 * unselect-extension:                    Selecting.            (line 33)
 * unselect-files-matching-pattern:       Selecting.            (line 23)
@@ -3749,16 +3751,16 @@ Concept Index
 * Mark entry:                            Selecting.            (line  9)
 * Mime encoded files by mail:            Mail.                 (line 26)
 * Minor modes:                           Modes.                (line 41)
-* mount:                                 Mounting.             (line 51)
+* mount:                                 Mounting.             (line 52)
 * Mounted file systems list:             Sysinfo.              (line 17)
-* Mounting subdirectories:               Mounting.             (line 51)
-* Mounting the cdrom:                    Mounting.             (line 33)
-* Mounting the first floppy:             Mounting.             (line 25)
-* Mounting the floppy:                   Mounting.             (line 25)
-* Mounting the jaz drive:                Mounting.             (line 45)
-* Mounting the second floppy:            Mounting.             (line 29)
-* Mounting the zip drive:                Mounting.             (line 41)
-* Mounting these file systems:           Mounting.             (line 51)
+* Mounting subdirectories:               Mounting.             (line 52)
+* Mounting the cdrom:                    Mounting.             (line 34)
+* Mounting the first floppy:             Mounting.             (line 26)
+* Mounting the floppy:                   Mounting.             (line 26)
+* Mounting the jaz drive:                Mounting.             (line 46)
+* Mounting the second floppy:            Mounting.             (line 30)
+* Mounting the zip drive:                Mounting.             (line 42)
+* Mounting these file systems:           Mounting.             (line 52)
 * Moving directories:                    Moving Dirs.          (line 10)
 * Moving directories in background:      Moving Dirs.          (line 14)
 * Moving files:                          Moving Files.         (line  9)
@@ -3861,7 +3863,7 @@ Concept Index
 * Two panel mode:                        Modes.                (line 29)
 * Two panels:                            Modes.                (line 29)
 * Type specific file action:             Actions.              (line 20)
-* umount:                                Mounting.             (line 55)
+* umount:                                Mounting.             (line 56)
 * Uncompressing directories:             Compressing Files.    (line 17)
 * Uncompressing directories in background: Compressing Files.  (line 21)
 * Uncompressing directories/links:       Compressing Files.    (line 25)
@@ -3872,14 +3874,14 @@ Concept Index
 * Uncompressing files/links:             Compressing Files.    (line 25)
 * Uncompressing files/links in background: Compressing Files.  (line 30)
 * Unmark entry:                          Selecting.            (line  9)
-* Unmounting subdirectories:             Mounting.             (line 83)
-* Unmounting the cdrom:                  Mounting.             (line 63)
-* Unmounting the first floppy:           Mounting.             (line 55)
-* Unmounting the floppy:                 Mounting.             (line 55)
-* Unmounting the jaz drive:              Mounting.             (line 76)
-* Unmounting the second floppy:          Mounting.             (line 59)
-* Unmounting the zip drive:              Mounting.             (line 72)
-* Unmounting these file systems:         Mounting.             (line 83)
+* Unmounting subdirectories:             Mounting.             (line 84)
+* Unmounting the cdrom:                  Mounting.             (line 64)
+* Unmounting the first floppy:           Mounting.             (line 56)
+* Unmounting the floppy:                 Mounting.             (line 56)
+* Unmounting the jaz drive:              Mounting.             (line 77)
+* Unmounting the second floppy:          Mounting.             (line 60)
+* Unmounting the zip drive:              Mounting.             (line 73)
+* Unmounting these file systems:         Mounting.             (line 84)
 * Unselects files matching extension:    Selecting.            (line 33)
 * Unselects files matching pattern:      Selecting.            (line 23)
 * Upcase file names:                     Renaming Files.       (line 21)
@@ -3970,67 +3972,67 @@ Node: Locking57866
 Node: Refreshing58262
 Node: Resetting58997
 Node: Mounting59249
-Node: Sysinfo62346
-Node: Environment63612
-Node: Processes64019
-Node: Sync66109
-Node: Documentation66360
-Node: Exit66854
-Node: gitps67072
-Node: gitview68586
-Node: gitkeys69432
-Node: gitwipe69813
-Node: gitmount70536
-Node: gitaction71294
-Node: gitunpack73178
-Node: gitrgrep73588
-Node: Customization74069
-Node: Environment Variables74366
-Node: Configuration Files75627
-Node: Key Sequences78694
-Node: Setup80023
-Node: gitfm Sections80972
-Node: GITFM-Setup81424
-Node: GITFM-Color83557
-Node: GITFM-Monochrome83924
-Node: GITFM-Keys84325
-Node: key-sequence85228
-Node: command-name85865
-Node: formatted-command86608
-Node: %s87932
-Node: %f88457
-Node: %d88700
-Node: %l88945
-Node: %t89196
-Node: %z89429
-Node: %a89658
-Node: %m89871
-Node: %g90073
-Node: %o90276
-Node: %p90479
-Node: %b90682
-Node: %i90895
-Node: %?91118
-Node: new-dir91608
-Node: save-screen92032
-Node: pause92730
-Node: hide93063
-Node: GITFM-FTI93941
-Node: gitps Sections94521
-Node: GITPS-Setup94913
-Node: GITPS-Color95151
-Node: GITPS-Monochrome95515
-Node: GITPS-Keys95916
-Node: gitview Sections96044
-Node: GITVIEW-Setup96425
-Node: GITVIEW-Color96673
-Node: GITVIEW-Monochrome97051
-Node: GITVIEW-Keys97466
-Node: Limitations97600
-Node: Bugs99000
-Node: Key Index99258
-Node: Command Index119022
-Node: Variable Index138144
-Node: Concept Index140200
+Node: Sysinfo62348
+Node: Environment63614
+Node: Processes64021
+Node: Sync66115
+Node: Documentation66366
+Node: Exit66860
+Node: gitps67078
+Node: gitview68594
+Node: gitkeys69442
+Node: gitwipe69825
+Node: gitmount70548
+Node: gitaction71306
+Node: gitunpack73190
+Node: gitrgrep73600
+Node: Customization74081
+Node: Environment Variables74378
+Node: Configuration Files75639
+Node: Key Sequences78718
+Node: Setup80047
+Node: gitfm Sections80998
+Node: GITFM-Setup81450
+Node: GITFM-Color83583
+Node: GITFM-Monochrome83952
+Node: GITFM-Keys84355
+Node: key-sequence85258
+Node: command-name85895
+Node: formatted-command86638
+Node: %s87962
+Node: %f88487
+Node: %d88730
+Node: %l88975
+Node: %t89226
+Node: %z89459
+Node: %a89688
+Node: %m89901
+Node: %g90103
+Node: %o90306
+Node: %p90509
+Node: %b90712
+Node: %i90925
+Node: %?91148
+Node: new-dir91638
+Node: save-screen92062
+Node: pause92760
+Node: hide93093
+Node: GITFM-FTI93971
+Node: gitps Sections94551
+Node: GITPS-Setup94943
+Node: GITPS-Color95181
+Node: GITPS-Monochrome95547
+Node: GITPS-Keys95950
+Node: gitview Sections96078
+Node: GITVIEW-Setup96459
+Node: GITVIEW-Color96707
+Node: GITVIEW-Monochrome97087
+Node: GITVIEW-Keys97504
+Node: Limitations97638
+Node: Bugs99046
+Node: Key Index99304
+Node: Command Index119068
+Node: Variable Index138190
+Node: Concept Index140246
 
 End Tag Table

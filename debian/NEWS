@@ -4,10 +4,12 @@ gnuit (4.9.1-1) unstable; urgency=low
     The old git transitional package can be safely removed.
 
   * System copies of gitrc files in /usr/share/gnuit
-    no longer have a leading dot. User copies in home directories
-    should still have a "." at the start.
+    no longer have a leading dot and have been renamed to gnuitrc.
+    User copies in home directories should still have a "." at the start.
+    If ~/.gnuitrc.TERM doesn't exist, ~/.gitrc.TERM will be tried
+    as a fallback.
 
- -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Mon, 01 Oct 2007 02:56:02 +0100
+ -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Fri, 19 Oct 2007 04:28:13 +0100
 
 git (4.3.20-11) unstable; urgency=low
 

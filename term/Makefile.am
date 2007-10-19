@@ -1,69 +1,69 @@
-EXTRA_DIST = gitrc.aixterm.in gitrc.ansi.in gitrc.common.IN\
-	     gitrc.generic.in gitrc.hft.in gitrc.hpterm.in gitrc.linux.in\
-	     gitrc.mach.in gitrc.minix.in gitrc.thix.in gitrc.vt100.in\
-	     gitrc.vt102.in gitrc.xterm.in gitrc.xterm-color.in gitrc.linux-m.in
-pkgdata_DATA = gitrc.aixterm gitrc.ansi gitrc.common\
-	       gitrc.generic gitrc.hft gitrc.hpterm gitrc.linux\
-	       gitrc.mach gitrc.minix gitrc.thix gitrc.vt100\
-	       gitrc.vt102 gitrc.xterm gitrc.xterm-color gitrc.linux-m
-CLEANFILES = gitrc.common
+EXTRA_DIST = gnuitrc.aixterm.in gnuitrc.ansi.in gnuitrc.common.IN\
+	     gnuitrc.generic.in gnuitrc.hft.in gnuitrc.hpterm.in gnuitrc.linux.in\
+	     gnuitrc.mach.in gnuitrc.minix.in gnuitrc.thix.in gnuitrc.vt100.in\
+	     gnuitrc.vt102.in gnuitrc.xterm.in gnuitrc.xterm-color.in gnuitrc.linux-m.in
+pkgdata_DATA = gnuitrc.aixterm gnuitrc.ansi gnuitrc.common\
+	       gnuitrc.generic gnuitrc.hft gnuitrc.hpterm gnuitrc.linux\
+	       gnuitrc.mach gnuitrc.minix gnuitrc.thix gnuitrc.vt100\
+	       gnuitrc.vt102 gnuitrc.xterm gnuitrc.xterm-color gnuitrc.linux-m
+CLEANFILES = gnuitrc.common
 
-GIT_GENERICS	 = gitrc.sun gitrc.sun-cmd gitrc.eterm gitrc.pc3
-GIT_XTERMS	 = gitrc.xterms
-GIT_ANSIS	 = gitrc.iris-ansi gitrc.iris-ansi-net gitrc.cygwin
-GIT_COLOR_XTERMS = gitrc.dtterm gitrc.rxvt gitrc.xterm-debian gitrc.Eterm gitrc.rxvt-unicode
-GIT_LINUXS	 = gitrc.console
-GIT_HPTERMS	 = gitrc.hp
-GIT_VT100S	 = gitrc.vt125 gitrc.vt200 gitrc.vt201 gitrc.vt220\
-		   gitrc.vt240 gitrc.vt300 gitrc.vt320 gitrc.vt400\
-		   gitrc.vt420 gitrc.screen
+GIT_GENERICS	 = gnuitrc.sun gnuitrc.sun-cmd gnuitrc.eterm gnuitrc.pc3
+GIT_XTERMS	 = gnuitrc.xterms
+GIT_ANSIS	 = gnuitrc.iris-ansi gnuitrc.iris-ansi-net gnuitrc.cygwin
+GIT_COLOR_XTERMS = gnuitrc.dtterm gnuitrc.rxvt gnuitrc.xterm-debian gnuitrc.Eterm gnuitrc.rxvt-unicode
+GIT_LINUXS	 = gnuitrc.console
+GIT_HPTERMS	 = gnuitrc.hp
+GIT_VT100S	 = gnuitrc.vt125 gnuitrc.vt200 gnuitrc.vt201 gnuitrc.vt220\
+		   gnuitrc.vt240 gnuitrc.vt300 gnuitrc.vt320 gnuitrc.vt400\
+		   gnuitrc.vt420 gnuitrc.screen
 
 
-gitrc.common: Makefile $(srcdir)/gitrc.common.IN
+gnuitrc.common: Makefile $(srcdir)/gnuitrc.common.IN
 	sed -e 's,@htmldir\@,$(htmldir),g' \
-	    -e 's,@VERSION\@,$(VERSION),g' < $(srcdir)/gitrc.common.IN > gitrc.common
+	    -e 's,@VERSION\@,$(VERSION),g' < $(srcdir)/gnuitrc.common.IN > gnuitrc.common
 
 install-data-hook:
 	for i in $(GIT_XTERMS);\
 	do\
 	    rm -f $(DESTDIR)$(datadir)/gnuit/$$i;\
-	    ln -s $(datadir)/gnuit/gitrc.xterm $(DESTDIR)$(datadir)/gnuit/$$i;\
+	    ln -s $(datadir)/gnuit/gnuitrc.xterm $(DESTDIR)$(datadir)/gnuit/$$i;\
 	done
 	\
 	for i in $(GIT_COLOR_XTERMS);\
 	do\
 	    rm -f $(DESTDIR)$(datadir)/gnuit/$$i;\
-	    ln -s $(datadir)/gnuit/gitrc.xterm-color $(DESTDIR)$(datadir)/gnuit/$$i;\
+	    ln -s $(datadir)/gnuit/gnuitrc.xterm-color $(DESTDIR)$(datadir)/gnuit/$$i;\
 	done
 	\
 	for i in $(GIT_HPTERMS);\
 	do\
 	    rm -f $(DESTDIR)$(datadir)/gnuit/$$i;\
-	    ln -s $(datadir)/gnuit/gitrc.hpterm $(DESTDIR)$(datadir)/gnuit/$$i;\
+	    ln -s $(datadir)/gnuit/gnuitrc.hpterm $(DESTDIR)$(datadir)/gnuit/$$i;\
 	done
 	\
 	for i in $(GIT_GENERICS);\
 	do\
 	    rm -f $(DESTDIR)$(datadir)/gnuit/$$i;\
-	    ln -s $(datadir)/gnuit/gitrc.generic $(DESTDIR)$(datadir)/gnuit/$$i;\
+	    ln -s $(datadir)/gnuit/gnuitrc.generic $(DESTDIR)$(datadir)/gnuit/$$i;\
 	done
 	\
 	for i in $(GIT_VT100S);\
 	do\
 	    rm -f $(DESTDIR)$(datadir)/gnuit/$$i;\
-	    ln -s $(datadir)/gnuit/gitrc.vt100 $(DESTDIR)$(datadir)/gnuit/$$i;\
+	    ln -s $(datadir)/gnuit/gnuitrc.vt100 $(DESTDIR)$(datadir)/gnuit/$$i;\
 	done
 	\
 	for i in $(GIT_ANSIS);\
 	do\
 	    rm -f $(DESTDIR)$(datadir)/gnuit/$$i;\
-	    ln -s $(datadir)/gnuit/gitrc.ansi $(DESTDIR)$(datadir)/gnuit/$$i;\
+	    ln -s $(datadir)/gnuit/gnuitrc.ansi $(DESTDIR)$(datadir)/gnuit/$$i;\
 	done
 	\
 	for i in $(GIT_LINUXS);\
 	do\
 	    rm -f $(DESTDIR)$(datadir)/gnuit/$$i;\
-	    ln -s $(datadir)/gnuit/gitrc.linux $(DESTDIR)$(datadir)/gnuit/$$i;\
+	    ln -s $(datadir)/gnuit/gnuitrc.linux $(DESTDIR)$(datadir)/gnuit/$$i;\
 	done
 
 uninstall-local:
