@@ -103,11 +103,11 @@ binary-arch: build install
 	dh_installexamples debian/gitaction
 	rm -f debian/gitaction
 
-	dh_installinfo doc/git.info
+	dh_installinfo doc/gnuit.info
 	dh_install
 	dh_link
 	dh_strip
-	dh_compress -Xgit.html
+	dh_compress -Xgnuit.html
 	dh_fixperms
 	dh_installdeb
 	dh_shlibdeps

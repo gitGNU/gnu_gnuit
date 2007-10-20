@@ -36,7 +36,7 @@ build_triplet = @build@
 host_triplet = @host@
 DIST_COMMON = README $(am__configure_deps) $(srcdir)/LSM.in \
 	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(srcdir)/config.h.in $(srcdir)/git.spec.in \
+	$(srcdir)/config.h.in $(srcdir)/gnuit.spec.in \
 	$(srcdir)/version.h.in $(top_srcdir)/configure AUTHORS COPYING \
 	ChangeLog INSTALL NEWS TODO compile config.guess config.sub \
 	depcomp install-sh missing
@@ -76,7 +76,7 @@ am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno configure.status.lineno
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = config.h
-CONFIG_CLEAN_FILES = version.h git.spec LSM
+CONFIG_CLEAN_FILES = version.h gnuit.spec LSM
 SOURCES =
 DIST_SOURCES =
 RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
@@ -338,7 +338,7 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 AUTOMAKE_OPTIONS = 1.9
 EXTRA_DIST = PLATFORMS PROBLEMS LSM.in version version.h.in\
-	     git.spec.in mkvcs prepare \
+	     gnuit.spec.in mkvcs prepare \
 	     m4/gnulib-tool.m4 m4/gnulib-cache.m4 \
 	     m4/absolute-header.m4 m4/gnulib-common.m4
 
@@ -400,7 +400,7 @@ distclean-hdr:
 	-rm -f config.h stamp-h1
 version.h: $(top_builddir)/config.status $(srcdir)/version.h.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
-git.spec: $(top_builddir)/config.status $(srcdir)/git.spec.in
+gnuit.spec: $(top_builddir)/config.status $(srcdir)/gnuit.spec.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 LSM: $(top_builddir)/config.status $(srcdir)/LSM.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
@@ -782,7 +782,7 @@ html:
 	cd doc && $(MAKE) html
 
 dist-hook:
-	cp LSM git.spec $(distdir)
+	cp LSM gnuit.spec $(distdir)
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

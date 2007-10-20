@@ -1,12 +1,12 @@
-info_TEXINFOS = git.texinfo
+info_TEXINFOS = gnuit.texinfo
 man_MANS = gitfm.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 gitunpack.1 \
            gitps.1 gitinternal.1 gitwipe.1 gitview.1 gitdpkgname.1
 infodir = $(prefix)/share/info
 htmldir = $(prefix)/share/doc/gnuit
-BUILT_SOURCES = git.html
-html_DATA = git.html
+BUILT_SOURCES = gnuit.html
+html_DATA = gnuit.html
 EXTRA_DIST = gitfm.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 gitunpack.1\
-	     git.html git.1 gitps.1 gitview.1 gitwipe.1 gitinternal.1 \
+	     gnuit.html git.1 gitps.1 gitview.1 gitwipe.1 gitinternal.1 \
 	     gitdpkgname.1 dpkg-help.txt
 
 if TRANSITION
@@ -19,14 +19,14 @@ GIT_GREPS=gitregrep gitrfgrep
 #AM_MAKEINFOHTMLFLAGS = --no-split
 #dist-hook: html
 
-git.html:
+gnuit.html:
 	-make html
 html:
 if HTMLDOCS_TEXI2HTML
-	texi2html -expandinfo $(srcdir)/git.texinfo
+	texi2html -expandinfo $(srcdir)/gnuit.texinfo
 else
 if HTMLDOCS_MAKEINFO
-	makeinfo --html --no-split -o git.html  $(srcdir)/git.texinfo
+	makeinfo --html --no-split -o gnuit.html  $(srcdir)/gnuit.texinfo
 else
 	echo Not building html documentation: cannot find texi2html or makeinfo
 endif

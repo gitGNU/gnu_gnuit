@@ -17342,7 +17342,7 @@ PRODUCT="GNU Interactive Tools"
 
 
 
-ac_config_files="$ac_config_files version.h Makefile src/Makefile term/Makefile term/gnuitrc.aixterm term/gnuitrc.ansi term/gnuitrc.generic term/gnuitrc.hft term/gnuitrc.hpterm term/gnuitrc.linux term/gnuitrc.linux-m term/gnuitrc.mach term/gnuitrc.minix term/gnuitrc.thix term/gnuitrc.vt100 term/gnuitrc.vt102 term/gnuitrc.xterm term/gnuitrc.xterm-color doc/Makefile lib/Makefile git.spec LSM"
+ac_config_files="$ac_config_files version.h Makefile src/Makefile term/Makefile term/gnuitrc.aixterm term/gnuitrc.ansi term/gnuitrc.generic term/gnuitrc.hft term/gnuitrc.hpterm term/gnuitrc.linux term/gnuitrc.linux-m term/gnuitrc.mach term/gnuitrc.minix term/gnuitrc.thix term/gnuitrc.vt100 term/gnuitrc.vt102 term/gnuitrc.xterm term/gnuitrc.xterm-color doc/Makefile lib/Makefile gnuit.spec LSM"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -18000,7 +18000,7 @@ do
     "term/gnuitrc.xterm-color") CONFIG_FILES="$CONFIG_FILES term/gnuitrc.xterm-color" ;;
     "doc/Makefile") CONFIG_FILES="$CONFIG_FILES doc/Makefile" ;;
     "lib/Makefile") CONFIG_FILES="$CONFIG_FILES lib/Makefile" ;;
-    "git.spec") CONFIG_FILES="$CONFIG_FILES git.spec" ;;
+    "gnuit.spec") CONFIG_FILES="$CONFIG_FILES gnuit.spec" ;;
     "LSM") CONFIG_FILES="$CONFIG_FILES LSM" ;;
 
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5

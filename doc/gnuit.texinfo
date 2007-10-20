@@ -18,7 +18,7 @@
 @dircategory Utilities
 @format
 START-INFO-DIR-ENTRY
-* gnuit: (git).         GNU Interactive Tools
+* gnuit: (gnuit).         GNU Interactive Tools
 END-INFO-DIR-ENTRY
 @end format
 

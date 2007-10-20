@@ -7,7 +7,7 @@ build-stamp
 config.h
 config.log
 config.status
-git.spec
+gnuit.spec
 stamp-h1
 version.h
 debian/files
@@ -15,7 +15,7 @@ debian/git.substvars
 debian/gnuit.substvars
 debian/git
 debian/gnuit
-doc/git.html
+doc/gnuit.html
 lib/Makefile
 lib/alloca.h
 lib/libgnu.a

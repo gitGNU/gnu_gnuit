@@ -692,5 +692,5 @@ AC_OUTPUT([
     term/gnuitrc.xterm-color
     doc/Makefile
     lib/Makefile
-    git.spec
+    gnuit.spec
     LSM])

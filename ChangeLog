@@ -4,6 +4,7 @@
 	  (Default: ON), to autorefresh after signalling a process.
 	* gitps.c: remove bogus code from kill_process().
 	* */ChangeLog: added note to look here instead.
+	* Renamed texinfo, info, html and spec files to gnuit.
 
 2007-10-19  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
 
