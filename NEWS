@@ -51,6 +51,9 @@
 ** Fixed a problem with gitps (refresh was resetting the signal type
    to SIGTERM).
 
+** gitps: added RefreshAfterKill variable (Default: ON), to autorefresh after
+   signalling a process.
+
 ** Documentation fixes.
 
 

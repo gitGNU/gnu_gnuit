@@ -44,6 +44,7 @@ CommandLineModeHelp	= ^G-STOP ^B/^F-MOVE ^P/^N-HISTORY ^A-BOL ^E-EOL ^O-RESTORE 
 
 [GITPS-Setup]
 Help = Arrows-MOVE  Enter-SIGNALS  ^L-REFRESH  ^X^C/F10-QUIT  ^Xk-KILL
+RefreshAfterKill        = ON # Refresh process list after killing processes
 
 
 [GITVIEW-Setup]

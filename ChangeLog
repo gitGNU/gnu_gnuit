@@ -1,3 +1,8 @@
+2007-10-20  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
+
+	* gitps.c,term/gnuitrc.*.in: added RefreshAfterKill variable
+	  (Default: ON), to autorefresh after signalling a process.
+
 2007-10-19  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
 
 	* Renamed package to gnuit.

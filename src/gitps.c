@@ -146,6 +146,7 @@ char *temporary_directory;
 char header_text[MAX_LINE];
 int UseLastScreenChar;
 int StartupScrollStep;
+int RefreshAfterKill;
 char *stdout_log_name;
 char *stderr_log_name;
 char **ps_vect;
@@ -1090,6 +1091,7 @@ main(argc, argv)
 
     use_section("[GITPS-Setup]");
     help = get_string_var("Help", "");
+    RefreshAfterKill = get_flag_var("RefreshAfterKill", ON);
 
     use_section(AnsiColors ? color_section : monochrome_section);
     get_colorset_var(PSColors, PSFields, PS_FIELDS);
@@ -1413,7 +1415,16 @@ main(argc, argv)
 		goto end;
 
 	    case BUILTIN_kill_process:
-		if (!kill_process(current_process))
+		if (kill_process(current_process))
+		{
+		    if(RefreshAfterKill)
+		    {
+			sleep(1); /* FIXME: use usleep for a shorter time? */
+			ps(arguments);
+			goto restart;
+		    }
+		}
+		else
 		{
 		    int e = errno;
 
