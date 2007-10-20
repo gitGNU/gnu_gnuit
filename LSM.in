@@ -2,10 +2,10 @@ Begin3
 Title:          GNU Interactive Tools
 Version:        @VERSION@
 Entered-date:   12MAY2000
-Description:	GIT (GNU Interactive Tools) provides an extensible file
+Description:	GNUIT (GNU Interactive Tools) provides an extensible file
 		system browser, an ASCII/hexadecimal file viewer, a process
 		viewer/killer and other related utilities and shell scripts.
-		GIT can be used to increase the speed and efficiency of
+		GNUIT can be used to increase the speed and efficiency of
 		copying and moving files and directories, invoking editors,
 		compressing and uncompressing files, creating and expanding
 		archives, compiling programs, sending mail and more.  GIT

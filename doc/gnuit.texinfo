@@ -1,6 +1,6 @@
 \input texinfo @c -*-texinfo-*-
 @c %**start of header
-@setfilename git.info
+@setfilename gnuit.info
 @settitle GNU Interactive Tools
 @c For double-sided printing, uncomment:
 @c @setchapternewpage odd
@@ -55,7 +55,7 @@ approved by the Foundation.
 @title GNU Interactive Tools
 @end iftex
 @subtitle A Set of Interactive Programs
-@subtitle Edition @value{EDITION}, for GIT version @value{VERSION}
+@subtitle Edition @value{EDITION}, for GNUIT version @value{VERSION}
 @subtitle @value{UPDATED}
 @author by Tudor Hulubei and Andrei Pitis
 @author "Politehnica" University of Bucharest
@@ -85,21 +85,21 @@ approved by the Foundation.
 @comment  node-name,  next,  previous,  up
 
 @ifinfo
-@code{GIT} is a package containing basically a file system browser, a
+@code{GNUIT} is a package containing basically a file system browser, a
 process viewer/killer and a ASCII/HEX file viewer.  This is edition
 @value{EDITION}, for GNU Interactive Tools version @value{VERSION}.
 
 @end ifinfo
 
 @menu
-* Introduction::                An introduction to GIT concepts.
-* Distrib::                     How to get the latest GIT distribution.
+* Introduction::                An introduction to GNUIT concepts.
+* Distrib::                     How to get the latest GNUIT distribution.
 
-* Description::                 How to use GIT.
-* Customization::               How to customize GIT.
-* Limitations::                 Known GIT limitations.
+* Description::                 How to use GNUIT.
+* Customization::               How to customize GNUIT.
+* Limitations::                 Known GNUIT limitations.
 * Bugs::                        How to report a bug.
-* Key Index::                   An item for each standard GIT key sequence.
+* Key Index::                   An item for each standard GNUIT key sequence.
 * Command Index::               An item for each command name.
 * Variable Index::              An item for each documented variable.
 * Concept Index::               An item for each concept.
@@ -109,7 +109,7 @@ process viewer/killer and a ASCII/HEX file viewer.  This is edition
 @node Introduction, Distrib, Top, Top
 @chapter Introduction
 
-@code{GIT} is a set of interactive tools.  It contains an extensible
+@code{GNUIT} is a set of interactive tools.  It contains an extensible
 file system browser, an ascii/hex file viewer, a process viewer/killer
 and some other related utilities and shell scripts.  It can be used to
 increase the speed and efficiency of most of the daily tasks such as
@@ -118,37 +118,37 @@ and uncompressing files, creating and expanding archives, compiling
 programs, sending mail, etc.  It looks nice, has colors (if the standard
 ANSI color sequences are supported) and is user-friendly.
 
-@code{GIT} runs on a wide variety of @code{UNIX} systems because it uses
+@code{GNUIT} runs on a wide variety of @code{UNIX} systems because it uses
 the @code{GNU Autoconf} package to get system specific information.
 Please refer to the PLATFORMS file included in the standard distribution
-for a detailed list of systems on which @code{GIT} has been tested.
+for a detailed list of systems on which @code{GNUIT} has been tested.
 
-One of the main advantages of @code{GIT} is its flexibility.  It is not
+One of the main advantages of @code{GNUIT} is its flexibility.  It is not
 limited to a given set of commands.  The configuration file can be
 easily enhanced, allowing the user to add new commands or file
 operations, depending on its needs or preferences.
 
-@code{GIT} also provides a shell like command prompt, just to make sure
+@code{GNUIT} also provides a shell like command prompt, just to make sure
 that the entire power of the @code{UNIX} shell commands is still there.
 
 
 @node Distrib, Key Index, Introduction, Top
 @chapter Distributing GNU Interactive Tools
 
-@code{GIT} is "free software"; this means that everyone is free to use
-it and free to redistribute it on certain conditions.  @code{GIT} is not
+@code{GNUIT} is "free software"; this means that everyone is free to use
+it and free to redistribute it on certain conditions.  @code{GNUIT} is not
 in the public domain; it is copyrighted and there are restrictions on
 its distribution, but these restrictions are designed to permit
 everything that a good cooperating citizen would want to do.  What is
 not allowed is to try to prevent others from further sharing any version
-of @code{GIT} that they might get from you.  The precise conditions are
-found in the GNU General Public License that comes with @code{GIT} and
+of @code{GNUIT} that they might get from you.  The precise conditions are
+found in the GNU General Public License that comes with @code{GNUIT} and
 also appears following this section.
 
-The easiest way to get a copy of @code{GIT} is from someone else who has
+The easiest way to get a copy of @code{GNUIT} is from someone else who has
 it.  You need not ask for our permission to do so, or tell any one else;
 just copy it.  If you have access to the Internet, you can get the
-latest distribution version of @code{GIT} from host @samp{ftp.gnu.org}
+latest distribution version of @code{GNUIT} from host @samp{ftp.gnu.org}
 using anonymous login.  See the file `/pub/gnu/GETTING.GNU.SOFTWARE' on
 that host to find out about your options for copying and which files to
 use.
@@ -167,7 +167,7 @@ just free for the manufacturer.
 @chapter Using GNU Interactive Tools
 
 
-The @code{GIT} package contains three interactive programs and a few
+The @code{GNUIT} package contains three interactive programs and a few
 additional utilities.  Here there is a description of each of them.
 
 @menu

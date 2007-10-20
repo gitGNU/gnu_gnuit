@@ -76,7 +76,6 @@ am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno configure.status.lineno
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = config.h
-CONFIG_CLEAN_FILES = version.h gnuit.spec LSM
 SOURCES =
 DIST_SOURCES =
 RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
@@ -98,7 +97,6 @@ am__remove_distdir = \
 DIST_ARCHIVES = $(distdir).tar.gz
 GZIP_ENV = --best
 distuninstallcheck_listfiles = find . -type f -print
-distcleancheck_listfiles = find . -type f -print
 INSTALL = @INSTALL@
 ACLOCAL = @ACLOCAL@
 ALLOCA = @ALLOCA@
@@ -340,8 +338,11 @@ AUTOMAKE_OPTIONS = 1.9
 EXTRA_DIST = PLATFORMS PROBLEMS LSM.in version version.h.in\
 	     gnuit.spec.in mkvcs prepare \
 	     m4/gnulib-tool.m4 m4/gnulib-cache.m4 \
-	     m4/absolute-header.m4 m4/gnulib-common.m4
+	     m4/absolute-header.m4 m4/gnulib-common.m4 \
+	     LSM gnuit.spec
 
+CONFIG_CLEAN_FILES = version.h
+distcleancheck_listfiles = find -type f -exec sh -c 'test -f $(srcdir)/{} || echo {}' ';'
 SUBDIRS = lib src term doc
 ACLOCAL_AMFLAGS = -I m4
 all: config.h

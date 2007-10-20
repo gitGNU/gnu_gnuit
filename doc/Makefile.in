@@ -74,7 +74,7 @@ CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 SOURCES =
 DIST_SOURCES =
-INFO_DEPS = $(srcdir)/git.info
+INFO_DEPS = $(srcdir)/gnuit.info
 am__TEXINFO_TEX_DIR = $(srcdir)
 DVIS = gnuit.dvi
 PDFS = gnuit.pdf
@@ -428,10 +428,9 @@ $(ACLOCAL_M4): @MAINTAINER_MODE_TRUE@ $(am__aclocal_m4_deps)
 	    rm -rf $(@:.html=); else rm -Rf $(@:.html=.htp) $@; fi; \
 	  exit 1; \
 	fi
-$(srcdir)/git.info: gnuit.texinfo 
-git.dvi: gnuit.texinfo 
-git.pdf: gnuit.texinfo 
-git.html: gnuit.texinfo 
+$(srcdir)/gnuit.info: gnuit.texinfo 
+gnuit.dvi: gnuit.texinfo 
+gnuit.pdf: gnuit.texinfo 
 .dvi.ps:
 	TEXINPUTS="$(am__TEXINFO_TEX_DIR)$(PATH_SEPARATOR)$$TEXINPUTS" \
 	$(DVIPS) -o $@ $<
@@ -479,7 +478,8 @@ dist-info: $(INFO_DEPS)
 mostlyclean-aminfo:
 	-rm -rf gnuit.aux gnuit.cp gnuit.cps gnuit.fn gnuit.fns gnuit.ky gnuit.kys \
 	  gnuit.log gnuit.pg gnuit.pgs gnuit.tmp gnuit.toc gnuit.tp \
-	  gnuit.tps gnuit.vr gnuit.vrs git.dvi git.pdf git.ps git.html
+	  gnuit.tps gnuit.vr gnuit.vrs gnuit.dvi gnuit.pdf gnuit.ps \
+	  gnuit.html
 
 maintainer-clean-aminfo:
 	@list='$(INFO_DEPS)'; for i in $$list; do \
