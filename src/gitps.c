@@ -570,9 +570,6 @@ kill_process(process_index)
 	while (isspace((int)*p))
 	    p++;
 
-	if (memcmp(p, "PID", 3) == 0)
-	    return i;
-
 	while (!isspace((int)*p))
 	    p++;
     }

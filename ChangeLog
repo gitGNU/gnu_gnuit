@@ -2,6 +2,7 @@
 
 	* gitps.c,term/gnuitrc.*.in: added RefreshAfterKill variable
 	  (Default: ON), to autorefresh after signalling a process.
+	* gitps.c: remove bogus code from kill_process().
 
 2007-10-19  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
 
