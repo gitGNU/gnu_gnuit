@@ -85,13 +85,6 @@ install: build
 
 	# remove man symlinks - dh_link will recreate properly
 	rm -f $(BUILDDIR)/usr/share/man/man1/git{which,mkdirs,{x,re,rf}grep}.1
-	# install changelogs from subdirs
-	install -d $(BUILDDIR)/usr/share/doc/gnuit
-	set -e ; for i in */ChangeLog; do \
-		nfile=`echo $$i | sed -e 's|\(.*\)/\(.*\)|\L\2\E.\1|'`; \
-		install -c $$i $(BUILDDIR)/usr/share/doc/gnuit/$$nfile; \
-		gzip -9f $(BUILDDIR)/usr/share/doc/gnuit/$$nfile; \
-	done
 	touch build-stamp
 
 

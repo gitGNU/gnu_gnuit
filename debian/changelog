@@ -5,8 +5,9 @@ gnuit (4.9.1-1) unstable; urgency=low
   * Added transitional git package.
   * Removed unneeded postinst and prerm.
   * Updated NEWS.Debian with user-visible changes.
+  * No longer install obsolete subdir ChangeLogs.
 
- -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Sun, 30 Sep 2007 19:32:33 +0100
+ -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Sat, 20 Oct 2007 22:35:13 +0100
 
 git (4.3.20-12) unstable; urgency=low
 

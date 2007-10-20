@@ -1,3 +1,8 @@
+2007-10-20  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
+
+	* Discontinued this ChangeLog, see ../ChangeLog for
+	  changes from now on.
+
 2000-03-09  Tudor Hulubei  <tudor@cs.unh.edu>
 
 	* .gitrc.common.in (COPYING): Duplicate *.pm* removed, the Perl

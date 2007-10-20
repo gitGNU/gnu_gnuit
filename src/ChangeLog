@@ -1,3 +1,8 @@
+2007-10-20  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
+
+	* Discontinued this ChangeLog, see ../ChangeLog for
+	  changes from now on.
+
 2001-06-03  Tudor Hulubei  <tudor.hulubei@ecora.com>
 
 	* panel.c (panel_copy): Fixed to work on files >2Gb.
