@@ -1,4 +1,4 @@
-Help for GIT's DPKG Commands
+Help for GNUIT's DPKG Commands
 
 Note: Commands expecting package names can be given .deb files, the
 package names will be extracted from the debs.

@@ -5,7 +5,7 @@ START-INFO-DIR-ENTRY
 * gnuit: (gnuit).         GNU Interactive Tools
 END-INFO-DIR-ENTRY
 
-   GIT: A set of interactive tools, by Tudor Hulubei and Andrei Pitis.
+   GNUIT: A set of interactive tools, by Tudor Hulubei and Andrei Pitis.
 
    This file documents the GNU Interactive Tools package.
 
@@ -28,9 +28,9 @@ translation approved by the Foundation.
 
 File: gnuit.info,  Node: Top,  Next: Introduction,  Up: (dir)
 
-   `GNUIT' is a package containing basically a file system browser, a
-process viewer/killer and a ASCII/HEX file viewer.  This is edition
-2.9.1, for GNU Interactive Tools version 4.9.2.
+   `GNUIT' is a package containing a file system browser, a process
+viewer/killer and an ASCII/HEX file viewer.  This is edition 2.9.1, for
+GNU Interactive Tools version 4.9.2.
 
 * Menu:
 
@@ -1249,7 +1249,7 @@ key command.
      selected or pointed by the cursor (`R-DPKG-RECORDAVAIL').
    
 `^C ^D h'
-     Display quick help file for GIT's DPKG commands.
+     Display quick help file for GITFM's DPKG commands.
      (`DPKG-HELP').
    
 `^C ^D c'
@@ -1422,7 +1422,7 @@ archive compressed with the `gzip' utility.  Having a default action
 for each file type, binded on the same key, seems to be a good idea
 because you can use that key to obtain type specific information about
 a file or to process it in some type specific way much easier.  The
-`GIT' package contains a script called `gitaction' that is used to
+`GNUIT' package contains a script called `gitaction' that is used to
 detect the current file type and perform a type specific action.  *Note
 gitaction::, for more information.
 
@@ -1986,8 +1986,8 @@ File: gnuit.info,  Node: Exit,  Prev: Documentation,  Up: gitfm
 
 File: gnuit.info,  Node: gitps,  Next: gitview,  Prev: gitfm,  Up: Description
 
-3.2 The GIT process viewer/killer
-=================================
+3.2 The GNUIT process viewer/killer
+===================================
 
 `gitps' is an interactive process viewer/killer.  It calls internally
 the `ps'(1) utility.  This is a brief description of the command line
@@ -2029,8 +2029,8 @@ however most correspond to POSIX. Compare signal(7) or signal(5) with
 
 File: gnuit.info,  Node: gitview,  Next: gitkeys,  Prev: gitps,  Up: Description
 
-3.3 The GIT ASCII/HEX file viewer
-=================================
+3.3 The GNUIT ASCII/HEX file viewer
+===================================
 
 `gitview' is an ASCII/HEX file viewer.  Use the `arrows', `PageUp',
 `PageDown', `Home', `End', `^N', `^P', `^V', `ESC v', `Space' and
@@ -2058,8 +2058,8 @@ configuration files `gnuitrc.TERM'.
 
 File: gnuit.info,  Node: gitkeys,  Next: gitwipe,  Prev: gitview,  Up: Description
 
-3.4 The GIT key sequences display utility
-=========================================
+3.4 The GNUIT key sequences display utility
+===========================================
 
 `gitkeys' is a program that displays the key sequence sent by the
 pressed key.  This is the key sequence received by `GIT' tools, so this
@@ -2069,8 +2069,8 @@ files.
 
 File: gnuit.info,  Node: gitwipe,  Next: gitmount,  Prev: gitkeys,  Up: Description
 
-3.5 The GIT wipe file utility
-=============================
+3.5 The GNUIT wipe file utility
+===============================
 
 `gitwipe' is an utility for wiping files.  It overwrites the file
 contents with a random sequence of numbers and then calls `sync'().
@@ -2086,8 +2086,8 @@ at a later moment.
 
 File: gnuit.info,  Node: gitmount,  Next: gitaction,  Prev: gitwipe,  Up: Description
 
-3.6 The GIT mount utility
-=========================
+3.6 The GNUIT mount utility
+===========================
 
 `gitmount' is a script that allows you to mount a list of block devices
 (specified in the command line), without specifying the file system
@@ -2104,8 +2104,8 @@ required.
 
 File: gnuit.info,  Node: gitaction,  Next: gitunpack,  Prev: gitmount,  Up: Description
 
-3.7 The GIT per file type action script
-=======================================
+3.7 The GNUIT per file type action script
+=========================================
 
 `gitaction' is a script that executes a different action for each file
 type specified.  It is called by the `gitfm' program when pressing
@@ -2178,8 +2178,8 @@ File: gnuit.info,  Node: Customization,  Next: Limitations,  Prev: Description, 
 
 * Menu:
 
-* Environment Variables::       Environment variables used by GIT
-* Configuration Files::         GIT's configuration files
+* Environment Variables::       Environment variables used by GNUIT
+* Configuration Files::         GNUIT's configuration files
 
 
 File: gnuit.info,  Node: Environment Variables,  Next: Configuration Files,  Up: Customization
@@ -2225,12 +2225,12 @@ File: gnuit.info,  Node: Configuration Files,  Prev: Environment Variables,  Up:
 4.2 Configuration Files
 =======================
 
-There is one configuration file per terminal type in `GIT'.  The
+There is one configuration file per terminal type in `GNUIT'.  The
 configuration file(s) reside in the user's home directory or (the
 default versions) in the directory `/usr/share/gnuit/').  Files in the
 user's home directory start with a leading "."
 
-   Their generic name is `gnuitrc.TERM'.  `GIT' allows each terminal
+   Their generic name is `gnuitrc.TERM'.  `GNUIT' allows each terminal
 type to have its own configuration file (TERM is the value of the TERM
 environment variable (e.g `vt102'); for the `Linux' console the
 configuration file is `gnuitrc.console').  
@@ -2241,7 +2241,7 @@ the normal `.gnuitrc.TERM' configuration file, the later one defining
 only those keys that are terminal specific.  However, if a key binding
 is redefined in the `gnuitrc.TERM' file, that binding will be used.
 
-   If the `GIT' package have been compiled without passing the
+   If the `GNUIT' package have been compiled without passing the
 `--enable-terminfo' option to the `configure' script and your system
 has a huge `termcap' database (`/etc/termcap'), you can copy the
 termcap definition(s) of your terminal(s) in a file called, lets say
@@ -2251,8 +2251,8 @@ like this to your `.profile':
 
      TERMCAP=`/home/mike/.termcap'
 
-   The interactive programs in the `GIT' package can run without such a
-file, but on systems with huge `termcap' databases, copying the
+   The interactive programs in the `GNUIT' package can run without such
+a file, but on systems with huge `termcap' databases, copying the
 definitions of the most used terminals in a local `.termcap' file will
 lead to a faster start.
 
@@ -2271,7 +2271,7 @@ name, the whole section is ignored.
 Note that this manual don't include them while refering to section
 names.
 
-   The `GIT' package contains three major programs: `gitfm', `gitps'
+   The `GNUIT' package contains three major programs: `gitfm', `gitps'
 and `gitview'.  Each one has its own sections in the configuration
 files.  There is also a global setup section called `Setup' that is
 used by all these programs.
@@ -2297,7 +2297,7 @@ File: gnuit.info,  Node: Key Sequences,  Next: Setup,  Up: Configuration Files
 4.2.1 Writing key sequences
 ---------------------------
 
-`GIT' contains three interactive programs.  Their names are: `gitfm'
+`GNUIT' contains three interactive programs.  Their names are: `gitfm'
 (this is the file system browser), `gitps' (this is the process
 viewer/killer and `gitview' (this is the ASCII/HEX file viewer).  Each
 one of these programs has its own set of key bindings.
@@ -2340,7 +2340,7 @@ In this section the variables have only one field.
    This variable should be set to `ON' if the terminal supports
 standard `ANSI' color sequences.  Otherwise it should be `OFF'.  If
 `AnsiColors' is `ON', `GITxxx-Color' sections will be used in the
-configuration files `gnuitrc.TERM'.  Otherwise, `GIT' interactive
+configuration files `gnuitrc.TERM'.  Otherwise, `GNUIT' interactive
 programs will use the `GITxxx-Monochrome' sections.  
 
 `UseLastScreenChar'
@@ -3906,133 +3906,133 @@ Concept Index
 
 
 Tag Table:
-Node: Top1051
-Node: Introduction1940
-Node: Distrib3264
-Node: Description4952
-Node: gitfm5803
-Node: Conventions8327
-Node: Command line10220
-Node: Modes11279
-Node: Sorting13562
-Node: Moving14851
-Node: Selecting16459
-Node: Isearch17864
-Node: Input Line18989
-Node: Inserting Text20092
-Node: Moving Point21004
-Node: Erasing21601
-Node: Case Changes22879
-Node: History23315
-Node: Setting Mark24051
-Node: Yanking24386
-Node: Selecting Files24660
-Node: Files25577
-Node: Copying Files27306
-Node: Moving Files27674
-Node: Creating Files28063
-Node: Deleting Files28422
-Node: Linking Files28768
-Node: Renaming Files29423
-Node: Splitting Files30012
-Node: Packing Files30516
-Node: Inode31857
-Node: Editing Files33535
-Node: Viewing Files34267
-Node: Compressing Files34654
-Node: Encoding Files36055
-Node: Encrypting Files36998
-Node: Comparing Files37291
-Node: Spell Checking Files37958
-Node: Printing Files38216
-Node: Wiping Files38681
-Node: Searching Files39017
-Node: Archive Files39560
-Node: DEB Packages41392
-Node: RPM Packages44358
-Node: File Types45742
-Node: MSDOS Files45961
-Node: Actions48059
-Node: Directories48987
-Node: Creating Dirs49752
-Node: Copying Dirs50029
-Node: Deleting Dirs50511
-Node: Moving Dirs50950
-Node: Renaming Dirs51429
-Node: Comparing Dirs51872
-Node: Dirs Usage53106
-Node: Changing Dirs53382
-Node: Dirs History54060
-Node: Hot Keys55133
-Node: Compiling55762
-Node: Mail56163
-Node: Shell57319
-Node: Grep57608
-Node: Locking58036
-Node: Refreshing58434
-Node: Resetting59171
-Node: Mounting59425
-Node: Sysinfo62526
-Node: Environment63794
-Node: Processes64203
-Node: Sync66299
-Node: Documentation66552
-Node: Exit67048
-Node: gitps67268
-Node: gitview68786
-Node: gitkeys69636
-Node: gitwipe70021
-Node: gitmount70746
-Node: gitaction71506
-Node: gitunpack73392
-Node: gitrgrep73804
-Node: Customization74287
-Node: Environment Variables74586
-Node: Configuration Files75849
-Node: Key Sequences78930
-Node: Setup80261
-Node: gitfm Sections81214
-Node: GITFM-Setup81668
-Node: GITFM-Color83803
-Node: GITFM-Monochrome84174
-Node: GITFM-Keys84579
-Node: key-sequence85484
-Node: command-name86123
-Node: formatted-command86868
-Node: %s88194
-Node: %f88721
-Node: %d88966
-Node: %l89213
-Node: %t89466
-Node: %z89701
-Node: %a89932
-Node: %m90147
-Node: %g90351
-Node: %o90556
-Node: %p90761
-Node: %b90966
-Node: %i91181
-Node: %?91406
-Node: new-dir91898
-Node: save-screen92324
-Node: pause93024
-Node: hide93359
-Node: GITFM-FTI94239
-Node: gitps Sections94821
-Node: GITPS-Setup95215
-Node: GITPS-Color95455
-Node: GITPS-Monochrome95823
-Node: GITPS-Keys96228
-Node: gitview Sections96358
-Node: GITVIEW-Setup96741
-Node: GITVIEW-Color96991
-Node: GITVIEW-Monochrome97373
-Node: GITVIEW-Keys97792
-Node: Limitations97928
-Node: Bugs99338
-Node: Key Index99598
-Node: Command Index119364
-Node: Variable Index138488
-Node: Concept Index140546
+Node: Top1053
+Node: Introduction1933
+Node: Distrib3257
+Node: Description4945
+Node: gitfm5796
+Node: Conventions8320
+Node: Command line10213
+Node: Modes11272
+Node: Sorting13555
+Node: Moving14844
+Node: Selecting16452
+Node: Isearch17857
+Node: Input Line18982
+Node: Inserting Text20085
+Node: Moving Point20997
+Node: Erasing21594
+Node: Case Changes22872
+Node: History23308
+Node: Setting Mark24044
+Node: Yanking24379
+Node: Selecting Files24653
+Node: Files25570
+Node: Copying Files27299
+Node: Moving Files27667
+Node: Creating Files28056
+Node: Deleting Files28415
+Node: Linking Files28761
+Node: Renaming Files29416
+Node: Splitting Files30005
+Node: Packing Files30509
+Node: Inode31850
+Node: Editing Files33528
+Node: Viewing Files34260
+Node: Compressing Files34647
+Node: Encoding Files36048
+Node: Encrypting Files36991
+Node: Comparing Files37284
+Node: Spell Checking Files37951
+Node: Printing Files38209
+Node: Wiping Files38674
+Node: Searching Files39010
+Node: Archive Files39553
+Node: DEB Packages41385
+Node: RPM Packages44353
+Node: File Types45737
+Node: MSDOS Files45956
+Node: Actions48054
+Node: Directories48984
+Node: Creating Dirs49749
+Node: Copying Dirs50026
+Node: Deleting Dirs50508
+Node: Moving Dirs50947
+Node: Renaming Dirs51426
+Node: Comparing Dirs51869
+Node: Dirs Usage53103
+Node: Changing Dirs53379
+Node: Dirs History54057
+Node: Hot Keys55130
+Node: Compiling55759
+Node: Mail56160
+Node: Shell57316
+Node: Grep57605
+Node: Locking58033
+Node: Refreshing58431
+Node: Resetting59168
+Node: Mounting59422
+Node: Sysinfo62523
+Node: Environment63791
+Node: Processes64200
+Node: Sync66296
+Node: Documentation66549
+Node: Exit67045
+Node: gitps67265
+Node: gitview68787
+Node: gitkeys69641
+Node: gitwipe70030
+Node: gitmount70759
+Node: gitaction71523
+Node: gitunpack73413
+Node: gitrgrep73825
+Node: Customization74308
+Node: Environment Variables74611
+Node: Configuration Files75874
+Node: Key Sequences78965
+Node: Setup80298
+Node: gitfm Sections81253
+Node: GITFM-Setup81707
+Node: GITFM-Color83842
+Node: GITFM-Monochrome84213
+Node: GITFM-Keys84618
+Node: key-sequence85523
+Node: command-name86162
+Node: formatted-command86907
+Node: %s88233
+Node: %f88760
+Node: %d89005
+Node: %l89252
+Node: %t89505
+Node: %z89740
+Node: %a89971
+Node: %m90186
+Node: %g90390
+Node: %o90595
+Node: %p90800
+Node: %b91005
+Node: %i91220
+Node: %?91445
+Node: new-dir91937
+Node: save-screen92363
+Node: pause93063
+Node: hide93398
+Node: GITFM-FTI94278
+Node: gitps Sections94860
+Node: GITPS-Setup95254
+Node: GITPS-Color95494
+Node: GITPS-Monochrome95862
+Node: GITPS-Keys96267
+Node: gitview Sections96397
+Node: GITVIEW-Setup96780
+Node: GITVIEW-Color97030
+Node: GITVIEW-Monochrome97412
+Node: GITVIEW-Keys97831
+Node: Limitations97967
+Node: Bugs99377
+Node: Key Index99637
+Node: Command Index119403
+Node: Variable Index138527
+Node: Concept Index140585
 
 End Tag Table
