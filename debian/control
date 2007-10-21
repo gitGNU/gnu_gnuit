@@ -10,8 +10,8 @@ Package: gnuit
 Architecture: any
 Depends: ${shlibs:Depends}
 Provides: git
-Replaces:  git (<< 4.9.1-1)
-Conflicts: git (<< 4.9.1-1)
+Replaces:  git (<< 4.9.2-1)
+Conflicts: git (<< 4.9.2-1)
 Description: GNU Interactive Tools, a file browser/viewer and process viewer/killer
  git (GNU Interactive Tools) is a set of interactive text-mode tools,
  closely integrated with the shell.  It contains an extensible file

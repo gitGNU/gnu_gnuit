@@ -30,7 +30,7 @@ File: gnuit.info,  Node: Top,  Next: Introduction,  Up: (dir)
 
    `GNUIT' is a package containing basically a file system browser, a
 process viewer/killer and a ASCII/HEX file viewer.  This is edition
-2.9, for GNU Interactive Tools version 4.9.1.
+2.9.1, for GNU Interactive Tools version 4.9.2.
 
 * Menu:
 
@@ -3907,132 +3907,132 @@ Concept Index
 
 Tag Table:
 Node: Top1051
-Node: Introduction1938
-Node: Distrib3262
-Node: Description4950
-Node: gitfm5801
-Node: Conventions8325
-Node: Command line10218
-Node: Modes11277
-Node: Sorting13560
-Node: Moving14849
-Node: Selecting16457
-Node: Isearch17862
-Node: Input Line18987
-Node: Inserting Text20090
-Node: Moving Point21002
-Node: Erasing21599
-Node: Case Changes22877
-Node: History23313
-Node: Setting Mark24049
-Node: Yanking24384
-Node: Selecting Files24658
-Node: Files25575
-Node: Copying Files27304
-Node: Moving Files27672
-Node: Creating Files28061
-Node: Deleting Files28420
-Node: Linking Files28766
-Node: Renaming Files29421
-Node: Splitting Files30010
-Node: Packing Files30514
-Node: Inode31855
-Node: Editing Files33533
-Node: Viewing Files34265
-Node: Compressing Files34652
-Node: Encoding Files36053
-Node: Encrypting Files36996
-Node: Comparing Files37289
-Node: Spell Checking Files37956
-Node: Printing Files38214
-Node: Wiping Files38679
-Node: Searching Files39015
-Node: Archive Files39558
-Node: DEB Packages41390
-Node: RPM Packages44356
-Node: File Types45740
-Node: MSDOS Files45959
-Node: Actions48057
-Node: Directories48985
-Node: Creating Dirs49750
-Node: Copying Dirs50027
-Node: Deleting Dirs50509
-Node: Moving Dirs50948
-Node: Renaming Dirs51427
-Node: Comparing Dirs51870
-Node: Dirs Usage53104
-Node: Changing Dirs53380
-Node: Dirs History54058
-Node: Hot Keys55131
-Node: Compiling55760
-Node: Mail56161
-Node: Shell57317
-Node: Grep57606
-Node: Locking58034
-Node: Refreshing58432
-Node: Resetting59169
-Node: Mounting59423
-Node: Sysinfo62524
-Node: Environment63792
-Node: Processes64201
-Node: Sync66297
-Node: Documentation66550
-Node: Exit67046
-Node: gitps67266
-Node: gitview68784
-Node: gitkeys69634
-Node: gitwipe70019
-Node: gitmount70744
-Node: gitaction71504
-Node: gitunpack73390
-Node: gitrgrep73802
-Node: Customization74285
-Node: Environment Variables74584
-Node: Configuration Files75847
-Node: Key Sequences78928
-Node: Setup80259
-Node: gitfm Sections81212
-Node: GITFM-Setup81666
-Node: GITFM-Color83801
-Node: GITFM-Monochrome84172
-Node: GITFM-Keys84577
-Node: key-sequence85482
-Node: command-name86121
-Node: formatted-command86866
-Node: %s88192
-Node: %f88719
-Node: %d88964
-Node: %l89211
-Node: %t89464
-Node: %z89699
-Node: %a89930
-Node: %m90145
-Node: %g90349
-Node: %o90554
-Node: %p90759
-Node: %b90964
-Node: %i91179
-Node: %?91404
-Node: new-dir91896
-Node: save-screen92322
-Node: pause93022
-Node: hide93357
-Node: GITFM-FTI94237
-Node: gitps Sections94819
-Node: GITPS-Setup95213
-Node: GITPS-Color95453
-Node: GITPS-Monochrome95821
-Node: GITPS-Keys96226
-Node: gitview Sections96356
-Node: GITVIEW-Setup96739
-Node: GITVIEW-Color96989
-Node: GITVIEW-Monochrome97371
-Node: GITVIEW-Keys97790
-Node: Limitations97926
-Node: Bugs99336
-Node: Key Index99596
-Node: Command Index119362
-Node: Variable Index138486
-Node: Concept Index140544
+Node: Introduction1940
+Node: Distrib3264
+Node: Description4952
+Node: gitfm5803
+Node: Conventions8327
+Node: Command line10220
+Node: Modes11279
+Node: Sorting13562
+Node: Moving14851
+Node: Selecting16459
+Node: Isearch17864
+Node: Input Line18989
+Node: Inserting Text20092
+Node: Moving Point21004
+Node: Erasing21601
+Node: Case Changes22879
+Node: History23315
+Node: Setting Mark24051
+Node: Yanking24386
+Node: Selecting Files24660
+Node: Files25577
+Node: Copying Files27306
+Node: Moving Files27674
+Node: Creating Files28063
+Node: Deleting Files28422
+Node: Linking Files28768
+Node: Renaming Files29423
+Node: Splitting Files30012
+Node: Packing Files30516
+Node: Inode31857
+Node: Editing Files33535
+Node: Viewing Files34267
+Node: Compressing Files34654
+Node: Encoding Files36055
+Node: Encrypting Files36998
+Node: Comparing Files37291
+Node: Spell Checking Files37958
+Node: Printing Files38216
+Node: Wiping Files38681
+Node: Searching Files39017
+Node: Archive Files39560
+Node: DEB Packages41392
+Node: RPM Packages44358
+Node: File Types45742
+Node: MSDOS Files45961
+Node: Actions48059
+Node: Directories48987
+Node: Creating Dirs49752
+Node: Copying Dirs50029
+Node: Deleting Dirs50511
+Node: Moving Dirs50950
+Node: Renaming Dirs51429
+Node: Comparing Dirs51872
+Node: Dirs Usage53106
+Node: Changing Dirs53382
+Node: Dirs History54060
+Node: Hot Keys55133
+Node: Compiling55762
+Node: Mail56163
+Node: Shell57319
+Node: Grep57608
+Node: Locking58036
+Node: Refreshing58434
+Node: Resetting59171
+Node: Mounting59425
+Node: Sysinfo62526
+Node: Environment63794
+Node: Processes64203
+Node: Sync66299
+Node: Documentation66552
+Node: Exit67048
+Node: gitps67268
+Node: gitview68786
+Node: gitkeys69636
+Node: gitwipe70021
+Node: gitmount70746
+Node: gitaction71506
+Node: gitunpack73392
+Node: gitrgrep73804
+Node: Customization74287
+Node: Environment Variables74586
+Node: Configuration Files75849
+Node: Key Sequences78930
+Node: Setup80261
+Node: gitfm Sections81214
+Node: GITFM-Setup81668
+Node: GITFM-Color83803
+Node: GITFM-Monochrome84174
+Node: GITFM-Keys84579
+Node: key-sequence85484
+Node: command-name86123
+Node: formatted-command86868
+Node: %s88194
+Node: %f88721
+Node: %d88966
+Node: %l89213
+Node: %t89466
+Node: %z89701
+Node: %a89932
+Node: %m90147
+Node: %g90351
+Node: %o90556
+Node: %p90761
+Node: %b90966
+Node: %i91181
+Node: %?91406
+Node: new-dir91898
+Node: save-screen92324
+Node: pause93024
+Node: hide93359
+Node: GITFM-FTI94239
+Node: gitps Sections94821
+Node: GITPS-Setup95215
+Node: GITPS-Color95455
+Node: GITPS-Monochrome95823
+Node: GITPS-Keys96228
+Node: gitview Sections96358
+Node: GITVIEW-Setup96741
+Node: GITVIEW-Color96991
+Node: GITVIEW-Monochrome97373
+Node: GITVIEW-Keys97792
+Node: Limitations97928
+Node: Bugs99338
+Node: Key Index99598
+Node: Command Index119364
+Node: Variable Index138488
+Node: Concept Index140546
 
 End Tag Table

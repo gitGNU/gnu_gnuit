@@ -1,4 +1,4 @@
-gnuit (4.9.1-1) unstable; urgency=low
+gnuit (4.9.2-1) unstable; urgency=low
 
   * The package has been renamed to gnuit.
     The old git transitional package can be safely removed.
@@ -9,7 +9,7 @@ gnuit (4.9.1-1) unstable; urgency=low
     If ~/.gnuitrc.TERM doesn't exist, ~/.gitrc.TERM will be tried
     as a fallback.
 
- -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Fri, 19 Oct 2007 04:28:13 +0100
+ -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Sun, 21 Oct 2007 00:43:29 +0100
 
 git (4.3.20-11) unstable; urgency=low
 

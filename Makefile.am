@@ -1,6 +1,6 @@
 AUTOMAKE_OPTIONS = 1.9
 
-EXTRA_DIST = PLATFORMS PROBLEMS LSM.in version version.h.in\
+EXTRA_DIST = PLATFORMS PROBLEMS LSM.in version.h.in\
 	     gnuit.spec.in mkvcs prepare \
 	     m4/gnulib-tool.m4 m4/gnulib-cache.m4 \
 	     m4/absolute-header.m4 m4/gnulib-common.m4 \

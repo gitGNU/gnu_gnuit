@@ -1,4 +1,4 @@
-gnuit (4.9.1-1) unstable; urgency=low
+gnuit (4.9.2-1) unstable; urgency=low
 
   * New upstream version.
   * Package name changed to gnuit.
@@ -7,7 +7,7 @@ gnuit (4.9.1-1) unstable; urgency=low
   * Updated NEWS.Debian with user-visible changes.
   * No longer install obsolete subdir ChangeLogs.
 
- -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Sat, 20 Oct 2007 22:35:13 +0100
+ -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Sun, 21 Oct 2007 00:42:46 +0100
 
 git (4.3.20-12) unstable; urgency=low
 
