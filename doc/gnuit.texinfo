@@ -22,7 +22,7 @@ START-INFO-DIR-ENTRY
 END-INFO-DIR-ENTRY
 @end format
 
-GIT: A set of interactive tools, by Tudor Hulubei and Andrei Pitis.
+GNUIT: A set of interactive tools, by Tudor Hulubei and Andrei Pitis.
 
 This file documents the GNU Interactive Tools package.
 
@@ -85,8 +85,8 @@ approved by the Foundation.
 @comment  node-name,  next,  previous,  up
 
 @ifinfo
-@code{GNUIT} is a package containing basically a file system browser, a
-process viewer/killer and a ASCII/HEX file viewer.  This is edition
+@code{GNUIT} is a package containing a file system browser, a
+process viewer/killer and an ASCII/HEX file viewer.  This is edition
 @value{EDITION}, for GNU Interactive Tools version @value{VERSION}.
 
 @end ifinfo
@@ -2294,7 +2294,7 @@ selected or pointed by the cursor (@samp{R-DPKG-RECORDAVAIL}).
 @noindent
 @kbd{^C ^D h}
 @display
-Display quick help file for GIT's DPKG commands.
+Display quick help file for GITFM's DPKG commands.
 (@samp{DPKG-HELP}).
 @end display
 @findex DPKG-HELP
@@ -2628,7 +2628,7 @@ a @code{tar} archive compressed with the @code{gzip} utility.  Having a
 default action for each file type, binded on the same key, seems to be a
 good idea because you can use that key to obtain type specific
 information about a file or to process it in some type specific way much
-easier.  The @code{GIT} package contains a script called
+easier.  The @code{GNUIT} package contains a script called
 @code{gitaction} that is used to detect the current file type and
 perform a type specific action.  @xref{gitaction}, for more information.
 
@@ -3678,7 +3678,7 @@ Exit GNU Interactive Tools (@samp{exit}).
 
 
 @node gitps, gitview, gitfm, Description
-@section The GIT process viewer/killer
+@section The GNUIT process viewer/killer
 @cindex gitps
 
 @code{gitps} is an interactive process viewer/killer.  It calls
@@ -3728,7 +3728,7 @@ however most correspond to POSIX. Compare signal(7) or signal(5) with
 
 
 @node gitview, gitkeys, gitps, Description
-@section The GIT ASCII/HEX file viewer
+@section The GNUIT ASCII/HEX file viewer
 @cindex gitview
 
 @code{gitview} is an ASCII/HEX file viewer.  Use the @kbd{arrows},
@@ -3764,7 +3764,7 @@ Here is a brief description of the command line arguments:
 
 
 @node gitkeys, gitwipe, gitview, Description
-@section The GIT key sequences display utility
+@section The GNUIT key sequences display utility
 @cindex gitkeys
 
 @code{gitkeys} is a program that displays the key sequence sent by the
@@ -3774,7 +3774,7 @@ configuration files.
 
 
 @node gitwipe, gitmount, gitkeys, Description
-@section The GIT wipe file utility
+@section The GNUIT wipe file utility
 @cindex gitwipe
 
 @code{gitwipe} is an utility for wiping files.  It overwrites the file
@@ -3790,7 +3790,7 @@ at a later moment.
 
 
 @node gitmount, gitaction, gitwipe, Description
-@section The GIT mount utility
+@section The GNUIT mount utility
 @cindex gitmount
 
 @code{gitmount} is a script that allows you to mount a list of block
@@ -3808,7 +3808,7 @@ be required.
 
 
 @node gitaction, gitunpack, gitmount, Description
-@section The GIT per file type action script
+@section The GNUIT per file type action script
 @cindex gitaction
 
 @code{gitaction} is a script that executes a different action for each
@@ -3882,8 +3882,8 @@ egrep and fgrep programs.
 
 
 @menu
-* Environment Variables::       Environment variables used by GIT
-* Configuration Files::         GIT's configuration files
+* Environment Variables::       Environment variables used by GNUIT
+* Configuration Files::         GNUIT's configuration files
 @end menu
 
 
@@ -3940,12 +3940,12 @@ your @file{.profile}:
 @node Configuration Files, , Environment Variables, Customization
 @section Configuration Files
 
-There is one configuration file per terminal type in @code{GIT}.  The
+There is one configuration file per terminal type in @code{GNUIT}.  The
 configuration file(s) reside in the user's home directory or (the
 default versions) in the directory @file{/usr/share/gnuit/}).
 Files in the user's home directory start with a leading ``.''
 
-Their generic name is @file{gnuitrc.TERM}.  @code{GIT} allows each
+Their generic name is @file{gnuitrc.TERM}.  @code{GNUIT} allows each
 terminal type to have its own configuration file (@var{TERM} is the
 value of the @var{TERM} environment variable (e.g @samp{vt102}); for the
 @code{Linux} console the configuration file is @file{gnuitrc.console}).
@@ -3957,7 +3957,7 @@ the normal @file{.gnuitrc.TERM} configuration file, the later one defining
 only those keys that are terminal specific.  However, if a key binding
 is redefined in the @file{gnuitrc.TERM} file, that binding will be used.
 
-If the @code{GIT} package have been compiled without passing the
+If the @code{GNUIT} package have been compiled without passing the
 @samp{--enable-terminfo} option to the @code{configure} script and your
 system has a huge @samp{termcap} database (@file{/etc/termcap}), you can
 copy the termcap definition(s) of your terminal(s) in a file called,
@@ -3969,7 +3969,7 @@ add something like this to your @file{.profile}:
 @var{TERMCAP}=@file{/home/mike/.termcap}
 @end display
 
-The interactive programs in the @code{GIT} package can run without such
+The interactive programs in the @code{GNUIT} package can run without such
 a file, but on systems with huge @samp{termcap} databases, copying the
 definitions of the most used terminals in a local @file{.termcap} file
 will lead to a faster start.
@@ -3992,7 +3992,7 @@ Section names are enclosed in rectangular brackets (@samp{[} and
 @samp{]}).  Note that this manual don't include them while refering to
 section names.
 
-The @code{GIT} package contains three major programs: @code{gitfm},
+The @code{GNUIT} package contains three major programs: @code{gitfm},
 @code{gitps} and @code{gitview}.  Each one has its own sections in the
 configuration files.  There is also a global setup section called
 @samp{Setup} that is used by all these programs.
@@ -4016,7 +4016,7 @@ is still checked if the @code{GITFM} section is not found.
 @node Key Sequences, Setup, , Configuration Files
 @subsection Writing key sequences
 
-@code{GIT} contains three interactive programs.  Their names are:
+@code{GNUIT} contains three interactive programs.  Their names are:
 @code{gitfm} (this is the file system browser), @code{gitps} (this is the
 process viewer/killer and @code{gitview} (this is the ASCII/HEX file
 viewer).  Each one of these programs has its own set of key bindings.
@@ -4061,7 +4061,7 @@ This variable should be set to @samp{ON} if the terminal supports
 standard @samp{ANSI} color sequences.  Otherwise it should be
 @samp{OFF}.  If @samp{AnsiColors} is @samp{ON}, @samp{GITxxx-Color}
 sections will be used in the configuration files @file{gnuitrc.TERM}.
-Otherwise, @code{GIT} interactive programs will use the
+Otherwise, @code{GNUIT} interactive programs will use the
 @samp{GITxxx-Monochrome} sections.
 @vindex AnsiColors
 
