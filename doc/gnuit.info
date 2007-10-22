@@ -11,25 +11,18 @@ END-INFO-DIR-ENTRY
 
    Copyright (C) 1993-1998, 2006-2007 Free Software Foundation, Inc.
 
-   Permission is granted to make and distribute verbatim copies of this
-manual provided the copyright notice and this permission notice are
-preserved on all copies.
-
-   Permission is granted to copy and distribute modified versions of
-this manual under the conditions for verbatim copying, provided that the
-entire resulting derived work is distributed under the terms of a
-permission notice identical to this one.
-
-   Permission is granted to copy and distribute translations of this
-manual into another language, under the above conditions for modified
-versions, except that this permission notice may be stated in a
-translation approved by the Foundation.
+     Permission is granted to copy, distribute and/or modify this
+     document under the terms of the GNU Free Documentation License,
+     Version 1.2 or any later version published by the Free Software
+     Foundation; with no Invariant Sections, with no Front-Cover Texts,
+     and with no Back-Cover Texts.  A copy of the license is included
+     in the section entitled "Copying This Manual".
 
 
 File: gnuit.info,  Node: Top,  Next: Introduction,  Up: (dir)
 
    `GNUIT' is a package containing a file system browser, a process
-viewer/killer and an ASCII/HEX file viewer.  This is edition 2.9.1, for
+viewer/killer and an ASCII/HEX file viewer.  This is edition 2.9.2, for
 GNU Interactive Tools version 4.9.2.
 
 * Menu:
@@ -41,6 +34,7 @@ GNU Interactive Tools version 4.9.2.
 * Customization::               How to customize GNUIT.
 * Limitations::                 Known GNUIT limitations.
 * Bugs::                        How to report a bug.
+* Copying This Manual::         The GNU Free Documentation License.
 * Key Index::                   An item for each standard GNUIT key sequence.
 * Command Index::               An item for each command name.
 * Variable Index::              An item for each documented variable.
@@ -2902,13 +2896,445 @@ look like this:
    There is no support for appearance modes on magic-cookie terminals.
 
 
-File: gnuit.info,  Node: Bugs,  Prev: Limitations,  Up: Top
+File: gnuit.info,  Node: Bugs,  Next: Copying This Manual,  Prev: Limitations,  Up: Top
 
 6 GNU Interactive Tools bugs
 ****************************
 
 Any questions, comments, or bug reports, should be emailed to `Ian
 Beckwith <ianbnessie.mcc.ac.uk>'.  Please include the version number.
+
+
+File: gnuit.info,  Node: Copying This Manual,  Prev: Bugs,  Up: Top
+
+Appendix A Copying This Manual
+******************************
+
+                      Version 1.2, November 2002
+
+     Copyright (C) 2000,2001,2002 Free Software Foundation, Inc.
+     51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+
+     Everyone is permitted to copy and distribute verbatim copies
+     of this license document, but changing it is not allowed.
+
+  0. PREAMBLE
+
+     The purpose of this License is to make a manual, textbook, or other
+     functional and useful document "free" in the sense of freedom: to
+     assure everyone the effective freedom to copy and redistribute it,
+     with or without modifying it, either commercially or
+     noncommercially.  Secondarily, this License preserves for the
+     author and publisher a way to get credit for their work, while not
+     being considered responsible for modifications made by others.
+
+     This License is a kind of "copyleft", which means that derivative
+     works of the document must themselves be free in the same sense.
+     It complements the GNU General Public License, which is a copyleft
+     license designed for free software.
+
+     We have designed this License in order to use it for manuals for
+     free software, because free software needs free documentation: a
+     free program should come with manuals providing the same freedoms
+     that the software does.  But this License is not limited to
+     software manuals; it can be used for any textual work, regardless
+     of subject matter or whether it is published as a printed book.
+     We recommend this License principally for works whose purpose is
+     instruction or reference.
+
+  1. APPLICABILITY AND DEFINITIONS
+
+     This License applies to any manual or other work, in any medium,
+     that contains a notice placed by the copyright holder saying it
+     can be distributed under the terms of this License.  Such a notice
+     grants a world-wide, royalty-free license, unlimited in duration,
+     to use that work under the conditions stated herein.  The
+     "Document", below, refers to any such manual or work.  Any member
+     of the public is a licensee, and is addressed as "you".  You
+     accept the license if you copy, modify or distribute the work in a
+     way requiring permission under copyright law.
+
+     A "Modified Version" of the Document means any work containing the
+     Document or a portion of it, either copied verbatim, or with
+     modifications and/or translated into another language.
+
+     A "Secondary Section" is a named appendix or a front-matter section
+     of the Document that deals exclusively with the relationship of the
+     publishers or authors of the Document to the Document's overall
+     subject (or to related matters) and contains nothing that could
+     fall directly within that overall subject.  (Thus, if the Document
+     is in part a textbook of mathematics, a Secondary Section may not
+     explain any mathematics.)  The relationship could be a matter of
+     historical connection with the subject or with related matters, or
+     of legal, commercial, philosophical, ethical or political position
+     regarding them.
+
+     The "Invariant Sections" are certain Secondary Sections whose
+     titles are designated, as being those of Invariant Sections, in
+     the notice that says that the Document is released under this
+     License.  If a section does not fit the above definition of
+     Secondary then it is not allowed to be designated as Invariant.
+     The Document may contain zero Invariant Sections.  If the Document
+     does not identify any Invariant Sections then there are none.
+
+     The "Cover Texts" are certain short passages of text that are
+     listed, as Front-Cover Texts or Back-Cover Texts, in the notice
+     that says that the Document is released under this License.  A
+     Front-Cover Text may be at most 5 words, and a Back-Cover Text may
+     be at most 25 words.
+
+     A "Transparent" copy of the Document means a machine-readable copy,
+     represented in a format whose specification is available to the
+     general public, that is suitable for revising the document
+     straightforwardly with generic text editors or (for images
+     composed of pixels) generic paint programs or (for drawings) some
+     widely available drawing editor, and that is suitable for input to
+     text formatters or for automatic translation to a variety of
+     formats suitable for input to text formatters.  A copy made in an
+     otherwise Transparent file format whose markup, or absence of
+     markup, has been arranged to thwart or discourage subsequent
+     modification by readers is not Transparent.  An image format is
+     not Transparent if used for any substantial amount of text.  A
+     copy that is not "Transparent" is called "Opaque".
+
+     Examples of suitable formats for Transparent copies include plain
+     ASCII without markup, Texinfo input format, LaTeX input format,
+     SGML or XML using a publicly available DTD, and
+     standard-conforming simple HTML, PostScript or PDF designed for
+     human modification.  Examples of transparent image formats include
+     PNG, XCF and JPG.  Opaque formats include proprietary formats that
+     can be read and edited only by proprietary word processors, SGML or
+     XML for which the DTD and/or processing tools are not generally
+     available, and the machine-generated HTML, PostScript or PDF
+     produced by some word processors for output purposes only.
+
+     The "Title Page" means, for a printed book, the title page itself,
+     plus such following pages as are needed to hold, legibly, the
+     material this License requires to appear in the title page.  For
+     works in formats which do not have any title page as such, "Title
+     Page" means the text near the most prominent appearance of the
+     work's title, preceding the beginning of the body of the text.
+
+     A section "Entitled XYZ" means a named subunit of the Document
+     whose title either is precisely XYZ or contains XYZ in parentheses
+     following text that translates XYZ in another language.  (Here XYZ
+     stands for a specific section name mentioned below, such as
+     "Acknowledgements", "Dedications", "Endorsements", or "History".)
+     To "Preserve the Title" of such a section when you modify the
+     Document means that it remains a section "Entitled XYZ" according
+     to this definition.
+
+     The Document may include Warranty Disclaimers next to the notice
+     which states that this License applies to the Document.  These
+     Warranty Disclaimers are considered to be included by reference in
+     this License, but only as regards disclaiming warranties: any other
+     implication that these Warranty Disclaimers may have is void and
+     has no effect on the meaning of this License.
+
+  2. VERBATIM COPYING
+
+     You may copy and distribute the Document in any medium, either
+     commercially or noncommercially, provided that this License, the
+     copyright notices, and the license notice saying this License
+     applies to the Document are reproduced in all copies, and that you
+     add no other conditions whatsoever to those of this License.  You
+     may not use technical measures to obstruct or control the reading
+     or further copying of the copies you make or distribute.  However,
+     you may accept compensation in exchange for copies.  If you
+     distribute a large enough number of copies you must also follow
+     the conditions in section 3.
+
+     You may also lend copies, under the same conditions stated above,
+     and you may publicly display copies.
+
+  3. COPYING IN QUANTITY
+
+     If you publish printed copies (or copies in media that commonly
+     have printed covers) of the Document, numbering more than 100, and
+     the Document's license notice requires Cover Texts, you must
+     enclose the copies in covers that carry, clearly and legibly, all
+     these Cover Texts: Front-Cover Texts on the front cover, and
+     Back-Cover Texts on the back cover.  Both covers must also clearly
+     and legibly identify you as the publisher of these copies.  The
+     front cover must present the full title with all words of the
+     title equally prominent and visible.  You may add other material
+     on the covers in addition.  Copying with changes limited to the
+     covers, as long as they preserve the title of the Document and
+     satisfy these conditions, can be treated as verbatim copying in
+     other respects.
+
+     If the required texts for either cover are too voluminous to fit
+     legibly, you should put the first ones listed (as many as fit
+     reasonably) on the actual cover, and continue the rest onto
+     adjacent pages.
+
+     If you publish or distribute Opaque copies of the Document
+     numbering more than 100, you must either include a
+     machine-readable Transparent copy along with each Opaque copy, or
+     state in or with each Opaque copy a computer-network location from
+     which the general network-using public has access to download
+     using public-standard network protocols a complete Transparent
+     copy of the Document, free of added material.  If you use the
+     latter option, you must take reasonably prudent steps, when you
+     begin distribution of Opaque copies in quantity, to ensure that
+     this Transparent copy will remain thus accessible at the stated
+     location until at least one year after the last time you
+     distribute an Opaque copy (directly or through your agents or
+     retailers) of that edition to the public.
+
+     It is requested, but not required, that you contact the authors of
+     the Document well before redistributing any large number of
+     copies, to give them a chance to provide you with an updated
+     version of the Document.
+
+  4. MODIFICATIONS
+
+     You may copy and distribute a Modified Version of the Document
+     under the conditions of sections 2 and 3 above, provided that you
+     release the Modified Version under precisely this License, with
+     the Modified Version filling the role of the Document, thus
+     licensing distribution and modification of the Modified Version to
+     whoever possesses a copy of it.  In addition, you must do these
+     things in the Modified Version:
+
+       A. Use in the Title Page (and on the covers, if any) a title
+          distinct from that of the Document, and from those of
+          previous versions (which should, if there were any, be listed
+          in the History section of the Document).  You may use the
+          same title as a previous version if the original publisher of
+          that version gives permission.
+
+       B. List on the Title Page, as authors, one or more persons or
+          entities responsible for authorship of the modifications in
+          the Modified Version, together with at least five of the
+          principal authors of the Document (all of its principal
+          authors, if it has fewer than five), unless they release you
+          from this requirement.
+
+       C. State on the Title page the name of the publisher of the
+          Modified Version, as the publisher.
+
+       D. Preserve all the copyright notices of the Document.
+
+       E. Add an appropriate copyright notice for your modifications
+          adjacent to the other copyright notices.
+
+       F. Include, immediately after the copyright notices, a license
+          notice giving the public permission to use the Modified
+          Version under the terms of this License, in the form shown in
+          the Addendum below.
+
+       G. Preserve in that license notice the full lists of Invariant
+          Sections and required Cover Texts given in the Document's
+          license notice.
+
+       H. Include an unaltered copy of this License.
+
+       I. Preserve the section Entitled "History", Preserve its Title,
+          and add to it an item stating at least the title, year, new
+          authors, and publisher of the Modified Version as given on
+          the Title Page.  If there is no section Entitled "History" in
+          the Document, create one stating the title, year, authors,
+          and publisher of the Document as given on its Title Page,
+          then add an item describing the Modified Version as stated in
+          the previous sentence.
+
+       J. Preserve the network location, if any, given in the Document
+          for public access to a Transparent copy of the Document, and
+          likewise the network locations given in the Document for
+          previous versions it was based on.  These may be placed in
+          the "History" section.  You may omit a network location for a
+          work that was published at least four years before the
+          Document itself, or if the original publisher of the version
+          it refers to gives permission.
+
+       K. For any section Entitled "Acknowledgements" or "Dedications",
+          Preserve the Title of the section, and preserve in the
+          section all the substance and tone of each of the contributor
+          acknowledgements and/or dedications given therein.
+
+       L. Preserve all the Invariant Sections of the Document,
+          unaltered in their text and in their titles.  Section numbers
+          or the equivalent are not considered part of the section
+          titles.
+
+       M. Delete any section Entitled "Endorsements".  Such a section
+          may not be included in the Modified Version.
+
+       N. Do not retitle any existing section to be Entitled
+          "Endorsements" or to conflict in title with any Invariant
+          Section.
+
+       O. Preserve any Warranty Disclaimers.
+
+     If the Modified Version includes new front-matter sections or
+     appendices that qualify as Secondary Sections and contain no
+     material copied from the Document, you may at your option
+     designate some or all of these sections as invariant.  To do this,
+     add their titles to the list of Invariant Sections in the Modified
+     Version's license notice.  These titles must be distinct from any
+     other section titles.
+
+     You may add a section Entitled "Endorsements", provided it contains
+     nothing but endorsements of your Modified Version by various
+     parties--for example, statements of peer review or that the text
+     has been approved by an organization as the authoritative
+     definition of a standard.
+
+     You may add a passage of up to five words as a Front-Cover Text,
+     and a passage of up to 25 words as a Back-Cover Text, to the end
+     of the list of Cover Texts in the Modified Version.  Only one
+     passage of Front-Cover Text and one of Back-Cover Text may be
+     added by (or through arrangements made by) any one entity.  If the
+     Document already includes a cover text for the same cover,
+     previously added by you or by arrangement made by the same entity
+     you are acting on behalf of, you may not add another; but you may
+     replace the old one, on explicit permission from the previous
+     publisher that added the old one.
+
+     The author(s) and publisher(s) of the Document do not by this
+     License give permission to use their names for publicity for or to
+     assert or imply endorsement of any Modified Version.
+
+  5. COMBINING DOCUMENTS
+
+     You may combine the Document with other documents released under
+     this License, under the terms defined in section 4 above for
+     modified versions, provided that you include in the combination
+     all of the Invariant Sections of all of the original documents,
+     unmodified, and list them all as Invariant Sections of your
+     combined work in its license notice, and that you preserve all
+     their Warranty Disclaimers.
+
+     The combined work need only contain one copy of this License, and
+     multiple identical Invariant Sections may be replaced with a single
+     copy.  If there are multiple Invariant Sections with the same name
+     but different contents, make the title of each such section unique
+     by adding at the end of it, in parentheses, the name of the
+     original author or publisher of that section if known, or else a
+     unique number.  Make the same adjustment to the section titles in
+     the list of Invariant Sections in the license notice of the
+     combined work.
+
+     In the combination, you must combine any sections Entitled
+     "History" in the various original documents, forming one section
+     Entitled "History"; likewise combine any sections Entitled
+     "Acknowledgements", and any sections Entitled "Dedications".  You
+     must delete all sections Entitled "Endorsements."
+
+  6. COLLECTIONS OF DOCUMENTS
+
+     You may make a collection consisting of the Document and other
+     documents released under this License, and replace the individual
+     copies of this License in the various documents with a single copy
+     that is included in the collection, provided that you follow the
+     rules of this License for verbatim copying of each of the
+     documents in all other respects.
+
+     You may extract a single document from such a collection, and
+     distribute it individually under this License, provided you insert
+     a copy of this License into the extracted document, and follow
+     this License in all other respects regarding verbatim copying of
+     that document.
+
+  7. AGGREGATION WITH INDEPENDENT WORKS
+
+     A compilation of the Document or its derivatives with other
+     separate and independent documents or works, in or on a volume of
+     a storage or distribution medium, is called an "aggregate" if the
+     copyright resulting from the compilation is not used to limit the
+     legal rights of the compilation's users beyond what the individual
+     works permit.  When the Document is included in an aggregate, this
+     License does not apply to the other works in the aggregate which
+     are not themselves derivative works of the Document.
+
+     If the Cover Text requirement of section 3 is applicable to these
+     copies of the Document, then if the Document is less than one half
+     of the entire aggregate, the Document's Cover Texts may be placed
+     on covers that bracket the Document within the aggregate, or the
+     electronic equivalent of covers if the Document is in electronic
+     form.  Otherwise they must appear on printed covers that bracket
+     the whole aggregate.
+
+  8. TRANSLATION
+
+     Translation is considered a kind of modification, so you may
+     distribute translations of the Document under the terms of section
+     4.  Replacing Invariant Sections with translations requires special
+     permission from their copyright holders, but you may include
+     translations of some or all Invariant Sections in addition to the
+     original versions of these Invariant Sections.  You may include a
+     translation of this License, and all the license notices in the
+     Document, and any Warranty Disclaimers, provided that you also
+     include the original English version of this License and the
+     original versions of those notices and disclaimers.  In case of a
+     disagreement between the translation and the original version of
+     this License or a notice or disclaimer, the original version will
+     prevail.
+
+     If a section in the Document is Entitled "Acknowledgements",
+     "Dedications", or "History", the requirement (section 4) to
+     Preserve its Title (section 1) will typically require changing the
+     actual title.
+
+  9. TERMINATION
+
+     You may not copy, modify, sublicense, or distribute the Document
+     except as expressly provided for under this License.  Any other
+     attempt to copy, modify, sublicense or distribute the Document is
+     void, and will automatically terminate your rights under this
+     License.  However, parties who have received copies, or rights,
+     from you under this License will not have their licenses
+     terminated so long as such parties remain in full compliance.
+
+ 10. FUTURE REVISIONS OF THIS LICENSE
+
+     The Free Software Foundation may publish new, revised versions of
+     the GNU Free Documentation License from time to time.  Such new
+     versions will be similar in spirit to the present version, but may
+     differ in detail to address new problems or concerns.  See
+     `http://www.gnu.org/copyleft/'.
+
+     Each version of the License is given a distinguishing version
+     number.  If the Document specifies that a particular numbered
+     version of this License "or any later version" applies to it, you
+     have the option of following the terms and conditions either of
+     that specified version or of any later version that has been
+     published (not as a draft) by the Free Software Foundation.  If
+     the Document does not specify a version number of this License,
+     you may choose any version ever published (not as a draft) by the
+     Free Software Foundation.
+
+ADDENDUM: How to use this License for your documents
+====================================================
+
+To use this License in a document you have written, include a copy of
+the License in the document and put the following copyright and license
+notices just after the title page:
+
+       Copyright (C)  YEAR  YOUR NAME.
+       Permission is granted to copy, distribute and/or modify this document
+       under the terms of the GNU Free Documentation License, Version 1.2
+       or any later version published by the Free Software Foundation;
+       with no Invariant Sections, no Front-Cover Texts, and no Back-Cover
+       Texts.  A copy of the license is included in the section entitled ``GNU
+       Free Documentation License''.
+
+   If you have Invariant Sections, Front-Cover Texts and Back-Cover
+Texts, replace the "with...Texts." line with this:
+
+         with the Invariant Sections being LIST THEIR TITLES, with
+         the Front-Cover Texts being LIST, and with the Back-Cover Texts
+         being LIST.
+
+   If you have Invariant Sections without Cover Texts, or some other
+combination of the three, merge those two alternatives to suit the
+situation.
+
+   If your document contains nontrivial examples of program code, we
+recommend releasing these examples in parallel under your choice of
+free software license, such as the GNU General Public License, to
+permit their use in free software.
 
 
 File: gnuit.info,  Node: Key Index,  Next: Command Index,  Prev: Distrib,  Up: Top
@@ -3906,133 +4332,134 @@ Concept Index
 
 
 Tag Table:
-Node: Top1053
-Node: Introduction1933
-Node: Distrib3257
-Node: Description4945
-Node: gitfm5796
-Node: Conventions8320
-Node: Command line10213
-Node: Modes11272
-Node: Sorting13555
-Node: Moving14844
-Node: Selecting16452
-Node: Isearch17857
-Node: Input Line18982
-Node: Inserting Text20085
-Node: Moving Point20997
-Node: Erasing21594
-Node: Case Changes22872
-Node: History23308
-Node: Setting Mark24044
-Node: Yanking24379
-Node: Selecting Files24653
-Node: Files25570
-Node: Copying Files27299
-Node: Moving Files27667
-Node: Creating Files28056
-Node: Deleting Files28415
-Node: Linking Files28761
-Node: Renaming Files29416
-Node: Splitting Files30005
-Node: Packing Files30509
-Node: Inode31850
-Node: Editing Files33528
-Node: Viewing Files34260
-Node: Compressing Files34647
-Node: Encoding Files36048
-Node: Encrypting Files36991
-Node: Comparing Files37284
-Node: Spell Checking Files37951
-Node: Printing Files38209
-Node: Wiping Files38674
-Node: Searching Files39010
-Node: Archive Files39553
-Node: DEB Packages41385
-Node: RPM Packages44353
-Node: File Types45737
-Node: MSDOS Files45956
-Node: Actions48054
-Node: Directories48984
-Node: Creating Dirs49749
-Node: Copying Dirs50026
-Node: Deleting Dirs50508
-Node: Moving Dirs50947
-Node: Renaming Dirs51426
-Node: Comparing Dirs51869
-Node: Dirs Usage53103
-Node: Changing Dirs53379
-Node: Dirs History54057
-Node: Hot Keys55130
-Node: Compiling55759
-Node: Mail56160
-Node: Shell57316
-Node: Grep57605
-Node: Locking58033
-Node: Refreshing58431
-Node: Resetting59168
-Node: Mounting59422
-Node: Sysinfo62523
-Node: Environment63791
-Node: Processes64200
-Node: Sync66296
-Node: Documentation66549
-Node: Exit67045
-Node: gitps67265
-Node: gitview68787
-Node: gitkeys69641
-Node: gitwipe70030
-Node: gitmount70759
-Node: gitaction71523
-Node: gitunpack73413
-Node: gitrgrep73825
-Node: Customization74308
-Node: Environment Variables74611
-Node: Configuration Files75874
-Node: Key Sequences78965
-Node: Setup80298
-Node: gitfm Sections81253
-Node: GITFM-Setup81707
-Node: GITFM-Color83842
-Node: GITFM-Monochrome84213
-Node: GITFM-Keys84618
-Node: key-sequence85523
-Node: command-name86162
-Node: formatted-command86907
-Node: %s88233
-Node: %f88760
-Node: %d89005
-Node: %l89252
-Node: %t89505
-Node: %z89740
-Node: %a89971
-Node: %m90186
-Node: %g90390
-Node: %o90595
-Node: %p90800
-Node: %b91005
-Node: %i91220
-Node: %?91445
-Node: new-dir91937
-Node: save-screen92363
-Node: pause93063
-Node: hide93398
-Node: GITFM-FTI94278
-Node: gitps Sections94860
-Node: GITPS-Setup95254
-Node: GITPS-Color95494
-Node: GITPS-Monochrome95862
-Node: GITPS-Keys96267
-Node: gitview Sections96397
-Node: GITVIEW-Setup96780
-Node: GITVIEW-Color97030
-Node: GITVIEW-Monochrome97412
-Node: GITVIEW-Keys97831
-Node: Limitations97967
-Node: Bugs99377
-Node: Key Index99637
-Node: Command Index119403
-Node: Variable Index138527
-Node: Concept Index140585
+Node: Top792
+Node: Introduction1740
+Node: Distrib3064
+Node: Description4752
+Node: gitfm5603
+Node: Conventions8127
+Node: Command line10020
+Node: Modes11079
+Node: Sorting13362
+Node: Moving14651
+Node: Selecting16259
+Node: Isearch17664
+Node: Input Line18789
+Node: Inserting Text19892
+Node: Moving Point20804
+Node: Erasing21401
+Node: Case Changes22679
+Node: History23115
+Node: Setting Mark23851
+Node: Yanking24186
+Node: Selecting Files24460
+Node: Files25377
+Node: Copying Files27106
+Node: Moving Files27474
+Node: Creating Files27863
+Node: Deleting Files28222
+Node: Linking Files28568
+Node: Renaming Files29223
+Node: Splitting Files29812
+Node: Packing Files30316
+Node: Inode31657
+Node: Editing Files33335
+Node: Viewing Files34067
+Node: Compressing Files34454
+Node: Encoding Files35855
+Node: Encrypting Files36798
+Node: Comparing Files37091
+Node: Spell Checking Files37758
+Node: Printing Files38016
+Node: Wiping Files38481
+Node: Searching Files38817
+Node: Archive Files39360
+Node: DEB Packages41192
+Node: RPM Packages44160
+Node: File Types45544
+Node: MSDOS Files45763
+Node: Actions47861
+Node: Directories48791
+Node: Creating Dirs49556
+Node: Copying Dirs49833
+Node: Deleting Dirs50315
+Node: Moving Dirs50754
+Node: Renaming Dirs51233
+Node: Comparing Dirs51676
+Node: Dirs Usage52910
+Node: Changing Dirs53186
+Node: Dirs History53864
+Node: Hot Keys54937
+Node: Compiling55566
+Node: Mail55967
+Node: Shell57123
+Node: Grep57412
+Node: Locking57840
+Node: Refreshing58238
+Node: Resetting58975
+Node: Mounting59229
+Node: Sysinfo62330
+Node: Environment63598
+Node: Processes64007
+Node: Sync66103
+Node: Documentation66356
+Node: Exit66852
+Node: gitps67072
+Node: gitview68594
+Node: gitkeys69448
+Node: gitwipe69837
+Node: gitmount70566
+Node: gitaction71330
+Node: gitunpack73220
+Node: gitrgrep73632
+Node: Customization74115
+Node: Environment Variables74418
+Node: Configuration Files75681
+Node: Key Sequences78772
+Node: Setup80105
+Node: gitfm Sections81060
+Node: GITFM-Setup81514
+Node: GITFM-Color83649
+Node: GITFM-Monochrome84020
+Node: GITFM-Keys84425
+Node: key-sequence85330
+Node: command-name85969
+Node: formatted-command86714
+Node: %s88040
+Node: %f88567
+Node: %d88812
+Node: %l89059
+Node: %t89312
+Node: %z89547
+Node: %a89778
+Node: %m89993
+Node: %g90197
+Node: %o90402
+Node: %p90607
+Node: %b90812
+Node: %i91027
+Node: %?91252
+Node: new-dir91744
+Node: save-screen92170
+Node: pause92870
+Node: hide93205
+Node: GITFM-FTI94085
+Node: gitps Sections94667
+Node: GITPS-Setup95061
+Node: GITPS-Color95301
+Node: GITPS-Monochrome95669
+Node: GITPS-Keys96074
+Node: gitview Sections96204
+Node: GITVIEW-Setup96587
+Node: GITVIEW-Color96837
+Node: GITVIEW-Monochrome97219
+Node: GITVIEW-Keys97638
+Node: Limitations97774
+Node: Bugs99184
+Node: Copying This Manual99472
+Node: Key Index121847
+Node: Command Index141613
+Node: Variable Index160737
+Node: Concept Index162795
 
 End Tag Table

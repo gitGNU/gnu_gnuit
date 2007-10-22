@@ -1,3 +1,9 @@
+2007-10-22  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
+
+	* Relicensed code to GPL version 3,
+	  git.texinfo to GFDL 1.2 with no invariant sections,
+	  no front cover texts and no back cover texts.
+
 2007-10-20  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
 
 	* Bumped version to 4.9.2

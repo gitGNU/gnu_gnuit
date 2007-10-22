@@ -8,7 +8,11 @@
 * Version 4.9.2
 ================
 
-** Renamed package to gnuit
+** Renamed package to gnuit.
+
+** Changed code license to GPL version 3 (see COPYING).
+   and documentation license to GFDL 1.2 with no invariant
+   sections.
 
 ** Renamed git file manager binary to gitfm.
    Config file sections now start with "[GITFM-", but

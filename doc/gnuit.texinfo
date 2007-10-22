@@ -6,7 +6,7 @@
 @c @setchapternewpage odd
 @c %**end of header
 
-@set EDITION 2.9.1
+@set EDITION 2.9.2
 @set VERSION 4.9.2
 @set UPDATED June 2001
 
@@ -21,39 +21,27 @@ START-INFO-DIR-ENTRY
 * gnuit: (gnuit).         GNU Interactive Tools
 END-INFO-DIR-ENTRY
 @end format
+@end ifinfo
 
+@copying
 GNUIT: A set of interactive tools, by Tudor Hulubei and Andrei Pitis.
 
 This file documents the GNU Interactive Tools package.
 
 Copyright (C) 1993-1998, 2006-2007 Free Software Foundation, Inc.
 
-Permission is granted to make and distribute verbatim copies of
-this manual provided the copyright notice and this permission notice
-are preserved on all copies.
-
-@ignore
-Permission is granted to process this file through TeX and print the
-results, provided the printed document carries copying permission notice
-identical to this one except for the removal of this paragraph (this
-paragraph not being relevant to the printed manual).
-
-@end ignore
-Permission is granted to copy and distribute modified versions of this
-manual under the conditions for verbatim copying, provided that the
-entire resulting derived work is distributed under the terms of a
-permission notice identical to this one.
-
-Permission is granted to copy and distribute translations of this manual
-into another language, under the above conditions for modified versions,
-except that this permission notice may be stated in a translation
-approved by the Foundation.
-@end ifinfo
+@quotation
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.2 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
+Texts.  A copy of the license is included in the section entitled
+``Copying This Manual''.
+@end quotation
+@end copying
 
 @titlepage
-@iftex
 @title GNU Interactive Tools
-@end iftex
 @subtitle A Set of Interactive Programs
 @subtitle Edition @value{EDITION}, for GNUIT version @value{VERSION}
 @subtitle @value{UPDATED}
@@ -63,21 +51,8 @@ approved by the Foundation.
 
 @page
 @vskip 0pt plus 1filll
-Copyright @copyright{} 1993-1998, 2006-2007 Free Software Foundation, Inc.
 
-Permission is granted to make and distribute verbatim copies of this
-manual provided the copyright notice and this permission notice are
-preserved on all copies.
-
-Permission is granted to copy and distribute modified versions of this
-manual under the conditions for verbatim copying, provided that the
-entire resulting derived work is distributed under the terms of a
-permission notice identical to this one.
-
-Permission is granted to copy and distribute translations of this manual
-into another language, under the above conditions for modified versions,
-except that this permission notice may be stated in a translation
-approved by the Foundation.
+@insertcopying
 @end titlepage
 
 
@@ -99,6 +74,7 @@ process viewer/killer and an ASCII/HEX file viewer.  This is edition
 * Customization::               How to customize GNUIT.
 * Limitations::                 Known GNUIT limitations.
 * Bugs::                        How to report a bug.
+* Copying This Manual::         The GNU Free Documentation License.
 * Key Index::                   An item for each standard GNUIT key sequence.
 * Command Index::               An item for each command name.
 * Variable Index::              An item for each documented variable.
@@ -4593,13 +4569,17 @@ There is no support for appearance modes on magic-cookie terminals.
 
 
 
-@node Bugs, , Limitations, Top
+@node Bugs, Copying This Manual, Limitations, Top
 @chapter GNU Interactive Tools bugs
 
 Any questions, comments, or bug reports, should be emailed to
 @samp{Ian Beckwith <ianbnessie.mcc.ac.uk>}.  Please include the
 version number.
 
+@node Copying This Manual, , Bugs, Top
+@appendix Copying This Manual
+
+@include fdl.texi
 
 @node Key Index, Command Index, Distrib, Top
 @unnumbered Key Index
