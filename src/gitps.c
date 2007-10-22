@@ -47,6 +47,7 @@
 #include "file.h"
 #include <fcntl.h>
 #include <signal.h>
+#include <time.h>
 
 /* SVR2/SVR3.  */
 #if !(defined(SIGCHLD)) && defined(SIGCLD)
@@ -1418,7 +1419,10 @@ main(argc, argv)
 		{
 		    if(RefreshAfterKill)
 		    {
-			sleep(1); /* FIXME: use usleep for a shorter time? */
+			struct timespec tv;
+			tv.tv_sec=0;
+			tv.tv_nsec=5 * 1000 * 1000 ; /* half a second */
+			nanosleep(&tv,NULL);
 			ps(arguments);
 			goto restart;
 		    }

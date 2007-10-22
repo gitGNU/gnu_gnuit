@@ -43,12 +43,14 @@ subdir = src
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in ChangeLog
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/alloca.m4 \
-	$(top_srcdir)/m4/codeset.m4 $(top_srcdir)/m4/dirname.m4 \
-	$(top_srcdir)/m4/dos.m4 $(top_srcdir)/m4/double-slash-root.m4 \
+	$(top_srcdir)/m4/clock_time.m4 $(top_srcdir)/m4/codeset.m4 \
+	$(top_srcdir)/m4/dirname.m4 $(top_srcdir)/m4/dos.m4 \
+	$(top_srcdir)/m4/double-slash-root.m4 \
 	$(top_srcdir)/m4/eealloc.m4 $(top_srcdir)/m4/error.m4 \
 	$(top_srcdir)/m4/exitfail.m4 $(top_srcdir)/m4/extensions.m4 \
 	$(top_srcdir)/m4/flexmember.m4 $(top_srcdir)/m4/fnmatch.m4 \
 	$(top_srcdir)/m4/fsusage.m4 $(top_srcdir)/m4/getopt.m4 \
+	$(top_srcdir)/m4/gettime.m4 $(top_srcdir)/m4/gettimeofday.m4 \
 	$(top_srcdir)/m4/glibc21.m4 $(top_srcdir)/m4/gnulib-comp.m4 \
 	$(top_srcdir)/m4/idcache.m4 $(top_srcdir)/m4/include_next.m4 \
 	$(top_srcdir)/m4/inline.m4 $(top_srcdir)/m4/localcharset.m4 \
@@ -57,14 +59,16 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/alloca.m4 \
 	$(top_srcdir)/m4/mbiter.m4 $(top_srcdir)/m4/mbrtowc.m4 \
 	$(top_srcdir)/m4/mbslen.m4 $(top_srcdir)/m4/mbsstr.m4 \
 	$(top_srcdir)/m4/mbstate_t.m4 $(top_srcdir)/m4/memchr.m4 \
-	$(top_srcdir)/m4/memmove.m4 $(top_srcdir)/m4/onceonly_2_57.m4 \
-	$(top_srcdir)/m4/putenv.m4 $(top_srcdir)/m4/readlink.m4 \
-	$(top_srcdir)/m4/rename.m4 $(top_srcdir)/m4/safe-read.m4 \
-	$(top_srcdir)/m4/safe-write.m4 $(top_srcdir)/m4/ssize_t.m4 \
-	$(top_srcdir)/m4/stdbool.m4 $(top_srcdir)/m4/stdint.m4 \
-	$(top_srcdir)/m4/stdlib_h.m4 $(top_srcdir)/m4/strcase.m4 \
-	$(top_srcdir)/m4/strerror.m4 $(top_srcdir)/m4/string_h.m4 \
-	$(top_srcdir)/m4/strndup.m4 $(top_srcdir)/m4/strnlen.m4 \
+	$(top_srcdir)/m4/memmove.m4 $(top_srcdir)/m4/nanosleep.m4 \
+	$(top_srcdir)/m4/onceonly_2_57.m4 $(top_srcdir)/m4/putenv.m4 \
+	$(top_srcdir)/m4/readlink.m4 $(top_srcdir)/m4/rename.m4 \
+	$(top_srcdir)/m4/safe-read.m4 $(top_srcdir)/m4/safe-write.m4 \
+	$(top_srcdir)/m4/ssize_t.m4 $(top_srcdir)/m4/stdbool.m4 \
+	$(top_srcdir)/m4/stdint.m4 $(top_srcdir)/m4/stdlib_h.m4 \
+	$(top_srcdir)/m4/strcase.m4 $(top_srcdir)/m4/strerror.m4 \
+	$(top_srcdir)/m4/string_h.m4 $(top_srcdir)/m4/strndup.m4 \
+	$(top_srcdir)/m4/strnlen.m4 $(top_srcdir)/m4/sys_time_h.m4 \
+	$(top_srcdir)/m4/time_h.m4 $(top_srcdir)/m4/timespec.m4 \
 	$(top_srcdir)/m4/ulonglong.m4 $(top_srcdir)/m4/unistd_h.m4 \
 	$(top_srcdir)/m4/wchar.m4 $(top_srcdir)/m4/wchar_t.m4 \
 	$(top_srcdir)/m4/wctype.m4 $(top_srcdir)/m4/wcwidth.m4 \
@@ -85,7 +89,9 @@ am_gitfm_OBJECTS = git.$(OBJEXT) tty.$(OBJEXT) window.$(OBJEXT) \
 	xstack.$(OBJEXT) system.$(OBJEXT) tilde.$(OBJEXT) \
 	history.$(OBJEXT)
 gitfm_OBJECTS = $(am_gitfm_OBJECTS)
-gitfm_DEPENDENCIES =
+am__DEPENDENCIES_1 =
+gitfm_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_gitkeys_OBJECTS = gitkeys.$(OBJEXT)
 gitkeys_OBJECTS = $(am_gitkeys_OBJECTS)
 gitkeys_LDADD = $(LDADD)
@@ -93,15 +99,15 @@ am_gitps_OBJECTS = gitps.$(OBJEXT) tty.$(OBJEXT) window.$(OBJEXT) \
 	misc.$(OBJEXT) configure.$(OBJEXT) signals.$(OBJEXT) \
 	xio.$(OBJEXT) xmalloc.$(OBJEXT)
 gitps_OBJECTS = $(am_gitps_OBJECTS)
-gitps_DEPENDENCIES =
+gitps_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_gitview_OBJECTS = gitview.$(OBJEXT) tty.$(OBJEXT) window.$(OBJEXT) \
 	misc.$(OBJEXT) configure.$(OBJEXT) signals.$(OBJEXT) \
 	xio.$(OBJEXT) xmalloc.$(OBJEXT)
 gitview_OBJECTS = $(am_gitview_OBJECTS)
-gitview_DEPENDENCIES =
+gitview_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_gitwhich_OBJECTS = gitwhich.$(OBJEXT) xmalloc.$(OBJEXT)
 gitwhich_OBJECTS = $(am_gitwhich_OBJECTS)
-gitwhich_DEPENDENCIES =
+gitwhich_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_gitwipe_OBJECTS = gitwipe.$(OBJEXT)
 gitwipe_OBJECTS = $(am_gitwipe_OBJECTS)
 gitwipe_LDADD = $(LDADD)
@@ -241,8 +247,10 @@ HAVE_STRCHRNUL = @HAVE_STRCHRNUL@
 HAVE_STRNDUP = @HAVE_STRNDUP@
 HAVE_STRPBRK = @HAVE_STRPBRK@
 HAVE_STRSEP = @HAVE_STRSEP@
+HAVE_STRUCT_TIMEVAL = @HAVE_STRUCT_TIMEVAL@
 HAVE_SYS_BITYPES_H = @HAVE_SYS_BITYPES_H@
 HAVE_SYS_INTTYPES_H = @HAVE_SYS_INTTYPES_H@
+HAVE_SYS_TIME_H = @HAVE_SYS_TIME_H@
 HAVE_SYS_TYPES_H = @HAVE_SYS_TYPES_H@
 HAVE_UNISTD_H = @HAVE_UNISTD_H@
 HAVE_UNSIGNED_LONG_LONG_INT = @HAVE_UNSIGNED_LONG_LONG_INT@
@@ -267,6 +275,8 @@ LIBGNU_LTLIBDEPS = @LIBGNU_LTLIBDEPS@
 LIBINTL = @LIBINTL@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
+LIB_CLOCK_GETTIME = @LIB_CLOCK_GETTIME@
+LIB_NANOSLEEP = @LIB_NANOSLEEP@
 LTLIBINTL = @LTLIBINTL@
 LTLIBOBJS = @LTLIBOBJS@
 MAINT = @MAINT@
@@ -277,6 +287,8 @@ MAKEINFO = @MAKEINFO@
 NEXT_STDINT_H = @NEXT_STDINT_H@
 NEXT_STDLIB_H = @NEXT_STDLIB_H@
 NEXT_STRING_H = @NEXT_STRING_H@
+NEXT_SYS_TIME_H = @NEXT_SYS_TIME_H@
+NEXT_TIME_H = @NEXT_TIME_H@
 NEXT_UNISTD_H = @NEXT_UNISTD_H@
 NEXT_WCHAR_H = @NEXT_WCHAR_H@
 NEXT_WCTYPE_H = @NEXT_WCTYPE_H@
@@ -294,10 +306,15 @@ RANLIB = @RANLIB@
 REPLACE_CHOWN = @REPLACE_CHOWN@
 REPLACE_FCHDIR = @REPLACE_FCHDIR@
 REPLACE_GETCWD = @REPLACE_GETCWD@
+REPLACE_GETTIMEOFDAY = @REPLACE_GETTIMEOFDAY@
 REPLACE_LCHOWN = @REPLACE_LCHOWN@
+REPLACE_LOCALTIME_R = @REPLACE_LOCALTIME_R@
 REPLACE_LSEEK = @REPLACE_LSEEK@
 REPLACE_MKSTEMP = @REPLACE_MKSTEMP@
+REPLACE_NANOSLEEP = @REPLACE_NANOSLEEP@
 REPLACE_STRERROR = @REPLACE_STRERROR@
+REPLACE_STRPTIME = @REPLACE_STRPTIME@
+REPLACE_TIMEGM = @REPLACE_TIMEGM@
 REPLACE_WCWIDTH = @REPLACE_WCWIDTH@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
@@ -306,8 +323,11 @@ SIZE_T_SUFFIX = @SIZE_T_SUFFIX@
 STDBOOL_H = @STDBOOL_H@
 STDINT_H = @STDINT_H@
 STRIP = @STRIP@
+SYS_TIME_H = @SYS_TIME_H@
+SYS_TIME_H_DEFINES_STRUCT_TIMESPEC = @SYS_TIME_H_DEFINES_STRUCT_TIMESPEC@
 TEXI2DVI = @TEXI2DVI@
 TEXI2HTML = @TEXI2HTML@
+TIME_H_DEFINES_STRUCT_TIMESPEC = @TIME_H_DEFINES_STRUCT_TIMESPEC@
 TRANSITION_FALSE = @TRANSITION_FALSE@
 TRANSITION_TRUE = @TRANSITION_TRUE@
 VERSION = @VERSION@
@@ -388,10 +408,10 @@ gitview_SOURCES = gitview.c tty.c tty.h window.c window.h misc.c misc.h\
 gitwipe_SOURCES = gitwipe.c
 gitkeys_SOURCES = gitkeys.c
 gitwhich_SOURCES = gitwhich.c xmalloc.c xmalloc.h
-gitfm_LDADD = -L../lib -lgnu
-gitps_LDADD = -L../lib -lgnu
-gitview_LDADD = -L../lib -lgnu
-gitwhich_LDADD = -L../lib -lgnu
+gitfm_LDADD = -L../lib -lgnu $(LIB_CLOCK_GETTIME) $(LIB_NANOSLEEP) $(LIBINTL)
+gitps_LDADD = -L../lib -lgnu $(LIBINTL)
+gitview_LDADD = -L../lib -lgnu $(LIBINTL)
+gitwhich_LDADD = -L../lib -lgnu $(LIBINTL)
 AM_CPPFLAGS = -I$(srcdir)/.. -I.. -I$(top_srcdir)/lib \
 	-I$(top_srcdir)/src $(am__append_1)
 all: all-am

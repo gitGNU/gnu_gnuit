@@ -25,10 +25,10 @@ gitwipe_SOURCES = gitwipe.c
 gitkeys_SOURCES = gitkeys.c
 gitwhich_SOURCES = gitwhich.c xmalloc.c xmalloc.h
 
-gitfm_LDADD = -L../lib -lgnu
-gitps_LDADD = -L../lib -lgnu
-gitview_LDADD = -L../lib -lgnu
-gitwhich_LDADD = -L../lib -lgnu
+gitfm_LDADD = -L../lib -lgnu $(LIB_CLOCK_GETTIME) $(LIB_NANOSLEEP) $(LIBINTL)
+gitps_LDADD = -L../lib -lgnu $(LIBINTL)
+gitview_LDADD = -L../lib -lgnu $(LIBINTL)
+gitwhich_LDADD = -L../lib -lgnu $(LIBINTL)
 
 AM_CPPFLAGS = -I$(srcdir)/.. -I.. -I$(top_srcdir)/lib -I$(top_srcdir)/src
 if DEBIAN

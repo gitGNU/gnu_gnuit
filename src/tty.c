@@ -47,7 +47,6 @@
 #endif /* HAVE_UNISTD_H */
 
 #include <assert.h>
-
 #include "stdc.h"
 #include "xstring.h"
 #include "xmalloc.h"

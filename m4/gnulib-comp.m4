@@ -42,6 +42,7 @@ AC_DEFUN([gl_INIT],
   gl_ltlibdeps=
   gl_source_base='lib'
   gl_FUNC_ALLOCA
+  gl_CLOCK_TIME
   gl_DIRNAME
   gl_DOUBLE_SLASH_ROOT
   gl_ERROR
@@ -53,6 +54,8 @@ AC_DEFUN([gl_INIT],
   gl_GETOPT
   AC_SUBST([LIBINTL])
   AC_SUBST([LTLIBINTL])
+  gl_GETTIME
+  gl_FUNC_GETTIMEOFDAY
   gl_IDCACHE
   gl_INLINE
   gl_LOCALCHARSET
@@ -67,6 +70,7 @@ AC_DEFUN([gl_INIT],
   gl_MBITER
   gl_FUNC_MEMCHR
   gl_FUNC_MEMMOVE
+  gl_FUNC_NANOSLEEP
   gl_FUNC_PUTENV
   gl_FUNC_READLINK
   gl_UNISTD_MODULE_INDICATOR([readlink])
@@ -85,6 +89,10 @@ AC_DEFUN([gl_INIT],
   gl_STRING_MODULE_INDICATOR([strndup])
   gl_FUNC_STRNLEN
   gl_STRING_MODULE_INDICATOR([strnlen])
+  gl_HEADER_SYS_TIME_H
+  AC_PROG_MKDIR_P
+  gl_HEADER_TIME_H
+  gl_TIMESPEC
   gl_UNISTD_H
   gl_WCHAR_H
   gl_WCTYPE_H
@@ -171,6 +179,8 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/getopt1.c
   lib/getopt_int.h
   lib/gettext.h
+  lib/gettime.c
+  lib/gettimeofday.c
   lib/idcache.c
   lib/idcache.h
   lib/intprops.h
@@ -187,6 +197,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/mbuiter.h
   lib/memchr.c
   lib/memmove.c
+  lib/nanosleep.c
   lib/putenv.c
   lib/readlink.c
   lib/ref-add.sin
@@ -209,6 +220,9 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/strnlen.c
   lib/strnlen1.c
   lib/strnlen1.h
+  lib/sys_time.in.h
+  lib/time.in.h
+  lib/timespec.h
   lib/unistd.in.h
   lib/unitypes.h
   lib/uniwidth.h
@@ -224,6 +238,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/xstrndup.h
   m4/absolute-header.m4
   m4/alloca.m4
+  m4/clock_time.m4
   m4/codeset.m4
   m4/dirname.m4
   m4/dos.m4
@@ -236,6 +251,8 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/fnmatch.m4
   m4/fsusage.m4
   m4/getopt.m4
+  m4/gettime.m4
+  m4/gettimeofday.m4
   m4/glibc21.m4
   m4/gnulib-common.m4
   m4/idcache.m4
@@ -253,6 +270,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/mbstate_t.m4
   m4/memchr.m4
   m4/memmove.m4
+  m4/nanosleep.m4
   m4/onceonly_2_57.m4
   m4/putenv.m4
   m4/readlink.m4
@@ -268,6 +286,9 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/string_h.m4
   m4/strndup.m4
   m4/strnlen.m4
+  m4/sys_time_h.m4
+  m4/time_h.m4
+  m4/timespec.m4
   m4/ulonglong.m4
   m4/unistd_h.m4
   m4/wchar.m4
