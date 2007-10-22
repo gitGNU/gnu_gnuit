@@ -1832,7 +1832,6 @@ gl_func_list="$gl_func_list readlink"
 gl_header_list="$gl_header_list stdint.h"
 gl_header_list="$gl_header_list wchar.h"
 gl_header_list="$gl_header_list stdlib.h"
-gl_func_list="$gl_func_list strerror"
 gl_header_list="$gl_header_list string.h"
 gl_header_list="$gl_header_list unistd.h"
 gl_func_list="$gl_func_list iswcntrl"
@@ -8294,7 +8293,10 @@ _ACEOF
 cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
-long long int ll = 9223372036854775807ll;
+#if ! (-9223372036854775807LL < 0 && 0 < 9223372036854775807ll)
+	      error in preprocessor;
+	    #endif
+	    long long int ll = 9223372036854775807ll;
 	    long long int nll = -9223372036854775807LL;
 	    typedef int a[((-9223372036854775807LL < 0
 			    && 0 < 9223372036854775807ll)
@@ -8810,7 +8812,10 @@ _ACEOF
 cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
-unsigned long long int ull = 18446744073709551615ULL;
+#if ! (18446744073709551615ULL <= -1u)
+	      error in preprocessor;
+	    #endif
+	    unsigned long long int ull = 18446744073709551615ULL;
 	    typedef int a[(18446744073709551615ULL <= (unsigned long long int) -1
 			   ? 1 : -1)];
 	   int i = 63;
@@ -8957,52 +8962,54 @@ _ACEOF
 
 
 
-
-
-
-
-
-
-
-  :
-
-
-
-
-
-
-  :
-
-  if test $ac_cv_func_strerror = no; then
-    HAVE_DECL_STRERROR=0
-    gl_cv_func_working_strerror=no
-  else
-    { echo "$as_me:$LINENO: checking for working strerror function" >&5
+  { echo "$as_me:$LINENO: checking for working strerror function" >&5
 echo $ECHO_N "checking for working strerror function... $ECHO_C" >&6; }
 if test "${gl_cv_func_working_strerror+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   if test "$cross_compiling" = yes; then
-  	cat >conftest.$ac_ext <<_ACEOF
+         cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
 cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
+#include <string.h>
 
-#ifndef __INTERIX
-  assuming success
-#endif
-
+int
+main ()
+{
+return !*strerror (-2);
+  ;
+  return 0;
+}
 _ACEOF
-if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
-  $EGREP "assuming success" >/dev/null 2>&1; then
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
   gl_cv_func_working_strerror=yes
 else
-  gl_cv_func_working_strerror=no
-fi
-rm -f conftest*
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
 
+	gl_cv_func_working_strerror=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
 else
   cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
@@ -9010,7 +9017,6 @@ _ACEOF
 cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
-
 #include <string.h>
 
 int
@@ -9057,9 +9063,78 @@ fi
 fi
 { echo "$as_me:$LINENO: result: $gl_cv_func_working_strerror" >&5
 echo "${ECHO_T}$gl_cv_func_working_strerror" >&6; }
-    if test $gl_cv_func_working_strerror = no ; then
-      REPLACE_STRERROR=1
-    fi
+  if test $gl_cv_func_working_strerror = no ; then
+    REPLACE_STRERROR=1
+
+  { echo "$as_me:$LINENO: checking whether strerror is declared" >&5
+echo $ECHO_N "checking whether strerror is declared... $ECHO_C" >&6; }
+if test "${ac_cv_have_decl_strerror+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+$ac_includes_default
+int
+main ()
+{
+#ifndef strerror
+  (void) strerror;
+#endif
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ac_cv_have_decl_strerror=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_have_decl_strerror=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+{ echo "$as_me:$LINENO: result: $ac_cv_have_decl_strerror" >&5
+echo "${ECHO_T}$ac_cv_have_decl_strerror" >&6; }
+if test $ac_cv_have_decl_strerror = yes; then
+
+cat >>confdefs.h <<_ACEOF
+#define HAVE_DECL_STRERROR 1
+_ACEOF
+
+
+else
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_DECL_STRERROR 0
+_ACEOF
+
+
+fi
+
+
+
   fi
 
 { echo "$as_me:$LINENO: checking for C/C++ restrict keyword" >&5
@@ -9573,6 +9648,8 @@ _ACEOF
 
 
 
+
+
   gl_LIBOBJS="$gl_LIBOBJS basename.$ac_objext"
 
 
@@ -9580,7 +9657,11 @@ _ACEOF
 
 
 
+
+
   gl_LIBOBJS="$gl_LIBOBJS dirname.$ac_objext"
+
+
 
 
 
@@ -9634,6 +9715,10 @@ cat >>confdefs.h <<\_ACEOF
 _ACEOF
 
   fi
+
+
+
+
 
 
 
@@ -9699,6 +9784,8 @@ if test $ac_cv_lib_error_at_line = no; then
 
 
 
+
+
   gl_LIBOBJS="$gl_LIBOBJS error.$ac_objext"
 
 fi
@@ -9706,6 +9793,8 @@ fi
 
 
   :
+
+
 
 
 
@@ -9997,6 +10086,8 @@ fi
 
 
   :
+
+
 
 
 
@@ -10635,6 +10726,8 @@ fi
 
 
 
+
+
   gl_LIBOBJS="$gl_LIBOBJS fsusage.$ac_objext"
 
 
@@ -10863,7 +10956,11 @@ echo "${ECHO_T}$fu_cv_sys_truncating_statfs" >&6; }
 
 
 
+
+
   gl_LIBOBJS="$gl_LIBOBJS getopt.$ac_objext"
+
+
 
 
 
@@ -10892,6 +10989,8 @@ _ACEOF
 
 
 fi
+
+
 
 
 
@@ -10999,6 +11098,8 @@ _ACEOF
 
 
 
+
+
   gl_LIBOBJS="$gl_LIBOBJS malloc.$ac_objext"
 
     HAVE_MALLOC_POSIX=0
@@ -11040,6 +11141,8 @@ _ACEOF
 
 
   :
+
+
 
 
 
@@ -11303,6 +11406,8 @@ done
 
 
 
+
+
 for ac_func in memmove
 do
 as_ac_var=`echo "ac_cv_func_$ac_func" | $as_tr_sh`
@@ -11487,6 +11592,8 @@ echo "${ECHO_T}$jm_cv_func_svid_putenv" >&6; }
 
 
 
+
+
   gl_LIBOBJS="$gl_LIBOBJS putenv.$ac_objext"
 
 
@@ -11507,6 +11614,8 @@ _ACEOF
 
   if test $ac_cv_func_readlink = no; then
     HAVE_READLINK=0
+
+
 
 
 
@@ -11599,6 +11708,8 @@ echo "${ECHO_T}$gl_cv_func_rename_trailing_slash_bug" >&6; }
 
 
 
+
+
   gl_LIBOBJS="$gl_LIBOBJS rename.$ac_objext"
 
 
@@ -11620,7 +11731,11 @@ _ACEOF
 
 
 
+
+
   gl_LIBOBJS="$gl_LIBOBJS safe-read.$ac_objext"
+
+
 
 
 
@@ -12842,6 +12957,8 @@ echo "${ECHO_T}$gl_cv_next_stdlib_h" >&6; }
 
 
 
+
+
 for ac_func in strcasecmp
 do
 as_ac_var=`echo "ac_cv_func_$ac_func" | $as_tr_sh`
@@ -12946,6 +13063,8 @@ done
   :
 
   fi
+
+
 
 
 
@@ -13134,6 +13253,8 @@ fi
 
 
   if test $gl_cv_func_working_strerror = no; then
+
+
 
 
 
@@ -13358,6 +13479,8 @@ _ACEOF
 
 
 
+
+
   gl_LIBOBJS="$gl_LIBOBJS strndup.$ac_objext"
 
     :
@@ -13457,6 +13580,8 @@ fi
 { echo "$as_me:$LINENO: result: $ac_cv_func_strnlen_working" >&5
 echo "${ECHO_T}$ac_cv_func_strnlen_working" >&6; }
 test $ac_cv_func_strnlen_working = no &&
+
+
 
 
 
@@ -13857,7 +13982,7 @@ fi
   if test $ac_cv_func_wcwidth = no; then
     REPLACE_WCWIDTH=1
   else
-            { echo "$as_me:$LINENO: checking whether wcwidth works reasonably in UTF-8 locales" >&5
+                { echo "$as_me:$LINENO: checking whether wcwidth works reasonably in UTF-8 locales" >&5
 echo $ECHO_N "checking whether wcwidth works reasonably in UTF-8 locales... $ECHO_C" >&6; }
 if test "${gl_cv_func_wcwidth_works+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -13894,7 +14019,7 @@ int wcwidth (int);
 int main ()
 {
   if (setlocale (LC_ALL, "fr_FR.UTF-8") != NULL)
-    if (wcwidth (0x0301) > 0)
+    if (wcwidth (0x0301) > 0 || wcwidth (0x200B) > 0)
       return 1;
   return 0;
 }
@@ -13947,6 +14072,8 @@ echo "${ECHO_T}$gl_cv_func_wcwidth_works" >&6; }
 
 
 
+
+
   gl_LIBOBJS="$gl_LIBOBJS wcwidth.$ac_objext"
 
   fi
@@ -13958,6 +14085,8 @@ echo "${ECHO_T}$gl_cv_func_wcwidth_works" >&6; }
 
 
   GNULIB_WCWIDTH=1
+
+
 
 
 

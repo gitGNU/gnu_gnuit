@@ -129,13 +129,17 @@ AC_DEFUN([gl_REPLACE_FUNCS], [
   AC_CHECK_FUNCS([$1], , [gl_LIBOBJ($ac_func)])
 ])
 
-# Like AC_LIBSOURCES, except check for typos now.
-# We rely on EXTRA_lib..._SOURCES instead.
+# Like AC_LIBSOURCES, except the directory where the source file is
+# expected is derived from the gnulib-tool parametrization,
+# and alloca is special cased (for the alloca-opt module).
+# We could also entirely rely on EXTRA_lib..._SOURCES.
 AC_DEFUN([gl_LIBSOURCES], [
   m4_foreach([_gl_NAME], [$1], [
-    m4_syscmd([test -r lib/]_gl_NAME[ || test ! -d lib])dnl
-    m4_if(m4_sysval, [0], [],
-      [AC_FATAL([missing lib/]_gl_NAME)])
+    m4_if(_gl_NAME, [alloca.c], [], [
+      m4_syscmd([test -r lib/]_gl_NAME[ || test ! -d lib])dnl
+      m4_if(m4_sysval, [0], [],
+        [AC_FATAL([missing lib/]_gl_NAME)])
+    ])
   ])
 ])
 
@@ -144,7 +148,7 @@ AC_DEFUN([gl_LIBSOURCES], [
 AC_DEFUN([gl_FILE_LIST], [
   build-aux/link-warning.h
   lib/alloca.c
-  lib/alloca_.h
+  lib/alloca.in.h
   lib/basename.c
   lib/config.charset
   lib/dirname.c
@@ -154,7 +158,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/exitfail.c
   lib/exitfail.h
   lib/fnmatch.c
-  lib/fnmatch_.h
+  lib/fnmatch.in.h
   lib/fnmatch_loop.c
   lib/fsusage.c
   lib/fsusage.h
@@ -163,12 +167,13 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/full-write.c
   lib/full-write.h
   lib/getopt.c
+  lib/getopt.in.h
   lib/getopt1.c
-  lib/getopt_.h
   lib/getopt_int.h
   lib/gettext.h
   lib/idcache.c
   lib/idcache.h
+  lib/intprops.h
   lib/localcharset.c
   lib/localcharset.h
   lib/malloc.c
@@ -191,26 +196,26 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/safe-read.h
   lib/safe-write.c
   lib/safe-write.h
-  lib/stdbool_.h
-  lib/stdint_.h
-  lib/stdlib_.h
+  lib/stdbool.in.h
+  lib/stdint.in.h
+  lib/stdlib.in.h
   lib/strcasecmp.c
   lib/streq.h
   lib/strerror.c
-  lib/string_.h
+  lib/string.in.h
   lib/stripslash.c
   lib/strncasecmp.c
   lib/strndup.c
   lib/strnlen.c
   lib/strnlen1.c
   lib/strnlen1.h
-  lib/unistd_.h
+  lib/unistd.in.h
   lib/unitypes.h
   lib/uniwidth.h
   lib/uniwidth/cjk.h
   lib/uniwidth/width.c
-  lib/wchar_.h
-  lib/wctype_.h
+  lib/wchar.in.h
+  lib/wctype.in.h
   lib/wcwidth.c
   lib/xalloc-die.c
   lib/xalloc.h

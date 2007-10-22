@@ -60,14 +60,14 @@ BUILT_SOURCES += $(ALLOCA_H)
 
 # We need the following in order to create <alloca.h> when the system
 # doesn't have one that works with the given compiler.
-alloca.h: alloca_.h
+alloca.h: alloca.in.h
 	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
-	  cat $(srcdir)/alloca_.h; \
+	  cat $(srcdir)/alloca.in.h; \
 	} > $@-t
 	mv -f $@-t $@
 MOSTLYCLEANFILES += alloca.h alloca.h-t
 
-EXTRA_DIST += alloca_.h
+EXTRA_DIST += alloca.in.h
 
 ## end   gnulib module alloca-opt
 
@@ -160,14 +160,14 @@ BUILT_SOURCES += $(FNMATCH_H)
 
 # We need the following in order to create <fnmatch.h> when the system
 # doesn't have one that supports the required API.
-fnmatch.h: fnmatch_.h
+fnmatch.h: fnmatch.in.h
 	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
-	  cat $(srcdir)/fnmatch_.h; \
+	  cat $(srcdir)/fnmatch.in.h; \
 	} > $@-t
 	mv -f $@-t $@
 MOSTLYCLEANFILES += fnmatch.h fnmatch.h-t
 
-EXTRA_DIST += fnmatch.c fnmatch_.h fnmatch_loop.c
+EXTRA_DIST += fnmatch.c fnmatch.in.h fnmatch_loop.c
 
 EXTRA_libgnu_a_SOURCES += fnmatch.c fnmatch_loop.c
 
@@ -200,14 +200,14 @@ BUILT_SOURCES += $(GETOPT_H)
 
 # We need the following in order to create <getopt.h> when the system
 # doesn't have one that works with the given compiler.
-getopt.h: getopt_.h
+getopt.h: getopt.in.h
 	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
-	  cat $(srcdir)/getopt_.h; \
+	  cat $(srcdir)/getopt.in.h; \
 	} > $@-t
 	mv -f $@-t $@
 MOSTLYCLEANFILES += getopt.h getopt.h-t
 
-EXTRA_DIST += getopt.c getopt1.c getopt_.h getopt_int.h
+EXTRA_DIST += getopt.c getopt.in.h getopt1.c getopt_int.h
 
 EXTRA_libgnu_a_SOURCES += getopt.c getopt1.c
 
@@ -227,6 +227,13 @@ EXTRA_DIST += idcache.c idcache.h
 EXTRA_libgnu_a_SOURCES += idcache.c
 
 ## end   gnulib module idcache
+
+## begin gnulib module intprops
+
+
+EXTRA_DIST += intprops.h
+
+## end   gnulib module intprops
 
 ## begin gnulib module link-warning
 
@@ -406,15 +413,15 @@ BUILT_SOURCES += $(STDBOOL_H)
 
 # We need the following in order to create <stdbool.h> when the system
 # doesn't have one that works.
-stdbool.h: stdbool_.h
+stdbool.h: stdbool.in.h
 	rm -f $@-t $@
 	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
-	  sed -e 's/@''HAVE__BOOL''@/$(HAVE__BOOL)/g' < $(srcdir)/stdbool_.h; \
+	  sed -e 's/@''HAVE__BOOL''@/$(HAVE__BOOL)/g' < $(srcdir)/stdbool.in.h; \
 	} > $@-t
 	mv $@-t $@
 MOSTLYCLEANFILES += stdbool.h stdbool.h-t
 
-EXTRA_DIST += stdbool_.h
+EXTRA_DIST += stdbool.in.h
 
 ## end   gnulib module stdbool
 
@@ -424,7 +431,7 @@ BUILT_SOURCES += $(STDINT_H)
 
 # We need the following in order to create <stdint.h> when the system
 # doesn't have one that works with the given compiler.
-stdint.h: stdint_.h
+stdint.h: stdint.in.h
 	rm -f $@-t $@
 	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
 	  sed -e 's/@''HAVE_STDINT_H''@/$(HAVE_STDINT_H)/g' \
@@ -449,12 +456,12 @@ stdint.h: stdint_.h
 	      -e 's/@''BITSIZEOF_WINT_T''@/$(BITSIZEOF_WINT_T)/g' \
 	      -e 's/@''HAVE_SIGNED_WINT_T''@/$(HAVE_SIGNED_WINT_T)/g' \
 	      -e 's/@''WINT_T_SUFFIX''@/$(WINT_T_SUFFIX)/g' \
-	      < $(srcdir)/stdint_.h; \
+	      < $(srcdir)/stdint.in.h; \
 	} > $@-t
 	mv $@-t $@
 MOSTLYCLEANFILES += stdint.h stdint.h-t
 
-EXTRA_DIST += stdint_.h
+EXTRA_DIST += stdint.in.h
 
 ## end   gnulib module stdint
 
@@ -464,7 +471,7 @@ BUILT_SOURCES += stdlib.h
 
 # We need the following in order to create <stdlib.h> when the system
 # doesn't have one that works with the given compiler.
-stdlib.h: stdlib_.h
+stdlib.h: stdlib.in.h
 	rm -f $@-t $@
 	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
 	  sed -e 's/@''INCLUDE_NEXT''@/$(INCLUDE_NEXT)/g' \
@@ -482,12 +489,12 @@ stdlib.h: stdlib_.h
 	      -e 's|@''HAVE_REALLOC_POSIX''@|$(HAVE_REALLOC_POSIX)|g' \
 	      -e 's|@''REPLACE_MKSTEMP''@|$(REPLACE_MKSTEMP)|g' \
 	      -e '/definition of GL_LINK_WARNING/r $(LINK_WARNING_H)' \
-	      < $(srcdir)/stdlib_.h; \
+	      < $(srcdir)/stdlib.in.h; \
 	} > $@-t
 	mv $@-t $@
 MOSTLYCLEANFILES += stdlib.h stdlib.h-t
 
-EXTRA_DIST += stdlib_.h
+EXTRA_DIST += stdlib.in.h
 
 ## end   gnulib module stdlib
 
@@ -522,7 +529,7 @@ BUILT_SOURCES += string.h
 
 # We need the following in order to create <string.h> when the system
 # doesn't have one that works with the given compiler.
-string.h: string_.h
+string.h: string.in.h
 	rm -f $@-t $@
 	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */' && \
 	  sed -e 's/@''INCLUDE_NEXT''@/$(INCLUDE_NEXT)/g' \
@@ -574,12 +581,12 @@ string.h: string_.h
 	      -e 's|@''HAVE_DECL_STRERROR''@|$(HAVE_DECL_STRERROR)|g' \
 	      -e 's|@''REPLACE_STRERROR''@|$(REPLACE_STRERROR)|g' \
 	      -e '/definition of GL_LINK_WARNING/r $(LINK_WARNING_H)' \
-	      < $(srcdir)/string_.h; \
+	      < $(srcdir)/string.in.h; \
 	} > $@-t
 	mv $@-t $@
 MOSTLYCLEANFILES += string.h string.h-t
 
-EXTRA_DIST += string_.h
+EXTRA_DIST += string.in.h
 
 ## end   gnulib module string
 
@@ -613,7 +620,7 @@ BUILT_SOURCES += unistd.h
 
 # We need the following in order to create an empty placeholder for
 # <unistd.h> when the system doesn't have one.
-unistd.h: unistd_.h
+unistd.h: unistd.in.h
 	rm -f $@-t $@
 	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
 	  sed -e 's|@''HAVE_UNISTD_H''@|$(HAVE_UNISTD_H)|g' \
@@ -639,12 +646,12 @@ unistd.h: unistd_.h
 	      -e 's|@''REPLACE_GETCWD''@|$(REPLACE_GETCWD)|g' \
 	      -e 's|@''REPLACE_LCHOWN''@|$(REPLACE_LCHOWN)|g' \
 	      -e 's|@''REPLACE_LSEEK''@|$(REPLACE_LSEEK)|g' \
-	      < $(srcdir)/unistd_.h; \
+	      < $(srcdir)/unistd.in.h; \
 	} > $@-t
 	mv $@-t $@
 MOSTLYCLEANFILES += unistd.h unistd.h-t
 
-EXTRA_DIST += unistd_.h
+EXTRA_DIST += unistd.in.h
 
 ## end   gnulib module unistd
 
@@ -676,7 +683,7 @@ BUILT_SOURCES += $(WCHAR_H)
 
 # We need the following in order to create <wchar.h> when the system
 # version does not work standalone.
-wchar.h: wchar_.h
+wchar.h: wchar.in.h
 	rm -f $@-t $@
 	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
 	  sed -e 's/@''INCLUDE_NEXT''@/$(INCLUDE_NEXT)/g' \
@@ -686,12 +693,12 @@ wchar.h: wchar_.h
 	      -e 's|@''HAVE_DECL_WCWIDTH''@|$(HAVE_DECL_WCWIDTH)|g' \
 	      -e 's|@''REPLACE_WCWIDTH''@|$(REPLACE_WCWIDTH)|g' \
 	      -e '/definition of GL_LINK_WARNING/r $(LINK_WARNING_H)' \
-	    < $(srcdir)/wchar_.h; \
+	    < $(srcdir)/wchar.in.h; \
 	} > $@-t
 	mv $@-t $@
 MOSTLYCLEANFILES += wchar.h wchar.h-t
 
-EXTRA_DIST += wchar_.h
+EXTRA_DIST += wchar.in.h
 
 ## end   gnulib module wchar
 
@@ -701,7 +708,7 @@ BUILT_SOURCES += $(WCTYPE_H)
 
 # We need the following in order to create <wctype.h> when the system
 # doesn't have one that works with the given compiler.
-wctype.h: wctype_.h
+wctype.h: wctype.in.h
 	rm -f $@-t $@
 	{ echo '/* DO NOT EDIT! GENERATED AUTOMATICALLY! */'; \
 	  sed -e 's/@''HAVE_WCTYPE_H''@/$(HAVE_WCTYPE_H)/g' \
@@ -709,12 +716,12 @@ wctype.h: wctype_.h
 	      -e 's|@''NEXT_WCTYPE_H''@|$(NEXT_WCTYPE_H)|g' \
 	      -e 's/@''HAVE_ISWCNTRL''@/$(HAVE_ISWCNTRL)/g' \
 	      -e 's/@''HAVE_WINT_T''@/$(HAVE_WINT_T)/g' \
-	      < $(srcdir)/wctype_.h; \
+	      < $(srcdir)/wctype.in.h; \
 	} > $@-t
 	mv $@-t $@
 MOSTLYCLEANFILES += wctype.h wctype.h-t
 
-EXTRA_DIST += wctype_.h
+EXTRA_DIST += wctype.in.h
 
 ## end   gnulib module wctype
 
