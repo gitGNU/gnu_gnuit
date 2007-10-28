@@ -35,7 +35,7 @@ endif
 dist-hook: html
 
 install-data-hook:
-	$(INSTALL_PROGRAM) -m 644 $(srcdir)/dpkg-help.txt $(DESTDIR)/$(datadir)/gnuit/dpkg-help.txt
+	$(INSTALL_PROGRAM) -m 644 $(srcdir)/dpkg-help.txt $(DESTDIR)$(datadir)/gnuit/dpkg-help.txt
 	for i in $(GIT_GREPS);\
 	do\
 	    rm -f $(DESTDIR)$(mandir)/man1/$${i}.1;\
@@ -50,7 +50,7 @@ install-data-hook:
 
 
 uninstall-local:
-	rm -f $(DESTDIR)/$(datadir)/gnuit/dpkg-help.txt
+	rm -f $(DESTDIR)$(datadir)/gnuit/dpkg-help.txt
 	-rmdir $(DESTDIR)$(htmldir)
 	for i in $(GIT_GREPS);\
 	do\
