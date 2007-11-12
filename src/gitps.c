@@ -563,12 +563,21 @@ kill_process(process_index)
     int i;
     char *p;
     char pidstr[128];
+    int pidnum;
 
     assert(process_index < processes);
     p = ps_vect[process_index];
     assert(p);
 
-    for (i = 0; i < PID_index; i++)
+    i=0;
+#ifdef __CYGWIN32__
+    /* skip possible leading status char on cygwin ps */
+    if((!isspace((int)*p)) && (!isdigit((int)*p)))
+    {
+	p++; i++
+    }
+#endif
+    for (; i < PID_index; i++)
     {
 	while (isspace((int)*p))
 	    p++;
@@ -586,8 +595,11 @@ kill_process(process_index)
 	pidstr[i++] = *p++;
 
     pidstr[i] = 0;
-
-    return !kill(atoi(pidstr), sigdesc[signal_type].signal);
+    pidnum=atoi(pidstr);
+    if(pidnum)
+	return !kill(atoi(pidstr), sigdesc[signal_type].signal);
+    else
+	return -1;
 }
 
 
