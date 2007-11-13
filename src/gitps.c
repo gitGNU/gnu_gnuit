@@ -569,15 +569,14 @@ kill_process(process_index)
     p = ps_vect[process_index];
     assert(p);
 
-    i=0;
 #ifdef __CYGWIN32__
     /* skip possible leading status char on cygwin ps */
     if((!isspace((int)*p)) && (!isdigit((int)*p)))
     {
-	p++; i++
+	p++
     }
 #endif
-    for (; i < PID_index; i++)
+    for (i=0; i < PID_index; i++)
     {
 	while (isspace((int)*p))
 	    p++;
