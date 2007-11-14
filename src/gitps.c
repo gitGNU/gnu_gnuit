@@ -572,9 +572,7 @@ kill_process(process_index)
 #ifdef __CYGWIN32__
     /* skip possible leading status char on cygwin ps */
     if((!isspace((int)*p)) && (!isdigit((int)*p)))
-    {
-	p++
-    }
+	p++;
 #endif
     for (i=0; i < PID_index; i++)
     {
