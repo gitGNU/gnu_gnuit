@@ -140,6 +140,11 @@ ULTRIX) you might want to set AnsiColors to ON in the appropriate
 configuration file (gnuitrc.xterm).  If your terminal emulator does not
 support ANSI color sequences, it is best to set AnsiColors to OFF.
 
+** When using gnuit under cygwin, you should set the CYGWIN
+environment variable to "tty". This should be done before running
+cygwin, either in the batch file you use to start cygwin or on
+boot. Emacs has a similar issue, a web search for "emacs cygwin tty"
+should provide further explanation.
 
 Good luck!
 Tudor & Andi
