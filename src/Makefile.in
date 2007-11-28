@@ -414,6 +414,12 @@ gitview_LDADD = -L../lib -lgnu $(LIBINTL)
 gitwhich_LDADD = -L../lib -lgnu $(LIBINTL)
 AM_CPPFLAGS = -I$(srcdir)/.. -I.. -I$(top_srcdir)/lib \
 	-I$(top_srcdir)/src $(am__append_1)
+@DEBIAN_TRUE@gitfm_LDFLAGS = "-Wl,-z,defs -Wl,--as-needed"
+@DEBIAN_TRUE@gitps_LDFLAGS = "-Wl,-z,defs -Wl,--as-needed"
+@DEBIAN_TRUE@gitview_LDFLAGS = "-Wl,-z,defs -Wl,--as-needed"
+@DEBIAN_TRUE@gitwipe_LDFLAGS = "-Wl,-z,defs -Wl,--as-needed"
+@DEBIAN_TRUE@gitkeys_LDFLAGS = "-Wl,-z,defs -Wl,--as-needed"
+@DEBIAN_TRUE@gitwhich_LDFLAGS = "-Wl,-z,defs -Wl,--as-needed"
 all: all-am
 
 .SUFFIXES:

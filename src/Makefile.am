@@ -31,8 +31,15 @@ gitview_LDADD = -L../lib -lgnu $(LIBINTL)
 gitwhich_LDADD = -L../lib -lgnu $(LIBINTL)
 
 AM_CPPFLAGS = -I$(srcdir)/.. -I.. -I$(top_srcdir)/lib -I$(top_srcdir)/src
+
 if DEBIAN
 AM_CPPFLAGS += -DDEBIAN
+gitfm_LDFLAGS    = "-Wl,-z,defs -Wl,--as-needed"
+gitps_LDFLAGS    = "-Wl,-z,defs -Wl,--as-needed"
+gitview_LDFLAGS  = "-Wl,-z,defs -Wl,--as-needed"
+gitwipe_LDFLAGS  = "-Wl,-z,defs -Wl,--as-needed"
+gitkeys_LDFLAGS  = "-Wl,-z,defs -Wl,--as-needed"
+gitwhich_LDFLAGS = "-Wl,-z,defs -Wl,--as-needed"
 endif
 
 install-exec-hook:

@@ -1,4 +1,5 @@
-This is gnuit.info, produced by makeinfo version 4.8 from gnuit.texinfo.
+This is gnuit.info, produced by makeinfo version 4.11 from
+gnuit.texinfo.
 
 INFO-DIR-SECTION Utilities
 START-INFO-DIR-ENTRY
@@ -2201,10 +2202,10 @@ defaults are changed as follows:
      	GIT_PAGER='sensible-pager'
      	GIT_BROWSER='sensible-browser'
 
-   If SHELL is defined, GIT_SHELL will be set to that value.  If EDITOR
-is defined, GIT_EDITOR will be set to that value.  If you want to
-change the default settings, put something like this into your
-`.profile':
+   If SHELL is defined, GIT_SHELL will be set to that value.  If PAGER
+is defined, GIT_PAGER will be set to that value.  If EDITOR is defined,
+GIT_EDITOR will be set to that value.  If you want to change the
+default settings, put something like this into your `.profile':
 
      	export GIT_SHELL='/usr/local/bin/bash'
      	export GIT_EDITOR='emacs'
@@ -4332,134 +4333,134 @@ Concept Index
 
 
 Tag Table:
-Node: Top792
-Node: Introduction1740
-Node: Distrib3064
-Node: Description4752
-Node: gitfm5603
-Node: Conventions8127
-Node: Command line10020
-Node: Modes11079
-Node: Sorting13362
-Node: Moving14651
-Node: Selecting16259
-Node: Isearch17664
-Node: Input Line18789
-Node: Inserting Text19892
-Node: Moving Point20804
-Node: Erasing21401
-Node: Case Changes22679
-Node: History23115
-Node: Setting Mark23851
-Node: Yanking24186
-Node: Selecting Files24460
-Node: Files25377
-Node: Copying Files27106
-Node: Moving Files27474
-Node: Creating Files27863
-Node: Deleting Files28222
-Node: Linking Files28568
-Node: Renaming Files29223
-Node: Splitting Files29812
-Node: Packing Files30316
-Node: Inode31657
-Node: Editing Files33335
-Node: Viewing Files34067
-Node: Compressing Files34454
-Node: Encoding Files35855
-Node: Encrypting Files36798
-Node: Comparing Files37091
-Node: Spell Checking Files37758
-Node: Printing Files38016
-Node: Wiping Files38481
-Node: Searching Files38817
-Node: Archive Files39360
-Node: DEB Packages41192
-Node: RPM Packages44160
-Node: File Types45544
-Node: MSDOS Files45763
-Node: Actions47861
-Node: Directories48791
-Node: Creating Dirs49556
-Node: Copying Dirs49833
-Node: Deleting Dirs50315
-Node: Moving Dirs50754
-Node: Renaming Dirs51233
-Node: Comparing Dirs51676
-Node: Dirs Usage52910
-Node: Changing Dirs53186
-Node: Dirs History53864
-Node: Hot Keys54937
-Node: Compiling55566
-Node: Mail55967
-Node: Shell57123
-Node: Grep57412
-Node: Locking57840
-Node: Refreshing58238
-Node: Resetting58975
-Node: Mounting59229
-Node: Sysinfo62330
-Node: Environment63598
-Node: Processes64007
-Node: Sync66103
-Node: Documentation66356
-Node: Exit66852
-Node: gitps67072
-Node: gitview68594
-Node: gitkeys69448
-Node: gitwipe69837
-Node: gitmount70566
-Node: gitaction71330
-Node: gitunpack73220
-Node: gitrgrep73632
-Node: Customization74115
-Node: Environment Variables74418
-Node: Configuration Files75681
-Node: Key Sequences78772
-Node: Setup80105
-Node: gitfm Sections81060
-Node: GITFM-Setup81514
-Node: GITFM-Color83649
-Node: GITFM-Monochrome84020
-Node: GITFM-Keys84425
-Node: key-sequence85330
-Node: command-name85969
-Node: formatted-command86714
-Node: %s88040
-Node: %f88567
-Node: %d88812
-Node: %l89059
-Node: %t89312
-Node: %z89547
-Node: %a89778
-Node: %m89993
-Node: %g90197
-Node: %o90402
-Node: %p90607
-Node: %b90812
-Node: %i91027
-Node: %?91252
-Node: new-dir91744
-Node: save-screen92170
-Node: pause92870
-Node: hide93205
-Node: GITFM-FTI94085
-Node: gitps Sections94667
-Node: GITPS-Setup95061
-Node: GITPS-Color95301
-Node: GITPS-Monochrome95669
-Node: GITPS-Keys96074
-Node: gitview Sections96204
-Node: GITVIEW-Setup96587
-Node: GITVIEW-Color96837
-Node: GITVIEW-Monochrome97219
-Node: GITVIEW-Keys97638
-Node: Limitations97774
-Node: Bugs99184
-Node: Copying This Manual99472
-Node: Key Index121847
-Node: Command Index141613
-Node: Variable Index160737
-Node: Concept Index162795
+Node: Top793
+Node: Introduction1741
+Node: Distrib3065
+Node: Description4753
+Node: gitfm5604
+Node: Conventions8128
+Node: Command line10021
+Node: Modes11080
+Node: Sorting13363
+Node: Moving14652
+Node: Selecting16260
+Node: Isearch17665
+Node: Input Line18790
+Node: Inserting Text19893
+Node: Moving Point20805
+Node: Erasing21402
+Node: Case Changes22680
+Node: History23116
+Node: Setting Mark23852
+Node: Yanking24187
+Node: Selecting Files24461
+Node: Files25378
+Node: Copying Files27107
+Node: Moving Files27475
+Node: Creating Files27864
+Node: Deleting Files28223
+Node: Linking Files28569
+Node: Renaming Files29224
+Node: Splitting Files29813
+Node: Packing Files30317
+Node: Inode31658
+Node: Editing Files33336
+Node: Viewing Files34068
+Node: Compressing Files34455
+Node: Encoding Files35856
+Node: Encrypting Files36799
+Node: Comparing Files37092
+Node: Spell Checking Files37759
+Node: Printing Files38017
+Node: Wiping Files38482
+Node: Searching Files38818
+Node: Archive Files39361
+Node: DEB Packages41193
+Node: RPM Packages44161
+Node: File Types45545
+Node: MSDOS Files45764
+Node: Actions47862
+Node: Directories48792
+Node: Creating Dirs49557
+Node: Copying Dirs49834
+Node: Deleting Dirs50316
+Node: Moving Dirs50755
+Node: Renaming Dirs51234
+Node: Comparing Dirs51677
+Node: Dirs Usage52911
+Node: Changing Dirs53187
+Node: Dirs History53865
+Node: Hot Keys54938
+Node: Compiling55567
+Node: Mail55968
+Node: Shell57124
+Node: Grep57413
+Node: Locking57841
+Node: Refreshing58239
+Node: Resetting58976
+Node: Mounting59230
+Node: Sysinfo62331
+Node: Environment63599
+Node: Processes64008
+Node: Sync66104
+Node: Documentation66357
+Node: Exit66853
+Node: gitps67073
+Node: gitview68595
+Node: gitkeys69449
+Node: gitwipe69838
+Node: gitmount70567
+Node: gitaction71331
+Node: gitunpack73221
+Node: gitrgrep73633
+Node: Customization74116
+Node: Environment Variables74419
+Node: Configuration Files75741
+Node: Key Sequences78832
+Node: Setup80165
+Node: gitfm Sections81120
+Node: GITFM-Setup81574
+Node: GITFM-Color83709
+Node: GITFM-Monochrome84080
+Node: GITFM-Keys84485
+Node: key-sequence85390
+Node: command-name86029
+Node: formatted-command86774
+Node: %s88100
+Node: %f88627
+Node: %d88872
+Node: %l89119
+Node: %t89372
+Node: %z89607
+Node: %a89838
+Node: %m90053
+Node: %g90257
+Node: %o90462
+Node: %p90667
+Node: %b90872
+Node: %i91087
+Node: %?91312
+Node: new-dir91804
+Node: save-screen92230
+Node: pause92930
+Node: hide93265
+Node: GITFM-FTI94145
+Node: gitps Sections94727
+Node: GITPS-Setup95121
+Node: GITPS-Color95361
+Node: GITPS-Monochrome95729
+Node: GITPS-Keys96134
+Node: gitview Sections96264
+Node: GITVIEW-Setup96647
+Node: GITVIEW-Color96897
+Node: GITVIEW-Monochrome97279
+Node: GITVIEW-Keys97698
+Node: Limitations97834
+Node: Bugs99244
+Node: Copying This Manual99532
+Node: Key Index121907
+Node: Command Index141673
+Node: Variable Index160797
+Node: Concept Index162855
 
 End Tag Table

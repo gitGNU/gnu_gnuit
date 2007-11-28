@@ -1,6 +1,10 @@
 2007-11-28  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
 
 	* git.c: Fallback to PAGER if GIT_PAGER is not set.
+	* src/Makefile.am:Set *_LDFLAGS to "-Wl,-z,defs -Wl,--as-needed"
+	  if --enable-debian is set. I gather this is not yet portable
+	  enough for general use. While I could test for it in
+	  configure, it is hard to test it works *and* is bug free.
 
 2007-11-15  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
 
