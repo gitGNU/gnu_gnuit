@@ -1034,6 +1034,8 @@ case "$2" in
 		bunzip2 -c "$file" | nroff -man | "$GIT_PAGER";		\
 		echo "$msg"; read key;;
 
+*.[iI][nN][fF][oO].[Bb][Zz]2 |\
+*.[iI][nN][fF][oO].[Gg][Zz]  |\
 *.[iI][nN][fF][oO])
 		info --file "$file";;
 

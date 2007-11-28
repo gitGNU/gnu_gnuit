@@ -4,10 +4,11 @@
 	* improve mail checking:
 	  + title.c: read and parse $MAIL, then reset access time.
 	  + import utime from gnulib.
-	* src/Makefile.am:Set *_LDFLAGS to "-Wl,-z,defs -Wl,--as-needed"
-	  if --enable-debian is set. I gather this is not yet portable
-	  enough for general use. While I could test for it in
+	* src/Makefile.am: if --enable-debian is set. set *_LDFLAGS
+	  to "-Wl,-z,defs -Wl,--as-needed". I gather this is not yet
+	  portable enough for general use. While I could test for it in
 	  configure, it is hard to test it works *and* is bug free.
+	* gitaction: run info on *.info.{gz,bz2}.
 
 2007-11-15  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
 
