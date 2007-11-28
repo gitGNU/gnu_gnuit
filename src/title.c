@@ -34,11 +34,18 @@
 
 #include <sys/types.h>
 
+#if HAVE_UTIME_H
+#include <utime.h>
+#else /* !HAVE_UTIME_H */
+#include <sys/utime.h>
+#endif /* !HAVE_UTIME_H */
+
 #ifdef HAVE_STDDEF_H
 #include <stddef.h>
 #endif
 
 #include <assert.h>
+#include <ctype.h>
 
 #include "window.h"
 #include "xmalloc.h"
@@ -219,36 +226,66 @@ clock_refresh(signum)
 static int
 mail_check()
 {
-    time_t new_mtime;
-    time_t new_atime;
-    off64_t new_size;
     char *old_mail=mail_string;
-
     mail_string=mail_have_none;
+    int total=0;
+    int read=0;
+    int inheaders=0;
+    int gotstatus=0;
+    FILE *mbox;
+#define TMPBUFSIZE 2048
+    char line[TMPBUFSIZE];
+    struct stat s;
+    struct utimbuf utbuf;
 
-    if(mail_file)
+    if(!mail_file)
+	return 0;
+    if(xstat(mail_file,&s) == -1)
+	return 0;
+    utbuf.actime=s.st_atime;
+    utbuf.modtime=s.st_mtime;
+
+    mbox=fopen(mail_file,"r");
+    if(!mbox)
+	return 0;
+
+    while(fgets(line,TMPBUFSIZE,mbox))
     {
-	struct stat s;
-	if(xstat(mail_file,&s) != -1)
+	if(strcmp(line,"")==0)
+	    inheaders=0;
+	else if(strncmp(line,"From ",strlen("From ")) == 0)
 	{
-	    new_size=s.st_size;
-	    new_mtime=s.st_mtime;
-	    new_atime=s.st_atime;
-
-	    /* If mtime changed and atime < mtime then (Mail) */
-	    if((new_mtime != mail_mtime) &&
-	       (new_atime <= new_mtime))
+	    inheaders=1;
+	    gotstatus=0;
+	    total++;
+	}
+	else if(inheaders && !gotstatus &&
+		(strncmp(line,"Status:",strlen("Status:"))==0))
+	{
+	    char *status=strchr(line,':');
+	    status++;
+	    while(*status && isspace(*status))
+		status++;
+	    if(*status)
 	    {
-		/* if file size increased then (New Mail) */
-		if(new_size > mail_size)
-		{
-		    mail_string=mail_have_new;
-		}
-		else
-		{
-		    mail_string=mail_have_mail;
-		}
+		gotstatus=1;
+		if(strchr(status,'R'))
+		    read++;
 	    }
+	}
+    }
+    fclose(mbox);
+    utime(mail_file,&utbuf);
+
+    if(total)
+    {
+	if(total-read)
+	{
+	    mail_string=mail_have_new;
+	}
+	else
+	{
+	    mail_string=mail_have_mail;
 	}
     }
     info_length=calc_info_length();

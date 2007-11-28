@@ -1854,6 +1854,7 @@ gl_header_list="$gl_header_list stdlib.h"
 gl_header_list="$gl_header_list string.h"
 gl_header_list="$gl_header_list time.h"
 gl_header_list="$gl_header_list unistd.h"
+gl_header_list="$gl_header_list utime.h"
 gl_func_list="$gl_func_list iswcntrl"
 gl_func_list="$gl_func_list wcwidth"
 # Check that the precious variables saved in the cache have kept the same
@@ -9789,6 +9790,173 @@ echo "${ECHO_T}$gl_cv_next_time_h" >&6; }
 
 
 
+
+
+
+
+
+
+  :
+
+
+
+
+
+{ echo "$as_me:$LINENO: checking whether utime accepts a null argument" >&5
+echo $ECHO_N "checking whether utime accepts a null argument... $ECHO_C" >&6; }
+if test "${ac_cv_func_utime_null+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  rm -f conftest.data; >conftest.data
+# Sequent interprets utime(file, 0) to mean use start of epoch.  Wrong.
+if test "$cross_compiling" = yes; then
+  ac_cv_func_utime_null=no
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+$ac_includes_default
+	       #ifdef HAVE_UTIME_H
+	       # include <utime.h>
+	       #endif
+int
+main ()
+{
+struct stat s, t;
+  return ! (stat ("conftest.data", &s) == 0
+	    && utime ("conftest.data", 0) == 0
+	    && stat ("conftest.data", &t) == 0
+	    && t.st_mtime >= s.st_mtime
+	    && t.st_mtime - s.st_mtime < 120);
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_link") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+  { (case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_try") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_func_utime_null=yes
+else
+  echo "$as_me: program exited with status $ac_status" >&5
+echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+( exit $ac_status )
+ac_cv_func_utime_null=no
+fi
+rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
+fi
+
+
+fi
+{ echo "$as_me:$LINENO: result: $ac_cv_func_utime_null" >&5
+echo "${ECHO_T}$ac_cv_func_utime_null" >&6; }
+if test $ac_cv_func_utime_null = yes; then
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_UTIME_NULL 1
+_ACEOF
+
+fi
+rm -f conftest.data
+
+
+
+  :
+
+
+
+
+
+
+
+
+  { echo "$as_me:$LINENO: checking for struct utimbuf" >&5
+echo $ECHO_N "checking for struct utimbuf... $ECHO_C" >&6; }
+if test "${gl_cv_sys_struct_utimbuf+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#if HAVE_SYS_TIME_H
+	     #include <sys/time.h>
+	    #endif
+	    #include <time.h>
+	    #ifdef HAVE_UTIME_H
+	     #include <utime.h>
+	    #endif
+
+int
+main ()
+{
+static struct utimbuf x; x.actime = x.modtime;
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  gl_cv_sys_struct_utimbuf=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	gl_cv_sys_struct_utimbuf=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+{ echo "$as_me:$LINENO: result: $gl_cv_sys_struct_utimbuf" >&5
+echo "${ECHO_T}$gl_cv_sys_struct_utimbuf" >&6; }
+
+  if test $gl_cv_sys_struct_utimbuf = yes; then
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_STRUCT_UTIMBUF 1
+_ACEOF
+
+  fi
+
+
   GNULIB_WCWIDTH=0;
     HAVE_DECL_WCWIDTH=1;
   REPLACE_WCWIDTH=0;
@@ -15232,6 +15400,113 @@ echo "${ECHO_T}$gl_cv_next_unistd_h" >&6; }
     HAVE_UNISTD_H=0
   fi
 
+
+
+
+  if test $ac_cv_func_utime_null = no; then
+
+
+
+
+
+
+
+  gl_LIBOBJS="$gl_LIBOBJS utime.$ac_objext"
+
+
+cat >>confdefs.h <<\_ACEOF
+#define utime rpl_utime
+_ACEOF
+
+
+
+  :
+
+
+
+
+
+
+  { echo "$as_me:$LINENO: checking whether utimes accepts a null argument" >&5
+echo $ECHO_N "checking whether utimes accepts a null argument... $ECHO_C" >&6; }
+if test "${ac_cv_func_utimes_null+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  rm -f conftest.data; > conftest.data
+if test "$cross_compiling" = yes; then
+  ac_cv_func_utimes_null=no
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+/* In case stat has been defined to rpl_stat, undef it here.  */
+#undef stat
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/time.h>
+int
+main () {
+struct stat s, t;
+return ! (stat ("conftest.data", &s) == 0
+	  && utimes ("conftest.data", 0) == 0
+	  && stat ("conftest.data", &t) == 0
+	  && t.st_mtime >= s.st_mtime
+	  && t.st_mtime - s.st_mtime < 120));
+}
+_ACEOF
+rm -f conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_link") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+  { (case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_try") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_func_utimes_null=yes
+else
+  echo "$as_me: program exited with status $ac_status" >&5
+echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+( exit $ac_status )
+ac_cv_func_utimes_null=no
+fi
+rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
+fi
+
+
+rm -f core core.* *.core
+fi
+{ echo "$as_me:$LINENO: result: $ac_cv_func_utimes_null" >&5
+echo "${ECHO_T}$ac_cv_func_utimes_null" >&6; }
+
+    if test $ac_cv_func_utimes_null = yes; then
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_UTIMES_NULL 1
+_ACEOF
+
+    fi
+
+
+
+  fi
 
 
 

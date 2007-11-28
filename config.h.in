@@ -306,6 +306,10 @@
 /* Define to 1 if you have the `strstr' function. */
 #undef HAVE_STRSTR
 
+/* Define if struct utimbuf is declared -- usually in <utime.h>. Some systems
+   have utime.h but don't declare the struct anywhere. */
+#undef HAVE_STRUCT_UTIMBUF
+
 /* Define if you have System V compatible terminal interface. */
 #undef HAVE_SYSTEMV_TTY
 
@@ -379,6 +383,15 @@
 
 /* Define to 1 if the system has the type `unsigned long long int'. */
 #undef HAVE_UNSIGNED_LONG_LONG_INT
+
+/* Define if utimes accepts a null argument */
+#undef HAVE_UTIMES_NULL
+
+/* Define to 1 if you have the <utime.h> header file. */
+#undef HAVE_UTIME_H
+
+/* Define to 1 if `utime(file, NULL)' sets file's timestamp to the present. */
+#undef HAVE_UTIME_NULL
 
 /* Define if you have the utsname system call. */
 #undef HAVE_UTSNAME
@@ -632,6 +645,9 @@
 
 /* Define to `int' if <sys/types.h> doesn't define. */
 #undef uid_t
+
+/* Define to rpl_utime if the replacement function should be used. */
+#undef utime
 
 
 /* Define to get the Unix 64bit I/O API (Linux/glibc only).  */

@@ -94,6 +94,7 @@ AC_DEFUN([gl_INIT],
   gl_HEADER_TIME_H
   gl_TIMESPEC
   gl_UNISTD_H
+  gl_FUNC_UTIME
   gl_WCHAR_H
   gl_WCTYPE_H
   gl_FUNC_WCWIDTH
@@ -228,6 +229,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/uniwidth.h
   lib/uniwidth/cjk.h
   lib/uniwidth/width.c
+  lib/utime.c
   lib/wchar.in.h
   lib/wctype.in.h
   lib/wcwidth.c
@@ -291,6 +293,10 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/timespec.m4
   m4/ulonglong.m4
   m4/unistd_h.m4
+  m4/utimbuf.m4
+  m4/utime.m4
+  m4/utimes-null.m4
+  m4/utimes.m4
   m4/wchar.m4
   m4/wchar_t.m4
   m4/wctype.m4

@@ -1,6 +1,9 @@
 2007-11-28  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
 
 	* git.c: Fallback to PAGER if GIT_PAGER is not set.
+	* improve mail checking:
+	  + title.c: read and parse $MAIL, then reset access time.
+	  + import utime from gnulib.
 	* src/Makefile.am:Set *_LDFLAGS to "-Wl,-z,defs -Wl,--as-needed"
 	  if --enable-debian is set. I gather this is not yet portable
 	  enough for general use. While I could test for it in

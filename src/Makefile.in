@@ -70,10 +70,12 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/alloca.m4 \
 	$(top_srcdir)/m4/strnlen.m4 $(top_srcdir)/m4/sys_time_h.m4 \
 	$(top_srcdir)/m4/time_h.m4 $(top_srcdir)/m4/timespec.m4 \
 	$(top_srcdir)/m4/ulonglong.m4 $(top_srcdir)/m4/unistd_h.m4 \
-	$(top_srcdir)/m4/wchar.m4 $(top_srcdir)/m4/wchar_t.m4 \
-	$(top_srcdir)/m4/wctype.m4 $(top_srcdir)/m4/wcwidth.m4 \
-	$(top_srcdir)/m4/wint_t.m4 $(top_srcdir)/m4/xalloc.m4 \
-	$(top_srcdir)/m4/xstrndup.m4 $(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/utimbuf.m4 $(top_srcdir)/m4/utime.m4 \
+	$(top_srcdir)/m4/utimes-null.m4 $(top_srcdir)/m4/wchar.m4 \
+	$(top_srcdir)/m4/wchar_t.m4 $(top_srcdir)/m4/wctype.m4 \
+	$(top_srcdir)/m4/wcwidth.m4 $(top_srcdir)/m4/wint_t.m4 \
+	$(top_srcdir)/m4/xalloc.m4 $(top_srcdir)/m4/xstrndup.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -99,7 +101,8 @@ am_gitps_OBJECTS = gitps.$(OBJEXT) tty.$(OBJEXT) window.$(OBJEXT) \
 	misc.$(OBJEXT) configure.$(OBJEXT) signals.$(OBJEXT) \
 	xio.$(OBJEXT) xmalloc.$(OBJEXT)
 gitps_OBJECTS = $(am_gitps_OBJECTS)
-gitps_DEPENDENCIES = $(am__DEPENDENCIES_1)
+gitps_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1)
 am_gitview_OBJECTS = gitview.$(OBJEXT) tty.$(OBJEXT) window.$(OBJEXT) \
 	misc.$(OBJEXT) configure.$(OBJEXT) signals.$(OBJEXT) \
 	xio.$(OBJEXT) xmalloc.$(OBJEXT)
@@ -409,17 +412,17 @@ gitwipe_SOURCES = gitwipe.c
 gitkeys_SOURCES = gitkeys.c
 gitwhich_SOURCES = gitwhich.c xmalloc.c xmalloc.h
 gitfm_LDADD = -L../lib -lgnu $(LIB_CLOCK_GETTIME) $(LIB_NANOSLEEP) $(LIBINTL)
-gitps_LDADD = -L../lib -lgnu $(LIBINTL)
+gitps_LDADD = -L../lib -lgnu $(LIB_CLOCK_GETTIME) $(LIB_NANOSLEEP) $(LIBINTL)
 gitview_LDADD = -L../lib -lgnu $(LIBINTL)
 gitwhich_LDADD = -L../lib -lgnu $(LIBINTL)
 AM_CPPFLAGS = -I$(srcdir)/.. -I.. -I$(top_srcdir)/lib \
 	-I$(top_srcdir)/src $(am__append_1)
-@DEBIAN_TRUE@gitfm_LDFLAGS = "-Wl,-z,defs -Wl,--as-needed"
-@DEBIAN_TRUE@gitps_LDFLAGS = "-Wl,-z,defs -Wl,--as-needed"
-@DEBIAN_TRUE@gitview_LDFLAGS = "-Wl,-z,defs -Wl,--as-needed"
-@DEBIAN_TRUE@gitwipe_LDFLAGS = "-Wl,-z,defs -Wl,--as-needed"
-@DEBIAN_TRUE@gitkeys_LDFLAGS = "-Wl,-z,defs -Wl,--as-needed"
-@DEBIAN_TRUE@gitwhich_LDFLAGS = "-Wl,-z,defs -Wl,--as-needed"
+@DEBIAN_TRUE@gitfm_LDFLAGS = -Wl,-z,defs -Wl,--as-needed
+@DEBIAN_TRUE@gitps_LDFLAGS = -Wl,-z,defs -Wl,--as-needed
+@DEBIAN_TRUE@gitview_LDFLAGS = -Wl,-z,defs -Wl,--as-needed
+@DEBIAN_TRUE@gitwipe_LDFLAGS = -Wl,-z,defs -Wl,--as-needed
+@DEBIAN_TRUE@gitkeys_LDFLAGS = -Wl,-z,defs -Wl,--as-needed
+@DEBIAN_TRUE@gitwhich_LDFLAGS = -Wl,-z,defs -Wl,--as-needed
 all: all-am
 
 .SUFFIXES:
