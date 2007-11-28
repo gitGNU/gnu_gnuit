@@ -53,3 +53,4 @@ lib/stdlib.h
 lib/string.h
 lib/unistd.h
 lib/uniwidth/.dirstamp
+lib/time.h

@@ -3892,6 +3892,7 @@ the defaults are changed as follows:
 @end display
 
 If @var{SHELL} is defined, @var{GIT_SHELL} will be set to that value.
+If @var{PAGER} is defined, @var{GIT_PAGER} will be set to that value.
 If @var{EDITOR} is defined, @var{GIT_EDITOR} will be set to that value.
 If you want to change the default settings, put something like this into
 your @file{.profile}:

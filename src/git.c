@@ -78,7 +78,7 @@ char *copyright =
 "GIT is free software; you can redistribute it and/or modify it under the\n\
 terms of the GNU General Public License as published by the Free Software\n\
 Foundation; either version 2, or (at your option) any later version.\n\
-Copyright (C) 1993-2000 Free Software Foundation, Inc.\n\
+Copyright (C) 1993-2001, 2007 Free Software Foundation, Inc.\n\
 Written by Tudor Hulubei and Andrei Pitis, Bucharest, Romania\n\n";
 
 
@@ -1915,11 +1915,11 @@ main(argc, argv)
 
 #ifdef DEBIAN
     add_to_environment("GIT_EDITOR",  "EDITOR",     "sensible-editor");
-    add_to_environment("GIT_PAGER",   (char *)NULL, "sensible-pager");
+    add_to_environment("GIT_PAGER",   "PAGER",      "sensible-pager");
     add_to_environment("GIT_BROWSER", (char *)NULL, "sensible-browser");
 #else /* DEBIAN */
     add_to_environment("GIT_EDITOR",  "EDITOR",     "vi");
-    add_to_environment("GIT_PAGER",   (char *)NULL, "more");
+    add_to_environment("GIT_PAGER",   "PAGER",      "more");
     add_to_environment("GIT_BROWSER", (char *)NULL, "lynx");
 #endif /* DEBIAN */
     add_to_environment("GIT_SHELL",   "SHELL",      "/bin/sh");
