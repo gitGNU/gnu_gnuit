@@ -2903,7 +2903,7 @@ File: gnuit.info,  Node: Bugs,  Next: Copying This Manual,  Prev: Limitations,  
 ****************************
 
 Any questions, comments, or bug reports, should be emailed to `Ian
-Beckwith <ianbnessie.mcc.ac.uk>'.  Please include the version number.
+Beckwith <ianb@erislabs.net>'.  Please include the version number.
 
 
 File: gnuit.info,  Node: Copying This Manual,  Prev: Bugs,  Up: Top
@@ -4457,10 +4457,10 @@ Node: GITVIEW-Monochrome97279
 Node: GITVIEW-Keys97698
 Node: Limitations97834
 Node: Bugs99244
-Node: Copying This Manual99532
-Node: Key Index121907
-Node: Command Index141673
-Node: Variable Index160797
-Node: Concept Index162855
+Node: Copying This Manual99529
+Node: Key Index121904
+Node: Command Index141670
+Node: Variable Index160794
+Node: Concept Index162852
 
 End Tag Table

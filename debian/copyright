@@ -8,13 +8,13 @@ sources obtained from
 
 <URL:ftp://ftp.gnu.org/pub/gnu/git/git-4.3.20.tar.gz>
 
-and is now maintained by Ian Beckwith <ianb@nessie.mcc.ac.uk>.
+and is now maintained by Ian Beckwith <ianb@erislabs.net>.
 
 The newest release is available from:
 
-<URL:http://nessie.mcc.ac.uk/~ianb/projects/git/git-4.9.2.tar.gz>
+<URL:http://ftp.gnu.org/pub/gnuit/gnuit-4.9.2.tar.gz>
 
-Copyright (C) 1993-2001, 2006-2007 Free Software Foundation, Inc.
+Copyright (C) 1993-2001, 2006-2008 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by

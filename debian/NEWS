@@ -9,7 +9,7 @@ gnuit (4.9.2-1) unstable; urgency=low
     If ~/.gnuitrc.TERM doesn't exist, ~/.gitrc.TERM will be tried
     as a fallback.
 
- -- Ian Beckwith <ianb@nessie.mcc.ac.uk>  Sun, 21 Oct 2007 00:43:29 +0100
+ -- Ian Beckwith <ianb@erislabs.net>  Thu, 03 Jan 2008 01:49:31 +0000
 
 git (4.3.20-11) unstable; urgency=low
 

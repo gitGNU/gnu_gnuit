@@ -3,7 +3,7 @@
 # Sample debian/rules that uses debhelper.
 # GNU copyright 1997 to 1999 by Joey Hess.
 
-# customised for git by Ian Beckwith <ianb@nessie.mcc.ac.uk>
+# customised for gnuit by Ian Beckwith <ianb@erislabs.net>
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1

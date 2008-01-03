@@ -4574,7 +4574,7 @@ There is no support for appearance modes on magic-cookie terminals.
 @chapter GNU Interactive Tools bugs
 
 Any questions, comments, or bug reports, should be emailed to
-@samp{Ian Beckwith <ianbnessie.mcc.ac.uk>}.  Please include the
+@samp{Ian Beckwith <ianb@@erislabs.net>}.  Please include the
 version number.
 
 @node Copying This Manual, , Bugs, Top

@@ -4,9 +4,9 @@ Version: @VERSION@
 Release: 1
 Copyright: GNU
 Group: Applications/File
-Source: http://nessie.mcc.ac.uk/~ianb/projects/git/gnuit-%{version}.tar.gz
-URL: http://nessie.mcc.ac.uk/~ianb/projects/git/
-Packager: Ian Beckwith <ianb@nessie.mcc.ac.uk>
+Source: ftp://ftp.gnu.org/pub/gnuit/gnuit-%{version}.tar.gz
+URL: http://erislabs.net/ianb/projects/gnuit/
+Packager: Ian Beckwith <ianb@erislabs.net>
 BuildRoot: /var/tmp/git-root
 Prereq: /sbin/install-info
 

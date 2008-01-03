@@ -15,7 +15,7 @@
 ### The major change is in the file system types list.
 ###
 ### If you enhance this script, please send me a patch at
-### ianb@nessie.mcc.ac.uk  and I'll include it in the next release.
+### ianb@erislabs.net  and I'll include it in the next release.
 ###
 
 exit_code=0
