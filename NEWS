@@ -58,6 +58,8 @@
 ** gitps: added RefreshAfterKill variable (Default: ON), to autorefresh after
    signalling a process.
 
+** gitps: add horizontal scroll (ESC-g & ESC-J).
+
 ** Documentation fixes.
 
 

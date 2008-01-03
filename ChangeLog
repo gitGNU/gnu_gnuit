@@ -1,3 +1,7 @@
+2008-01-03  Ian Beckwith  <ianb@erislabs.net>
+
+	* gitps.c: add horizontal scroll (ESC-g & ESC-J).
+
 2007-11-28  Ian Beckwith  <ianb@nessie.mcc.ac.uk>
 
 	* git.c: Fallback to PAGER if GIT_PAGER is not set.

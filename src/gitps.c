@@ -156,6 +156,7 @@ char **ps_vect;
 char *screen;
 char *global_buf;
 int first_on_screen, current_process, scroll_step;
+static int horizontal_offset=0;
 window_t *title_window, *header_window, *processes_window, *status_window;
 static char *title_text;
 static char *help;
@@ -262,7 +263,7 @@ static xsignal_t sigdesc[] =
 };
 
 
-#define BUILTIN_OPERATIONS              47
+#define BUILTIN_OPERATIONS              49
 
 
 #define BUILTIN_previous_line            0
@@ -312,9 +313,10 @@ static xsignal_t sigdesc[] =
 #define BUILTIN_exit                    44
 #define BUILTIN_hard_refresh            45
 #define BUILTIN_SIGSTKFLT               46
+#define BUILTIN_horizontal_scroll_left  47
+#define BUILTIN_horizontal_scroll_right 48
 
-
-#define MAX_BUILTIN_NAME                20
+#define MAX_BUILTIN_NAME                30
 
 char built_in[BUILTIN_OPERATIONS][MAX_BUILTIN_NAME] =
 {
@@ -365,6 +367,8 @@ char built_in[BUILTIN_OPERATIONS][MAX_BUILTIN_NAME] =
     "exit",
     "hard-refresh",
     "SIGSTKFLT",
+    "horizontal-scroll-left",
+    "horizontal-scroll-right",
 };
 
 
@@ -623,12 +627,19 @@ update_process(process, update_color)
 {
     assert(process < processes);
 
+    int ps_length,visible_length,offset;
+    ps_length=(int)strlen(ps_vect[process]);
+    visible_length=(tty_columns-2);
+    if(visible_length >= ps_length)
+	offset=0;
+    else
+	offset=min(horizontal_offset, (ps_length-visible_length));
     memset(global_buf, ' ', tty_columns);
-    memcpy(global_buf + 2, ps_vect[process],
-	   min(tty_columns - 2, (int)strlen(ps_vect[process])));
+    memcpy(global_buf + 2, (ps_vect[process]+offset),
+	   min(visible_length,strlen(ps_vect[process]+offset)));
     global_buf[0] = (process == current_process) ? '>' : ' ';
     global_buf[1] = ' ';
-    
+
     if (update_color)
     {
 	tty_brightness(ScreenBrightness);
@@ -1302,6 +1313,18 @@ main(argc, argv)
 		    update_process(current_process, ON);
 		}
 
+		break;
+
+	    case BUILTIN_horizontal_scroll_left:
+		horizontal_offset--;
+		if(horizontal_offset < 0)
+		    horizontal_offset=0;
+		update_all();
+		break;
+
+	    case BUILTIN_horizontal_scroll_right:
+		horizontal_offset++;
+		update_all();
 		break;
 
 	    case BUILTIN_beginning_of_list:
