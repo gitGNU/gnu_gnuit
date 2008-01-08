@@ -10,15 +10,10 @@
 
 ** Renamed package to gnuit.
 
-** Changed code license to GPL version 3 (see COPYING).
-   and documentation license to GFDL 1.2 with no invariant
-   sections.
-
 ** Renamed git file manager binary to gitfm.
-   Config file sections now start with "[GITFM-", but
-   "[GIT-" is still accepted. A transitional script to warn
-   users is installed unless configured otherwise with
-   ./configure --disable-transition.
+   A transitional script to warn users is installed unless configured
+   otherwise with ./configure --disable-transition.  Config file
+   sections now start with "[GITFM-", but "[GIT-" is still accepted.
 
 ** Dropped leading dots from system copies of gitrc files,
    and renamed them to gnuitrc.*
@@ -26,7 +21,11 @@
    ~/.gitrc.TERM will be tried as a fallback if ~/.gnuitrc.TERM
    doesn't exist.
 
-** Added 64bit I/O support.
+** Changed code license to GPL version 3 (see COPYING).
+   and documentation license to GFDL 1.2 with no Invariant
+   Sections, no Front-Cover Texts and no Back-Cover Texts.
+
+** Added 64bit I/O support from Tudor Hulubei.
 
 ** New terminals: rxvt-unicode, linux-m, cygwin, Eterm.
 
@@ -42,25 +41,25 @@
 
 ** gitps: added numbers as key bindings for signal selection.
 
-** Fixed a scrolling inconsistency in gitview.
+** Fixed a scrolling inconsistency in gitview (Tudor Hulubei).
 
 ** Fixed a segmentation fault related to directory names containing
-   printf-like sequences.
+   printf-like sequences (Tudor Hulubei).
 
 ** Fixed a segmentation fault in gitps when killed process left you
    off the end of the list.
 
-** Moved the info and documentation files in /usr/share.
+** Moved the info and documentation files in /usr/share (Tudor Hulubei).
 
 ** Fixed a problem with gitps (refresh was resetting the signal type
-   to SIGTERM).
+   to SIGTERM) (Tudor Hulubei).
 
 ** gitps: added RefreshAfterKill variable (Default: ON), to autorefresh after
    signalling a process.
 
 ** gitps: add horizontal scroll (ESC-g & ESC-J).
 
-** Documentation fixes.
+** Documentation fixes (Some from Tudor Hulubei).
 
 
 * Version 4.3.20

@@ -8,7 +8,7 @@
 
 @set EDITION 2.9.2
 @set VERSION 4.9.2
-@set UPDATED June 2001
+@set UPDATED January 2008
 
 @iftex
 @finalout
@@ -28,7 +28,7 @@ GNUIT: A set of interactive tools, by Tudor Hulubei and Andrei Pitis.
 
 This file documents the GNU Interactive Tools package.
 
-Copyright (C) 1993-1998, 2006-2007 Free Software Foundation, Inc.
+Copyright (C) 1993-1998, 2006-2008 Free Software Foundation, Inc.
 
 @quotation
 Permission is granted to copy, distribute and/or modify this document
@@ -2897,7 +2897,7 @@ a good idea and @code{gitfm} has a set of builtin commands for doing it.
 Usually new directories are added to the directory history when the
 @samp{change-directory} built-in command is used.  @code{gitfm} also adds
 the current directory to the history list when started, when the
-directory history is reseted and when a command having a non empty
+directory history is reset and when a command having a non empty
 @samp{new-dir} field successfully completes its execution.
 @xref{new-dir}, for more information.
 
@@ -4164,7 +4164,7 @@ machine type and the current date) using escape characters:
 
 
 @node GITFM-Color, GITFM-Monochrome, GITFM-Setup, gitfm Sections
-@subsubsection Using gitfm on colors displays
+@subsubsection Using gitfm on color displays
 
 In this sections the variables have only one field.
 
@@ -4243,8 +4243,8 @@ letters.
 @node formatted-command, new-dir, command-name, GITFM-Keys
 @subsubsection The formatted-command field
 
-- @samp{formatted-command} is a shell command which can contain some
-scanf like format specifiers.  They are used to get the current entry
+@samp{formatted-command} is a shell command which can contain some
+scanf(3)-like format specifiers.  They are used to get the current entry
 name, owner, group, mode, etc.
 
 Note that using uppercase @samp{format specifiers} you will be able to
@@ -4401,9 +4401,9 @@ under @code{Linux} on a virtual console.  Its default value is 'y'.
 @node pause, hide, save-screen, GITFM-Keys
 @subsubsection The pause field
 
-Users may wish to read some commands's results before repainting the
-panels.  If this field is present gitfm will wait for a key to be pressed
-before restoring the panels.  Its default value is 'n'.
+Users may wish to read the result of some commands before repainting the
+panels.  If this field is present gitfm will wait for a key to be
+pressed before restoring the panels.  Its default value is 'n'.
 
 
 @node hide, , pause, GITFM-Keys
