@@ -204,7 +204,7 @@ configuration_warning(configfile)
 	    "%s: and modify it in order to overwrite the default one.\n",
 	    g_program);
     fprintf(stderr,
-	    "%s: Add a dot at the start of the file, e.g. ~/.gnuitrc.xterm.\n",
+	    "%s: Add a dot at the start of the file, e.g. '~/.gnuitrc.xterm'.\n",
 	    g_program);
     fprintf(stderr,
 	    "%s: Try modifying 'gnuitrc.generic'...\n\n",
