@@ -3,14 +3,17 @@ gnuit (4.9.2-1) unstable; urgency=low
   * New upstream version.
   * Package name changed to gnuit.
   * Added transitional git package.
-  * Removed unneeded postinst and prerm.
-  * Updated NEWS.Debian with user-visible changes.
-  * No longer install obsolete subdir ChangeLogs.
+  * Set DM-Upload-Allowed: yes.
   * Update debian/copyright, gnuit is now GPL-3+, with info docs under
     GFDL-1.2+, with no Invariant Sections, no Front-Cover Texts and 
     no Back-Cover Texts.
+  * Removed unneeded postinst and prerm.
+  * Updated NEWS.Debian with user-visible changes.
+  * No longer install obsolete subdir ChangeLogs.
+  * Update maintainer email address.
+  * Standards-Version: 3.7.3 (no changes).
 
- -- Ian Beckwith <ianb@erislabs.net>  Thu, 03 Jan 2008 03:31:56 +0000
+ -- Ian Beckwith <ianb@erislabs.net>  Thu, 10 Jan 2008 06:46:03 +0000
 
 git (4.3.20-12) unstable; urgency=low
 

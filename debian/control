@@ -4,7 +4,8 @@ Priority: optional
 Maintainer: Ian Beckwith <ianb@erislabs.net>
 Uploaders: MJ Ray (Debian) <mjr@debian.org>
 Build-Depends: libncurses-dev, libreadline5-dev, texinfo, debhelper (>= 5), autotools-dev
-Standards-Version: 3.7.2
+Standards-Version: 3.7.3
+XS-DM-Upload-Allowed: yes
 
 Package: gnuit
 Architecture: any
