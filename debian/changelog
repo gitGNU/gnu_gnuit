@@ -13,8 +13,9 @@ gnuit (4.9.2-1) unstable; urgency=low
   * Update maintainer email address.
   * Standards-Version: 3.7.3 (no changes).
   * Bump debhelper compat level to 6.
+  * Tweak long description.
 
- -- Ian Beckwith <ianb@erislabs.net>  Thu, 10 Jan 2008 07:33:43 +0000
+ -- Ian Beckwith <ianb@erislabs.net>  Thu, 10 Jan 2008 07:51:30 +0000
 
 git (4.3.20-12) unstable; urgency=low
 
