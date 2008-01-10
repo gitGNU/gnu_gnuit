@@ -2,7 +2,7 @@
 
 set -e
 
-if [ -n "$2" ] && dpkg --compare-versions "$2" lt "4.3.20-11"
+if update-alternatives --list git | fgrep /usr/bin/git.transition >/dev/null
 then
     update-alternatives --auto git
     update-alternatives --remove git /usr/bin/git.transition

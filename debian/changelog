@@ -4,10 +4,12 @@ gnuit (4.9.2-1) unstable; urgency=low
   * Package name changed to gnuit.
   * Added transitional git package.
   * Set DM-Upload-Allowed: yes.
-  * Update debian/copyright, gnuit is now GPL-3+, with info docs under
+  * Updated debian/copyright, gnuit is now GPL-3+, with info docs under
     GFDL-1.2+, with no Invariant Sections, no Front-Cover Texts and 
     no Back-Cover Texts.
   * Removed unneeded postinst and prerm.
+  * preinst: when removing alternatives, check for presence of git
+    alternative instead of going by version number.
   * Updated NEWS.Debian with user-visible changes.
   * No longer install obsolete subdir ChangeLogs.
   * Update maintainer email address.
@@ -15,7 +17,7 @@ gnuit (4.9.2-1) unstable; urgency=low
   * Bump debhelper compat level to 6.
   * Tweak long description.
 
- -- Ian Beckwith <ianb@erislabs.net>  Thu, 10 Jan 2008 07:51:30 +0000
+ -- Ian Beckwith <ianb@erislabs.net>  Thu, 10 Jan 2008 22:04:26 +0000
 
 git (4.3.20-12) unstable; urgency=low
 
