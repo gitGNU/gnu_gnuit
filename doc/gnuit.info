@@ -10,7 +10,7 @@ END-INFO-DIR-ENTRY
 
    This file documents the GNU Interactive Tools package.
 
-   Copyright (C) 1993-1998, 2006-2007 Free Software Foundation, Inc.
+   Copyright (C) 1993-1998, 2006-2008 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -1587,8 +1587,8 @@ a good idea and `gitfm' has a set of builtin commands for doing it.
    Usually new directories are added to the directory history when the
 `change-directory' built-in command is used.  `gitfm' also adds the
 current directory to the history list when started, when the directory
-history is reseted and when a command having a non empty `new-dir'
-field successfully completes its execution.  *Note new-dir::, for more
+history is reset and when a command having a non empty `new-dir' field
+successfully completes its execution.  *Note new-dir::, for more
 information.
 
 `^X ^N'
@@ -2431,8 +2431,8 @@ machine type and the current date) using escape characters:
 
 File: gnuit.info,  Node: GITFM-Color,  Next: GITFM-Monochrome,  Prev: GITFM-Setup,  Up: gitfm Sections
 
-4.2.3.2 Using gitfm on colors displays
-......................................
+4.2.3.2 Using gitfm on color displays
+.....................................
 
 In this sections the variables have only one field.
 
@@ -2518,9 +2518,9 @@ File: gnuit.info,  Node: formatted-command,  Next: new-dir,  Prev: command-name,
 4.2.3.7 The formatted-command field
 ...................................
 
-- `formatted-command' is a shell command which can contain some scanf
-like format specifiers.  They are used to get the current entry name,
-owner, group, mode, etc.
+`formatted-command' is a shell command which can contain some
+scanf(3)-like format specifiers.  They are used to get the current entry
+name, owner, group, mode, etc.
 
    Note that using uppercase `format specifiers' you will be able to
 access the other panel path, file and directory names, etc.
@@ -2709,7 +2709,7 @@ File: gnuit.info,  Node: pause,  Next: hide,  Prev: save-screen,  Up: GITFM-Keys
 4.2.3.24 The pause field
 ........................
 
-Users may wish to read some commands's results before repainting the
+Users may wish to read the result of some commands before repainting the
 panels.  If this field is present gitfm will wait for a key to be
 pressed before restoring the panels.  Its default value is 'n'.
 
@@ -4390,77 +4390,77 @@ Node: Comparing Dirs51677
 Node: Dirs Usage52911
 Node: Changing Dirs53187
 Node: Dirs History53865
-Node: Hot Keys54938
-Node: Compiling55567
-Node: Mail55968
-Node: Shell57124
-Node: Grep57413
-Node: Locking57841
-Node: Refreshing58239
-Node: Resetting58976
-Node: Mounting59230
-Node: Sysinfo62331
-Node: Environment63599
-Node: Processes64008
-Node: Sync66104
-Node: Documentation66357
-Node: Exit66853
-Node: gitps67073
-Node: gitview68595
-Node: gitkeys69449
-Node: gitwipe69838
-Node: gitmount70567
-Node: gitaction71331
-Node: gitunpack73221
-Node: gitrgrep73633
-Node: Customization74116
-Node: Environment Variables74419
-Node: Configuration Files75741
-Node: Key Sequences78832
-Node: Setup80165
-Node: gitfm Sections81120
-Node: GITFM-Setup81574
-Node: GITFM-Color83709
-Node: GITFM-Monochrome84080
-Node: GITFM-Keys84485
-Node: key-sequence85390
-Node: command-name86029
-Node: formatted-command86774
-Node: %s88100
-Node: %f88627
-Node: %d88872
-Node: %l89119
-Node: %t89372
-Node: %z89607
-Node: %a89838
-Node: %m90053
-Node: %g90257
-Node: %o90462
-Node: %p90667
-Node: %b90872
-Node: %i91087
-Node: %?91312
-Node: new-dir91804
-Node: save-screen92230
-Node: pause92930
-Node: hide93265
-Node: GITFM-FTI94145
-Node: gitps Sections94727
-Node: GITPS-Setup95121
-Node: GITPS-Color95361
-Node: GITPS-Monochrome95729
-Node: GITPS-Keys96134
-Node: gitview Sections96264
-Node: GITVIEW-Setup96647
-Node: GITVIEW-Color96897
-Node: GITVIEW-Monochrome97279
-Node: GITVIEW-Keys97698
-Node: Limitations97834
-Node: Bugs99244
-Node: Copying This Manual99529
-Node: Key Index121904
-Node: Command Index141670
-Node: Variable Index160794
-Node: Concept Index162852
+Node: Hot Keys54936
+Node: Compiling55565
+Node: Mail55966
+Node: Shell57122
+Node: Grep57411
+Node: Locking57839
+Node: Refreshing58237
+Node: Resetting58974
+Node: Mounting59228
+Node: Sysinfo62329
+Node: Environment63597
+Node: Processes64006
+Node: Sync66102
+Node: Documentation66355
+Node: Exit66851
+Node: gitps67071
+Node: gitview68593
+Node: gitkeys69447
+Node: gitwipe69836
+Node: gitmount70565
+Node: gitaction71329
+Node: gitunpack73219
+Node: gitrgrep73631
+Node: Customization74114
+Node: Environment Variables74417
+Node: Configuration Files75739
+Node: Key Sequences78830
+Node: Setup80163
+Node: gitfm Sections81118
+Node: GITFM-Setup81572
+Node: GITFM-Color83707
+Node: GITFM-Monochrome84076
+Node: GITFM-Keys84481
+Node: key-sequence85386
+Node: command-name86025
+Node: formatted-command86770
+Node: %s88097
+Node: %f88624
+Node: %d88869
+Node: %l89116
+Node: %t89369
+Node: %z89604
+Node: %a89835
+Node: %m90050
+Node: %g90254
+Node: %o90459
+Node: %p90664
+Node: %b90869
+Node: %i91084
+Node: %?91309
+Node: new-dir91801
+Node: save-screen92227
+Node: pause92927
+Node: hide93266
+Node: GITFM-FTI94146
+Node: gitps Sections94728
+Node: GITPS-Setup95122
+Node: GITPS-Color95362
+Node: GITPS-Monochrome95730
+Node: GITPS-Keys96135
+Node: gitview Sections96265
+Node: GITVIEW-Setup96648
+Node: GITVIEW-Color96898
+Node: GITVIEW-Monochrome97280
+Node: GITVIEW-Keys97699
+Node: Limitations97835
+Node: Bugs99245
+Node: Copying This Manual99530
+Node: Key Index121905
+Node: Command Index141671
+Node: Variable Index160795
+Node: Concept Index162853
 
 End Tag Table
