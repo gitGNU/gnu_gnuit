@@ -1,3 +1,7 @@
+2008-01-20  Ian Beckwith  <ianb@erislabs.net>
+
+	* panel.c: don't pad past end of string.
+
 2008-01-03  Ian Beckwith  <ianb@erislabs.net>
 
 	* gitps.c: add horizontal scroll (ESC-g & ESC-J).
