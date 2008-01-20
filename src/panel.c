@@ -1684,7 +1684,8 @@ panel_update_info(this)
     }
 
     memcpy(this->temp, str, len = strlen(str));
-    memset(this->temp + len, ' ', this->columns - 2 - len);
+    if( (len+2) < this->columns)
+	memset(this->temp + len, ' ', this->columns - 2 - len);
     toprintable(this->temp, len);
     tty_background(PanelFrame);
     window_goto(this->window, this->lines - 1, 2);
