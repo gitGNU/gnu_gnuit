@@ -99,6 +99,8 @@ extern int errno;
 
 #include <assert.h>
 
+#include <human.h>
+
 #include "stdc.h"
 #include "xstring.h"
 #include "xmalloc.h"
@@ -1396,27 +1398,26 @@ panel_update_path(this)
 /*
  * Returns the beautified form of `number' in `buf'.  That is, number is
  * returned in this form, for the sake of redability: 8,881,152.  `buf' is
- * assumed to be 14 characters long.  `number' is  assumed to be < 1E11.
+ * assumed to be LONGEST_HUMAN_READABLE characters long.
+ * By default, if number > 9999, it is abbreviated to eg 8.8K
+ * this can be modified with inflags.
  */
-static void
-panel_beautify_number(buf, number)
+static char *
+panel_beautify_number(buf, number, inflags)
     char *buf;
     off64_t number;
+    int inflags;
 {
-    int i;
+    int flags = ( inflags | human_ceiling | human_group_digits | human_suppress_point_zero );
+    uintmax_t ibs=1;
+    uintmax_t obs=1024;
 
-#ifdef HAVE_64BIT_IO
-    sprintf(buf, "%14Lu", (unsigned long long)number);
-#else /* !HAVE_64BIT_IO */
-    sprintf(buf, "%14lu", (unsigned long)number);
-#endif /* !HAVE_64BIT_IO */
-
-    for (i = 10; i > 0; i -= 4)
-	if (isdigit((int)buf[i]))
-	{
-	    memmove(buf, buf + 1, i);
-	    buf[i] = ',';
-	}
+    if (number > 9999)
+    {
+	flags |= (human_autoscale | human_SI);
+	obs=1;
+    }
+    return human_readable(number, buf, flags, ibs, obs);
 }
 
 
@@ -1424,8 +1425,8 @@ void
 panel_update_size(this)
     panel_t *this;
 {
-    int offset;
-    char sz[32];
+    char buf[LONGEST_HUMAN_READABLE];
+    char *sz;
     tty_status_t status;
     struct fs_usage fsu;
     int viewable = this->columns - (1 + 1 + 1 + 1);
@@ -1442,16 +1443,14 @@ panel_update_size(this)
 	get_fs_usage(this->path, NULL, &fsu) < 0 ||
 	fsu.fsu_blocks == (uintmax_t) -1)
     {
-	offset = 0;
-	memset(sz, ' ', sizeof(sz));
-
+	memset(buf, ' ', sizeof(buf));
+	sz=buf;
 	tty_brightness(OFF);
 	tty_foreground(PanelFrame);
     }
     else
     {
 	off64_t n;
-	char c = 'K';
 	off64_t free_blocks =
             (geteuid() == 0) ? fsu.fsu_bfree : fsu.fsu_bavail;
 
@@ -1460,25 +1459,9 @@ panel_update_size(this)
 	if (free_blocks < 0)
 	    free_blocks = 0;
 
-	n = free_blocks * (fsu.fsu_blocksize / 1024);
+	n = free_blocks * fsu.fsu_blocksize;
 
-	if (viewable < 14)
-	{
-	    n >>= 10;
-	    c = 'M';
-	}
-
-	if (viewable < 10)
-	{
-	    n >>= 10;
-	    c = 'G';
-	}
-
-	panel_beautify_number(sz, n);
-
-	sz[14] = c;
-
-	offset = (viewable >= 14) ? 0 : 14 - viewable;
+	sz=panel_beautify_number(buf, n, 0);
 
 	tty_brightness(PanelDeviceFreeSpaceBrightness);
 	tty_foreground(PanelDeviceFreeSpace);
@@ -1486,8 +1469,8 @@ panel_update_size(this)
 
     tty_background(PanelFrame);
 
-    window_goto(this->window, 0, this->columns - 2 - min(14, viewable));
-    window_puts(this->window, sz + 1 + offset, min(14, viewable));
+    window_goto(this->window, 0, this->columns - 2 - min(strlen(sz), viewable));
+    window_puts(this->window, sz, min(strlen(sz), viewable));
 
     tty_restore(&status);
 }
@@ -1619,36 +1602,21 @@ panel_update_info(this)
     {
 	int entry;
 	int offset;
-	char sz[16];
-	char *unit = "bytes";
+	char *sz;
+	char buf[LONGEST_HUMAN_READABLE+1];
 
 	for (entry = 0; entry < this->entries; entry++)
 	    if (this->dir_entry[entry].selected &&
 		this->dir_entry[entry].type == FILE_ENTRY)
 		total_size += this->dir_entry[entry].size;
 
-#ifdef HAVE_64BIT_IO
-	/* If the number is > 99Tb, print it in Gb.  If it is > 99Gb,
-	   print it in Mb.  */
-	if (total_size > 99999999999999LL)
-	{
-	    total_size /= 1024 * 1024 * 1024;
-	    unit = "Gb";
-	}
-	else if (total_size > 99999999999LL)
-	{
-	    total_size /= 1024 * 1024;
-	    unit = "Mb";
-	}
-#endif /* HAVE_64BIT_IO */
-
-	panel_beautify_number(sz, total_size);
+	sz=panel_beautify_number(buf, total_size, (human_SI|human_autoscale|human_B));
 
 	for (offset = 0; sz[offset] == ' '; offset++)
 	    ;
 
-	sprintf(str, "%s %s in %d file%s",
-		&sz[offset], unit, this->selected_entries,
+	sprintf(str, "%s in %d file%s",
+		&sz[offset], this->selected_entries,
 		(this->selected_entries > 1) ? "s" : "");
 
 	tty_brightness(PanelFilesInfoBrightness);
