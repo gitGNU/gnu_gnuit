@@ -42,6 +42,7 @@ AC_DEFUN([gl_INIT],
   gl_ltlibdeps=
   gl_source_base='lib'
   gl_FUNC_ALLOCA
+  gl_ARGMATCH
   gl_CLOCK_TIME
   gl_DIRNAME
   gl_DOUBLE_SLASH_ROOT
@@ -56,8 +57,10 @@ AC_DEFUN([gl_INIT],
   AC_SUBST([LTLIBINTL])
   gl_GETTIME
   gl_FUNC_GETTIMEOFDAY
+  gl_HUMAN
   gl_IDCACHE
   gl_INLINE
+  gl_INTTYPES_H
   gl_LOCALCHARSET
   gl_FUNC_MALLOC_POSIX
   gl_STDLIB_MODULE_INDICATOR([malloc-posix])
@@ -72,6 +75,8 @@ AC_DEFUN([gl_INIT],
   gl_FUNC_MEMMOVE
   gl_FUNC_NANOSLEEP
   gl_FUNC_PUTENV
+  gl_QUOTE
+  gl_QUOTEARG
   gl_FUNC_READLINK
   gl_UNISTD_MODULE_INDICATOR([readlink])
   gl_FUNC_RENAME
@@ -89,6 +94,14 @@ AC_DEFUN([gl_INIT],
   gl_STRING_MODULE_INDICATOR([strndup])
   gl_FUNC_STRNLEN
   gl_STRING_MODULE_INDICATOR([strnlen])
+  gl_FUNC_STRTOIMAX
+  gl_INTTYPES_MODULE_INDICATOR([strtoimax])
+  gl_FUNC_STRTOL
+  gl_FUNC_STRTOLL
+  gl_FUNC_STRTOUL
+  gl_FUNC_STRTOULL
+  gl_FUNC_STRTOUMAX
+  gl_INTTYPES_MODULE_INDICATOR([strtoumax])
   gl_HEADER_SYS_TIME_H
   AC_PROG_MKDIR_P
   gl_HEADER_TIME_H
@@ -101,6 +114,7 @@ AC_DEFUN([gl_INIT],
   gl_WCHAR_MODULE_INDICATOR([wcwidth])
   gl_XALLOC
   gl_XSTRNDUP
+  gl_XSTRTOL
   LIBGNU_LIBDEPS="$gl_libdeps"
   AC_SUBST([LIBGNU_LIBDEPS])
   LIBGNU_LTLIBDEPS="$gl_ltlibdeps"
@@ -158,6 +172,8 @@ AC_DEFUN([gl_FILE_LIST], [
   build-aux/link-warning.h
   lib/alloca.c
   lib/alloca.in.h
+  lib/argmatch.c
+  lib/argmatch.h
   lib/basename.c
   lib/config.charset
   lib/dirname.c
@@ -182,9 +198,12 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/gettext.h
   lib/gettime.c
   lib/gettimeofday.c
+  lib/human.c
+  lib/human.h
   lib/idcache.c
   lib/idcache.h
   lib/intprops.h
+  lib/inttypes.in.h
   lib/localcharset.c
   lib/localcharset.h
   lib/malloc.c
@@ -200,6 +219,10 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/memmove.c
   lib/nanosleep.c
   lib/putenv.c
+  lib/quote.c
+  lib/quote.h
+  lib/quotearg.c
+  lib/quotearg.h
   lib/readlink.c
   lib/ref-add.sin
   lib/ref-del.sin
@@ -221,6 +244,12 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/strnlen.c
   lib/strnlen1.c
   lib/strnlen1.h
+  lib/strtoimax.c
+  lib/strtol.c
+  lib/strtoll.c
+  lib/strtoul.c
+  lib/strtoull.c
+  lib/strtoumax.c
   lib/sys_time.in.h
   lib/time.in.h
   lib/timespec.h
@@ -230,6 +259,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/uniwidth/cjk.h
   lib/uniwidth/width.c
   lib/utime.c
+  lib/verify.h
   lib/wchar.in.h
   lib/wctype.in.h
   lib/wcwidth.c
@@ -238,8 +268,14 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/xmalloc.c
   lib/xstrndup.c
   lib/xstrndup.h
+  lib/xstrtol-error.c
+  lib/xstrtol.c
+  lib/xstrtol.h
+  lib/xstrtoul.c
+  lib/xstrtoumax.c
   m4/absolute-header.m4
   m4/alloca.m4
+  m4/argmatch.m4
   m4/clock_time.m4
   m4/codeset.m4
   m4/dirname.m4
@@ -257,9 +293,12 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/gettimeofday.m4
   m4/glibc21.m4
   m4/gnulib-common.m4
+  m4/human.m4
   m4/idcache.m4
   m4/include_next.m4
   m4/inline.m4
+  m4/inttypes-pri.m4
+  m4/inttypes.m4
   m4/localcharset.m4
   m4/longlong.m4
   m4/malloc.m4
@@ -275,6 +314,8 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/nanosleep.m4
   m4/onceonly_2_57.m4
   m4/putenv.m4
+  m4/quote.m4
+  m4/quotearg.m4
   m4/readlink.m4
   m4/rename.m4
   m4/safe-read.m4
@@ -288,6 +329,12 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/string_h.m4
   m4/strndup.m4
   m4/strnlen.m4
+  m4/strtoimax.m4
+  m4/strtol.m4
+  m4/strtoll.m4
+  m4/strtoul.m4
+  m4/strtoull.m4
+  m4/strtoumax.m4
   m4/sys_time_h.m4
   m4/time_h.m4
   m4/timespec.m4
@@ -304,4 +351,5 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/wint_t.m4
   m4/xalloc.m4
   m4/xstrndup.m4
+  m4/xstrtol.m4
 ])

@@ -7,7 +7,7 @@ AMFLAGS=
 
 if [ "$1" = "-a" ]
 then
-    ../../gnulib/gnulib/gnulib-tool --import fsusage getopt idcache strcase mbsstr memmove fnmatch fnmatch-gnu rename readlink putenv xalloc nanosleep utime; echo -n .
+    ../../gnulib/gnulib/gnulib-tool --import fsusage getopt human idcache strcase mbsstr memmove fnmatch fnmatch-gnu rename readlink putenv xalloc nanosleep utime; echo -n .
 #    gnulib-tool --update; echo -n .
 #    patch -p0 < lib-Makefile.am.patch ; echo -n .
     AMFLAGS="--add-missing --force-missing --copy"
