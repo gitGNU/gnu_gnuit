@@ -19,6 +19,7 @@ doc/gnuit.html
 lib/Makefile
 lib/alloca.h
 lib/libgnu.a
+lib/inttypes.h
 lib/.deps
 lib/uniwidth/.deps
 src/.deps

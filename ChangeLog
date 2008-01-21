@@ -1,6 +1,7 @@
-2008-01-20  Ian Beckwith  <ianb@erislabs.net>
+2008-01-21  Ian Beckwith  <ianb@erislabs.net>
 
-	* panel.c: don't pad past end of string.
+	* Rewrite panel_beautify_number to use human_readable() from gnulib.
+	* Call panel_beautify_number in more places.
 
 2008-01-03  Ian Beckwith  <ianb@erislabs.net>
 

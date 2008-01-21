@@ -1409,15 +1409,9 @@ panel_beautify_number(buf, number, inflags)
     int inflags;
 {
     int flags = ( inflags | human_ceiling | human_group_digits | human_suppress_point_zero );
-    uintmax_t ibs=1;
-    uintmax_t obs=1024;
-
     if (number > 9999)
-    {
 	flags |= (human_autoscale | human_SI);
-	obs=1;
-    }
-    return human_readable(number, buf, flags, ibs, obs);
+    return human_readable(number, buf, flags, 1, 1);
 }
 
 
@@ -1668,7 +1662,9 @@ panel_build_entry_field(this, entry, display_mode, offset)
     panel_t *this;
     int entry, display_mode, offset;
 {
-    char buf[16], temp_rights[16];
+    char temp_rights[16];
+    char hbuf[LONGEST_HUMAN_READABLE];
+    char *sz;
 
     switch (display_mode)
     {
@@ -1686,34 +1682,17 @@ panel_build_entry_field(this, entry, display_mode, offset)
 
 	case ENABLE_SIZE:
 	{
-#ifdef HAVE_64BIT_IO
-	    /* If the number is > 999Tb, print it in Gb.  If it is > 999Gb,
-	       print it in Mb.  If it is > 999Mb, print it in Kb.  */
-	    char *unit = "";
-	    off64_t size = this->dir_entry[entry].size;
-	    if (size > 999999999999999LL)
+	    char *ptr;
+	    int szlen;
+	    sz=panel_beautify_number(hbuf,this->dir_entry[entry].size,0);
+	    szlen=min(strlen(sz),10);
+	    ptr=this->temp + this->columns - 2 - offset;
+	    if(szlen < 10)
 	    {
-		size /= 1024LL * 1024LL * 1024LL;
-		unit = "G";
+		memset(ptr,' ',10-szlen);
+		ptr += (10-szlen);
 	    }
-	    else if (size > 999999999999LL)
-	    {
-		size /= 1024LL * 1024LL;
-		unit = "M";
-	    }
-	    else if (size > 999999999LL)
-	    {
-		size /= 1024LL;
-		unit = "K";
-	    }
-	    if (unit[0])
-		sprintf(buf, "%9Ld%s", (long long)size, unit);
-	    else
-		sprintf(buf, "%10Ld", (long long)size);
-#else /* !HAVE_64BIT_IO */
-	    sprintf(buf, "%10ld", (long)this->dir_entry[entry].size);
-#endif /* !HAVE_64BIT_IO */
-	    memcpy(this->temp + this->columns - 2 - offset, buf, 10);
+	    memcpy(ptr, sz, szlen);
 	    break;
 	}
 
