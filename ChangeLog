@@ -1,3 +1,7 @@
+2008-01-22  Ian Beckwith  <ianb@erislabs.net>
+
+	* Release gnuit 4.9.2
+
 2008-01-21  Ian Beckwith  <ianb@erislabs.net>
 
 	* Rewrite panel_beautify_number to use human_readable() from gnulib.
