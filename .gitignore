@@ -52,6 +52,7 @@ lib/ref-add.sed
 lib/ref-del.sed
 lib/stdlib.h
 lib/string.h
+lib/strings.h
 lib/unistd.h
 lib/uniwidth/.dirstamp
 lib/time.h

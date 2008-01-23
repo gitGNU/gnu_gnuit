@@ -6,7 +6,7 @@ dnl #####################################################################
 
 dnl Initialize the autoconf & automake stuff.
 AC_REVISION($Revision: 1.7 $)
-AC_INIT(gnuit, 4.9.2, ianb@erislabs.net)
+AC_INIT(gnuit, 4.9.2.1, ianb@erislabs.net)
 AC_CONFIG_SRCDIR([config.h.in])
 AM_INIT_AUTOMAKE
 AC_PROG_MAKE_SET
