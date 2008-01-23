@@ -33,13 +33,13 @@ AC_DEFUN([gl_EARLY],
 # "Check for header files, types and library functions".
 AC_DEFUN([gl_INIT],
 [
-  m4_pushdef([AC_LIBOBJ], m4_defn([gl_LIBOBJ]))
-  m4_pushdef([AC_REPLACE_FUNCS], m4_defn([gl_REPLACE_FUNCS]))
-  m4_pushdef([AC_LIBSOURCES], m4_defn([gl_LIBSOURCES]))
   AM_CONDITIONAL([GL_COND_LIBTOOL], [false])
   gl_cond_libtool=false
   gl_libdeps=
   gl_ltlibdeps=
+  m4_pushdef([AC_LIBOBJ], m4_defn([gl_LIBOBJ]))
+  m4_pushdef([AC_REPLACE_FUNCS], m4_defn([gl_REPLACE_FUNCS]))
+  m4_pushdef([AC_LIBSOURCES], m4_defn([gl_LIBSOURCES]))
   gl_source_base='lib'
   gl_FUNC_ALLOCA
   gl_ARGMATCH
@@ -47,6 +47,9 @@ AC_DEFUN([gl_INIT],
   gl_DIRNAME
   gl_DOUBLE_SLASH_ROOT
   gl_ERROR
+  m4_ifdef([AM_XGETTEXT_OPTION],
+    [AM_XGETTEXT_OPTION([--flag=error:3:c-format])
+     AM_XGETTEXT_OPTION([--flag=error_at_line:5:c-format])])
   gl_EXITFAIL
   AC_C_FLEXIBLE_ARRAY_MEMBER
   # No macro. You should also use one of fnmatch-posix or fnmatch-gnu.
@@ -62,6 +65,8 @@ AC_DEFUN([gl_INIT],
   gl_INLINE
   gl_INTTYPES_H
   gl_LOCALCHARSET
+  LOCALCHARSET_TESTS_ENVIRONMENT="CHARSETALIASDIR=\"\$(top_builddir)/$gl_source_base\""
+  AC_SUBST([LOCALCHARSET_TESTS_ENVIRONMENT])
   gl_FUNC_MALLOC_POSIX
   gl_STDLIB_MODULE_INDICATOR([malloc-posix])
   gl_MALLOCA
@@ -75,6 +80,7 @@ AC_DEFUN([gl_INIT],
   gl_FUNC_MEMMOVE
   gl_FUNC_NANOSLEEP
   gl_FUNC_PUTENV
+  gl_STDLIB_MODULE_INDICATOR([putenv])
   gl_QUOTE
   gl_QUOTEARG
   gl_FUNC_READLINK
@@ -90,6 +96,7 @@ AC_DEFUN([gl_INIT],
   gl_FUNC_STRERROR
   gl_STRING_MODULE_INDICATOR([strerror])
   gl_HEADER_STRING_H
+  gl_HEADER_STRINGS_H
   gl_FUNC_STRNDUP
   gl_STRING_MODULE_INDICATOR([strndup])
   gl_FUNC_STRNLEN
@@ -115,10 +122,6 @@ AC_DEFUN([gl_INIT],
   gl_XALLOC
   gl_XSTRNDUP
   gl_XSTRTOL
-  LIBGNU_LIBDEPS="$gl_libdeps"
-  AC_SUBST([LIBGNU_LIBDEPS])
-  LIBGNU_LTLIBDEPS="$gl_ltlibdeps"
-  AC_SUBST([LIBGNU_LTLIBDEPS])
   m4_popdef([AC_LIBSOURCES])
   m4_popdef([AC_REPLACE_FUNCS])
   m4_popdef([AC_LIBOBJ])
@@ -136,6 +139,33 @@ AC_DEFUN([gl_INIT],
     AC_SUBST([gl_LIBOBJS], [$gl_libobjs])
     AC_SUBST([gl_LTLIBOBJS], [$gl_ltlibobjs])
   ])
+  gltests_libdeps=
+  gltests_ltlibdeps=
+  m4_pushdef([AC_LIBOBJ], m4_defn([gltests_LIBOBJ]))
+  m4_pushdef([AC_REPLACE_FUNCS], m4_defn([gltests_REPLACE_FUNCS]))
+  m4_pushdef([AC_LIBSOURCES], m4_defn([gltests_LIBSOURCES]))
+  gl_source_base='tests'
+  m4_popdef([AC_LIBSOURCES])
+  m4_popdef([AC_REPLACE_FUNCS])
+  m4_popdef([AC_LIBOBJ])
+  AC_CONFIG_COMMANDS_PRE([
+    gltests_libobjs=
+    gltests_ltlibobjs=
+    if test -n "$gltests_LIBOBJS"; then
+      # Remove the extension.
+      sed_drop_objext='s/\.o$//;s/\.obj$//'
+      for i in `for i in $gltests_LIBOBJS; do echo "$i"; done | sed "$sed_drop_objext" | sort | uniq`; do
+        gltests_libobjs="$gltests_libobjs $i.$ac_objext"
+        gltests_ltlibobjs="$gltests_ltlibobjs $i.lo"
+      done
+    fi
+    AC_SUBST([gltests_LIBOBJS], [$gltests_libobjs])
+    AC_SUBST([gltests_LTLIBOBJS], [$gltests_ltlibobjs])
+  ])
+  LIBGNU_LIBDEPS="$gl_libdeps"
+  AC_SUBST([LIBGNU_LIBDEPS])
+  LIBGNU_LTLIBDEPS="$gl_ltlibdeps"
+  AC_SUBST([LIBGNU_LTLIBDEPS])
 ])
 
 # Like AC_LIBOBJ, except that the module name goes
@@ -144,6 +174,13 @@ AC_DEFUN([gl_LIBOBJ], [
   AS_LITERAL_IF([$1], [gl_LIBSOURCES([$1.c])])dnl
   gl_LIBOBJS="$gl_LIBOBJS $1.$ac_objext"
 ])
+
+# m4_foreach_w is provided by autoconf-2.59c and later.
+# This definition is to accommodate developers using versions
+# of autoconf older than that.
+m4_ifndef([m4_foreach_w],
+  [m4_define([m4_foreach_w],
+    [m4_foreach([$1], m4_split(m4_normalize([$2]), [ ]), [$3])])])
 
 # Like AC_REPLACE_FUNCS, except that the module name goes
 # into gl_LIBOBJS instead of into LIBOBJS.
@@ -162,6 +199,41 @@ AC_DEFUN([gl_LIBSOURCES], [
       m4_syscmd([test -r lib/]_gl_NAME[ || test ! -d lib])dnl
       m4_if(m4_sysval, [0], [],
         [AC_FATAL([missing lib/]_gl_NAME)])
+    ])
+  ])
+])
+
+# Like AC_LIBOBJ, except that the module name goes
+# into gltests_LIBOBJS instead of into LIBOBJS.
+AC_DEFUN([gltests_LIBOBJ], [
+  AS_LITERAL_IF([$1], [gltests_LIBSOURCES([$1.c])])dnl
+  gltests_LIBOBJS="$gltests_LIBOBJS $1.$ac_objext"
+])
+
+# m4_foreach_w is provided by autoconf-2.59c and later.
+# This definition is to accommodate developers using versions
+# of autoconf older than that.
+m4_ifndef([m4_foreach_w],
+  [m4_define([m4_foreach_w],
+    [m4_foreach([$1], m4_split(m4_normalize([$2]), [ ]), [$3])])])
+
+# Like AC_REPLACE_FUNCS, except that the module name goes
+# into gltests_LIBOBJS instead of into LIBOBJS.
+AC_DEFUN([gltests_REPLACE_FUNCS], [
+  m4_foreach_w([gl_NAME], [$1], [AC_LIBSOURCES(gl_NAME[.c])])dnl
+  AC_CHECK_FUNCS([$1], , [gltests_LIBOBJ($ac_func)])
+])
+
+# Like AC_LIBSOURCES, except the directory where the source file is
+# expected is derived from the gnulib-tool parametrization,
+# and alloca is special cased (for the alloca-opt module).
+# We could also entirely rely on EXTRA_lib..._SOURCES.
+AC_DEFUN([gltests_LIBSOURCES], [
+  m4_foreach([_gl_NAME], [$1], [
+    m4_if(_gl_NAME, [alloca.c], [], [
+      m4_syscmd([test -r tests/]_gl_NAME[ || test ! -d tests])dnl
+      m4_if(m4_sysval, [0], [],
+        [AC_FATAL([missing tests/]_gl_NAME)])
     ])
   ])
 ])
@@ -234,10 +306,12 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/stdbool.in.h
   lib/stdint.in.h
   lib/stdlib.in.h
+  lib/str-kmp.h
   lib/strcasecmp.c
   lib/streq.h
   lib/strerror.c
   lib/string.in.h
+  lib/strings.in.h
   lib/stripslash.c
   lib/strncasecmp.c
   lib/strndup.c
@@ -327,6 +401,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/strcase.m4
   m4/strerror.m4
   m4/string_h.m4
+  m4/strings_h.m4
   m4/strndup.m4
   m4/strnlen.m4
   m4/strtoimax.m4
@@ -338,7 +413,6 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/sys_time_h.m4
   m4/time_h.m4
   m4/timespec.m4
-  m4/ulonglong.m4
   m4/unistd_h.m4
   m4/utimbuf.m4
   m4/utime.m4

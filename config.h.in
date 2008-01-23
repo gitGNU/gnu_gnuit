@@ -62,6 +62,9 @@
 /* Define if gettimeofday clobbers the localtime buffer. */
 #undef GETTIMEOFDAY_CLOBBERS_LOCALTIME
 
+/* Define to make the limit macros in <stdint.h> visible. */
+#undef GL_TRIGGER_STDC_LIMIT_MACROS
+
 /* Define if you have the Unix 64bit I/O API. */
 #undef HAVE_64BIT_IO
 
@@ -98,6 +101,14 @@
    */
 #undef HAVE_DECL_GETENV
 
+/* Define to 1 if you have the declaration of `imaxabs', and to 0 if you
+   don't. */
+#undef HAVE_DECL_IMAXABS
+
+/* Define to 1 if you have the declaration of `imaxdiv', and to 0 if you
+   don't. */
+#undef HAVE_DECL_IMAXDIV
+
 /* Define to 1 if you have the declaration of `isblank', and to 0 if you
    don't. */
 #undef HAVE_DECL_ISBLANK
@@ -121,6 +132,22 @@
 /* Define to 1 if you have the declaration of `strnlen', and to 0 if you
    don't. */
 #undef HAVE_DECL_STRNLEN
+
+/* Define to 1 if you have the declaration of `strtoimax', and to 0 if you
+   don't. */
+#undef HAVE_DECL_STRTOIMAX
+
+/* Define to 1 if you have the declaration of `strtoll', and to 0 if you
+   don't. */
+#undef HAVE_DECL_STRTOLL
+
+/* Define to 1 if you have the declaration of `strtoull', and to 0 if you
+   don't. */
+#undef HAVE_DECL_STRTOULL
+
+/* Define to 1 if you have the declaration of `strtoumax', and to 0 if you
+   don't. */
+#undef HAVE_DECL_STRTOUMAX
 
 /* Define to 1 if you have the declaration of `wcwidth', and to 0 if you
    don't. */
@@ -209,6 +236,9 @@
 
 /* Define to 1 if mbrtowc and mbstate_t are properly declared. */
 #undef HAVE_MBRTOWC
+
+/* Define to 1 if you have the `mbsinit' function. */
+#undef HAVE_MBSINIT
 
 /* Define to 1 if you have the `mbsrtowcs' function. */
 #undef HAVE_MBSRTOWCS
@@ -305,6 +335,24 @@
 
 /* Define to 1 if you have the `strstr' function. */
 #undef HAVE_STRSTR
+
+/* Define to 1 if you have the `strtoimax' function. */
+#undef HAVE_STRTOIMAX
+
+/* Define to 1 if you have the `strtol' function. */
+#undef HAVE_STRTOL
+
+/* Define to 1 if you have the `strtoll' function. */
+#undef HAVE_STRTOLL
+
+/* Define to 1 if you have the `strtoul' function. */
+#undef HAVE_STRTOUL
+
+/* Define to 1 if you have the `strtoull' function. */
+#undef HAVE_STRTOULL
+
+/* Define to 1 if you have the `strtoumax' function. */
+#undef HAVE_STRTOUMAX
 
 /* Define if struct utimbuf is declared -- usually in <utime.h>. Some systems
    have utime.h but don't declare the struct anywhere. */
@@ -465,6 +513,9 @@
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
 
+/* Define if <inttypes.h> exists and defines unusable PRI* macros. */
+#undef PRI_MACROS_BROKEN
+
 /* Define to l, ll, u, ul, ull, etc., as suitable for constants of type
    'ptrdiff_t'. */
 #undef PTRDIFF_T_SUFFIX
@@ -591,6 +642,13 @@
    used. */
 #undef __GETOPT_PREFIX
 
+/* Ensure that <stdint.h> defines the limit macros, since gnulib's
+   <inttypes.h> relies on them.  */
+#if defined __cplusplus && !defined __STDC_LIMIT_MACROS && GL_TRIGGER_STDC_LIMIT_MACROS
+# define __STDC_LIMIT_MACROS 1
+#endif
+
+
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
 
@@ -624,15 +682,21 @@
 /* Define to `int' if <sys/types.h> does not define. */
 #undef pid_t
 
-/* Define to rpl_putenv if the replacement function should be used. */
-#undef putenv
-
 /* Define to rpl_rename if the replacement function should be used. */
 #undef rename
 
-/* Define to equivalent of C99 restrict keyword, or to nothing if this is not
-   supported. Do not define if restrict is supported directly. */
+/* Define to the equivalent of the C99 'restrict' keyword, or to
+   nothing if this is not supported.  Do not define if restrict is
+   supported directly.  */
 #undef restrict
+/* Work around a bug in Sun C++: it does not support _Restrict, even
+   though the corresponding Sun C compiler does, which causes
+   "#define restrict _Restrict" in the previous line.  Perhaps some future
+   version of Sun C++ will work with _Restrict; if so, it'll probably
+   define __RESTRICT, just as Sun C does.  */
+#if defined __SUNPRO_CC && !defined __RESTRICT
+# define _Restrict
+#endif
 
 /* Define to `unsigned int' if <sys/types.h> does not define. */
 #undef size_t

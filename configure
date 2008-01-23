@@ -759,8 +759,13 @@ HAVE_DECL_STRTOIMAX
 HAVE_DECL_STRTOUMAX
 NEXT_INTTYPES_H
 PRIPTR_PREFIX
+INT32_MAX_LT_INTMAX_MAX
+INT64_MAX_EQ_LONG_MAX
+UINT32_MAX_LT_UINTMAX_MAX
+UINT64_MAX_EQ_ULONG_MAX
 INTTYPES_H
 GLIBC21
+LOCALCHARSET_TESTS_ENVIRONMENT
 HAVE_MALLOC_POSIX
 GNULIB_MALLOC_POSIX
 GNULIB_REALLOC_POSIX
@@ -768,11 +773,18 @@ GNULIB_CALLOC_POSIX
 GNULIB_GETSUBOPT
 GNULIB_MKDTEMP
 GNULIB_MKSTEMP
+GNULIB_PUTENV
+GNULIB_SETENV
+GNULIB_UNSETENV
 HAVE_CALLOC_POSIX
 HAVE_GETSUBOPT
 HAVE_MKDTEMP
 HAVE_REALLOC_POSIX
+HAVE_SETENV
+HAVE_UNSETENV
 REPLACE_MKSTEMP
+REPLACE_PUTENV
+VOID_UNSETENV
 GNULIB_MEMMEM
 GNULIB_MEMPCPY
 GNULIB_MEMRCHR
@@ -784,6 +796,7 @@ GNULIB_STRNDUP
 GNULIB_STRNLEN
 GNULIB_STRPBRK
 GNULIB_STRSEP
+GNULIB_STRSTR
 GNULIB_STRCASESTR
 GNULIB_STRTOK_R
 GNULIB_MBSLEN
@@ -801,13 +814,12 @@ GNULIB_MBSSPN
 GNULIB_MBSSEP
 GNULIB_MBSTOK_R
 GNULIB_STRERROR
+GNULIB_STRSIGNAL
 HAVE_DECL_MEMMEM
 HAVE_MEMPCPY
 HAVE_DECL_MEMRCHR
 HAVE_STPCPY
 HAVE_STPNCPY
-HAVE_STRCASECMP
-HAVE_DECL_STRNCASECMP
 HAVE_STRCHRNUL
 HAVE_DECL_STRDUP
 HAVE_STRNDUP
@@ -818,7 +830,12 @@ HAVE_STRSEP
 HAVE_STRCASESTR
 HAVE_DECL_STRTOK_R
 HAVE_DECL_STRERROR
+HAVE_DECL_STRSIGNAL
 REPLACE_STRERROR
+REPLACE_STRSIGNAL
+REPLACE_MEMMEM
+REPLACE_STRCASESTR
+REPLACE_STRSTR
 REPLACE_LOCALTIME_R
 REPLACE_NANOSLEEP
 REPLACE_STRPTIME
@@ -830,24 +847,32 @@ GNULIB_FCHDIR
 GNULIB_FTRUNCATE
 GNULIB_GETCWD
 GNULIB_GETLOGIN_R
+GNULIB_GETPAGESIZE
 GNULIB_LCHOWN
 GNULIB_LSEEK
 GNULIB_READLINK
 GNULIB_SLEEP
 HAVE_DUP2
 HAVE_FTRUNCATE
+HAVE_GETPAGESIZE
 HAVE_READLINK
 HAVE_SLEEP
 HAVE_DECL_GETLOGIN_R
+HAVE_OS_H
+HAVE_SYS_PARAM_H
 REPLACE_CHOWN
 REPLACE_FCHDIR
 REPLACE_GETCWD
+REPLACE_GETPAGESIZE
 REPLACE_LCHOWN
 REPLACE_LSEEK
 STDBOOL_H
 HAVE__BOOL
 NEXT_STDLIB_H
+HAVE_STRCASECMP
+HAVE_DECL_STRNCASECMP
 NEXT_STRING_H
+NEXT_STRINGS_H
 NEXT_TIME_H
 TIME_H_DEFINES_STRUCT_TIMESPEC
 SYS_TIME_H_DEFINES_STRUCT_TIMESPEC
@@ -881,7 +906,9 @@ CLEANFILES
 LIBOBJS
 LTLIBOBJS
 gl_LIBOBJS
-gl_LTLIBOBJS'
+gl_LTLIBOBJS
+gltests_LIBOBJS
+gltests_LTLIBOBJS'
 ac_subst_files=''
       ac_precious_vars='build_alias
 host_alias
@@ -1866,6 +1893,7 @@ gl_func_list="$gl_func_list mbsinit"
 gl_func_list="$gl_func_list readlink"
 gl_header_list="$gl_header_list stdlib.h"
 gl_header_list="$gl_header_list string.h"
+gl_header_list="$gl_header_list strings.h"
 gl_header_list="$gl_header_list time.h"
 gl_header_list="$gl_header_list unistd.h"
 gl_header_list="$gl_header_list utime.h"
@@ -6896,6 +6924,9 @@ _ACEOF
 
 fi
 
+
+  XGETTEXT_EXTRA_OPTIONS=
+
 { echo "$as_me:$LINENO: checking for mbstate_t" >&5
 echo $ECHO_N "checking for mbstate_t... $ECHO_C" >&6; }
 if test "${ac_cv_type_mbstate_t+set}" = set; then
@@ -7875,9 +7906,8 @@ if test "${ac_cv_c_restrict+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   ac_cv_c_restrict=no
-   # Try the official restrict keyword, then gcc's __restrict, and
-   # the less common variants.
-   for ac_kw in restrict __restrict __restrict__ _Restrict; do
+   # The order here caters to the fact that C++ does not require restrict.
+   for ac_kw in __restrict __restrict__ _Restrict restrict; do
      cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
 _ACEOF
@@ -7885,16 +7915,16 @@ cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
 typedef int * int_ptr;
-        int foo (int_ptr $ac_kw ip) {
-        return ip[0];
+	int foo (int_ptr $ac_kw ip) {
+	return ip[0];
        }
 int
 main ()
 {
 int s[1];
-        int * $ac_kw t = s;
-        t[0] = 0;
-        return foo(t)
+	int * $ac_kw t = s;
+	t[0] = 0;
+	return foo(t)
   ;
   return 0;
 }
@@ -7931,10 +7961,11 @@ rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
 fi
 { echo "$as_me:$LINENO: result: $ac_cv_c_restrict" >&5
 echo "${ECHO_T}$ac_cv_c_restrict" >&6; }
+
+
  case $ac_cv_c_restrict in
    restrict) ;;
-   no)
-cat >>confdefs.h <<\_ACEOF
+   no) cat >>confdefs.h <<\_ACEOF
 #define restrict
 _ACEOF
  ;;
@@ -8163,29 +8194,40 @@ if test "${ac_cv_type_long_long_int+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
+
+  /* confdefs.h.  */
 _ACEOF
 cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
-#if ! (-9223372036854775807LL < 0 && 0 < 9223372036854775807ll)
-	      error in preprocessor;
-	    #endif
-	    long long int ll = 9223372036854775807ll;
-	    long long int nll = -9223372036854775807LL;
-	    typedef int a[((-9223372036854775807LL < 0
-			    && 0 < 9223372036854775807ll)
-			   ? 1 : -1)];
-	    int i = 63;
+/* For now, do not test the preprocessor; as of 2007 there are too many
+	 implementations with broken preprocessors.  Perhaps this can
+	 be revisited in 2012.  In the meantime, code should not expect
+	 #if to work with literals wider than 32 bits.  */
+      /* Test literals.  */
+      long long int ll = 9223372036854775807ll;
+      long long int nll = -9223372036854775807LL;
+      unsigned long long int ull = 18446744073709551615ULL;
+      /* Test constant expressions.   */
+      typedef int a[((-9223372036854775807LL < 0 && 0 < 9223372036854775807ll)
+		     ? 1 : -1)];
+      typedef int b[(18446744073709551615ULL <= (unsigned long long int) -1
+		     ? 1 : -1)];
+      int i = 63;
 int
 main ()
 {
-long long int llmax = 9223372036854775807ll;
-	    return ((ll << 63) | (ll >> 63) | (ll < i) | (ll > i)
-		    | (llmax / ll) | (llmax % ll));
+/* Test availability of runtime routines for shift and division.  */
+      long long int llmax = 9223372036854775807ll;
+      unsigned long long int ullmax = 18446744073709551615ull;
+      return ((ll << 63) | (ll >> 63) | (ll < i) | (ll > i)
+	      | (llmax / ll) | (llmax % ll)
+	      | (ull << 63) | (ull >> 63) | (ull << i) | (ull >> i)
+	      | (ullmax / ull) | (ullmax % ull));
   ;
   return 0;
 }
+
 _ACEOF
 rm -f conftest.$ac_objext conftest$ac_exeext
 if { (ac_try="$ac_link"
@@ -8205,7 +8247,7 @@ eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
 	 test ! -s conftest.err
        } && test -s conftest$ac_exeext &&
        $as_test_x conftest$ac_exeext; then
-  		        if test "$cross_compiling" = yes; then
+  			if test "$cross_compiling" = yes; then
   ac_cv_type_long_long_int=yes
 else
   cat >conftest.$ac_ext <<_ACEOF
@@ -8298,27 +8340,40 @@ if test "${ac_cv_type_unsigned_long_long_int+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
+
+  /* confdefs.h.  */
 _ACEOF
 cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
-#if ! (18446744073709551615ULL <= -1u)
-	      error in preprocessor;
-	    #endif
-	    unsigned long long int ull = 18446744073709551615ULL;
-	    typedef int a[(18446744073709551615ULL <= (unsigned long long int) -1
-			   ? 1 : -1)];
-	   int i = 63;
+/* For now, do not test the preprocessor; as of 2007 there are too many
+	 implementations with broken preprocessors.  Perhaps this can
+	 be revisited in 2012.  In the meantime, code should not expect
+	 #if to work with literals wider than 32 bits.  */
+      /* Test literals.  */
+      long long int ll = 9223372036854775807ll;
+      long long int nll = -9223372036854775807LL;
+      unsigned long long int ull = 18446744073709551615ULL;
+      /* Test constant expressions.   */
+      typedef int a[((-9223372036854775807LL < 0 && 0 < 9223372036854775807ll)
+		     ? 1 : -1)];
+      typedef int b[(18446744073709551615ULL <= (unsigned long long int) -1
+		     ? 1 : -1)];
+      int i = 63;
 int
 main ()
 {
-unsigned long long int ullmax = 18446744073709551615ull;
-	    return (ull << 63 | ull >> 63 | ull << i | ull >> i
-		    | ullmax / ull | ullmax % ull);
+/* Test availability of runtime routines for shift and division.  */
+      long long int llmax = 9223372036854775807ll;
+      unsigned long long int ullmax = 18446744073709551615ull;
+      return ((ll << 63) | (ll >> 63) | (ll < i) | (ll > i)
+	      | (llmax / ll) | (llmax % ll)
+	      | (ull << 63) | (ull >> 63) | (ull << i) | (ull >> i)
+	      | (ullmax / ull) | (ullmax % ull));
   ;
   return 0;
 }
+
 _ACEOF
 rm -f conftest.$ac_objext conftest$ac_exeext
 if { (ac_try="$ac_link"
@@ -10175,12 +10230,19 @@ echo "${ECHO_T}$gl_cv_func_malloc_posix" >&6; }
   GNULIB_GETSUBOPT=0;
   GNULIB_MKDTEMP=0;
   GNULIB_MKSTEMP=0;
+  GNULIB_PUTENV=0;
+  GNULIB_SETENV=0;
+  GNULIB_UNSETENV=0;
     HAVE_CALLOC_POSIX=1;
   HAVE_GETSUBOPT=1;
   HAVE_MALLOC_POSIX=1;
   HAVE_MKDTEMP=1;
   HAVE_REALLOC_POSIX=1;
+  HAVE_SETENV=1;
+  HAVE_UNSETENV=1;
   REPLACE_MKSTEMP=0;
+  REPLACE_PUTENV=0;
+  VOID_UNSETENV=0;
 
 
 
@@ -10481,6 +10543,7 @@ _ACEOF
   GNULIB_STRNLEN=0;
   GNULIB_STRPBRK=0;
   GNULIB_STRSEP=0;
+  GNULIB_STRSTR=0;
   GNULIB_STRCASESTR=0;
   GNULIB_STRTOK_R=0;
   GNULIB_MBSLEN=0;
@@ -10498,13 +10561,12 @@ _ACEOF
   GNULIB_MBSSEP=0;
   GNULIB_MBSTOK_R=0;
   GNULIB_STRERROR=0;
+  GNULIB_STRSIGNAL=0;
     HAVE_DECL_MEMMEM=1;
   HAVE_MEMPCPY=1;
   HAVE_DECL_MEMRCHR=1;
   HAVE_STPCPY=1;
   HAVE_STPNCPY=1;
-  HAVE_STRCASECMP=1;
-  HAVE_DECL_STRNCASECMP=1;
   HAVE_STRCHRNUL=1;
   HAVE_DECL_STRDUP=1;
   HAVE_STRNDUP=1;
@@ -10515,7 +10577,12 @@ _ACEOF
   HAVE_STRCASESTR=1;
   HAVE_DECL_STRTOK_R=1;
   HAVE_DECL_STRERROR=1;
+  HAVE_DECL_STRSIGNAL=1;
   REPLACE_STRERROR=0;
+  REPLACE_STRSIGNAL=0;
+  REPLACE_MEMMEM=0;
+  REPLACE_STRCASESTR=0;
+  REPLACE_STRSTR=0;
 
 
         REPLACE_LOCALTIME_R=GNULIB_PORTCHECK;
@@ -10548,18 +10615,23 @@ _ACEOF
   GNULIB_FTRUNCATE=0;
   GNULIB_GETCWD=0;
   GNULIB_GETLOGIN_R=0;
+  GNULIB_GETPAGESIZE=0;
   GNULIB_LCHOWN=0;
   GNULIB_LSEEK=0;
   GNULIB_READLINK=0;
   GNULIB_SLEEP=0;
     HAVE_DUP2=1;
   HAVE_FTRUNCATE=1;
+  HAVE_GETPAGESIZE=1;
   HAVE_READLINK=1;
   HAVE_SLEEP=1;
   HAVE_DECL_GETLOGIN_R=1;
+  HAVE_OS_H=0;
+  HAVE_SYS_PARAM_H=0;
   REPLACE_CHOWN=0;
   REPLACE_FCHDIR=0;
   REPLACE_GETCWD=0;
+  REPLACE_GETPAGESIZE=0;
   REPLACE_LCHOWN=0;
   REPLACE_LSEEK=0;
 
@@ -10820,6 +10892,11 @@ _ACEOF
 
 
 
+    HAVE_STRCASECMP=1;
+  HAVE_DECL_STRNCASECMP=1;
+
+
+
   { echo "$as_me:$LINENO: checking for working strerror function" >&5
 echo $ECHO_N "checking for working strerror function... $ECHO_C" >&6; }
 if test "${gl_cv_func_working_strerror+set}" = set; then
@@ -11050,6 +11127,64 @@ fi
 echo "${ECHO_T}$gl_cv_next_string_h" >&6; }
      fi
      NEXT_STRING_H=$gl_cv_next_string_h
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  :
+
+
+
+
+
+
+
+     if test $gl_cv_have_include_next = yes; then
+       gl_cv_next_strings_h='<'strings.h'>'
+     else
+       { echo "$as_me:$LINENO: checking absolute name of <strings.h>" >&5
+echo $ECHO_N "checking absolute name of <strings.h>... $ECHO_C" >&6; }
+if test "${gl_cv_next_strings_h+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+
+	  if test $ac_cv_header_strings_h = yes; then
+	    cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <strings.h>
+
+_ACEOF
+	    	    	    	    gl_cv_next_strings_h='"'`(eval "$ac_cpp conftest.$ac_ext") 2>&5 |
+	       sed -n '\#/strings.h#{
+		 s#.*"\(.*/strings.h\)".*#\1#
+		 s#^/[^/]#//&#
+		 p
+		 q
+	       }'`'"'
+	  else
+	    gl_cv_next_strings_h='<'strings.h'>'
+	  fi
+
+fi
+{ echo "$as_me:$LINENO: result: $gl_cv_next_strings_h" >&5
+echo "${ECHO_T}$gl_cv_next_strings_h" >&6; }
+     fi
+     NEXT_STRINGS_H=$gl_cv_next_strings_h
 
 
 
@@ -11696,9 +11831,6 @@ _ACEOF
 
 
 
-
-
-
 if false; then
   GL_COND_LIBTOOL_TRUE=
   GL_COND_LIBTOOL_FALSE='#'
@@ -11710,6 +11842,9 @@ fi
   gl_cond_libtool=false
   gl_libdeps=
   gl_ltlibdeps=
+
+
+
   gl_source_base='lib'
 
 
@@ -11765,12 +11900,6 @@ _ACEOF
   else
     ALLOCA_H=alloca.h
   fi
-
-
-
-cat >>confdefs.h <<\_ACEOF
-#define HAVE_ALLOCA_H 1
-_ACEOF
 
 
 
@@ -12128,6 +12257,14 @@ fi
 
   :
 
+
+
+
+  XGETTEXT_EXTRA_OPTIONS="$XGETTEXT_EXTRA_OPTIONS --flag=error:3:c-format"
+
+
+
+  XGETTEXT_EXTRA_OPTIONS="$XGETTEXT_EXTRA_OPTIONS --flag=error_at_line:5:c-format"
 
 
 
@@ -14450,6 +14587,307 @@ rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
       HAVE_DECL_STRTOUMAX=0
     fi
 
+
+  { echo "$as_me:$LINENO: checking whether INT32_MAX < INTMAX_MAX" >&5
+echo $ECHO_N "checking whether INT32_MAX < INTMAX_MAX... $ECHO_C" >&6; }
+if test "${gl_cv_test_INT32_MAX_LT_INTMAX_MAX+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+/* Work also in C++ mode.  */
+	    #define __STDC_LIMIT_MACROS 1
+
+	    /* Work if build is not clean.  */
+	    #define _GL_JUST_INCLUDE_SYSTEM_STDINT_H
+
+	    #include <limits.h>
+	    #if HAVE_STDINT_H
+	     #include <stdint.h>
+	    #endif
+
+	    #if defined INT32_MAX && defined INTMAX_MAX
+	     #define CONDITION (INT32_MAX < INTMAX_MAX)
+	    #elif HAVE_LONG_LONG_INT
+	     #define CONDITION (sizeof (int) < sizeof (long long int))
+	    #else
+	     #define CONDITION 0
+	    #endif
+	    int test[CONDITION ? 1 : -1];
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  gl_cv_test_INT32_MAX_LT_INTMAX_MAX=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	gl_cv_test_INT32_MAX_LT_INTMAX_MAX=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+{ echo "$as_me:$LINENO: result: $gl_cv_test_INT32_MAX_LT_INTMAX_MAX" >&5
+echo "${ECHO_T}$gl_cv_test_INT32_MAX_LT_INTMAX_MAX" >&6; }
+  if test $gl_cv_test_INT32_MAX_LT_INTMAX_MAX = yes; then
+    INT32_MAX_LT_INTMAX_MAX=1;
+  else
+    INT32_MAX_LT_INTMAX_MAX=0;
+  fi
+
+
+
+  { echo "$as_me:$LINENO: checking whether INT64_MAX == LONG_MAX" >&5
+echo $ECHO_N "checking whether INT64_MAX == LONG_MAX... $ECHO_C" >&6; }
+if test "${gl_cv_test_INT64_MAX_EQ_LONG_MAX+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+/* Work also in C++ mode.  */
+	    #define __STDC_LIMIT_MACROS 1
+
+	    /* Work if build is not clean.  */
+	    #define _GL_JUST_INCLUDE_SYSTEM_STDINT_H
+
+	    #include <limits.h>
+	    #if HAVE_STDINT_H
+	     #include <stdint.h>
+	    #endif
+
+	    #if defined INT64_MAX
+	     #define CONDITION (INT64_MAX == LONG_MAX)
+	    #elif HAVE_LONG_LONG_INT
+	     #define CONDITION (sizeof (long long int) == sizeof (long int))
+	    #else
+	     #define CONDITION 0
+	    #endif
+	    int test[CONDITION ? 1 : -1];
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  gl_cv_test_INT64_MAX_EQ_LONG_MAX=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	gl_cv_test_INT64_MAX_EQ_LONG_MAX=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+{ echo "$as_me:$LINENO: result: $gl_cv_test_INT64_MAX_EQ_LONG_MAX" >&5
+echo "${ECHO_T}$gl_cv_test_INT64_MAX_EQ_LONG_MAX" >&6; }
+  if test $gl_cv_test_INT64_MAX_EQ_LONG_MAX = yes; then
+    INT64_MAX_EQ_LONG_MAX=1;
+  else
+    INT64_MAX_EQ_LONG_MAX=0;
+  fi
+
+
+
+  { echo "$as_me:$LINENO: checking whether UINT32_MAX < UINTMAX_MAX" >&5
+echo $ECHO_N "checking whether UINT32_MAX < UINTMAX_MAX... $ECHO_C" >&6; }
+if test "${gl_cv_test_UINT32_MAX_LT_UINTMAX_MAX+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+/* Work also in C++ mode.  */
+	    #define __STDC_LIMIT_MACROS 1
+
+	    /* Work if build is not clean.  */
+	    #define _GL_JUST_INCLUDE_SYSTEM_STDINT_H
+
+	    #include <limits.h>
+	    #if HAVE_STDINT_H
+	     #include <stdint.h>
+	    #endif
+
+	    #if defined UINT32_MAX && defined UINTMAX_MAX
+	     #define CONDITION (UINT32_MAX < UINTMAX_MAX)
+	    #elif HAVE_LONG_LONG_INT
+	     #define CONDITION (sizeof (unsigned int) < sizeof (unsigned long long int))
+	    #else
+	     #define CONDITION 0
+	    #endif
+	    int test[CONDITION ? 1 : -1];
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  gl_cv_test_UINT32_MAX_LT_UINTMAX_MAX=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	gl_cv_test_UINT32_MAX_LT_UINTMAX_MAX=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+{ echo "$as_me:$LINENO: result: $gl_cv_test_UINT32_MAX_LT_UINTMAX_MAX" >&5
+echo "${ECHO_T}$gl_cv_test_UINT32_MAX_LT_UINTMAX_MAX" >&6; }
+  if test $gl_cv_test_UINT32_MAX_LT_UINTMAX_MAX = yes; then
+    UINT32_MAX_LT_UINTMAX_MAX=1;
+  else
+    UINT32_MAX_LT_UINTMAX_MAX=0;
+  fi
+
+
+
+  { echo "$as_me:$LINENO: checking whether UINT64_MAX == ULONG_MAX" >&5
+echo $ECHO_N "checking whether UINT64_MAX == ULONG_MAX... $ECHO_C" >&6; }
+if test "${gl_cv_test_UINT64_MAX_EQ_ULONG_MAX+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+/* Work also in C++ mode.  */
+	    #define __STDC_LIMIT_MACROS 1
+
+	    /* Work if build is not clean.  */
+	    #define _GL_JUST_INCLUDE_SYSTEM_STDINT_H
+
+	    #include <limits.h>
+	    #if HAVE_STDINT_H
+	     #include <stdint.h>
+	    #endif
+
+	    #if defined UINT64_MAX
+	     #define CONDITION (UINT64_MAX == ULONG_MAX)
+	    #elif HAVE_LONG_LONG_INT
+	     #define CONDITION (sizeof (unsigned long long int) == sizeof (unsigned long int))
+	    #else
+	     #define CONDITION 0
+	    #endif
+	    int test[CONDITION ? 1 : -1];
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  gl_cv_test_UINT64_MAX_EQ_ULONG_MAX=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	gl_cv_test_UINT64_MAX_EQ_ULONG_MAX=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+{ echo "$as_me:$LINENO: result: $gl_cv_test_UINT64_MAX_EQ_ULONG_MAX" >&5
+echo "${ECHO_T}$gl_cv_test_UINT64_MAX_EQ_ULONG_MAX" >&6; }
+  if test $gl_cv_test_UINT64_MAX_EQ_ULONG_MAX = yes; then
+    UINT64_MAX_EQ_ULONG_MAX=1;
+  else
+    UINT64_MAX_EQ_ULONG_MAX=0;
+  fi
+
+
+
     INTTYPES_H='inttypes.h'
   fi
 
@@ -14466,6 +14904,8 @@ rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
 
 
 
+
+  LOCALCHARSET_TESTS_ENVIRONMENT="CHARSETALIASDIR=\"\$(top_builddir)/$gl_source_base\""
 
 
 
@@ -15145,13 +15585,15 @@ _ACEOF
 
  LIBS=$nanosleep_save_libs
 
-  { echo "$as_me:$LINENO: checking for SVID conformant putenv" >&5
-echo $ECHO_N "checking for SVID conformant putenv... $ECHO_C" >&6; }
-if test "${jm_cv_func_svid_putenv+set}" = set; then
+
+
+  { echo "$as_me:$LINENO: checking for putenv compatible with GNU and SVID" >&5
+echo $ECHO_N "checking for putenv compatible with GNU and SVID... $ECHO_C" >&6; }
+if test "${gl_cv_func_svid_putenv+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   if test "$cross_compiling" = yes; then
-  	     jm_cv_func_svid_putenv=no
+  	     gl_cv_func_svid_putenv=no
 else
   cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
@@ -15202,14 +15644,14 @@ eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  jm_cv_func_svid_putenv=yes
+  gl_cv_func_svid_putenv=yes
 else
   echo "$as_me: program exited with status $ac_status" >&5
 echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
 ( exit $ac_status )
-jm_cv_func_svid_putenv=no
+gl_cv_func_svid_putenv=no
 fi
 rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
 fi
@@ -15217,9 +15659,10 @@ fi
 
 
 fi
-{ echo "$as_me:$LINENO: result: $jm_cv_func_svid_putenv" >&5
-echo "${ECHO_T}$jm_cv_func_svid_putenv" >&6; }
-  if test $jm_cv_func_svid_putenv = no; then
+{ echo "$as_me:$LINENO: result: $gl_cv_func_svid_putenv" >&5
+echo "${ECHO_T}$gl_cv_func_svid_putenv" >&6; }
+  if test $gl_cv_func_svid_putenv = no; then
+    REPLACE_PUTENV=1
 
 
 
@@ -15229,12 +15672,11 @@ echo "${ECHO_T}$jm_cv_func_svid_putenv" >&6; }
 
   gl_LIBOBJS="$gl_LIBOBJS putenv.$ac_objext"
 
-
-cat >>confdefs.h <<\_ACEOF
-#define putenv rpl_putenv
-_ACEOF
-
   fi
+
+
+
+  GNULIB_PUTENV=1
 
 
 
@@ -17072,6 +17514,9 @@ _ACEOF
 
 
 
+
+
+
   :
 
 
@@ -17403,7 +17848,7 @@ _ACEOF
 
   { echo "$as_me:$LINENO: checking whether <inttypes.h> defines strtoimax as a macro" >&5
 echo $ECHO_N "checking whether <inttypes.h> defines strtoimax as a macro... $ECHO_C" >&6; }
-if test "${jm_cv_func_strtoimax_macro+set}" = set; then
+if test "${gl_cv_func_strtoimax_macro+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   cat >conftest.$ac_ext <<_ACEOF
@@ -17419,17 +17864,17 @@ cat >>conftest.$ac_ext <<_ACEOF
 _ACEOF
 if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
   $EGREP "inttypes_h_defines_strtoimax" >/dev/null 2>&1; then
-  jm_cv_func_strtoimax_macro=yes
+  gl_cv_func_strtoimax_macro=yes
 else
-  jm_cv_func_strtoimax_macro=no
+  gl_cv_func_strtoimax_macro=no
 fi
 rm -f conftest*
 
 fi
-{ echo "$as_me:$LINENO: result: $jm_cv_func_strtoimax_macro" >&5
-echo "${ECHO_T}$jm_cv_func_strtoimax_macro" >&6; }
+{ echo "$as_me:$LINENO: result: $gl_cv_func_strtoimax_macro" >&5
+echo "${ECHO_T}$gl_cv_func_strtoimax_macro" >&6; }
 
-  if test "$jm_cv_func_strtoimax_macro" != yes; then
+  if test "$gl_cv_func_strtoimax_macro" != yes; then
 
 
 
@@ -18069,7 +18514,7 @@ done
 
   { echo "$as_me:$LINENO: checking whether <inttypes.h> defines strtoumax as a macro" >&5
 echo $ECHO_N "checking whether <inttypes.h> defines strtoumax as a macro... $ECHO_C" >&6; }
-if test "${jm_cv_func_strtoumax_macro+set}" = set; then
+if test "${gl_cv_func_strtoumax_macro+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   cat >conftest.$ac_ext <<_ACEOF
@@ -18085,17 +18530,17 @@ cat >>conftest.$ac_ext <<_ACEOF
 _ACEOF
 if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
   $EGREP "inttypes_h_defines_strtoumax" >/dev/null 2>&1; then
-  jm_cv_func_strtoumax_macro=yes
+  gl_cv_func_strtoumax_macro=yes
 else
-  jm_cv_func_strtoumax_macro=no
+  gl_cv_func_strtoumax_macro=no
 fi
 rm -f conftest*
 
 fi
-{ echo "$as_me:$LINENO: result: $jm_cv_func_strtoumax_macro" >&5
-echo "${ECHO_T}$jm_cv_func_strtoumax_macro" >&6; }
+{ echo "$as_me:$LINENO: result: $gl_cv_func_strtoumax_macro" >&5
+echo "${ECHO_T}$gl_cv_func_strtoumax_macro" >&6; }
 
-  if test "$jm_cv_func_strtoumax_macro" != yes; then
+  if test "$gl_cv_func_strtoumax_macro" != yes; then
 
 
 
@@ -18972,13 +19417,23 @@ echo "${ECHO_T}$gl_cv_func_wcwidth_works" >&6; }
   gl_LIBOBJS="$gl_LIBOBJS xstrtol-error.$ac_objext"
 
 
+
+
+
+
+  gltests_libdeps=
+  gltests_ltlibdeps=
+
+
+
+  gl_source_base='tests'
+
+
+
+
   LIBGNU_LIBDEPS="$gl_libdeps"
 
   LIBGNU_LTLIBDEPS="$gl_ltlibdeps"
-
-
-
-
 
 
 
@@ -22489,6 +22944,22 @@ fi
     gl_LTLIBOBJS=$gl_ltlibobjs
 
 
+
+    gltests_libobjs=
+    gltests_ltlibobjs=
+    if test -n "$gltests_LIBOBJS"; then
+      # Remove the extension.
+      sed_drop_objext='s/\.o$//;s/\.obj$//'
+      for i in `for i in $gltests_LIBOBJS; do echo "$i"; done | sed "$sed_drop_objext" | sort | uniq`; do
+        gltests_libobjs="$gltests_libobjs $i.$ac_objext"
+        gltests_ltlibobjs="$gltests_ltlibobjs $i.lo"
+      done
+    fi
+    gltests_LIBOBJS=$gltests_libobjs
+
+    gltests_LTLIBOBJS=$gltests_ltlibobjs
+
+
 if test -z "${HTMLDOCS_TEXI2HTML_TRUE}" && test -z "${HTMLDOCS_TEXI2HTML_FALSE}"; then
   { { echo "$as_me:$LINENO: error: conditional \"HTMLDOCS_TEXI2HTML\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
@@ -23238,8 +23709,13 @@ HAVE_DECL_STRTOIMAX!$HAVE_DECL_STRTOIMAX$ac_delim
 HAVE_DECL_STRTOUMAX!$HAVE_DECL_STRTOUMAX$ac_delim
 NEXT_INTTYPES_H!$NEXT_INTTYPES_H$ac_delim
 PRIPTR_PREFIX!$PRIPTR_PREFIX$ac_delim
+INT32_MAX_LT_INTMAX_MAX!$INT32_MAX_LT_INTMAX_MAX$ac_delim
+INT64_MAX_EQ_LONG_MAX!$INT64_MAX_EQ_LONG_MAX$ac_delim
+UINT32_MAX_LT_UINTMAX_MAX!$UINT32_MAX_LT_UINTMAX_MAX$ac_delim
+UINT64_MAX_EQ_ULONG_MAX!$UINT64_MAX_EQ_ULONG_MAX$ac_delim
 INTTYPES_H!$INTTYPES_H$ac_delim
 GLIBC21!$GLIBC21$ac_delim
+LOCALCHARSET_TESTS_ENVIRONMENT!$LOCALCHARSET_TESTS_ENVIRONMENT$ac_delim
 HAVE_MALLOC_POSIX!$HAVE_MALLOC_POSIX$ac_delim
 GNULIB_MALLOC_POSIX!$GNULIB_MALLOC_POSIX$ac_delim
 GNULIB_REALLOC_POSIX!$GNULIB_REALLOC_POSIX$ac_delim
@@ -23247,11 +23723,18 @@ GNULIB_CALLOC_POSIX!$GNULIB_CALLOC_POSIX$ac_delim
 GNULIB_GETSUBOPT!$GNULIB_GETSUBOPT$ac_delim
 GNULIB_MKDTEMP!$GNULIB_MKDTEMP$ac_delim
 GNULIB_MKSTEMP!$GNULIB_MKSTEMP$ac_delim
+GNULIB_PUTENV!$GNULIB_PUTENV$ac_delim
+GNULIB_SETENV!$GNULIB_SETENV$ac_delim
+GNULIB_UNSETENV!$GNULIB_UNSETENV$ac_delim
 HAVE_CALLOC_POSIX!$HAVE_CALLOC_POSIX$ac_delim
 HAVE_GETSUBOPT!$HAVE_GETSUBOPT$ac_delim
 HAVE_MKDTEMP!$HAVE_MKDTEMP$ac_delim
 HAVE_REALLOC_POSIX!$HAVE_REALLOC_POSIX$ac_delim
+HAVE_SETENV!$HAVE_SETENV$ac_delim
+HAVE_UNSETENV!$HAVE_UNSETENV$ac_delim
 REPLACE_MKSTEMP!$REPLACE_MKSTEMP$ac_delim
+REPLACE_PUTENV!$REPLACE_PUTENV$ac_delim
+VOID_UNSETENV!$VOID_UNSETENV$ac_delim
 GNULIB_MEMMEM!$GNULIB_MEMMEM$ac_delim
 GNULIB_MEMPCPY!$GNULIB_MEMPCPY$ac_delim
 GNULIB_MEMRCHR!$GNULIB_MEMRCHR$ac_delim
@@ -23263,6 +23746,7 @@ GNULIB_STRNDUP!$GNULIB_STRNDUP$ac_delim
 GNULIB_STRNLEN!$GNULIB_STRNLEN$ac_delim
 GNULIB_STRPBRK!$GNULIB_STRPBRK$ac_delim
 GNULIB_STRSEP!$GNULIB_STRSEP$ac_delim
+GNULIB_STRSTR!$GNULIB_STRSTR$ac_delim
 GNULIB_STRCASESTR!$GNULIB_STRCASESTR$ac_delim
 GNULIB_STRTOK_R!$GNULIB_STRTOK_R$ac_delim
 GNULIB_MBSLEN!$GNULIB_MBSLEN$ac_delim
@@ -23278,19 +23762,6 @@ GNULIB_MBSCSPN!$GNULIB_MBSCSPN$ac_delim
 GNULIB_MBSPBRK!$GNULIB_MBSPBRK$ac_delim
 GNULIB_MBSSPN!$GNULIB_MBSSPN$ac_delim
 GNULIB_MBSSEP!$GNULIB_MBSSEP$ac_delim
-GNULIB_MBSTOK_R!$GNULIB_MBSTOK_R$ac_delim
-GNULIB_STRERROR!$GNULIB_STRERROR$ac_delim
-HAVE_DECL_MEMMEM!$HAVE_DECL_MEMMEM$ac_delim
-HAVE_MEMPCPY!$HAVE_MEMPCPY$ac_delim
-HAVE_DECL_MEMRCHR!$HAVE_DECL_MEMRCHR$ac_delim
-HAVE_STPCPY!$HAVE_STPCPY$ac_delim
-HAVE_STPNCPY!$HAVE_STPNCPY$ac_delim
-HAVE_STRCASECMP!$HAVE_STRCASECMP$ac_delim
-HAVE_DECL_STRNCASECMP!$HAVE_DECL_STRNCASECMP$ac_delim
-HAVE_STRCHRNUL!$HAVE_STRCHRNUL$ac_delim
-HAVE_DECL_STRDUP!$HAVE_DECL_STRDUP$ac_delim
-HAVE_STRNDUP!$HAVE_STRNDUP$ac_delim
-HAVE_DECL_STRNDUP!$HAVE_DECL_STRNDUP$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -23332,13 +23803,30 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+GNULIB_MBSTOK_R!$GNULIB_MBSTOK_R$ac_delim
+GNULIB_STRERROR!$GNULIB_STRERROR$ac_delim
+GNULIB_STRSIGNAL!$GNULIB_STRSIGNAL$ac_delim
+HAVE_DECL_MEMMEM!$HAVE_DECL_MEMMEM$ac_delim
+HAVE_MEMPCPY!$HAVE_MEMPCPY$ac_delim
+HAVE_DECL_MEMRCHR!$HAVE_DECL_MEMRCHR$ac_delim
+HAVE_STPCPY!$HAVE_STPCPY$ac_delim
+HAVE_STPNCPY!$HAVE_STPNCPY$ac_delim
+HAVE_STRCHRNUL!$HAVE_STRCHRNUL$ac_delim
+HAVE_DECL_STRDUP!$HAVE_DECL_STRDUP$ac_delim
+HAVE_STRNDUP!$HAVE_STRNDUP$ac_delim
+HAVE_DECL_STRNDUP!$HAVE_DECL_STRNDUP$ac_delim
 HAVE_DECL_STRNLEN!$HAVE_DECL_STRNLEN$ac_delim
 HAVE_STRPBRK!$HAVE_STRPBRK$ac_delim
 HAVE_STRSEP!$HAVE_STRSEP$ac_delim
 HAVE_STRCASESTR!$HAVE_STRCASESTR$ac_delim
 HAVE_DECL_STRTOK_R!$HAVE_DECL_STRTOK_R$ac_delim
 HAVE_DECL_STRERROR!$HAVE_DECL_STRERROR$ac_delim
+HAVE_DECL_STRSIGNAL!$HAVE_DECL_STRSIGNAL$ac_delim
 REPLACE_STRERROR!$REPLACE_STRERROR$ac_delim
+REPLACE_STRSIGNAL!$REPLACE_STRSIGNAL$ac_delim
+REPLACE_MEMMEM!$REPLACE_MEMMEM$ac_delim
+REPLACE_STRCASESTR!$REPLACE_STRCASESTR$ac_delim
+REPLACE_STRSTR!$REPLACE_STRSTR$ac_delim
 REPLACE_LOCALTIME_R!$REPLACE_LOCALTIME_R$ac_delim
 REPLACE_NANOSLEEP!$REPLACE_NANOSLEEP$ac_delim
 REPLACE_STRPTIME!$REPLACE_STRPTIME$ac_delim
@@ -23350,24 +23838,32 @@ GNULIB_FCHDIR!$GNULIB_FCHDIR$ac_delim
 GNULIB_FTRUNCATE!$GNULIB_FTRUNCATE$ac_delim
 GNULIB_GETCWD!$GNULIB_GETCWD$ac_delim
 GNULIB_GETLOGIN_R!$GNULIB_GETLOGIN_R$ac_delim
+GNULIB_GETPAGESIZE!$GNULIB_GETPAGESIZE$ac_delim
 GNULIB_LCHOWN!$GNULIB_LCHOWN$ac_delim
 GNULIB_LSEEK!$GNULIB_LSEEK$ac_delim
 GNULIB_READLINK!$GNULIB_READLINK$ac_delim
 GNULIB_SLEEP!$GNULIB_SLEEP$ac_delim
 HAVE_DUP2!$HAVE_DUP2$ac_delim
 HAVE_FTRUNCATE!$HAVE_FTRUNCATE$ac_delim
+HAVE_GETPAGESIZE!$HAVE_GETPAGESIZE$ac_delim
 HAVE_READLINK!$HAVE_READLINK$ac_delim
 HAVE_SLEEP!$HAVE_SLEEP$ac_delim
 HAVE_DECL_GETLOGIN_R!$HAVE_DECL_GETLOGIN_R$ac_delim
+HAVE_OS_H!$HAVE_OS_H$ac_delim
+HAVE_SYS_PARAM_H!$HAVE_SYS_PARAM_H$ac_delim
 REPLACE_CHOWN!$REPLACE_CHOWN$ac_delim
 REPLACE_FCHDIR!$REPLACE_FCHDIR$ac_delim
 REPLACE_GETCWD!$REPLACE_GETCWD$ac_delim
+REPLACE_GETPAGESIZE!$REPLACE_GETPAGESIZE$ac_delim
 REPLACE_LCHOWN!$REPLACE_LCHOWN$ac_delim
 REPLACE_LSEEK!$REPLACE_LSEEK$ac_delim
 STDBOOL_H!$STDBOOL_H$ac_delim
 HAVE__BOOL!$HAVE__BOOL$ac_delim
 NEXT_STDLIB_H!$NEXT_STDLIB_H$ac_delim
+HAVE_STRCASECMP!$HAVE_STRCASECMP$ac_delim
+HAVE_DECL_STRNCASECMP!$HAVE_DECL_STRNCASECMP$ac_delim
 NEXT_STRING_H!$NEXT_STRING_H$ac_delim
+NEXT_STRINGS_H!$NEXT_STRINGS_H$ac_delim
 NEXT_TIME_H!$NEXT_TIME_H$ac_delim
 TIME_H_DEFINES_STRUCT_TIMESPEC!$TIME_H_DEFINES_STRUCT_TIMESPEC$ac_delim
 SYS_TIME_H_DEFINES_STRUCT_TIMESPEC!$SYS_TIME_H_DEFINES_STRUCT_TIMESPEC$ac_delim
@@ -23402,9 +23898,11 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 gl_LIBOBJS!$gl_LIBOBJS$ac_delim
 gl_LTLIBOBJS!$gl_LTLIBOBJS$ac_delim
+gltests_LIBOBJS!$gltests_LIBOBJS$ac_delim
+gltests_LTLIBOBJS!$gltests_LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 70; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
@@ -23423,7 +23921,7 @@ fi
 
 cat >>$CONFIG_STATUS <<_ACEOF
 cat >"\$tmp/subs-3.sed" <<\CEOF$ac_eof
-/@[a-zA-Z_][a-zA-Z_0-9]*@/!b end
+/@[a-zA-Z_][a-zA-Z_0-9]*@/!b
 _ACEOF
 sed '
 s/[,\\&]/\\&/g; s/@/@|#_!!_#|/g
@@ -23436,8 +23934,6 @@ N; s/^.*\n//; s/[,\\&]/\\&/g; s/@/@|#_!!_#|/g; b n
 ' >>$CONFIG_STATUS <conf$$subs.sed
 rm -f conf$$subs.sed
 cat >>$CONFIG_STATUS <<_ACEOF
-:end
-s/|#_!!_#|//g
 CEOF$ac_eof
 _ACEOF
 
@@ -23691,7 +24187,7 @@ s&@abs_top_builddir@&$ac_abs_top_builddir&;t t
 s&@INSTALL@&$ac_INSTALL&;t t
 s&@MKDIR_P@&$ac_MKDIR_P&;t t
 $ac_datarootdir_hack
-" $ac_file_inputs | sed -f "$tmp/subs-1.sed" | sed -f "$tmp/subs-2.sed" | sed -f "$tmp/subs-3.sed" >$tmp/out
+" $ac_file_inputs | sed -f "$tmp/subs-1.sed" | sed -f "$tmp/subs-2.sed" | sed -f "$tmp/subs-3.sed" | sed 's/|#_!!_#|//g' >$tmp/out
 
 test -z "$ac_datarootdir_hack$ac_datarootdir_seen" &&
   { ac_out=`sed -n '/\${datarootdir}/p' "$tmp/out"`; test -n "$ac_out"; } &&
