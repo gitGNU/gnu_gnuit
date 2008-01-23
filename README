@@ -110,7 +110,7 @@ them an idea about what git is.
 
 ** If you want to take full advantage of all git's features, it is
 highly recommended that you install the GNU gzip program.  You can
-download it from ftp.gnu.org (/pub/gnu/git).
+download it from ftp.gnu.org (/pub/gnu/gzip).
 
 ** It might be a good idee to install the GNU termcap library too.  On
 some systems it might make a difference.

@@ -4,8 +4,8 @@ Version: @VERSION@
 Release: 1
 Copyright: GNU
 Group: Applications/File
-Source: ftp://ftp.gnu.org/pub/gnuit/gnuit-%{version}.tar.gz
-URL: http://erislabs.net/ianb/projects/gnuit/
+Source: ftp://ftp.gnu.org/gnu/gnuit/gnuit-%{version}.tar.gz
+URL: http://www.gnu.org/software/gnuit/
 Packager: Ian Beckwith <ianb@erislabs.net>
 BuildRoot: /var/tmp/git-root
 Prereq: /sbin/install-info
