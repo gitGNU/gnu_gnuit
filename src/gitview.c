@@ -194,6 +194,8 @@ int AnsiColors = OFF;
 
 char *g_home;
 char *g_program;
+/* for gnulib lib/error.c */
+char *program_name;
 char *screen;
 char *filename;
 int count;
@@ -648,7 +650,7 @@ main(argc, argv)
        them.  */
     signals_init();
 
-    g_program = argv[0];
+    program_name = g_program = argv[0];
 
     g_home = getenv("HOME");
     if (g_home == NULL)

@@ -40,6 +40,8 @@
 #include "xmalloc.h"
 #include "xstring.h"
 
+/* for gnulib lib/error.c */
+char *program_name;
 
 void
 fatal(postmsg)
@@ -98,6 +100,7 @@ main(argc, argv)
     int argc;
     char *argv[];
 {
+    program_name=argv[0];
     char *path = getenv("PATH");
 
     for (argc--, argv++;  argc;  argc--, argv++)

@@ -106,6 +106,8 @@ int TypeSensitivity = ON;
 
 char *g_home;
 char *g_program;
+/* for gnulib lib/error.c */
+char *program_name;
 char *version = VERSION;
 int two_panel_mode = 1;
 int current_mode = GIT_SCREEN_MODE;
@@ -1824,8 +1826,7 @@ main(argc, argv)
     setlocale(LC_ALL,"");
 #endif
 
-    g_program = argv[0];
-
+    program_name = g_program = argv[0];
     g_home = getenv("HOME");
     if (g_home == NULL)
 	g_home = ".";

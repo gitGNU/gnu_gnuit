@@ -144,6 +144,8 @@ int  PID_index;
 
 char *g_home;
 char *g_program;
+/* for gnulib lib/error.c */
+char *program_name;
 char *ps_cmd;
 char *temporary_directory;
 char header_text[MAX_LINE];
@@ -1008,7 +1010,7 @@ main(argc, argv)
        them.  */
     signals_init();
 
-    g_program = argv[0];
+    program_name = g_program = argv[0];
 
     g_home = getenv("HOME");
     if (g_home == NULL)
