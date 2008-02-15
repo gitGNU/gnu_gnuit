@@ -1,7 +1,9 @@
 2008-02-15  Ian Beckwith  <ianb@erislabs.net>
 
 	* Updated gnulib to 20080214 commit 501a61c5.
-	* Added license texts to many files.
+	* Added license notices to many files.
+	* gnuit.texinfo: fixed typos (Thanks to Ralf Wildenhues).
+	* README: fixed more references to git (Thanks to MJ Ray).
 
 2008-01-23  Ian Beckwith  <ianb@erislabs.net>
 
@@ -9,11 +11,11 @@
 	  (including MacOS putenv fix).
 	* gitfm/gitps/gitview/gitwhich: add program_name global for lib/error.c.
 	* Include m4/utimes.m4 in EXTRA_DIST.
-	* Added license notices to files in term/
+	* Added license notices to files in term/.
 
 2008-01-22  Ian Beckwith  <ianb@erislabs.net>
 
-	* Release gnuit 4.9.2
+	* Release gnuit 4.9.2.
 
 2008-01-21  Ian Beckwith  <ianb@erislabs.net>
 

@@ -1974,7 +1974,7 @@ argument.
 Print the selected files via @code{lpr} to the user specified printer or
 to the default one if no @code{lpr} options are given (@samp{PRINT-JOB}).
 @end display
-@cindex Printining files
+@cindex Printing files
 @cindex lpr
 @cindex printing
 @findex PRINT-JOB
@@ -1988,7 +1988,7 @@ Print the list of active printing jobs via @code{lpq}.  The default
 printer is queried if no @code{lpq} options are given
 (@samp{PRINT-JOB-LIST}).
 @end display
-@cindex Printining files
+@cindex Printing files
 @cindex lpr
 @cindex printing
 @findex PRINT-JOB-LIST
@@ -2017,7 +2017,7 @@ before actually wiping them in order to avoid errors (@samp{WIPE}).
 @noindent
 @kbd{ESC %}
 @display
-Searche files on the file system, starting from the current directory
+Search files on the file system, starting from the current directory
 (@samp{FIND}).
 @end display
 @cindex find
@@ -2788,7 +2788,7 @@ comparison.
 @display
 Compare the files in the left panel with the files in the right one.
 The contents of each file in the current panel will be compared against
-the contents of its couterpart (if any) from the other panel.
+the contents of its counterpart (if any) from the other panel.
 @end display
 @cindex Comparing directories thoroughly
 @cindex Comparing panels thoroughly
@@ -3571,7 +3571,7 @@ a list of currently running processes (@samp{GITPS}, @samp{PS}).
 @noindent
 @kbd{ESC P T}
 @display
-Call @code{pstree}(1) in order to displat the tree of currently running
+Call @code{pstree}(1) in order to display the tree of currently running
 processes (@samp{PSTREE}).
 @end display
 @cindex Viewing the process tree
@@ -4437,7 +4437,7 @@ where @samp{pattern} is a file name matching pattern, @samp{foreground},
 @samp{background} and @samp{brightness} are the color specification to
 be used when a file whose name match the given @samp{pattern} is
 displayed in a panel.  Colors can be turned off using the
-@samp{TypeSensitivity} variable in the @samp{GITFM-Setup} seection.
+@samp{TypeSensitivity} variable in the @samp{GITFM-Setup} section.
 
 
 @node gitps Sections, gitview Sections, gitfm Sections, Configuration Files

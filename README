@@ -3,14 +3,14 @@
 * GNU Interactive Tools
 =======================
 
-This file documents the install steps that are specific to the GIT
+This file documents the install steps that are specific to the GNUIT
 package, as well as some configuration hints:
 
 
-** The GIT package uses the 'configure' script to guess your system
+** The GNUIT package uses the 'configure' script to guess your system
 features.  The 'configure' script was generated from the file
 configure.in (available in the package) using the autoconf utility.
-To install the GIT package just type:
+To install the GNUIT package just type:
 
 	./configure
 	make
@@ -43,7 +43,7 @@ For more information about the 'configure' script please read the
 INSTALL file in this directory.
 
 
-** There are many configuration files in GIT:
+** There are many configuration files in GNUIT:
 
 a. gnuitrc.generic        - generic configuration file
 b. gnuitrc.linux          - Linux console configuration file
@@ -84,7 +84,7 @@ AnsiColors should be OFF.
 disks with gitmount (an auto-mount script).  This works for Linux, on
 other systems it might be different.
 
-** Read the gnuitrc.TERM files to find out how to configure GIT's
+** Read the gnuitrc.TERM files to find out how to configure GNUIT's
 colors, keys ...
 
 **  If you are using termcap and your system has a huge termcap
@@ -96,7 +96,7 @@ like this to your .profile :
 
 	TERMCAP=/home/mike/.termcap
 
-This will speed up GIT at startup.  If you are using terminfo, don't
+This will speed up GNUIT at startup.  If you are using terminfo, don't
 bother.
 
 ** In order to be able to read the Info documentation you should
@@ -106,21 +106,21 @@ directory could be different).  This is *NOT* done by 'make install'.
 
 ** Read the info documentation.  The man pages are obsolete.  They are
 provided only for those people that don't have info, and just to give
-them an idea about what git is.
+them an idea about what gnuit is.
 
-** If you want to take full advantage of all git's features, it is
+** If you want to take full advantage of all gnuit's features, it is
 highly recommended that you install the GNU gzip program.  You can
 download it from ftp.gnu.org (/pub/gnu/gzip).
 
 ** It might be a good idee to install the GNU termcap library too.  On
 some systems it might make a difference.
 
-** For SCO Unix users: please use -lmalloc when linking git.  See the
+** For SCO Unix users: please use -lmalloc when linking gnuit.  See the
 PROBLEMS file for more details.
 
 ** For Linux users: you might want to create the special devices for
 reading/writing the virtual console memory.  Use the mkvcs script
-provided with git.  Be aware that current Linux systems do not change
+provided with gnuit.  Be aware that current Linux systems do not change
 the owner of these devices at login time as it is usually done for
 ttys.  Therefore, mkvcs creates /dev/vcs?[0-8] with mode 0666.  This
 is a major security hole on multiuser systems!  It is recommended that
@@ -131,7 +131,7 @@ change the owner of these devices...
 ** In order to use per directory .gitaction scripts you should copy
 the .gitaction example in the target directories and then modify it.
 
-** If git appears to be slow, please consider setting TypeSensitivity
+** If gnuit appears to be slow, please consider setting TypeSensitivity
 to OFF in the configuration files.
 
 ** If your terminal or terminal emulator supports ANSI colors
