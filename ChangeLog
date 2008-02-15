@@ -1,8 +1,15 @@
+2008-02-15  Ian Beckwith  <ianb@erislabs.net>
+
+	* Updated gnulib to 20080214 commit 501a61c5.
+	* Added license texts to many files.
+
 2008-01-23  Ian Beckwith  <ianb@erislabs.net>
 
-	* Update gnulib to 20080123 commit 16c6ed60fb
-	  (including MacOS putenv fix)
-	* gitfm/gitps/gitview/gitwhich: add program_name global for lib/error.c
+	* Updated gnulib to 20080123 commit 16c6ed60fb
+	  (including MacOS putenv fix).
+	* gitfm/gitps/gitview/gitwhich: add program_name global for lib/error.c.
+	* Include m4/utimes.m4 in EXTRA_DIST.
+	* Added license notices to files in term/
 
 2008-01-22  Ian Beckwith  <ianb@erislabs.net>
 

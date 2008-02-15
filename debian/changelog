@@ -1,8 +1,9 @@
 gnuit (4.9.3-1) unstable; urgency=low
 
   * New upstream version.
+  * Updated license info in debian/copyright.
 
- -- Ian Beckwith <ianb@erislabs.net>  Fri, 15 Feb 2008 03:07:30 +0000
+ -- Ian Beckwith <ianb@erislabs.net>  Fri, 15 Feb 2008 21:41:15 +0000
 
 gnuit (4.9.2-1) unstable; urgency=low
 
