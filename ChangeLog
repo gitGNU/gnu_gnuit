@@ -1,7 +1,7 @@
 2008-01-23  Ian Beckwith  <ianb@erislabs.net>
 
 	* Update gnulib to 20080123 commit 16c6ed60fb
-	  (including MacOS setenv fix)
+	  (including MacOS putenv fix)
 	* gitfm/gitps/gitview/gitwhich: add program_name global for lib/error.c
 
 2008-01-22  Ian Beckwith  <ianb@erislabs.net>
