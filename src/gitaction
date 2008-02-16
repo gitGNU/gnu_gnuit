@@ -1145,25 +1145,54 @@ INBOX|OUTBOX)
 		echo "$msg"; read key;;
 
 *)
+		FILE_VIEWER="$GIT_PAGER";				\
+		FILE_NAME="$file";					\
 		if test -x "$file"; then				\
-		    FILE_VIEWER=file;					\
 		    if test `uname` = "Linux"; then			\
-			VIEWER_OPTIONS="-L";				\
+			FILE_OPTIONS="-L";				\
 		    fi;							\
-		    "$FILE_VIEWER" $VIEWER_OPTIONS "$file" |		\
-		    	grep "text\|data" >/dev/null 2>&1;		\
-		    if test $? -eq 0; then				\
-			"$GIT_PAGER" "$file";				\
-		    else						\
-			"$FILE_VIEWER" $VIEWER_OPTIONS "$file" |	\
+		    file $FILE_OPTIONS "$file" |			\
 			    grep "ELF" > /dev/null 2>&1;		\
-			if test $? -eq 0; then				\
-			    "$FILE_VIEWER" $VIEWER_OPTIONS "$file";	\
-			    ldd "$file";				\
-			fi;						\
+		    if test $? -eq 0; then				\
+		        file $FILE_OPTIONS "$file";			\
+		        ldd "$file";					\
+		        echo "$msg"; read key;				\
+		        exit;						\
+		    fi;							\
+		fi;							\
+		if test `uname -s` = "Darwin"; then			\
+		    gitwhich open;					\
+		    if test $? -eq 0; then				\
+		        FILE_VIEWER=open;				\
 		    fi;							\
 		else							\
-		    "$GIT_PAGER" "$file";				\
+		    FILEOUT="`file --mime-type "$file" 2>/dev/null`";	\
+		    if test $? -eq 0; then 				\
+		        MIMETYPE=`echo "$FILEOUT" | sed 's/.*: *//;'`;	\
+		    fi;							\
+		    gitwhich see;					\
+		    if test $? -eq 0; then				\
+			FILE_VIEWER="see";				\
+			if test -n "$MIMETYPE"; then			\
+			    FILE_NAME="${MIMETYPE}:${file}";		\
+			fi;						\
+		    else						\
+		        gitwhich metamail;				\
+		        if test $? -eq 0; then				\
+		            if test -n "$MIMETYPE"; then		\
+			        FILE_VIEWER="metamail";			\
+			        VIEWER_OPTIONS="-d -b -c $MIMETYPE";	\
+			    fi;						\
+		        fi;						\
+		    fi;							\
+		fi;							\
+		"$FILE_VIEWER" $VIEWER_OPTIONS "$FILE_NAME"; 		\
+		if test $? -ne 0; then					\
+		    if test "$FILE_VIEWER" != "$GIT_PAGER"; then	\
+		        echo "\"$FILE_VIEWER\" failed; falling back on \"$GIT_PAGER\"";	\
+			read key;					\
+			"$GIT_PAGER" "$file";				\
+		    fi;							\
 		fi;							\
 		echo "$msg"; read key;;
 esac

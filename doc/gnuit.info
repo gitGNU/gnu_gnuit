@@ -1125,7 +1125,7 @@ File: gnuit.info,  Node: Searching Files,  Next: Archive Files,  Prev: Wiping Fi
 ........................
 
 `ESC %'
-     Searche files on the file system, starting from the current directory
+     Search files on the file system, starting from the current directory
      (`FIND').
    
 `ESC &'
@@ -1526,7 +1526,7 @@ File: gnuit.info,  Node: Comparing Dirs,  Next: Dirs Usage,  Prev: Renaming Dirs
 `^C c t'
      Compare the files in the left panel with the files in the right one.
      The contents of each file in the current panel will be compared against
-     the contents of its couterpart (if any) from the other panel.
+     the contents of its counterpart (if any) from the other panel.
    
 `^C f d'
      Recursively compare (using `diff -r -q') the current directory with
@@ -1934,7 +1934,7 @@ combinations:
      a list of currently running processes (`GITPS', `PS').
    
 `ESC P T'
-     Call `pstree'(1) in order to displat the tree of currently running
+     Call `pstree'(1) in order to display the tree of currently running
      processes (`PSTREE').
    
 `^X k'
@@ -2746,7 +2746,7 @@ where `pattern' is a file name matching pattern, `foreground',
 `background' and `brightness' are the color specification to be used
 when a file whose name match the given `pattern' is displayed in a
 panel.  Colors can be turned off using the `TypeSensitivity' variable
-in the `GITFM-Setup' seection.
+in the `GITFM-Setup' section.
 
 
 File: gnuit.info,  Node: gitps Sections,  Next: gitview Sections,  Prev: gitfm Sections,  Up: Configuration Files
@@ -4207,7 +4207,7 @@ Concept Index
 * Previous directory history entry:      Dirs History.         (line 23)
 * Previous history element:              History.              (line 15)
 * printing:                              Printing Files.       (line  9)
-* Printining files:                      Printing Files.       (line  9)
+* Printing files:                        Printing Files.       (line  9)
 * Program search:                        Searching Files.      (line 17)
 * Quota:                                 Sysinfo.              (line 21)
 * Re-reading directories.:               Refreshing.           (line 20)
@@ -4374,19 +4374,19 @@ Node: Spell Checking Files37759
 Node: Printing Files38017
 Node: Wiping Files38482
 Node: Searching Files38818
-Node: Archive Files39361
-Node: DEB Packages41193
-Node: RPM Packages44161
-Node: File Types45545
-Node: MSDOS Files45764
-Node: Actions47862
-Node: Directories48792
-Node: Creating Dirs49557
-Node: Copying Dirs49834
-Node: Deleting Dirs50316
-Node: Moving Dirs50755
-Node: Renaming Dirs51234
-Node: Comparing Dirs51677
+Node: Archive Files39360
+Node: DEB Packages41192
+Node: RPM Packages44160
+Node: File Types45544
+Node: MSDOS Files45763
+Node: Actions47861
+Node: Directories48791
+Node: Creating Dirs49556
+Node: Copying Dirs49833
+Node: Deleting Dirs50315
+Node: Moving Dirs50754
+Node: Renaming Dirs51233
+Node: Comparing Dirs51676
 Node: Dirs Usage52911
 Node: Changing Dirs53187
 Node: Dirs History53865
@@ -4445,22 +4445,22 @@ Node: save-screen92227
 Node: pause92927
 Node: hide93266
 Node: GITFM-FTI94146
-Node: gitps Sections94728
-Node: GITPS-Setup95122
-Node: GITPS-Color95362
-Node: GITPS-Monochrome95730
-Node: GITPS-Keys96135
-Node: gitview Sections96265
-Node: GITVIEW-Setup96648
-Node: GITVIEW-Color96898
-Node: GITVIEW-Monochrome97280
-Node: GITVIEW-Keys97699
-Node: Limitations97835
-Node: Bugs99245
-Node: Copying This Manual99530
-Node: Key Index121905
-Node: Command Index141671
-Node: Variable Index160795
-Node: Concept Index162853
+Node: gitps Sections94727
+Node: GITPS-Setup95121
+Node: GITPS-Color95361
+Node: GITPS-Monochrome95729
+Node: GITPS-Keys96134
+Node: gitview Sections96264
+Node: GITVIEW-Setup96647
+Node: GITVIEW-Color96897
+Node: GITVIEW-Monochrome97279
+Node: GITVIEW-Keys97698
+Node: Limitations97834
+Node: Bugs99244
+Node: Copying This Manual99529
+Node: Key Index121904
+Node: Command Index141670
+Node: Variable Index160794
+Node: Concept Index162852
 
 End Tag Table

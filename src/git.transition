@@ -5,7 +5,7 @@ cat >&2 << EOT
 git, the filemanager with GNU Interactive Tools, is now called gitfm.
 
 If you are looking for git, Linus Torvald's content tracker,
-go to http://git.or.cz/. If it is already installed see git(7).
+go to http://git.or.cz/. If it is already installed, see git(7).
 
 This transition script will be removed in a later release.
 
