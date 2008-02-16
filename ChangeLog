@@ -4,11 +4,12 @@
 	* Added license notices to many files.
 	* gnuit.texinfo: fixed typos (Thanks to Ralf Wildenhues).
 	* README: fixed more references to git (Thanks to MJ Ray).
-	* gitaction: fall back to open (on mac), see, metamail
-	  and finally $GIT_PAGER.
-	* gnuitrc.common.IN: add "-k" to du invocation.
-	* Made scripts in src/ executable.
-	* git.transition: tweak text.
+	* Thanks to Tudor Hulubei for suggesting the following:
+	  + gitaction: fall back to open (on mac), see, metamail
+	    and finally $GIT_PAGER.
+	  + gnuitrc.common.IN: add "-k" to du invocation.
+	  + Made scripts in src/ executable.
+	  + git.transition: tweak text.
 
 2008-01-23  Ian Beckwith  <ianb@erislabs.net>
 
