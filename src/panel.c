@@ -297,6 +297,8 @@ static int StartupScrollStep;
 static int CurrentSortMethod;
 static int LeadingDotMatch = OFF;
 static int InfoDisplay     = OFF;
+static int GroupDigits     = ON;
+static int MaxUnscaledDigits=9;
 
 static char nice_try[] = "Nice try, maybe later... :-)";
 
@@ -397,9 +399,12 @@ panel_init(path)
 					   FILE_SORT_METHODS, 0);
     this->sort_method = StartupFileSortMethod;
 
+    MaxUnscaledDigits=get_int_var("MaxUnscaledDigits",9);
+
     InfoDisplay     = get_flag_var("InfoDisplay",     ON);
     LeadingDotMatch = get_flag_var("LeadingDotMatch", ON);
-
+    GroupDigits     = get_flag_var("GroupDigits", ON);
+    
 
     use_section(AnsiColors ? color_section : monochrome_section);
 
@@ -1409,8 +1414,10 @@ panel_beautify_number(buf, number, inflags)
     off64_t number;
     int inflags;
 {
-    int flags = ( inflags | human_ceiling | human_group_digits | human_suppress_point_zero );
-    if (number > 9999)
+    int flags = ( inflags | human_ceiling | human_suppress_point_zero );
+    if(GroupDigits)
+	flags |=  human_group_digits;
+    if (strlen(human_readable(number, buf, human_ceiling, 1, 1)) > MaxUnscaledDigits)
 	flags |= (human_autoscale | human_SI);
     return human_readable(number, buf, flags, 1, 1);
 }
