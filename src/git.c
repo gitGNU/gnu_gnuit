@@ -77,8 +77,8 @@
 char *copyright =
 "GIT is free software; you can redistribute it and/or modify it under the\n\
 terms of the GNU General Public License as published by the Free Software\n\
-Foundation; either version 2, or (at your option) any later version.\n\
-Copyright (C) 1993-2001, 2007 Free Software Foundation, Inc.\n\
+Foundation; either version 3, or (at your option) any later version.\n\
+Copyright (C) 1993-2001, 2007-2008 Free Software Foundation, Inc.\n\
 Written by Tudor Hulubei and Andrei Pitis, Bucharest, Romania\n\n";
 
 
