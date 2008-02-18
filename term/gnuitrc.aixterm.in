@@ -45,8 +45,10 @@ StartupScrollStep	=	# empty means half the number of lines
 ###
 
 [GITFM-Setup]
-StartupFileDisplayMode	= Size	# OwnerGroup, DateTime, Size, Mode or FullName
+StartupFileDisplayMode	= Size	# OwnerGroup, DateTime, Size, AbbrevSize, Mode or FullName
 StartupFileSortMethod	= Name	# Name, Extension, Size, Date, Mode, OwnerId, GroupId, OwnerName or GroupName
+MaxUnscaledDigits       = 9
+GroupDigits             = ON
 ConfirmOnExit		=	# empty means OFF
 HistoryFile		= ~/.githistory
 InfoDisplay		= ON
