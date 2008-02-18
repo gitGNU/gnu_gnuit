@@ -130,13 +130,14 @@ extern int TypeSensitivity;
 char rights[16] = "-rwxrwxrwx";
 
 
-#define FILE_DISPLAY_MODES      6
+#define FILE_DISPLAY_MODES      7
 
 char *FileDisplayMode[FILE_DISPLAY_MODES] =
 {
     "OwnerGroup",
     "DateTime",
     "Size",
+    "AbbrevSize",
     "Mode",
     "FullName",
     "All",
@@ -1681,10 +1682,12 @@ panel_build_entry_field(this, entry, display_mode, offset)
 	    break;
 
 	case ENABLE_SIZE:
+	case ENABLE_ABBREVSIZE:
 	{
 	    char *ptr;
 	    int szlen;
-	    sz=panel_beautify_number(hbuf,this->dir_entry[entry].size,0);
+	    int flags = (display_mode==ENABLE_ABBREVSIZE) ? (human_autoscale|human_SI) : 0;
+	    sz=panel_beautify_number(hbuf,this->dir_entry[entry].size,flags);
 	    szlen=min(strlen(sz),10);
 	    ptr=this->temp + this->columns - 2 - offset;
 	    if(szlen < 10)
@@ -1728,6 +1731,7 @@ static int reserved_characters[FILE_DISPLAY_MODES] =
 {
     1 + 1 +                16 + 1 + 1,
     1 + 1 +                16 + 1 + 1,
+    1 + 1 +                11 + 1 + 1,
     1 + 1 +                11 + 1 + 1,
     1 + 1 +                11 + 1 + 1,
     1 + 1 +                 0 + 1 + 1,
@@ -1809,6 +1813,7 @@ panel_update_entry(this, entry)
 		break;
 
 	    case ENABLE_SIZE:
+	    case ENABLE_ABBREVSIZE:
 	    case ENABLE_MODE:
 		panel_build_entry_field(this, entry, this->display_mode, 11);
 		break;

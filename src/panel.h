@@ -138,9 +138,10 @@
 #define ENABLE_OWNER_GROUP	0
 #define ENABLE_DATE_TIME	1
 #define ENABLE_SIZE		2
-#define ENABLE_MODE		3
-#define ENABLE_FULL_NAME	4
-#define ENABLE_ALL		5
+#define ENABLE_ABBREVSIZE	3
+#define ENABLE_MODE		4
+#define ENABLE_FULL_NAME	5
+#define ENABLE_ALL		6
 
 
 /* File types.  */
