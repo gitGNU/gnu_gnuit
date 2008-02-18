@@ -815,6 +815,7 @@ F10	= exit
 ^[em	= panel-enable-mode
 ^[eo	= panel-enable-owner-group
 ^[es	= panel-enable-size
+^[eS	= panel-enable-abbrevsize
 ^[sd	= panel-sort-by-date
 ^[se	= panel-sort-by-extension
 ^[sm	= panel-sort-by-mode
