@@ -1463,7 +1463,7 @@ panel_update_size(this)
 
 	n = free_blocks * fsu.fsu_blocksize;
 
-	sz=panel_beautify_number(buf, n, 0);
+	sz=panel_beautify_number(buf, n, (human_autoscale|human_SI));
 
 	tty_brightness(PanelDeviceFreeSpaceBrightness);
 	tty_foreground(PanelDeviceFreeSpace);
