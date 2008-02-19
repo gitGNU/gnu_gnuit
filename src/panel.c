@@ -1603,24 +1603,39 @@ panel_update_info(this)
     if (this->selected_entries)
     {
 	int entry;
-	int offset;
-	char *sz;
-	char buf[LONGEST_HUMAN_READABLE+1];
+	int shortoffset;
+	int longoffset;
+	char *shortsz;
+	char *longsz;
+	char shortnumbuf[LONGEST_HUMAN_READABLE+1];
+	char longnumbuf[LONGEST_HUMAN_READABLE+1];
 
 	for (entry = 0; entry < this->entries; entry++)
 	    if (this->dir_entry[entry].selected &&
 		this->dir_entry[entry].type == FILE_ENTRY)
 		total_size += this->dir_entry[entry].size;
 
-	sz=panel_beautify_number(buf, total_size, (human_SI|human_autoscale|human_B));
-
-	for (offset = 0; sz[offset] == ' '; offset++)
+	longsz =panel_beautify_number(longnumbuf,  total_size, 0);
+	for (longoffset  = 0; longsz[longoffset]   == ' '; longoffset++)
 	    ;
-
-	sprintf(str, "%s in %d file%s",
-		&sz[offset], this->selected_entries,
-		(this->selected_entries > 1) ? "s" : "");
-
+	if (total_size > 999)
+	{
+	    shortsz=panel_beautify_number(shortnumbuf, total_size,
+					  (human_SI|human_autoscale|human_B));
+	    for (shortoffset = 0; shortsz[shortoffset] == ' '; shortoffset++)
+		;
+	    sprintf(str, "%s (%s) in %d file%s",
+		    &longsz[longoffset], &shortsz[shortoffset],
+		    this->selected_entries,
+		    (this->selected_entries > 1) ? "s" : "");
+	}
+	else
+	{
+	    sprintf(str, "%s in %d file%s",
+		    &longsz[longoffset],
+		    this->selected_entries,
+		    (this->selected_entries > 1) ? "s" : "");
+	}
 	tty_brightness(PanelFilesInfoBrightness);
 	tty_foreground(PanelFilesInfo);
     }
