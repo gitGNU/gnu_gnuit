@@ -1415,12 +1415,71 @@ panel_beautify_number(buf, number, inflags)
     int inflags;
 {
     int flags = ( inflags | human_ceiling | human_suppress_point_zero );
-    if(GroupDigits)
-	flags |=  human_group_digits;
-    if (strlen(human_readable(number, buf, human_ceiling, 1, 1)) > MaxUnscaledDigits)
-	flags |= (human_autoscale | human_SI);
     return human_readable(number, buf, flags, 1, 1);
 }
+
+static int panel_fit_number(buf, number, flags, maxlen)
+    char *buf;
+    off64_t number;
+    int flags;
+    int maxlen;
+{
+    char *str=NULL;
+    int scaled=(flags & human_autoscale);
+    /* try grouping digits */
+    if(GroupDigits)
+	str=panel_beautify_number(buf,number,(flags|human_group_digits));
+    /* if not grouping digits or num was too big */
+    if((str == NULL) || (strlen(str) > maxlen))
+	str=panel_beautify_number(buf,number,flags);
+    /* if still too big, force autoscale */
+    if(strlen(str) > maxlen)
+    {
+	scaled=1;
+	str=panel_beautify_number(buf, number, (flags|human_autoscale|human_SI));
+    }
+    strncpy(buf,str,maxlen);
+    /* just in case */
+    buf[maxlen]='\0';
+    return scaled;
+}
+
+
+static char *
+panel_beautify_info_number(buf, number, width, numfiles)
+    char *buf;
+    off64_t number;
+    int width;
+    int numfiles;
+{
+    char shortnumbuf[LONGEST_HUMAN_READABLE+1];
+    char *shortnum;
+    char longnumbuf[LONGEST_HUMAN_READABLE+1];
+    char filesbuf[LONGEST_HUMAN_READABLE+1];
+    char *filestr;
+    int scaled;
+
+    filestr=panel_beautify_number(filesbuf, (off64_t) numfiles,
+				  (GroupDigits ? human_group_digits : 0));
+
+/* " (xxxxxPB) in yyyyy files", not including yyyyy */
+#define STATIC_TEXT_LEN 18
+    scaled=panel_fit_number(longnumbuf, number, 0,
+			    (width - (STATIC_TEXT_LEN + strlen(filestr))));
+    if ( (!scaled) && (number > 999) )
+    {
+	shortnum=panel_beautify_number(shortnumbuf, number,
+				       (human_SI|human_autoscale|human_B));
+	sprintf(buf, "%s (%s) in %s file%s", longnumbuf, shortnum,
+		filestr, (numfiles > 1) ? "s" : "");
+    }
+    else
+    {
+	sprintf(buf, "%s in %s file%s", longnumbuf, filestr, (numfiles > 1) ? "s" : "");
+    }
+    return buf;
+}
+
 
 
 void
@@ -1463,7 +1522,7 @@ panel_update_size(this)
 
 	n = free_blocks * fsu.fsu_blocksize;
 
-	sz=panel_beautify_number(buf, n, (human_autoscale|human_SI));
+	sz=panel_beautify_number(buf, n, (human_autoscale|human_SI|human_B));
 
 	tty_brightness(PanelDeviceFreeSpaceBrightness);
 	tty_foreground(PanelDeviceFreeSpace);
@@ -1603,39 +1662,11 @@ panel_update_info(this)
     if (this->selected_entries)
     {
 	int entry;
-	int shortoffset;
-	int longoffset;
-	char *shortsz;
-	char *longsz;
-	char shortnumbuf[LONGEST_HUMAN_READABLE+1];
-	char longnumbuf[LONGEST_HUMAN_READABLE+1];
-
 	for (entry = 0; entry < this->entries; entry++)
-	    if (this->dir_entry[entry].selected &&
-		this->dir_entry[entry].type == FILE_ENTRY)
+	    if  (this->dir_entry[entry].selected &&
+		 this->dir_entry[entry].type == FILE_ENTRY)
 		total_size += this->dir_entry[entry].size;
-
-	longsz =panel_beautify_number(longnumbuf,  total_size, 0);
-	for (longoffset  = 0; longsz[longoffset]   == ' '; longoffset++)
-	    ;
-	if (total_size > 999)
-	{
-	    shortsz=panel_beautify_number(shortnumbuf, total_size,
-					  (human_SI|human_autoscale|human_B));
-	    for (shortoffset = 0; shortsz[shortoffset] == ' '; shortoffset++)
-		;
-	    sprintf(str, "%s (%s) in %d file%s",
-		    &longsz[longoffset], &shortsz[shortoffset],
-		    this->selected_entries,
-		    (this->selected_entries > 1) ? "s" : "");
-	}
-	else
-	{
-	    sprintf(str, "%s in %d file%s",
-		    &longsz[longoffset],
-		    this->selected_entries,
-		    (this->selected_entries > 1) ? "s" : "");
-	}
+	panel_beautify_info_number(str, total_size, this->columns, this->selected_entries);
 	tty_brightness(PanelFilesInfoBrightness);
 	tty_foreground(PanelFilesInfo);
     }
@@ -1687,7 +1718,6 @@ panel_build_entry_field(this, entry, display_mode, offset)
 {
     char temp_rights[16];
     char hbuf[LONGEST_HUMAN_READABLE];
-    char *sz;
 
     switch (display_mode)
     {
@@ -1707,17 +1737,23 @@ panel_build_entry_field(this, entry, display_mode, offset)
 	case ENABLE_ABBREVSIZE:
 	{
 	    char *ptr;
-	    int szlen;
-	    int flags = (display_mode==ENABLE_ABBREVSIZE) ? (human_autoscale|human_SI) : 0;
-	    sz=panel_beautify_number(hbuf,this->dir_entry[entry].size,flags);
-	    szlen=min(strlen(sz),10);
-	    ptr=this->temp + this->columns - 2 - offset;
-	    if(szlen < 10)
+	    int buflen;
+	    int flags = 0;
+	    if((display_mode==ENABLE_ABBREVSIZE) ||
+	       (strlen(human_readable(this->dir_entry[entry].size,
+				      hbuf, human_ceiling, 1, 1)) > MaxUnscaledDigits))
 	    {
-		memset(ptr,' ',10-szlen);
-		ptr += (10-szlen);
+		flags |= (human_autoscale | human_SI);
 	    }
-	    memcpy(ptr, sz, szlen);
+	    panel_fit_number(hbuf, this->dir_entry[entry].size, flags, 10);
+	    buflen=min(strlen(hbuf),10);
+	    ptr=this->temp + this->columns - 2 - offset;
+	    if(buflen < 10)
+	    {
+		memset(ptr,' ',10-buflen);
+		ptr += (10-buflen);
+	    }
+	    memcpy(ptr, hbuf, buflen);
 	    break;
 	}
 
