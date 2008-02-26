@@ -2,14 +2,22 @@
 
 	* Updated gnulib to 20080214 commit 501a61c5.
 	* Added license notices to many files.
-	* gnuit.texinfo: fixed typos (Thanks to Ralf Wildenhues).
+	* gitfm:
+	  + Scale file sizes to fit available space.
+	  + New panel minor mode AbbrevSize (accessed with escape-e-S)
+	    Always scale file sizes (to eg 123M).
+	  + panel_update_size: always scale (human_autoscale|human_SI|human_B).
+	* New config variables: GroupDigits, MaxUnscaledDigits.
+	* gnuit.texinfo
+	  + fixed typos (Thanks to Ralf Wildenhues).
+	  + Documented gitfm changes.
 	* README: fixed more references to git (Thanks to MJ Ray).
-	* Thanks to Tudor Hulubei for suggesting the following:
-	  + gitaction: fall back to open (on mac), see, metamail
-	    and finally $GIT_PAGER.
-	  + gnuitrc.common.IN: add "-k" to du invocation.
-	  + Made scripts in src/ executable.
-	  + git.transition: tweak text.
+	* gitaction: fall back to open (on mac), see, metamail
+	  and finally $GIT_PAGER.
+	* gnuitrc.common.IN: add "-k" to du invocation.
+	* Made scripts in src/ executable.
+	* git.transition: tweak text.
+	* Thanks to Tudor Hulubei for many useful suggestions.
 
 2008-01-23  Ian Beckwith  <ianb@erislabs.net>
 

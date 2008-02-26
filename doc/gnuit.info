@@ -320,6 +320,9 @@ available.
 `ESC e s'
      Display the entry size (`panel-enable-size').
    
+`ESC e S'
+     Display the entry size, scaled (e.g. `123M') (`panel-enable-abbrevsize').
+   
 `ESC e m'
      Display the entry mode (`panel-enable-mode').
    
@@ -2375,9 +2378,9 @@ In this section the variables have only one field.
 `StartupFileDisplayMode'
 
    This variable specifies the file specific information displayed at
-startup.  It can be any of `OwnerGroup', `DateTime', `Size', `Mode' or
-`FullName'.  Its value initially affects both panels but it can be
-changed separately afterward.  
+startup.  It can be any of `OwnerGroup', `DateTime', `Size',
+`AbbrevSize', `Mode' or `FullName'.  Its value initially affects both
+panels but it can be changed separately afterward.  
 
 `StartupFileSortMethod'
 
@@ -2385,6 +2388,19 @@ changed separately afterward.
 `Name', `Extension', `Size', `Date', `Mode', `OwnerId', `GroupId',
 `OwnerName' or `GroupName'.  Its value initially affects both panels
 but it can be changed separately afterward.  
+
+`MaxUnscaledDigits'
+
+   Maximum number of digits a number may be before being scaled (e.g. to
+`123M'). If you want number to always be scaled, either set this to
+`0', or set `StartupFileDisplayMode' to `AbbrevSize'.  Note that
+scaling may happen anyway if the number is too large for the display
+field.  
+
+`GroupDigits'
+
+   If this variable is `ON', digits of file sizes will be grouped
+according to your locale, (e.g. `123,456,789').  
 
 `ConfirmOnExit'
 
@@ -3346,8 +3362,8 @@ Key Index
  [index ]
 * Menu:
 
-* ^[]:                                   Modes.                (line 68)
-* ^]:                                    Modes.                (line 68)
+* ^[]:                                   Modes.                (line 71)
+* ^]:                                    Modes.                (line 71)
 * ^A:                                    Moving Point.         (line 20)
 * ^B, LEFT:                              Moving Point.         (line  8)
 * ^C -:                                  Archive Files.        (line 26)
@@ -3538,11 +3554,12 @@ Key Index
 * ESC BKSPC:                             Erasing.              (line 14)
 * ESC c:                                 Case Changes.         (line 17)
 * ESC d:                                 Erasing.              (line 17)
-* ESC e a:                               Modes.                (line 63)
+* ESC e a:                               Modes.                (line 66)
 * ESC e d:                               Modes.                (line 48)
-* ESC e f:                               Modes.                (line 57)
-* ESC e m:                               Modes.                (line 54)
+* ESC e f:                               Modes.                (line 60)
+* ESC e m:                               Modes.                (line 57)
 * ESC e o:                               Modes.                (line 45)
+* ESC e S:                               Modes.                (line 54)
 * ESC e s:                               Modes.                (line 51)
 * ESC ESC 1:                             Hot Keys.             (line 23)
 * ESC ESC 2:                             Hot Keys.             (line 26)
@@ -3800,11 +3817,12 @@ Command Index
 * next-line:                             Moving.               (line 16)
 * other-panel:                           Moving.               (line 45)
 * other-path-to-input-line:              Inserting Text.       (line 20)
-* panel-enable-all:                      Modes.                (line 63)
+* panel-enable-abbrevsize:               Modes.                (line 54)
+* panel-enable-all:                      Modes.                (line 66)
 * panel-enable-date-time:                Modes.                (line 48)
-* panel-enable-full-name:                Modes.                (line 57)
-* panel-enable-mode:                     Modes.                (line 54)
-* panel-enable-next-mode:                Modes.                (line 68)
+* panel-enable-full-name:                Modes.                (line 60)
+* panel-enable-mode:                     Modes.                (line 57)
+* panel-enable-next-mode:                Modes.                (line 71)
 * panel-enable-owner-group:              Modes.                (line 45)
 * panel-enable-size:                     Modes.                (line 51)
 * panel-sort-by-date:                    Sorting.              (line 24)
@@ -3896,8 +3914,8 @@ Variable Index
 * Menu:
 
 * AnsiColors:                            Setup.                (line 14)
-* CommandLineModeHelp:                   GITFM-Setup.          (line 62)
-* ConfirmOnExit:                         GITFM-Setup.          (line 25)
+* CommandLineModeHelp:                   GITFM-Setup.          (line 75)
+* ConfirmOnExit:                         GITFM-Setup.          (line 38)
 * EDITOR:                                Environment Variables.
                                                                (line 38)
 * GIT_BROWSER:                           Environment Variables.
@@ -3910,17 +3928,19 @@ Variable Index
                                                                (line 38)
 * GIT_VMSTAT:                            Environment Variables.
                                                                (line 38)
-* HistoryFile:                           GITFM-Setup.          (line 30)
-* InfoDisplay:                           GITFM-Setup.          (line 35)
-* LeadingDotMatch:                       GITFM-Setup.          (line 41)
-* NormalModeHelp:                        GITFM-Setup.          (line 62)
+* GroupDigits:                           GITFM-Setup.          (line 33)
+* HistoryFile:                           GITFM-Setup.          (line 43)
+* InfoDisplay:                           GITFM-Setup.          (line 48)
+* LeadingDotMatch:                       GITFM-Setup.          (line 54)
+* MaxUnscaledDigits:                     GITFM-Setup.          (line 28)
+* NormalModeHelp:                        GITFM-Setup.          (line 75)
 * SHELL:                                 Environment Variables.
                                                                (line 38)
 * StartupFileDisplayMode:                GITFM-Setup.          (line 13)
 * StartupFileSortMethod:                 GITFM-Setup.          (line 20)
 * StartupScrollStep:                     Setup.                (line 26)
 * TERM:                                  Configuration Files.  (line 14)
-* TypeSensitivity:                       GITFM-Setup.          (line 49)
+* TypeSensitivity:                       GITFM-Setup.          (line 62)
 * UseLastScreenChar:                     Setup.                (line 21)
 
 
@@ -4061,7 +4081,7 @@ Concept Index
 * Directory delete:                      Deleting Dirs.        (line  9)
 * Directory diff:                        Comparing Dirs.       (line 20)
 * Directory history reset:               Dirs History.         (line 28)
-* Directory mode:                        Modes.                (line 54)
+* Directory mode:                        Modes.                (line 57)
 * Directory move:                        Moving Dirs.          (line 10)
 * Directory rename:                      Renaming Dirs.        (line  9)
 * Directory size:                        Modes.                (line 51)
@@ -4074,8 +4094,8 @@ Concept Index
 * Editing multiple files:                Editing Files.        (line 13)
 * Editing the ChangeLog:                 Editing Files.        (line 21)
 * Emacs rmail:                           Mail.                 (line 34)
-* Enable all:                            Modes.                (line 63)
-* Enable next mode:                      Modes.                (line 68)
+* Enable all:                            Modes.                (line 66)
+* Enable next mode:                      Modes.                (line 71)
 * Encoding files:                        Encoding Files.       (line  8)
 * Encoding files in background:          Encoding Files.       (line 12)
 * Encrypting the current file:           Encrypting Files.     (line  8)
@@ -4093,9 +4113,9 @@ Concept Index
 * File create:                           Editing Files.        (line 17)
 * File delete:                           Deleting Files.       (line  8)
 * File edit:                             Editing Files.        (line  9)
-* File mode:                             Modes.                (line 54)
+* File mode:                             Modes.                (line 57)
 * File move:                             Moving Files.         (line  9)
-* File or directory mode:                Modes.                (line 54)
+* File or directory mode:                Modes.                (line 57)
 * File or directory size:                Modes.                (line 51)
 * File rename:                           Renaming Files.       (line  9)
 * File search:                           Searching Files.      (line  9)
@@ -4110,13 +4130,13 @@ Concept Index
 * Forward char:                          Moving Point.         (line 11)
 * Forward word:                          Moving Point.         (line 17)
 * Free disk space:                       Sysinfo.              (line 25)
-* Full directory info:                   Modes.                (line 63)
-* Full directory name:                   Modes.                (line 57)
-* Full file info:                        Modes.                (line 63)
-* Full file name:                        Modes.                (line 57)
-* Full file or directory name:           Modes.                (line 57)
-* Full info:                             Modes.                (line 63)
-* Full name:                             Modes.                (line 57)
+* Full directory info:                   Modes.                (line 66)
+* Full directory name:                   Modes.                (line 60)
+* Full file info:                        Modes.                (line 66)
+* Full file name:                        Modes.                (line 60)
+* Full file or directory name:           Modes.                (line 60)
+* Full info:                             Modes.                (line 66)
+* Full name:                             Modes.                (line 60)
 * gitaction:                             gitaction.            (line  6)
 * gitfm:                                 gitfm.                (line  6)
 * gitkeys:                               gitkeys.              (line  6)
@@ -4341,126 +4361,126 @@ Node: gitfm5604
 Node: Conventions8128
 Node: Command line10021
 Node: Modes11080
-Node: Sorting13363
-Node: Moving14652
-Node: Selecting16260
-Node: Isearch17665
-Node: Input Line18790
-Node: Inserting Text19893
-Node: Moving Point20805
-Node: Erasing21402
-Node: Case Changes22680
-Node: History23116
-Node: Setting Mark23852
-Node: Yanking24187
-Node: Selecting Files24461
-Node: Files25378
-Node: Copying Files27107
-Node: Moving Files27475
-Node: Creating Files27864
-Node: Deleting Files28223
-Node: Linking Files28569
-Node: Renaming Files29224
-Node: Splitting Files29813
-Node: Packing Files30317
-Node: Inode31658
-Node: Editing Files33336
-Node: Viewing Files34068
-Node: Compressing Files34455
-Node: Encoding Files35856
-Node: Encrypting Files36799
-Node: Comparing Files37092
-Node: Spell Checking Files37759
-Node: Printing Files38017
-Node: Wiping Files38482
-Node: Searching Files38818
-Node: Archive Files39360
-Node: DEB Packages41192
-Node: RPM Packages44160
-Node: File Types45544
-Node: MSDOS Files45763
-Node: Actions47861
-Node: Directories48791
-Node: Creating Dirs49556
-Node: Copying Dirs49833
-Node: Deleting Dirs50315
-Node: Moving Dirs50754
-Node: Renaming Dirs51233
-Node: Comparing Dirs51676
-Node: Dirs Usage52911
-Node: Changing Dirs53187
-Node: Dirs History53865
-Node: Hot Keys54936
-Node: Compiling55565
-Node: Mail55966
-Node: Shell57122
-Node: Grep57411
-Node: Locking57839
-Node: Refreshing58237
-Node: Resetting58974
-Node: Mounting59228
-Node: Sysinfo62329
-Node: Environment63597
-Node: Processes64006
-Node: Sync66102
-Node: Documentation66355
-Node: Exit66851
-Node: gitps67071
-Node: gitview68593
-Node: gitkeys69447
-Node: gitwipe69836
-Node: gitmount70565
-Node: gitaction71329
-Node: gitunpack73219
-Node: gitrgrep73631
-Node: Customization74114
-Node: Environment Variables74417
-Node: Configuration Files75739
-Node: Key Sequences78830
-Node: Setup80163
-Node: gitfm Sections81118
-Node: GITFM-Setup81572
-Node: GITFM-Color83707
-Node: GITFM-Monochrome84076
-Node: GITFM-Keys84481
-Node: key-sequence85386
-Node: command-name86025
-Node: formatted-command86770
-Node: %s88097
-Node: %f88624
-Node: %d88869
-Node: %l89116
-Node: %t89369
-Node: %z89604
-Node: %a89835
-Node: %m90050
-Node: %g90254
-Node: %o90459
-Node: %p90664
-Node: %b90869
-Node: %i91084
-Node: %?91309
-Node: new-dir91801
-Node: save-screen92227
-Node: pause92927
-Node: hide93266
-Node: GITFM-FTI94146
-Node: gitps Sections94727
-Node: GITPS-Setup95121
-Node: GITPS-Color95361
-Node: GITPS-Monochrome95729
-Node: GITPS-Keys96134
-Node: gitview Sections96264
-Node: GITVIEW-Setup96647
-Node: GITVIEW-Color96897
-Node: GITVIEW-Monochrome97279
-Node: GITVIEW-Keys97698
-Node: Limitations97834
-Node: Bugs99244
-Node: Copying This Manual99529
-Node: Key Index121904
-Node: Command Index141670
-Node: Variable Index160794
-Node: Concept Index162852
+Node: Sorting13456
+Node: Moving14745
+Node: Selecting16353
+Node: Isearch17758
+Node: Input Line18883
+Node: Inserting Text19986
+Node: Moving Point20898
+Node: Erasing21495
+Node: Case Changes22773
+Node: History23209
+Node: Setting Mark23945
+Node: Yanking24280
+Node: Selecting Files24554
+Node: Files25471
+Node: Copying Files27200
+Node: Moving Files27568
+Node: Creating Files27957
+Node: Deleting Files28316
+Node: Linking Files28662
+Node: Renaming Files29317
+Node: Splitting Files29906
+Node: Packing Files30410
+Node: Inode31751
+Node: Editing Files33429
+Node: Viewing Files34161
+Node: Compressing Files34548
+Node: Encoding Files35949
+Node: Encrypting Files36892
+Node: Comparing Files37185
+Node: Spell Checking Files37852
+Node: Printing Files38110
+Node: Wiping Files38575
+Node: Searching Files38911
+Node: Archive Files39453
+Node: DEB Packages41285
+Node: RPM Packages44253
+Node: File Types45637
+Node: MSDOS Files45856
+Node: Actions47954
+Node: Directories48884
+Node: Creating Dirs49649
+Node: Copying Dirs49926
+Node: Deleting Dirs50408
+Node: Moving Dirs50847
+Node: Renaming Dirs51326
+Node: Comparing Dirs51769
+Node: Dirs Usage53004
+Node: Changing Dirs53280
+Node: Dirs History53958
+Node: Hot Keys55029
+Node: Compiling55658
+Node: Mail56059
+Node: Shell57215
+Node: Grep57504
+Node: Locking57932
+Node: Refreshing58330
+Node: Resetting59067
+Node: Mounting59321
+Node: Sysinfo62422
+Node: Environment63690
+Node: Processes64099
+Node: Sync66195
+Node: Documentation66448
+Node: Exit66944
+Node: gitps67164
+Node: gitview68686
+Node: gitkeys69540
+Node: gitwipe69929
+Node: gitmount70658
+Node: gitaction71422
+Node: gitunpack73312
+Node: gitrgrep73724
+Node: Customization74207
+Node: Environment Variables74510
+Node: Configuration Files75832
+Node: Key Sequences78923
+Node: Setup80256
+Node: gitfm Sections81211
+Node: GITFM-Setup81665
+Node: GITFM-Color84252
+Node: GITFM-Monochrome84621
+Node: GITFM-Keys85026
+Node: key-sequence85931
+Node: command-name86570
+Node: formatted-command87315
+Node: %s88642
+Node: %f89169
+Node: %d89414
+Node: %l89661
+Node: %t89914
+Node: %z90149
+Node: %a90380
+Node: %m90595
+Node: %g90799
+Node: %o91004
+Node: %p91209
+Node: %b91414
+Node: %i91629
+Node: %?91854
+Node: new-dir92346
+Node: save-screen92772
+Node: pause93472
+Node: hide93811
+Node: GITFM-FTI94691
+Node: gitps Sections95272
+Node: GITPS-Setup95666
+Node: GITPS-Color95906
+Node: GITPS-Monochrome96274
+Node: GITPS-Keys96679
+Node: gitview Sections96809
+Node: GITVIEW-Setup97192
+Node: GITVIEW-Color97442
+Node: GITVIEW-Monochrome97824
+Node: GITVIEW-Keys98243
+Node: Limitations98379
+Node: Bugs99789
+Node: Copying This Manual100074
+Node: Key Index122449
+Node: Command Index142288
+Node: Variable Index161485
+Node: Concept Index163689
 
 End Tag Table

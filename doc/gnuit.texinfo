@@ -433,6 +433,17 @@ Display the entry size (@samp{panel-enable-size}).
 @kindex ESC e s
 
 @noindent
+@kbd{ESC e S}
+@display
+Display the entry size, scaled (e.g. @samp{123M}) (@samp{panel-enable-abbrevsize}).
+@end display
+@cindex File size
+@cindex Directory size
+@cindex File or directory size
+@findex panel-enable-abbrevsize
+@kindex ESC e S
+
+@noindent
 @kbd{ESC e m}
 @display
 Display the entry mode (@samp{panel-enable-mode}).
@@ -4082,8 +4093,9 @@ In this section the variables have only one field.
 
 This variable specifies the file specific information displayed at
 startup.  It can be any of @samp{OwnerGroup}, @samp{DateTime},
-@samp{Size}, @samp{Mode} or @samp{FullName}.  Its value initially
-affects both panels but it can be changed separately afterward.
+@samp{Size}, @samp{AbbrevSize}, @samp{Mode} or @samp{FullName}.  Its
+value initially affects both panels but it can be changed separately
+afterward.
 @vindex StartupFileDisplayMode
 
 
@@ -4097,6 +4109,22 @@ Its value initially affects both panels but it can be changed separately
 afterward.
 @vindex StartupFileSortMethod
 
+@noindent
+@samp{MaxUnscaledDigits}
+
+Maximum number of digits a number may be before being scaled (e.g. to
+@samp{123M}). If you want number to always be scaled, either set this
+to @samp{0}, or set @samp{StartupFileDisplayMode} to @samp{AbbrevSize}.
+Note that scaling may happen anyway if the number is too large for the
+display field.
+@vindex MaxUnscaledDigits
+
+@noindent
+@samp{GroupDigits}
+
+If this variable is @samp{ON}, digits of file sizes will be grouped
+according to your locale, (e.g. @samp{123,456,789}).
+@vindex GroupDigits
 
 @noindent
 @samp{ConfirmOnExit}
