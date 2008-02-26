@@ -5,6 +5,24 @@
 			      =====================
 
 
+* Version 4.9.3
+================
+
+** Fixed MacOS support.
+
+** gitfm: Scale file sizes when needed to fit available space.
+
+** gitfm: New panel minor mode AbbrevSize: Always scale file sizes (to 
+   e.g. 123M). Accessed with escape-e-S (panel-enable-abbrevsize).
+
+** New config variables: GroupDigits, MaxUnscaledDigits.
+
+** gitaction: if no explicit action defined for filetype, falls back
+   to see(1), metamail(1), [on MacOS] open(1), and finally $GIT_PAGER.
+
+** Added explicit license notice to many files.
+
+
 * Version 4.9.2
 ================
 
