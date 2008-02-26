@@ -1400,14 +1400,6 @@ panel_update_path(this)
     tty_restore(&status);
 }
 
-
-/*
- * Returns the beautified form of `number' in `buf'.  That is, number is
- * returned in this form, for the sake of redability: 8,881,152.  `buf' is
- * assumed to be LONGEST_HUMAN_READABLE characters long.
- * By default, if number > 9999, it is abbreviated to eg 8.8K
- * this can be modified with inflags.
- */
 static char *
 panel_beautify_number(buf, number, inflags)
     char *buf;
