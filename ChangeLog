@@ -1,3 +1,9 @@
+2008-03-15  Ian Beckwith  <ianb@erislabs.net>
+
+	* Remove obsolete files during install
+	  (eg $(datadir)/.gitrc.common)
+	* README: added note about dependencies.
+
 2008-02-26  Ian Beckwith  <ianb@erislabs.net>
 
 	* Updated gnulib to 20080214 commit 501a61c5.

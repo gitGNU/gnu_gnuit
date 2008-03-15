@@ -42,6 +42,12 @@ To disable this, use the --disable-transition flag to ./configure.
 For more information about the 'configure' script please read the
 INSTALL file in this directory.
 
+** In addition to a termcap/terminfo library and headers,
+the readline library and headers should ideally be installed,
+although gnuit falls back on an internal implementation.
+
+For production of info, pdf and html documentation, you will want the
+texinfo package installed, and optionally the texi2html package.
 
 ** There are many configuration files in GNUIT:
 
