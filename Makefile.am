@@ -51,5 +51,5 @@ install-data-hook:
 	    rm -f "$(DESTDIR)$(prefix)/doc/git-4.3.20/git.html" ;\
 	    rmdir "$(DESTDIR)${prefix}/doc/git-4.3.20" >/dev/null 2>&1 || true; \
 	fi
-	-rmdir "$(DESTDIR)$(datadir)/git" >/dev/null 2>&1 
+	rmdir "$(DESTDIR)$(datadir)/git" >/dev/null 2>&1 || true
 
