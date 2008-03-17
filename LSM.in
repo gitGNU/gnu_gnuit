@@ -13,7 +13,8 @@ Description:	GNUIT (GNU Interactive Tools) provides an extensible file
 Keywords:       File browser, Process viewer, Hex viewer, Interactive Tools.
 Author:         tudor@cs.unh.edu (Tudor Hulubei)
 		pink@roedu.net (Andrei Pitis)
-Maintained-by:  ianb@erislabs.net (Ian Beckwith)
+		ianb@erislabs.net (Ian Beckwith)
+Maintained-by:  gnuit-dev@gnu.org
 Primary-site:   ftp.gnu.org /pub/gnu/gnuit
 		415k gnuit-@VERSION@.tar.gz
 Original-site:	

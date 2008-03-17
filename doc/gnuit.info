@@ -2918,8 +2918,8 @@ File: gnuit.info,  Node: Bugs,  Next: Copying This Manual,  Prev: Limitations,  
 6 GNU Interactive Tools bugs
 ****************************
 
-Any questions, comments, or bug reports, should be emailed to `Ian
-Beckwith <ianb@erislabs.net>'.  Please include the version number.
+Any questions, comments, or bug reports, should be emailed to
+`gnuit-dev@gnu.org'.  Please include the version number.
 
 
 File: gnuit.info,  Node: Copying This Manual,  Prev: Bugs,  Up: Top
@@ -4477,10 +4477,10 @@ Node: GITVIEW-Monochrome97824
 Node: GITVIEW-Keys98243
 Node: Limitations98379
 Node: Bugs99789
-Node: Copying This Manual100074
-Node: Key Index122449
-Node: Command Index142288
-Node: Variable Index161485
-Node: Concept Index163689
+Node: Copying This Manual100059
+Node: Key Index122434
+Node: Command Index142273
+Node: Variable Index161470
+Node: Concept Index163674
 
 End Tag Table
