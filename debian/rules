@@ -40,7 +40,7 @@ endif
 config.status: configure
 	dh_testdir
 
-	CFLAGS="$(CFLAGS)" ./configure --with-terminfo --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --disable-transition --enable-debian $(CONFFLAGS)
+	CFLAGS="$(CFLAGS)" ./configure --with-terminfo --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info --htmldir=\$${prefix}/share/doc/gnuit --disable-transition --enable-debian $(CONFFLAGS)
 
 build: build-stamp
 
