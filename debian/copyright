@@ -17,7 +17,16 @@ License: GPL-2+ | other
  As a special exception, when this file is read by TeX when processing
  a Texinfo source document, you may use the result without restriction.
 
-Files: lib/alloca.c, lib/memmove.c, src/gitmkdirs
+Files: lib/alloca.c
+Copyright: Author: D A Gwyn
+License: PD
+
+Files: lib/memmove.c
+Copyright: Author: David McKenzie <djm@gnu.ai.mit.edu>
+License: PD
+
+Files: src/gitmkdirs
+Copyright: Author: Noah Friedman <friedman@prep.ai.mit.edu>
 License: PD
 
 Files: m4/*, aclocal.m4
