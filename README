@@ -49,6 +49,21 @@ although gnuit falls back on an internal implementation.
 For production of info, pdf and html documentation, you will want the
 texinfo package installed, and optionally the texi2html package.
 
+gitaction will attempt to use many programs/viewers
+if they are installed. Some you will already have on your system,
+others are only for obscure file formats.
+
+Tools used include:
+
+objdump, ar, tar, bzip, bzip2, gzip, cpio, nroff, pgp, xfig,
+soffice, xv, kview, ee, imagemagick, gimp, zgv, amp, x11amp,
+mplayer, xanim, aktion, mpeg_vga, xanim, flip, xgrasp,
+mikmod, rvplayer, raplayer, kmedia, wavplay, rmd2pmv, pvf2basic,
+playmidi, kghostview, ggv, gv, ghostview, gs, kdvi, xdvi,
+klyx, lyx, abiword, soffice, acroread, xpdf, emacs, xemacs,
+unarj, unrar, jar, javap, lha, rpm, dpkg, ldd, metamail,
+run-mailcap.
+
 ** There are many configuration files in GNUIT:
 
 a. gnuitrc.generic        - generic configuration file
