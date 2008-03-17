@@ -42,7 +42,7 @@
 ### "$1/$2".
 ###
 ### If you enhance this script, please send me a patch at
-### gnut-dev@gnu.org.  I'll include it in the next release.
+### gnuit-dev@gnu.org.  I'll include it in the next release.
 ###
 
 ###
@@ -206,6 +206,10 @@ case "$2" in
 		pgp -- "$file";						\
 		echo "$msg"; read key;;
 
+*[gG][pP][gG])
+		gpgv -- "$file";						\
+		echo "$msg"; read key;;
+
 *.[fF][iI][gG])
 		if test "$DISPLAY"; then				\
 		    gitwhich xfig;					\
@@ -224,10 +228,13 @@ case "$2" in
 
 *.[pP][pP][tT])
 		if test "$DISPLAY"; then				\
-		    gitwhich soffice;					\
-		    if test $? -eq 0; then				\
-			FILE_VIEWER=soffice;				\
-		    fi;							\
+		    for prog in openoffice soffice; do			\
+		        gitwhich "$prog";				\
+		        if test $? -eq 0; then				\
+		            FILE_VIEWER="$prog";			\
+			    break;					\
+		        fi;						\
+		    done;						\
 		fi;							\
 		if test "$FILE_VIEWER"; then				\
 		    ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
@@ -257,7 +264,7 @@ case "$2" in
 *.[pP][nN][gG] |\
 *.[fF][tT][sS])
 		if test "$DISPLAY"; then				\
-		    for prog in xv kview ee display gimp; do		\
+		    for prog in xzgv kview ee display gimp xv; do	\
 		        gitwhich "$prog";				\
 		        if test $? -eq 0; then				\
 		            FILE_VIEWER="$prog";			\
@@ -306,7 +313,7 @@ case "$2" in
 
 *.[mM][pP][23])
 		if test "$DISPLAY"; then				\
-		    for prog in amp x11amp; do				\
+		    for prog in audacious xmms amp x11amp; do		\
 		        gitwhich "$prog";				\
 		        if test $? -eq 0; then				\
 		            FILE_VIEWER="$prog";			\
@@ -367,7 +374,7 @@ case "$2" in
 *.[mM][oO][vV] |\
 *.[aA][vV][iI])
 		if test "$DISPLAY"; then				\
-		    for prog in gmplayer mplayer xanim aktion; do	\
+		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
 		        gitwhich "$prog";				\
 		        if test $? -eq 0; then				\
 		            FILE_VIEWER="$prog";			\
@@ -384,10 +391,30 @@ case "$2" in
 		    echo "$msg"; read key;				\
 		fi;;
 
+*.[fF][lL][vV])
+		if test "$DISPLAY"; then				\
+		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
+		        gitwhich "$prog";				\
+		        if test $? -eq 0; then				\
+		            FILE_VIEWER="$prog";			\
+			    break;					\
+		        fi;						\
+		    done;						\
+		fi;							\
+		if test "$FILE_VIEWER"; then				\
+		    ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
+		else							\
+		    echo "No FLV player found in PATH.";		\
+		    echo "$msgView"; read key;				\
+		    "$GIT_PAGER" "$file";				\
+		    echo "$msg"; read key;				\
+		fi;;
+
 *.[mM][pP][gG] |\
+*.[mM][pP]4    |\
 *.[mM][pP][eE][gG])
 		if test "$DISPLAY"; then				\
-		    for prog in gmplayer mplayer xanim aktion; do	\
+		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
 		        gitwhich "$prog";				\
 		        if test $? -eq 0; then				\
 		            FILE_VIEWER="$prog";			\
@@ -418,7 +445,7 @@ case "$2" in
 *.[mM][oO][vV].[bB][zZ]2 |\
 *.[aA][vV][iI].[bB][zZ]2)
 		if test "$DISPLAY"; then				\
-		    for prog in gmplayer mplayer xanim aktion; do	\
+		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
 		        gitwhich "$prog";				\
 		        if test $? -eq 0; then				\
 		            FILE_VIEWER="$prog";			\
@@ -441,7 +468,7 @@ case "$2" in
 *.[mM][oO][vV].[bB][zZ] |\
 *.[aA][vV][iI].[bB][zZ])
 		if test "$DISPLAY"; then				\
-		    for prog in gmplayer mplayer xanim aktion; do	\
+		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
 		        gitwhich "$prog";				\
 		        if test $? -eq 0; then				\
 		            FILE_VIEWER="$prog";			\
@@ -468,7 +495,7 @@ case "$2" in
 *.[aA][vV][iI].[gG][zZ] |\
 *.[aA][vV][iI].[zZ])
 		if test "$DISPLAY"; then				\
-		    for prog in gmplayer mplayer xanim aktion; do	\
+		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
 		        gitwhich "$prog";				\
 		        if test $? -eq 0; then				\
 		            FILE_VIEWER="$prog";			\
@@ -491,7 +518,7 @@ case "$2" in
 *.[mM][pP][gG].[gG][zZ] |\
 *.[mM][pP][gG].[zZ])
 		if test "$DISPLAY"; then				\
-		    for prog in gmplayer mplayer xanim aktion; do	\
+		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
 		        gitwhich "$prog";				\
 		        if test $? -eq 0; then				\
 		            FILE_VIEWER="$prog";			\
@@ -521,7 +548,7 @@ case "$2" in
 *.[mM][pP][eE][gG].[bB][zZ]2 |\
 *.[mM][pP][gG].[bB][zZ]2)
 		if test "$DISPLAY"; then				\
-		    for prog in gmplayer mplayer xanim aktion; do	\
+		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
 		        gitwhich "$prog";				\
 		        if test $? -eq 0; then				\
 		            FILE_VIEWER="$prog";			\
@@ -551,7 +578,7 @@ case "$2" in
 *.[mM][pP][eE][gG].[bB][zZ] |\
 *.[mM][pP][gG].[bB][zZ])
 		if test "$DISPLAY"; then				\
-		    for prog in gmplayer mplayer xanim aktion; do	\
+		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
 		        gitwhich "$prog";				\
 		        if test $? -eq 0; then				\
 		            FILE_VIEWER="$prog";			\
@@ -580,7 +607,7 @@ case "$2" in
 
 *.[fF][lL][iIcC])
 		if test "$DISPLAY"; then				\
-		    for prog in xanim aktion; do			\
+		    for prog in gmplayer xine totem mplayer xanim aktion; do			\
 		        gitwhich "$prog";				\
 		        if test $? -eq 0; then				\
 		            FILE_VIEWER="$prog";			\
@@ -609,7 +636,7 @@ case "$2" in
 *.[fF][lL][iIcC].[gG][zZ] |\
 *.[fF][lL][iIcC].[zZ])
 		if test "$DISPLAY"; then				\
-		    for prog in gmplayer mplayer xanim aktion; do	\
+		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
 		        gitwhich "$prog";				\
 		        if test $? -eq 0; then				\
 		            FILE_VIEWER="$prog";			\
@@ -638,7 +665,7 @@ case "$2" in
 
 *.[fF][lL][iIcC].[bB][zZ]2)
 		if test "$DISPLAY"; then				\
-		    for prog in gmplayer mplayer xanim aktion; do	\
+		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
 		        gitwhich "$prog";				\
 		        if test $? -eq 0; then				\
 		            FILE_VIEWER="$prog";			\
@@ -667,7 +694,7 @@ case "$2" in
 
 *.[fF][lL][iIcC].[bB][zZ])
 		if test "$DISPLAY"; then				\
-		    for prog in gmplayer mplayer xanim aktion; do	\
+		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
 		        gitwhich "$prog";				\
 		        if test $? -eq 0; then				\
 		            FILE_VIEWER="$prog";			\
@@ -827,7 +854,7 @@ case "$2" in
 *.[rR][aAvV] |\
 *.[rR][aA][mM])
 		if test "$DISPLAY"; then				\
-		    for prog in rvplayer raplayer; do			\
+		    for prog in gmplayer mplayer realplay rvplayer raplayer; do			\
 		        gitwhich "$prog";				\
 		        if test $? -eq 0; then				\
 		            FILE_VIEWER="$prog";			\
@@ -849,7 +876,7 @@ case "$2" in
 
 *.[wW][aA][vV])
 		if test "$DISPLAY"; then				\
-		    for prog in kmedia wavplay; do			\
+		    for prog in audacious xmms kmedia wavplay; do			\
 		        gitwhich "$prog";				\
 		        if test $? -eq 0; then				\
 		            FILE_VIEWER="$prog";			\
@@ -908,7 +935,7 @@ case "$2" in
 *.[pP][sS] |\
 *.[eE][pP][sS])
 		if test "$DISPLAY"; then				\
-		    for prog in kghostview ggv gv ghostview; do		\
+		    for prog in evince gv kghostview ggv ghostview; do	\
 		        gitwhich "$prog";				\
 		        if test $? -eq 0; then				\
 		            FILE_VIEWER="$prog";			\
@@ -976,7 +1003,7 @@ case "$2" in
 
 *.[dD][oO][cC])
 		if test "$DISPLAY"; then				\
-		    for prog in AbiWord soffice; do			\
+		    for prog in openoffice AbiWord soffice; do		\
 		        gitwhich "$prog";				\
 		        if test $? -eq 0; then				\
 		            FILE_VIEWER="$prog";			\
@@ -995,7 +1022,7 @@ case "$2" in
 
 *.[pP][dD][fF])
 		if test "$DISPLAY"; then				\
-		    for prog in acroread xpdf; do			\
+		    for prog in evince acroread xpdf; do		\
 		        gitwhich "$prog";				\
 		        if test $? -eq 0; then				\
 		            FILE_VIEWER="$prog";			\

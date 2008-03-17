@@ -51,17 +51,17 @@ texinfo package installed, and optionally the texi2html package.
 
 gitaction will attempt to use many programs/viewers
 if they are installed. Some you will already have on your system,
-others are only for obscure file formats.
+and some are only for obscure file formats.
 
 Tools used include:
 
-objdump, ar, tar, bzip, bzip2, gzip, cpio, nroff, pgp, xfig,
-soffice, xv, kview, ee, imagemagick, gimp, zgv, amp, x11amp,
-mplayer, xanim, aktion, mpeg_vga, xanim, flip, xgrasp,
-mikmod, rvplayer, raplayer, kmedia, wavplay, rmd2pmv, pvf2basic,
-playmidi, kghostview, ggv, gv, ghostview, gs, kdvi, xdvi,
-klyx, lyx, abiword, soffice, acroread, xpdf, emacs, xemacs,
-unarj, unrar, jar, javap, lha, rpm, dpkg, ldd, metamail,
+objdump, ar, tar, bzip, bzip2, gzip, cpio, nroff, pgp, gpg, xfig,
+openoffice, soffice, xzgv, xv, kview, ee, imagemagick, gimp, zgv,
+audacious, xmms, amp, x11amp, mplayer, xine, totem, xanim, aktion,
+mpeg_vga, flip, xgrasp, mikmod, rvplayer, raplayer, kmedia, wavplay,
+rmd2pmv, pvf2basic, playmidi, evince, kghostview, ggv, gv, ghostview,
+gs, kdvi, xdvi, klyx, lyx, abiword, acroread, xpdf, emacs, xemacs,
+unzip, unarj, unrar, jar, javap, lha, rpm, dpkg, ldd, metamail,
 run-mailcap.
 
 ** There are many configuration files in GNUIT:
