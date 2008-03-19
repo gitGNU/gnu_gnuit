@@ -83,30 +83,35 @@ configuration_getline()
     size_t len;
     char *comment;
 
-    if (fgets(line, MAXLINE, fileptr) == NULL)
-	return 0;
-
-    if ((len = strlen(line)) == MAXLINE - 1)
+    /* loop until we get a line that isn't a comment */
+    for(;;)
     {
-	fprintf(stderr, "%s: configuration: line too long. Truncated.\n",
-		g_program);
+	comment=NULL;
+	if (fgets(line, MAXLINE, fileptr) == NULL)
+	    return 0;
 
-	/* Search the end of this big line.  */
-	for (;;)
+	if ((len = strlen(line)) == MAXLINE - 1)
 	{
-	    c = fgetc(fileptr);
-	    if (c == '\n' || c == EOF)
-		break;
+	    fprintf(stderr, "%s: configuration: line too long. Truncated.\n",
+		    g_program);
+
+	    /* Search the end of this big line.  */
+	    for (;;)
+	    {
+		c = fgetc(fileptr);
+		if (c == '\n' || c == EOF)
+		    break;
+	    }
 	}
+
+	if ((comment = strchr(line, ICS)))
+	    *comment = 0;
+	else
+	    if (line[len - 1] == '\n')
+		line[len - 1] = 0;
+	if(comment != line)
+	    return 1;
     }
-
-    if ((comment = strchr(line, ICS)))
-	*comment = 0;
-    else
-	if (line[len - 1] == '\n')
-	    line[len - 1] = 0;
-
-    return 1;
 }
 
 

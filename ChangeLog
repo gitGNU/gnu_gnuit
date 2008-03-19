@@ -1,7 +1,8 @@
-2008-03-17  Ian Beckwith  <ianb@erislabs.net>
+2008-03-19  Ian Beckwith  <ianb@erislabs.net>
 
 	* Remove obsolete files during install
 	  (eg $(datadir)/.gitrc.common).
+	* Handle config file lines consisting solely of a comment.
 	* README: added note about dependencies.
 	* gitaction: added more viewers.
 	* Changed address for bug reports to gnuit-dev@gnu.org.

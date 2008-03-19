@@ -19,6 +19,8 @@
 
 ** New config variables: GroupDigits, MaxUnscaledDigits.
 
+** Fix parsing of comments in config files.
+
 ** gitaction: Added more viewers; If no explicit action defined for
    filetype, falls back to see(1), metamail(1), [on MacOS] open(1),
    and finally $GIT_PAGER.
