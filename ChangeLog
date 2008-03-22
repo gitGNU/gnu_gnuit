@@ -1,4 +1,4 @@
-2008-03-19  Ian Beckwith  <ianb@erislabs.net>
+2008-03-22  Ian Beckwith  <ianb@erislabs.net>
 
 	* Remove obsolete files during install
 	  (eg $(datadir)/.gitrc.common).
@@ -6,6 +6,7 @@
 	* README: added note about dependencies.
 	* gitaction: added more viewers.
 	* Changed address for bug reports to gnuit-dev@gnu.org.
+	* gnuitrc.*: fix comment
 
 2008-02-26  Ian Beckwith  <ianb@erislabs.net>
 
