@@ -40,8 +40,7 @@ StartupScrollStep	=	# empty means half the number of lines
 
 
 ###
-### WARNING: empty lines or lines begining with a comment are
-### considered to be end of sections!
+### WARNING: empty lines are considered to be end of sections!
 ###
 
 [GITFM-Setup]

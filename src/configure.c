@@ -105,7 +105,22 @@ configuration_getline()
 	}
 
 	if ((comment = strchr(line, ICS)))
+	{
+	    char *ptr;
+	    int isws=1;
 	    *comment = 0;
+	    /* handle lines with whitespace before comment */
+	    for(ptr=line;*ptr;ptr++)
+	    {
+		if(!isspace((int)*ptr))
+		{
+		    isws=0;
+		    break;
+		}
+	    }
+	    if(isws)
+		comment=line; /* make whitespace part of comment */
+	}
 	else
 	    if (line[len - 1] == '\n')
 		line[len - 1] = 0;
