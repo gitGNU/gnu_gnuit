@@ -36,6 +36,7 @@ dist-hook: html
 # If mandir != $(prefix)/man (eg is $(prefix)/share/man)
 # there could be old manpages in ${prefix}/man, remove them,
 # ignoring git.1 in case the other git is using it
+# The same applies for infodir, $(prefix)/info vs $(prefix)/share/info
 install-data-hook:
 	$(INSTALL_PROGRAM) -m 644 $(srcdir)/dpkg-help.txt $(DESTDIR)$(datadir)/gnuit/dpkg-help.txt
 	for i in $(GIT_GREPS);\
@@ -56,6 +57,9 @@ install-data-hook:
 	            rm -f "$(DESTDIR)$(prefix)/man/man1/$${i}"; \
 	        fi; \
 	    done; \
+	fi
+	if [ "$(infodir)" != "$(prefix)/info" ]; then\
+	    rm -f "$(DESTDIR)$(prefix)/info/gnuit"*; \
 	fi
 
 uninstall-local:
