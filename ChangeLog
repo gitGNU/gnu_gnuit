@@ -5,6 +5,7 @@
 	* Handle config file lines consisting solely of a comment.
 	* README: added note about dependencies.
 	* gitaction: added more viewers.
+	* Thanks to Michael Cook for the above suggestions.
 	* Changed address for bug reports to gnuit-dev@gnu.org.
 	* gnuitrc.*: fix comment
 
