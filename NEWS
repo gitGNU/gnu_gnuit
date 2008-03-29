@@ -10,6 +10,8 @@
 
 ** Fixed MacOS support.
 
+** Fixed large file support on 32bit systems.
+
 ** On install, remove files belonging to earlier versions.
 
 ** gitfm: Scale file sizes when needed to fit available space.

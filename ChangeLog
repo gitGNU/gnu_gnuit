@@ -1,11 +1,13 @@
-2008-03-22  Ian Beckwith  <ianb@erislabs.net>
+2008-03-29  Ian Beckwith  <ianb@erislabs.net>
 
+	* configure.ac: add AC_SYS_LARGEFILE to fix
+	  64bit IO on 32 bit systems.
 	* Remove obsolete files during install
 	  (eg $(datadir)/.gitrc.common).
 	* Handle config file lines consisting solely of a comment.
 	* README: added note about dependencies.
+	* Thanks to Michael Cook for the above suggestions/reports.
 	* gitaction: added more viewers.
-	* Thanks to Michael Cook for the above suggestions.
 	* Changed address for bug reports to gnuit-dev@gnu.org.
 	* gnuitrc.*: fix comment
 
