@@ -1,7 +1,7 @@
-Begin3
+Begin4
 Title:          GNU Interactive Tools
 Version:        @VERSION@
-Entered-date:   12MAY2000
+Entered-date:   2008-04-01
 Description:	GNUIT (GNU Interactive Tools) provides an extensible file
 		system browser, an ASCII/hexadecimal file viewer, a process
 		viewer/killer and other related utilities and shell scripts.
@@ -15,8 +15,8 @@ Author:         tudor@cs.unh.edu (Tudor Hulubei)
 		pink@roedu.net (Andrei Pitis)
 		ianb@erislabs.net (Ian Beckwith)
 Maintained-by:  gnuit-dev@gnu.org
-Primary-site:   ftp.gnu.org /pub/gnu/gnuit
-		415k gnuit-@VERSION@.tar.gz
+Primary-site:   ftp.gnu.org /gnu/gnuit
+		768k gnuit-@VERSION@.tar.gz
 Original-site:	
 Platforms:	
 Copying-policy: GPL
