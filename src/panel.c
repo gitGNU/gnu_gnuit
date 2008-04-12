@@ -1428,7 +1428,7 @@ static int panel_fit_number(buf, number, flags, maxlen)
     if(strlen(str) > maxlen)
     {
 	scaled=1;
-	str=panel_beautify_number(buf, number, (flags|human_autoscale|human_SI));
+	str=panel_beautify_number(buf, number, (flags|human_autoscale|human_SI|human_base_1024));
     }
     strncpy(buf,str,maxlen);
     /* just in case */
@@ -1461,7 +1461,7 @@ panel_beautify_info_number(buf, number, width, numfiles)
     if ( (!scaled) && (number > 999) )
     {
 	shortnum=panel_beautify_number(shortnumbuf, number,
-				       (human_SI|human_autoscale|human_B));
+				       (human_SI|human_autoscale|human_B|human_base_1024));
 	sprintf(buf, "%s (%s) in %s file%s", longnumbuf, shortnum,
 		filestr, (numfiles > 1) ? "s" : "");
     }
@@ -1514,7 +1514,7 @@ panel_update_size(this)
 
 	n = free_blocks * fsu.fsu_blocksize;
 
-	sz=panel_beautify_number(buf, n, (human_autoscale|human_SI|human_B));
+	sz=panel_beautify_number(buf, n, (human_autoscale|human_SI|human_B|human_base_1024));
 
 	tty_brightness(PanelDeviceFreeSpaceBrightness);
 	tty_foreground(PanelDeviceFreeSpace);
@@ -1735,7 +1735,7 @@ panel_build_entry_field(this, entry, display_mode, offset)
 	       (strlen(human_readable(this->dir_entry[entry].size,
 				      hbuf, human_ceiling, 1, 1)) > MaxUnscaledDigits))
 	    {
-		flags |= (human_autoscale | human_SI);
+		flags |= (human_autoscale | human_SI |human_base_1024);
 	    }
 	    panel_fit_number(hbuf, this->dir_entry[entry].size, flags, 10);
 	    buflen=min(strlen(hbuf),10);
