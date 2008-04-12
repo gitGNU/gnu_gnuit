@@ -519,7 +519,7 @@ sort_compare_fn(_first, _second)
 	 case SORT_BY_SIZE:
 	     if (first->size == second->size)
 		 break;
-	     return first->size - second->size;
+	     return( (first->size > second->size) ? 1 : -1);
 
 	 case SORT_BY_DATE:
 	     if (first->mtime == second->mtime)

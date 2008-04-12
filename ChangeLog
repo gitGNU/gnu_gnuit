@@ -2,6 +2,7 @@
 
 	* Clear screen before restoring, in case restore fails.
 	* Use base 1024 when autoscaling.
+	* Fix sorting by filesize.
 
 2008-03-29  Ian Beckwith  <ianb@erislabs.net>
 
