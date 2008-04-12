@@ -1,3 +1,7 @@
+2008-04-12  Ian Beckwith  <ianb@erislabs.net>
+
+	* Clear screen before restoring, in case restore fails.
+
 2008-03-29  Ian Beckwith  <ianb@erislabs.net>
 
 	* configure.ac: add AC_SYS_LARGEFILE to fix

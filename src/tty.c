@@ -875,6 +875,7 @@ tty_start_cursorapp()
 void
 tty_end_cursorapp()
 {
+    tty_io_clear();
     tputs(TTY_END_CURSORAPP,tty_lines-1,tty_writec);
     tty_flush();
 }
