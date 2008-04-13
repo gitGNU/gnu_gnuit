@@ -1,16 +1,18 @@
 Begin4
-Title:          GNU Interactive Tools
+Title:          GNU Interactive Tools (gnuit)
 Version:        @VERSION@
-Entered-date:   2008-04-01
+Entered-date:   2008-04-13
 Description:	GNUIT (GNU Interactive Tools) provides an extensible file
 		system browser, an ASCII/hexadecimal file viewer, a process
 		viewer/killer and other related utilities and shell scripts.
 		GNUIT can be used to increase the speed and efficiency of
 		copying and moving files and directories, invoking editors,
 		compressing and uncompressing files, creating and expanding
-		archives, compiling programs, sending mail and more.  GIT
+		archives, compiling programs, sending mail and more.  GNUIT
 		uses standard ANSI color sequences, if they are available.
-Keywords:       File browser, Process viewer, Hex viewer, Interactive Tools.
+		GNUIT was formerly called GIT, but the name has been changed
+		to avoid confusion with the VCS.
+Keywords:       File browser, Process viewer, Hex viewer, Interactive Tools, git
 Author:         tudor@cs.unh.edu (Tudor Hulubei)
 		pink@roedu.net (Andrei Pitis)
 		ianb@erislabs.net (Ian Beckwith)
