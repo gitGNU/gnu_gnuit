@@ -4,6 +4,7 @@
 	* Fix sorting by filesize.
 	* Fix current file size display at bottom when no files are selected.
 	* Clear screen before restoring, in case restore fails.
+	* gitaction: MacOS: try and run open(1) first.
 
 2008-03-29  Ian Beckwith  <ianb@erislabs.net>
 

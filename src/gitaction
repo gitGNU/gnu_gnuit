@@ -117,6 +117,16 @@ fi
 
 file="$1/$2"
 
+if test `uname -s` = "Darwin"; then
+    gitwhich open;
+    if test $? -eq 0; then
+	open "$file"
+	if test $? -eq 0 ; then
+	    exit 0
+	fi;
+    fi
+fi
+
 case "$2" in
 *.[oO] |\
 *.[lL][oO] |\
@@ -1187,32 +1197,25 @@ INBOX|OUTBOX)
 		        exit;						\
 		    fi;							\
 		fi;							\
-		if test `uname -s` = "Darwin"; then			\
-		    gitwhich open;					\
-		    if test $? -eq 0; then				\
-		        FILE_VIEWER=open;				\
+		FILEOUT="`file --mime-type "$file" 2>/dev/null`";	\
+		if test $? -eq 0; then 					\
+		    MIMETYPE=`echo "$FILEOUT" | sed 's/.*: *//;'`;	\
+		fi;							\
+		gitwhich see;						\
+		if test $? -eq 0; then					\
+		    FILE_VIEWER="see";					\
+		    if test -n "$MIMETYPE"; then			\
+			FILE_NAME="${MIMETYPE}:${file}";		\
 		    fi;							\
 		else							\
-		    FILEOUT="`file --mime-type "$file" 2>/dev/null`";	\
-		    if test $? -eq 0; then 				\
-		        MIMETYPE=`echo "$FILEOUT" | sed 's/.*: *//;'`;	\
-		    fi;							\
-		    gitwhich see;					\
+		    gitwhich metamail;					\
 		    if test $? -eq 0; then				\
-			FILE_VIEWER="see";				\
-			if test -n "$MIMETYPE"; then			\
-			    FILE_NAME="${MIMETYPE}:${file}";		\
-			fi;						\
-		    else						\
-		        gitwhich metamail;				\
-		        if test $? -eq 0; then				\
-		            if test -n "$MIMETYPE"; then		\
-			        FILE_VIEWER="metamail";			\
-			        VIEWER_OPTIONS="-d -b -c $MIMETYPE";	\
-			    fi;						\
+		        if test -n "$MIMETYPE"; then			\
+		            FILE_VIEWER="metamail";			\
+			    VIEWER_OPTIONS="-d -b -c $MIMETYPE";	\
 		        fi;						\
 		    fi;							\
-		fi;							\
+	        fi;							\
 		"$FILE_VIEWER" $VIEWER_OPTIONS "$FILE_NAME"; 		\
 		if test $? -ne 0; then					\
 		    if test "$FILE_VIEWER" != "$GIT_PAGER"; then	\
