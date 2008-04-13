@@ -1478,7 +1478,7 @@ void
 panel_update_size(this)
     panel_t *this;
 {
-    char buf[LONGEST_HUMAN_READABLE];
+    char buf[LONGEST_HUMAN_READABLE+1];
     char *sz;
     tty_status_t status;
     struct fs_usage fsu;
@@ -1682,9 +1682,11 @@ panel_update_info(this)
 		     0) ?
 		    " UP-DIR" : "SUB-DIR", temp_rights);
 	else
-	    sprintf(str + maxname, " %10ld %10s",
-		    (long)this->dir_entry[this->current_entry].size,
-		    temp_rights);
+	{
+	    char size[LONGEST_HUMAN_READABLE+1];
+	    panel_fit_number(size,this->dir_entry[this->current_entry].size,0,10);
+	    sprintf(str + maxname, " %10s %10s",size,temp_rights);
+	}
 
       skip_info_display:
 	tty_brightness(PanelFileInfoBrightness);
@@ -1709,7 +1711,7 @@ panel_build_entry_field(this, entry, display_mode, offset)
     int entry, display_mode, offset;
 {
     char temp_rights[16];
-    char hbuf[LONGEST_HUMAN_READABLE];
+    char hbuf[LONGEST_HUMAN_READABLE+1];
 
     switch (display_mode)
     {

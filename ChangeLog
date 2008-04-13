@@ -1,8 +1,9 @@
 2008-04-12  Ian Beckwith  <ianb@erislabs.net>
 
-	* Clear screen before restoring, in case restore fails.
-	* Use base 1024 when autoscaling.
+	* Use base 1024 when autoscaling file sizes.
 	* Fix sorting by filesize.
+	* Fix current file size display at bottom when no files are selected.
+	* Clear screen before restoring, in case restore fails.
 
 2008-03-29  Ian Beckwith  <ianb@erislabs.net>
 
