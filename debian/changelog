@@ -1,3 +1,9 @@
+gnuit (4.9.4-1) unstable; urgency=low
+
+  * New upstream version.
+
+ -- Ian Beckwith <ianb@erislabs.net>  Sun, 13 Apr 2008 17:59:36 +0100
+
 gnuit (4.9.3-1) unstable; urgency=low
 
   * New upstream version.

@@ -1,5 +1,7 @@
-2008-04-12  Ian Beckwith  <ianb@erislabs.net>
+2008-04-13  Ian Beckwith  <ianb@erislabs.net>
 
+	* bumped version to 4.9.4
+	* Thanks to Tudor Hulubei for reporting the following:
 	* Use base 1024 when autoscaling file sizes.
 	* Fix sorting by filesize.
 	* Fix current file size display at bottom when no files are selected.
