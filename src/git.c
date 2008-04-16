@@ -1088,6 +1088,7 @@ il_isearch(static_text, dest, status, action)
     int *action;
 {
     int key;
+    int keycmd;
     tty_key_t *ks;
     command_t *command;
     static input_line_t *saved_il;
@@ -1130,14 +1131,14 @@ il_isearch(static_text, dest, status, action)
 	return NULL;
     }
 
-    key = ks->key_seq[0];
+    keycmd = key = ks->key_seq[0];
 
     command = (command_t *)ks->aux_data;
 
     if (command && command->builtin)
-	key = - 1 - (command->name - builtin[0]) / MAX_BUILTIN_NAME;
+	keycmd = - 1 - (command->name - builtin[0]) / MAX_BUILTIN_NAME;
 
-    switch (key)
+    switch (keycmd)
     {
 	case key_INTERRUPT:
 	case BUILTIN_action:
@@ -1164,9 +1165,9 @@ il_isearch(static_text, dest, status, action)
 	    break;
 
 	default:
-	    if ((key == BUILTIN_isearch_backward &&
+	    if ((keycmd == BUILTIN_isearch_backward &&
 		 status == IL_ISEARCH_BACKWARD)  ||
-		(key == BUILTIN_isearch_forward  &&
+		(keycmd == BUILTIN_isearch_forward  &&
 		 status == IL_ISEARCH_FORWARD))
 	    {
 		if (il_is_empty())
@@ -1185,7 +1186,7 @@ il_isearch(static_text, dest, status, action)
 	    {
 		/* Force a NULL return value when detecting non printable
 		   characters (or functional keys).  */
-		key = key_INTERRUPT;
+		keycmd = key_INTERRUPT;
 	    }
 
 	    break;
@@ -1197,7 +1198,7 @@ il_isearch(static_text, dest, status, action)
     tty_update();
     il_get_contents(dest);
 
-    return (key == BUILTIN_action || key == key_INTERRUPT) ? NULL : *dest;
+    return (keycmd == BUILTIN_action || keycmd == key_INTERRUPT) ? NULL : *dest;
 }
 
 
