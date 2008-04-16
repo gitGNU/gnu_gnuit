@@ -1461,8 +1461,8 @@ panel_beautify_info_number(buf, number, width, numfiles)
     if ( (!scaled) && (number > 999) )
     {
 	shortnum=panel_beautify_number(shortnumbuf, number,
-				       (human_SI|human_autoscale|human_B|human_base_1024));
-	sprintf(buf, "%s (%s) in %s file%s", longnumbuf, shortnum,
+				       (human_SI|human_autoscale|human_base_1024));
+	sprintf(buf, "%s (%sB) in %s file%s", longnumbuf, shortnum,
 		filestr, (numfiles > 1) ? "s" : "");
     }
     else
@@ -1478,7 +1478,7 @@ void
 panel_update_size(this)
     panel_t *this;
 {
-    char buf[LONGEST_HUMAN_READABLE+1];
+    char buf[LONGEST_HUMAN_READABLE+3];
     char *sz;
     tty_status_t status;
     struct fs_usage fsu;
@@ -1514,8 +1514,8 @@ panel_update_size(this)
 
 	n = free_blocks * fsu.fsu_blocksize;
 
-	sz=panel_beautify_number(buf, n, (human_autoscale|human_SI|human_B|human_base_1024));
-
+	sz=panel_beautify_number(buf, n, (human_autoscale|human_SI|human_base_1024));
+	sz=strcat(sz,"B");
 	tty_brightness(PanelDeviceFreeSpaceBrightness);
 	tty_foreground(PanelDeviceFreeSpace);
     }

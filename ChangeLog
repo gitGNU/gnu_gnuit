@@ -6,6 +6,7 @@
 	  + Fix sorting by filesize.
 	  + Fix current file size display at bottom when no files are selected.
 	  + Fix input in incremental-search (^S) mode.
+	  + Manually append "B" suffix to sizes in panel info/size display.
 	  + Clear screen before restoring, in case restore fails.
 	  + gitaction: MacOS: try and run open(1) first.
 
