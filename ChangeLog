@@ -8,7 +8,7 @@
 	  + Fix input in incremental-search (^S) mode.
 	  + Manually append "B" suffix to sizes in panel info/size display.
 	  + Clear screen before restoring, in case restore fails.
-	  + gitaction: MacOS: try and run open(1) first.
+	  + gitaction: MacOS: try and run open(1) first on non-textfiles.
 
 2008-03-29  Ian Beckwith  <ianb@erislabs.net>
 

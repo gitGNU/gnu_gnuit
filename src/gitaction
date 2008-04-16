@@ -117,13 +117,21 @@ fi
 
 file="$1/$2"
 
+# MacOS only
 if test `uname -s` = "Darwin"; then
-    gitwhich open;
+    gitwhich file;
     if test $? -eq 0; then
-	open "$file"
-	if test $? -eq 0 ; then
-	    exit 0
-	fi;
+        # don't run open(1) on text files
+	file "$file" |grep -q '.*:.*text'
+	if test $? -ne 0 ; then
+	    gitwhich open;
+	    if test $? -eq 0; then
+		open "$file"
+		if test $? -eq 0 ; then
+		    exit 0
+		fi;
+	    fi
+	fi
     fi
 fi
 
