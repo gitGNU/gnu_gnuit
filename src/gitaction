@@ -70,10 +70,59 @@
 ### process a file called `-P'.
 ###
 
-
 name=`basename "$0"`
 msg="Press ENTER to continue..."
 msgView="Press ENTER to view the file with \`$GIT_PAGER', or ^C to abort..."
+
+try()
+{
+    cmd="$1"
+    shift
+    gitwhich "$cmd";
+    if test $? -eq 0; then
+	$cmd "$@"
+	if test $? -eq 0; then
+	    echo "$msg"; read key;
+	    exit 1
+	fi
+    fi
+}
+
+trypaged()
+{
+    cmd="$1"
+    shift
+    gitwhich "$cmd";
+    if test $? -eq 0; then
+	$cmd "$@"  2>&1 | "$GIT_PAGER"
+	if test $? -eq 0; then
+	    echo "$msg"; read key;
+	    exit 1
+	fi
+    fi
+}
+#FIXME: special case tar to avoid decompressing
+# trybg		    ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
+#tryx 		if test "$DISPLAY"; then				\
+#		fi
+
+# FIXME: trap, cleanup
+
+totempfile()
+{
+    tmpfile="${TMPDIR:-/tmp}/gitaction.$$"
+    cmd="$1"
+    shift
+    gitwhich "$cmd";
+    if test $? -eq 0; then
+	trap "rm -f $tmpfile" 0 1 2 5 15
+	$cmd "$@" > "$tmpfile"
+	if test $? -eq 0; then
+	    echo "$tmpfile"
+	fi
+    fi
+}
+
 
 if test "$#" -ne 2; then
     echo "$name: GIT internal script" >&2
@@ -117,1122 +166,310 @@ fi
 
 file="$1/$2"
 
-# MacOS only
-if test `uname -s` = "Darwin"; then
-    gitwhich file;
-    if test $? -eq 0; then
-        # don't run open(1) on text files
-	file "$file" |grep -q '.*:.*text'
-	if test $? -ne 0 ; then
-	    gitwhich open;
-	    if test $? -eq 0; then
-		open "$file"
-		if test $? -eq 0 ; then
-		    exit 0
-		fi;
-	    fi
-	fi
-    fi
+istext=0
+gitwhich file;
+if test $? -eq 0; then
+    file "$file" |grep -q '.*:.*text'
+    istext=$?
 fi
 
-case "$2" in
-*.[oO] |\
-*.[lL][oO] |\
-*.[sS][oO] |\
-*.[sS][oO].[0-9]*)
-		objdump --syms --all-headers -- "$file" | "$GIT_PAGER";	\
+realfile="$file"
+lcfile="`echo "$file"|tr [:upper:] [:lower:]`"
+if fgrep -q . "$lcfile"; then
+    lcext="$(echo $lcfile |sed -e 's/.*\.//')"
+    lcbase="$(basename "$lcfile" ".$lcext")"
+else
+    lcbase="$lcfile"
+    lcext=""
+fi
+
+tempfile=""
+case "$lcext" in
+    *.gz)  tempfile="$(totempfile gunzip -c "$file")" ;;
+    *.bz)  tempfile="$(totempfile bunzip -c "$file")" ;;
+    *.bz2) tempfile="$(totempfile bzcat "$file")" ;;
+    *.z)   tempfile="$(totempfile uncompress -c "$file")" ;;
+esac
+
+if test -n "$tempfile"
+    file="$tempfile"
+    lcfile="$lcbase"
+fi
+
+# MacOS only
+if test `uname -s` = "Darwin"; then
+    # don't run open(1) on text files
+    if test $istext -eq 0 ; then
+	try open "$file"
+    fi;
+fi
+
+case "$lcfile" in
+*.o |\
+*.lo |\
+*.so |\
+*.so.[0-9]*)
+	objdump --syms --all-headers -- "$file" | "$GIT_PAGER"
+	echo "$msg"; read key;;
+
+*.a |\
+*.sa)
+		trypaged ar -tv "$file"  ;;
+
+*.tar)
+		trypaged tar tvf "$file" ;;
+
+*.pkg |\
+*.t[arg]z)
+#FIXME
+		(echo "Compressed archive:"
+		 gunzip -l -- "$file"
+		 echo
+		 echo "Tar archive:"
+		 gunzip -c -- "$file" | tar tvf -) | "$GIT_PAGER"
 		echo "$msg"; read key;;
 
-*.[aA] |\
-*.[sS][aA])
-		ar -tv "$file" | "$GIT_PAGER";				\
+*.cpio)
+		cat "$file" | cpio -t 2>&1 | "$GIT_PAGER"
 		echo "$msg"; read key;;
 
-*.[tT][aA][rR])
-		tar tvf "$file" | "$GIT_PAGER";				\
+*.cpio.bz)
+		(echo "CPIO archive:"
+		 bunzip -c "$file" | cpio -t 2>&1) | "$GIT_PAGER"
 		echo "$msg"; read key;;
 
-*.[tT][aA][rR].[bB][zZ])
-		(echo "Tar archive:";					\
-		 bunzip -c "$file" | tar tvf -) | "$GIT_PAGER";		\
+*.cpio.bz2)
+		(echo "CPIO archive:"
+		 bunzip2 -c "$file" | cpio -t 2>&1) | "$GIT_PAGER"
 		echo "$msg"; read key;;
 
-*.[tT][aA][rR].[bB][zZ]2)
-		(echo "Tar archive:";					\
-		 bunzip2 -c "$file" | tar tvf -) | "$GIT_PAGER";	\
+*.cpio.gz |\
+*.cpio.z)
+		(echo "Compressed archive:"
+		 gunzip -l -- "$file"
+		 echo
+		 echo "Tar archive:"
+		 gunzip -c -- "$file" | cpio -t 2>&1) | "$GIT_PAGER"
 		echo "$msg"; read key;;
 
-*.[pP][kK][gG] |\
-*.[tT][aA][rR].[gG][zZ] |\
-*.[tT][aA][rR].[zZ] |\
-*.[tT][aArRgG][zZ])
-		(echo "Compressed archive:";				\
-		 gunzip -l -- "$file";					\
-		 echo;							\
-		 echo "Tar archive:";					\
-		 gunzip -c -- "$file" | tar tvf -) | "$GIT_PAGER";	\
-		echo "$msg"; read key;;
+*.man)
+		trypaged nroff -man "$file" ;;
 
-*.[cC][pP][iI][oO])
-		cat "$file" | cpio -t 2>&1 | "$GIT_PAGER";		\
-		echo "$msg"; read key;;
-
-*.[cC][pP][iI][oO].[bB][zZ])
-		(echo "CPIO archive:";					\
-		 bunzip -c "$file" | cpio -t 2>&1) | "$GIT_PAGER";	\
-		echo "$msg"; read key;;
-
-*.[cC][pP][iI][oO].[bB][zZ]2)
-		(echo "CPIO archive:";					\
-		 bunzip2 -c "$file" | cpio -t 2>&1) | "$GIT_PAGER";	\
-		echo "$msg"; read key;;
-
-*.[cC][pP][iI][oO].[gG][zZ] |\
-*.[cC][pP][iI][oO].[zZ])
-		(echo "Compressed archive:";				\
-		 gunzip -l -- "$file";					\
-		 echo;							\
-		 echo "Tar archive:";					\
-		 gunzip -c -- "$file" | cpio -t 2>&1) | "$GIT_PAGER";	\
-		echo "$msg"; read key;;
-
-*.[mM][aA][nN])
-		nroff -man "$file" | "$GIT_PAGER";			\
-		echo "$msg"; read key;;
-
-*.[hH][tT][mM][lL] |\
-*.[hH][tT][mM])
-		if test "$GIT_BROWSER"; then				\
-		    "$GIT_BROWSER" "$file";				\
-		else							\
-		    lynx "$file";					\
+*.html |\
+*.htm)
+		if test "$GIT_BROWSER"; then
+		    try "$GIT_BROWSER" "$file"
+		else
+		    try lynx "$file"
 		fi;;
 
-[uU][tT][mM][pP])
-		w | "$GIT_PAGER";					\
-		echo "$msg"; read key;;
+utmp)
+		trypaged w
 
-[wW][tT][mM][pP])
-		last | "$GIT_PAGER";					\
-		echo "$msg"; read key;;
+wtmp | wtmp.[0-9]*)
+		trypaged last -f "$file"
 
-*[rR][iI][nN][gG].[pP][gG][pP])
-		pgp -kv -- "$file" | "$GIT_PAGER";			\
-		echo "$msg"; read key;;
+*ring.pgp)
+		trypaged pgp -kv -- "$file" ;;
 
-*[pP][gG][pP])
-		pgp -- "$file";						\
-		echo "$msg"; read key;;
+*pgp)
+		try pgp -- "$file" ;;
 
-*[gG][pP][gG])
-		gpgv -- "$file";						\
-		echo "$msg"; read key;;
+*gpg)
+		try gpgv -- "$file" ;;
 
-*.[fF][iI][gG])
-		if test "$DISPLAY"; then				\
-		    gitwhich xfig;					\
-		    if test $? -eq 0; then				\
-			FILE_VIEWER=xfig;				\
-		    fi;							\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
-		else							\
-		    echo "XFIG not found in PATH.";			\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
+*.fig)
+		tryx xfig "$file" ;;
 
-*.[pP][pP][tT])
-		if test "$DISPLAY"; then				\
-		    for prog in openoffice soffice; do			\
-		        gitwhich "$prog";				\
-		        if test $? -eq 0; then				\
-		            FILE_VIEWER="$prog";			\
-			    break;					\
-		        fi;						\
-		    done;						\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
-		else							\
-		    echo "No PPT viewer found in PATH.";		\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
+*.ppt)
+		tryx openoffice "$file"
+		tryx soffice "$file" ;;
+*.gif |
+*.jpg |
+*.jpeg |
+*.tga |
+*.bmp |
+*.ppm |
+*.pnm |
+*.pgm |
+*.pbm |
+*.tiff |
+*.tif |
+*.bm |
+*.xbm |
+*.xpm |
+*.ras |
+*.rgb |
+*.png |
+*.fts)
+		tryx xzgv "$file"
+		tryx kview "$file"
+		tryx ee "$file"
+		tryx display "$file"
+		tryx gimp "$file"
+		tryx xv "$file"
+		try  zgv "$file" ;;
 
-*.[gG][iI][fF] |\
-*.[jJ][pP][gG] |\
-*.[jJ][pP][eE][gG] |\
-*.[tT][gG][aA] |\
-*.[bB][mM][pP] |\
-*.[pP][pP][mM] |\
-*.[pP][nN][mM] |\
-*.[pP][gG][mM] |\
-*.[pP][bB][mM] |\
-*.[tT][iI][fF][fF] |\
-*.[tT][iI][fF] |\
-*.[bB][mM] |\
-*.[xX][bB][mM] |\
-*.[xX][pP][mM] |\
-*.[rR][aA][sS] |\
-*.[rR][gG][bB] |\
-*.[pP][nN][gG] |\
-*.[fF][tT][sS])
-		if test "$DISPLAY"; then				\
-		    for prog in xzgv kview ee display gimp xv; do	\
-		        gitwhich "$prog";				\
-		        if test $? -eq 0; then				\
-		            FILE_VIEWER="$prog";			\
-			    break;					\
-		        fi;						\
-		    done;						\
-		else							\
-		    gitwhich zgv;					\
-		    if test $? -eq 0; then				\
-			FILE_VIEWER=zgv;				\
-		    fi;							\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    if test "$DISPLAY"; then				\
-			("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
-		    else						\
-			"$FILE_VIEWER" "$file";				\
-		    fi;							\
-		else							\
-		    echo "No image viewer found in PATH.";		\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
+*.xcf |\
+*.fit)
+		tryx gimp ;;
+*.mp[23])
+		tryx audacious   "$file"
+		tryx xmms        "$file"
+		tryx amp         "$file"
+		tryx x11amp      "$file"
+		try  mpg123 -v   "$file"
+		try  mpg123 -v   "$file"
+		try  amp         "$file" ;;
 
-*.[dD][jJ][vV])
-		echo "No DejaVu viewer known.";				\
-		echo "$msg"; read key;;
+*.asf |\
+*.wmv |\
+*.mov |\
+*.avi)|\
+*.mp[4g] |\
+*.mpeg) |\
+*.fl[icv])
+		for prog in gmplayer xine totem mplayer xanim aktion;
+		do 
+		    tryx "$prog" "$file"
+		done
+		try mplayer -vo svga "$file"
+		try flip "$file"
+		try mpeg_vga "$file" ;;
 
-*.[xX][cC][fF] |\
-*.[fF][iI][tT])
-		if test "$DISPLAY"; then				\
-		    gitwhich gimp;					\
-		    if test $? -eq 0; then				\
-		        FILE_VIEWER=gimp;				\
-		    fi;							\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
-		else							\
-		    echo "GIMP not found in PATH.";			\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
+*.gl)
+		tryx xgrasp "$file"
 
-*.[mM][pP][23])
-		if test "$DISPLAY"; then				\
-		    for prog in audacious xmms amp x11amp; do		\
-		        gitwhich "$prog";				\
-		        if test $? -eq 0; then				\
-		            FILE_VIEWER="$prog";			\
-			    break;					\
-		        fi;						\
-		    done;						\
-		else							\
-		    gitwhich amp;					\
-		    if test $? -eq 0; then				\
-			FILE_VIEWER=amp;				\
-		    fi;							\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
-		else							\
-		    echo "No MP2/MP3 player found in PATH.";		\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[mM][pP][23].[gG][zZ] |\
-*.[mM][pP][23].[zZ])
-		gitwhich amp;						\
-		if test $? -eq 0; then					\
-		    (gunzip -c -- "$file"|amp -q - > /dev/null 2>&1 &);	\
-		else							\
-		    echo "No MP2/MP3 player found in PATH.";		\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[mM][pP][23].[bB][zZ]2)
-		gitwhich amp;						\
-		if test $? -eq 0; then					\
-		    (bunzip2 -c "$file"|amp -q - > /dev/null 2>&1 &);	\
-		else							\
-		    echo "No MP2/MP3 player found in PATH.";		\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[mM][pP][23].[bB][zZ])
-		gitwhich amp;						\
-		if test $? -eq 0; then					\
-		    (bunzip -c "$file"|amp -q - > /dev/null 2>&1 &);	\
-		else							\
-		    echo "No MP2/MP3 player found in PATH.";		\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[aA][sS][fF] |\
-*.[wW][mM][vV] |\
-*.[mM][oO][vV] |\
-*.[aA][vV][iI])
-		if test "$DISPLAY"; then				\
-		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
-		        gitwhich "$prog";				\
-		        if test $? -eq 0; then				\
-		            FILE_VIEWER="$prog";			\
-			    break;					\
-		        fi;						\
-		    done;						\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
-		else							\
-		    echo "No ASF/WMV/MOV/AVI player found in PATH.";	\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[fF][lL][vV])
-		if test "$DISPLAY"; then				\
-		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
-		        gitwhich "$prog";				\
-		        if test $? -eq 0; then				\
-		            FILE_VIEWER="$prog";			\
-			    break;					\
-		        fi;						\
-		    done;						\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
-		else							\
-		    echo "No FLV player found in PATH.";		\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[mM][pP][gG] |\
-*.[mM][pP]4    |\
-*.[mM][pP][eE][gG])
-		if test "$DISPLAY"; then				\
-		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
-		        gitwhich "$prog";				\
-		        if test $? -eq 0; then				\
-		            FILE_VIEWER="$prog";			\
-			    break;					\
-		        fi;						\
-		    done;						\
-		else							\
-		    gitwhich mpeg_vga;					\
-		    if test $? -eq 0; then				\
-		        FILE_VIEWER=mpeg_vga;				\
-		    fi;							\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    if test "$DISPLAY"; then				\
-			("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
-		    else						\
-			"$FILE_VIEWER" "$file";				\
-		    fi;							\
-		else							\
-		    echo "No MPEG player found in PATH.";		\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[aA][sS][fF].[bB][zZ]2 |\
-*.[wW][mM][vV].[bB][zZ]2 |\
-*.[mM][oO][vV].[bB][zZ]2 |\
-*.[aA][vV][iI].[bB][zZ]2)
-		if test "$DISPLAY"; then				\
-		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
-		        gitwhich "$prog";				\
-		        if test $? -eq 0; then				\
-		            FILE_VIEWER="$prog";			\
-			    break;					\
-		        fi;						\
-		    done;						\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    (bunzip2 -c "$file" |				\
-		     "$FILE_VIEWER" - > /dev/null 2>&1 &);		\
-		else							\
-		    echo "No ASF/WMV/MOV/AVI player found in PATH.";	\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[aA][sS][fF].[bB][zZ] |\
-*.[wW][mM][vV].[bB][zZ] |\
-*.[mM][oO][vV].[bB][zZ] |\
-*.[aA][vV][iI].[bB][zZ])
-		if test "$DISPLAY"; then				\
-		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
-		        gitwhich "$prog";				\
-		        if test $? -eq 0; then				\
-		            FILE_VIEWER="$prog";			\
-			    break;					\
-		        fi;						\
-		    done;						\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    (bunzip -c "$file" |				\
-		     "$FILE_VIEWER" - > /dev/null 2>&1 &);		\
-		else							\
-		    echo "No ASF/WMV/MOV/AVI player found in PATH.";	\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[aA][sS][fF].[gG][zZ] |\
-*.[aA][sS][fF].[zZ] |\
-*.[wW][mM][vV].[gG][zZ] |\
-*.[wW][mM][vV].[zZ] |\
-*.[mM][oO][vV].[gG][zZ] |\
-*.[mM][oO][vV].[zZ] |\
-*.[aA][vV][iI].[gG][zZ] |\
-*.[aA][vV][iI].[zZ])
-		if test "$DISPLAY"; then				\
-		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
-		        gitwhich "$prog";				\
-		        if test $? -eq 0; then				\
-		            FILE_VIEWER="$prog";			\
-			    break;					\
-		        fi;						\
-		    done;						\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    (gunzip -c -- "$file" |				\
-		     "$FILE_VIEWER" - > /dev/null 2>&1 &);		\
-		else							\
-		    echo "No ASF/WMV/MOV/AVI player found in PATH.";	\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[mM][pP][eE][gG].[gG][zZ] |\
-*.[mM][pP][eE][gG].[zZ] |\
-*.[mM][pP][gG].[gG][zZ] |\
-*.[mM][pP][gG].[zZ])
-		if test "$DISPLAY"; then				\
-		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
-		        gitwhich "$prog";				\
-		        if test $? -eq 0; then				\
-		            FILE_VIEWER="$prog";			\
-			    break;					\
-		        fi;						\
-		    done;						\
-		else							\
-		    gitwhich mpeg_vga;					\
-		    if test $? -eq 0; then				\
-			FILE_VIEWER=mpeg_vga;				\
-		    fi;							\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    if test "$DISPLAY"; then				\
-			(gunzip -c -- "$file" |				\
-			 "$FILE_VIEWER" - > /dev/null 2>&1 &);		\
-		    else						\
-			gunzip -c -- "$file" | "$FILE_VIEWER";		\
-		    fi;							\
-		else							\
-		    echo "No MPEG player found in PATH.";		\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[mM][pP][eE][gG].[bB][zZ]2 |\
-*.[mM][pP][gG].[bB][zZ]2)
-		if test "$DISPLAY"; then				\
-		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
-		        gitwhich "$prog";				\
-		        if test $? -eq 0; then				\
-		            FILE_VIEWER="$prog";			\
-			    break;					\
-		        fi;						\
-		    done;						\
-		else							\
-		    gitwhich mpeg_vga;					\
-		    if test $? -eq 0; then				\
-			FILE_VIEWER=mpeg_vga;				\
-		    fi;							\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    if test "$DISPLAY"; then				\
-			(bunzip2 -c "$file" |				\
-			 "$FILE_VIEWER" - > /dev/null 2>&1 &);		\
-		    else						\
-			bunzip2 -c "$file" | "$FILE_VIEWER";		\
-		    fi;							\
-		else							\
-		    echo "No MPEG player found in PATH.";		\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[mM][pP][eE][gG].[bB][zZ] |\
-*.[mM][pP][gG].[bB][zZ])
-		if test "$DISPLAY"; then				\
-		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
-		        gitwhich "$prog";				\
-		        if test $? -eq 0; then				\
-		            FILE_VIEWER="$prog";			\
-			    break;					\
-		        fi;						\
-		    done;						\
-		else							\
-		    gitwhich mpeg_vga;					\
-		    if test $? -eq 0; then				\
-			FILE_VIEWER=mpeg_vga;				\
-		    fi;							\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    if test "$DISPLAY"; then				\
-			(bunzip -c "$file" |				\
-			 "$FILE_VIEWER" - > /dev/null 2>&1 &);		\
-		    else						\
-			bunzip -c "$file" | "$FILE_VIEWER";		\
-		    fi;							\
-		else							\
-		    echo "No MPEG player found in PATH.";		\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[fF][lL][iIcC])
-		if test "$DISPLAY"; then				\
-		    for prog in gmplayer xine totem mplayer xanim aktion; do			\
-		        gitwhich "$prog";				\
-		        if test $? -eq 0; then				\
-		            FILE_VIEWER="$prog";			\
-			    break;					\
-		        fi;						\
-		    done;						\
-		else							\
-		    gitwhich flip;					\
-		    if test $? -eq 0; then				\
-		        FILE_VIEWER=flip;				\
-		    fi;							\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    if test "$DISPLAY"; then				\
-			("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
-		    else						\
-			"$FILE_VIEWER" "$file";				\
-		    fi;							\
-		else							\
-		    echo "No FLI/FLC player found in PATH.";		\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[fF][lL][iIcC].[gG][zZ] |\
-*.[fF][lL][iIcC].[zZ])
-		if test "$DISPLAY"; then				\
-		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
-		        gitwhich "$prog";				\
-		        if test $? -eq 0; then				\
-		            FILE_VIEWER="$prog";			\
-			    break;					\
-		        fi;						\
-		    done;						\
-		else							\
-		    gitwhich flip;					\
-		    if test $? -eq 0; then				\
-			FILE_VIEWER=flip;				\
-		    fi;							\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    if test "$DISPLAY"; then				\
-			(gunzip -c -- "$file" |				\
-			 "$FILE_VIEWER" - > /dev/null 2>&1 &);		\
-		    else						\
-			gunzip -c -- "$file" | "$FILE_VIEWER" -;	\
-		    fi;							\
-		else							\
-		    echo "No FLI/FLC player found in PATH.";		\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[fF][lL][iIcC].[bB][zZ]2)
-		if test "$DISPLAY"; then				\
-		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
-		        gitwhich "$prog";				\
-		        if test $? -eq 0; then				\
-		            FILE_VIEWER="$prog";			\
-			    break;					\
-		        fi;						\
-		    done;						\
-		else							\
-		    gitwhich flip;					\
-		    if test $? -eq 0; then				\
-			FILE_VIEWER=flip;				\
-		    fi;							\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    if test "$DISPLAY"; then				\
-			(bunzip2 -c "$file" |				\
-			 "$FILE_VIEWER" - > /dev/null 2>&1 &);		\
-		    else						\
-			bunzip2 -c "$file" | "$FILE_VIEWER" -;		\
-		    fi;							\
-		else							\
-		    echo "No FLI/FLC player found in PATH.";		\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[fF][lL][iIcC].[bB][zZ])
-		if test "$DISPLAY"; then				\
-		    for prog in gmplayer xine totem mplayer xanim aktion; do	\
-		        gitwhich "$prog";				\
-		        if test $? -eq 0; then				\
-		            FILE_VIEWER="$prog";			\
-			    break;					\
-		        fi;						\
-		    done;						\
-		else							\
-		    gitwhich flip;					\
-		    if test $? -eq 0; then				\
-			FILE_VIEWER=flip;				\
-		    fi;							\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    if test "$DISPLAY"; then				\
-			(bunzip -c "$file" |				\
-			 "$FILE_VIEWER" - > /dev/null 2>&1 &);		\
-		    else						\
-			bunzip -c "$file" | "$FILE_VIEWER" -;		\
-		    fi;							\
-		else							\
-		    echo "No FLI/FLC player found in PATH.";		\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[gG][lL])
-		if test "$DISPLAY"; then				\
-		    gitwhich xgrasp;					\
-		    if test $? -eq 0; then				\
-		        FILE_VIEWER=xgrasp;				\
-		    fi;							\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
-		else							\
-		    echo "No GL viewer found in PATH.";			\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[gG][lL].[gG][zZ] |\
-*.[gG][lL].[zZ])
-		if test "$DISPLAY"; then				\
-		    gitwhich xgrasp;					\
-		    if test $? -eq 0; then				\
-		        FILE_VIEWER=xgrasp;				\
-		    fi;							\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    (gunzip -c -- "$file" | 				\
-		     "$FILE_VIEWER" > /dev/null 2>&1 &);		\
-		else							\
-		    echo "No GL viewer found in PATH.";			\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[gG][lL].[bB][zZ]2)
-		if test "$DISPLAY"; then				\
-		    gitwhich xgrasp;					\
-		    if test $? -eq 0; then				\
-		        FILE_VIEWER=xgrasp;				\
-		    fi;							\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    (bunzip2 -c "$file" | 				\
-		     "$FILE_VIEWER" > /dev/null 2>&1 &);		\
-		else							\
-		    echo "No GL viewer found in PATH.";			\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[gG][lL].[bB][zZ])
-		if test "$DISPLAY"; then				\
-		    gitwhich xgrasp;					\
-		    if test $? -eq 0; then				\
-		        FILE_VIEWER=xgrasp;				\
-		    fi;							\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    (bunzip -c "$file" | 				\
-		     "$FILE_VIEWER" > /dev/null 2>&1 &);		\
-		else							\
-		    echo "No GL viewer found in PATH.";			\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[mM][oO][dD] |\
-*.[mM][oO][dD].[gG][zZ] |\
-*.[mM][oO][dD].[zZ] |\
-*.[mM][oO][dD].[lL][hH][aA] |\
-*.[mM][oO][dD].[lL][zZ][hH] |\
-*.[mM][oO][dD].[zZ][iI][pP] |\
-*.669 |\
-*.669.[gG][zZ] |\
-*.669.[zZ] |\
-*.669.[lL][hH][aA] |\
-*.669.[lL][zZ][hH] |\
-*.669.[zZ][iI][pP] |\
-*.[Dd][Ss][Mm] |\
-*.[Dd][Ss][Mm].[gG][zZ] |\
-*.[Dd][Ss][Mm].[zZ] |\
-*.[Dd][Ss][Mm].[lL][hH][aA] |\
-*.[Dd][Ss][Mm].[lL][zZ][hH] |\
-*.[Dd][Ss][Mm].[zZ][iI][pP] |\
-*.[fF][aA][rR] |\
-*.[fF][aA][rR].[gG][zZ] |\
-*.[fF][aA][rR].[zZ] |\
-*.[fF][aA][rR].[lL][hH][aA] |\
-*.[fF][aA][rR].[lL][zZ][hH] |\
-*.[fF][aA][rR].[zZ][iI][pP] |\
-*.[Mm][Ee][Dd] |\
-*.[Mm][Ee][Dd].[gG][zZ] |\
-*.[Mm][Ee][Dd].[zZ] |\
-*.[Mm][Ee][Dd].[lL][hH][aA] |\
-*.[Mm][Ee][Dd].[lL][zZ][hH] |\
-*.[Mm][Ee][Dd].[zZ][iI][pP] |\
-*.[Uu][Ll][Tt] |\
-*.[Uu][Ll][Tt].[gG][zZ] |\
-*.[Uu][Ll][Tt].[zZ] |\
-*.[Uu][Ll][Tt].[lL][hH][aA] |\
-*.[Uu][Ll][Tt].[lL][zZ][hH] |\
-*.[Uu][Ll][Tt].[zZ][iI][pP] |\
-*.[iI][tT] |\
-*.[iI][tT].[gG][zZ] |\
-*.[iI][tT].[zZ] |\
-*.[iI][tT].[lL][hH][aA] |\
-*.[iI][tT].[lL][zZ][hH] |\
-*.[iI][tT].[zZ][iI][pP] |\
-*.[sS][3tT][mM] |\
-*.[sS][3tT][mM].[gG][zZ] |\
-*.[sS][3tT][mM].[zZ] |\
-*.[sS][3tT][mM].[lL][hH][aA]|\
-*.[sS][3tT][mM].[lL][zZ][hH]|\
-*.[sS][3tT][mM].[zZ][iI][pP]|\
-*.[mM][tT][mM] |\
-*.[mM][tT][mM].[gG][zZ] |\
-*.[mM][tT][mM].[zZ] |\
-*.[mM][tT][mM].[lL][hH][aA] |\
-*.[mM][tT][mM].[lL][zZ][hH] |\
-*.[mM][tT][mM].[zZ][iI][pP] |\
-*.[xX][mM] |\
-*.[xX][mM].[gG][zZ] |\
-*.[xX][mM].[zZ] |\
-*.[xX][mM].[lL][hH][aA] |\
-*.[xX][mM].[lL][zZ][hH] |\
-*.[xX][mM].[zZ][iI][pP])
+*.mod | *.mod.lha | *.mod.lzh | *.mod.zip |\
+*.669 | *.669.lha | *.669.lzh | *.669.zip |\
+*.dsm | *.dsm.lha | *.dsm.lzh | *.dsm.zip |\
+*.far | *.far.lha | *.far.lzh | *.far.zip |\
+*.med | *.med.lha | *.med.lzh | *.med.zip |\
+*.mtm | *.mtm.lha | *.mtm.lzh | *.mtm.zip |\
+*.ult | *.ult.lha | *.ult.lzh | *.ult.zip |\
+*.it | *.it.lha | *.it.lzh | *.it.zip |\
+*.xm | *.xm.lha | *.xm.lzh | *.xm.zip |\ 
+*.s[3t]m | *.s[3t]m.lha| *.s[3t]m.lzh| *.s[3t]m.zip)
 		(mikmod -t "$file" > /dev/null 2>&1 &);;
 
-*.[rR][aAvV] |\
-*.[rR][aA][mM])
-		if test "$DISPLAY"; then				\
-		    for prog in gmplayer mplayer realplay rvplayer raplayer; do			\
-		        gitwhich "$prog";				\
-		        if test $? -eq 0; then				\
-		            FILE_VIEWER="$prog";			\
-			    break;					\
-		        fi;						\
-		    done;						\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
-		else							\
-		    echo "No Real player found in PATH.";		\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[vV][oO][cC])
+*.r[av] |\
+*.ram)
+		for prog in gmplayer mplayer realplay rvplayer raplayer; 
+		do
+		    tryx "$prog" "$file"
+		done
+*.voc)
 		(vplay "$file" > /dev/null 2>&1 &);;
 
-*.[wW][aA][vV])
-		if test "$DISPLAY"; then				\
-		    for prog in audacious xmms kmedia wavplay; do			\
-		        gitwhich "$prog";				\
-		        if test $? -eq 0; then				\
-		            FILE_VIEWER="$prog";			\
-			    break;					\
-		        fi;						\
-		    done;						\
-		else							\
-		    gitwhich wavplay;					\
-		    if test $? -eq 0; then				\
-			FILE_VIEWER=wavplay;				\
-		    fi;							\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
-		else							\
-		    echo "No WAV player found in PATH.";		\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
+*.wav)
+		for prog in audacious xmms kmedia wavplay
+		do
+		    tryx "$prog" "$file"
+		done
+		try wavplay "$file"
 
-*.[aA][iI][fF][fF])
-		 echo "No AIFF player known.";				\
-		 echo "$msgView"; read key;				\
-		 "$GIT_PAGER" "$file";					\
+*.aiff)
+		 echo "No AIFF player known."
+		 echo "$msgView"; read key
+		 "$GIT_PAGER" "$file"
 		 echo "$msg"; read key;;
 
-*.[aA][iI][fF][cC])
-		 echo "No AIFC player known.";				\
-		 echo "$msgView"; read key;				\
-		 "$GIT_PAGER" "$file";					\
+*.aifc)
+		 echo "No AIFC player known."
+		 echo "$msgView"; read key
+		 "$GIT_PAGER" "$file"
 		 echo "$msg"; read key;;
 
-*.[rR][mM][dD])
+*.rmd)
 		(rmdtopvf -8 "$file" 2> /dev/null |			\
 		 pvftobasic > /dev/audio 2> /dev/null &);;
 
-*.[pP][vV][fF])
+*.pvf)
 		(pvftobasic > /dev/audio 2> /dev/null &);;
 
-*.[aA][uU])
+*.au)
 		(cat "$file" > /dev/audio 2> /dev/null &);;
 
-*.[mM][iI][dD][iI] |\
-*.[mM][iI][dD])
+*.midi |\
+*.mid)
 		(playmidi $PLAYMIDIOPT "$file" > /dev/null 2>&1 &);;
 
-*.[sS][fF]2 |\
-*.[sS][fF][xX] |\
-*.[sS][bB][kK])
-		echo "Sound Font file.  No information available.";	\
-		echo "$msgView"; read key;				\
-		"$GIT_PAGER" "$file";					\
+*.sf2 |\
+*.sfx |\
+*.sbk)
+		tryx swami         "$file"
+*.ps |\
+*.eps)		tryx evince        "$file"
+		tryx gv            "$file"
+		tryx kghostview    "$file"
+		tryx ggv           "$file"
+		tryx ghostview     "$file"
+		try  gs            "$file"
+
+*.dvi)		tryx kdvi          "$file"
+		tryx xdvi          "$file"
+
+*.lyx)		tryx klyx          "$file"
+		tryx lyx           "$file"
+
+*.doc)		tryx openoffice    "$file"
+		tryx AbiWord       "$file"
+		tryx soffice       "$file"
+
+*.pdf)		tryx evince        "$file"
+		tryx acroread      "$file"
+		tryx xpdf          "$file"
+
+*.ms)		trypaged nroff -ms "$file"
+*.[1-9n] |\
+*.[1-9n][xXmM])
+		trypaged nroff -man "$file" | "$GIT_PAGER"
+
+*.[iI]nfo)	try info --file "$file";;
+
+[SR]MAIL)	try emacs   "$file"
+		try xemacs  "$file"
+
+INBOX|OUTBOX)	try xemacs  "$file"
+
+
+*.arj |\
+*.a[0-9][1-9])	trypaged unarj l "$file" 
+*.zip)		trypaged unzip -v "$file"
+*.rar)		trypaged unrar l "$file"
+*.jar)		trypaged jar tvf "$file"
+*.class)	trypaged javap -c -s -l -verbose "$(basename "$realfile" .class)"
+*.lha|*.lzh)	trypaged lha -v "$file"
+*.rpm)		trypaged rpm -qilRsp -- "$file"
+
+*.deb)		(echo "$file"; dpkg --info "$file"
+		 echo; dpkg --contents "$file") | "$GIT_PAGER"
 		echo "$msg"; read key;;
-
-*.[pP][sS] |\
-*.[eE][pP][sS])
-		if test "$DISPLAY"; then				\
-		    for prog in evince gv kghostview ggv ghostview; do	\
-		        gitwhich "$prog";				\
-		        if test $? -eq 0; then				\
-		            FILE_VIEWER="$prog";			\
-			    break;					\
-		        fi;						\
-		    done;						\
-		else							\
-		    gitwhich gs;					\
-		    if test $? -eq 0; then				\
-			FILE_VIEWER=gs;					\
-			VIEWER_OPTIONS="-sDEVIC=linux";			\
-		    fi;							\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    if test "$DISPLAY"; then				\
-			("$FILE_VIEWER" $VIEWER_OPTIONS "$file"		\
-				 > /dev/null 2>&1 &);			\
-		    else						\
-			"$FILE_VIEWER" $VIEWER_OPTIONS "$file";		\
-		    fi;							\
-		else							\
-		    echo "No Postscript viewer found in PATH.";		\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[dD][vV][iI])
-		if test "$DISPLAY"; then				\
-		    for prog in kdvi xdvi; do				\
-		        gitwhich "$prog";				\
-		        if test $? -eq 0; then				\
-		            FILE_VIEWER="$prog";			\
-			    break;					\
-		        fi;						\
-		    done;						\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
-		else							\
-		    echo "No DVI viewer found in PATH.";		\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[lL][yY][xX])
-		if test "$DISPLAY"; then				\
-		    for prog in klyx lyx; do				\
-		        gitwhich "$prog";				\
-		        if test $? -eq 0; then				\
-		            FILE_VIEWER="$prog";			\
-			    break;					\
-		        fi;						\
-		    done;						\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
-		else							\
-		    echo "No LYX viewer found in PATH.";		\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[dD][oO][cC])
-		if test "$DISPLAY"; then				\
-		    for prog in openoffice AbiWord soffice; do		\
-		        gitwhich "$prog";				\
-		        if test $? -eq 0; then				\
-		            FILE_VIEWER="$prog";			\
-			    break;					\
-		        fi;						\
-		    done;						\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
-		else							\
-		    echo "No DOC viewer found in PATH.";		\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[pP][dD][fF])
-		if test "$DISPLAY"; then				\
-		    for prog in evince acroread xpdf; do		\
-		        gitwhich "$prog";				\
-		        if test $? -eq 0; then				\
-		            FILE_VIEWER="$prog";			\
-			    break;					\
-		        fi;						\
-		    done;						\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
-		else							\
-		    echo "No PDF viewer found in PATH.";		\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[mM][sS])
-		nroff -ms "$file" | "$GIT_PAGER";			\
-		echo "$msg"; read key;;
-
-*.[mM][sS].[gG][zZ] |\
-*.[mM][sS].[zZ])
-		gunzip -c -- "$file" | nroff -ms | "$GIT_PAGER";	\
-		echo "$msg"; read key;;
-
-*.[mM][sS].[bB][zZ])
-		bunzip -c "$file" | nroff -ms | "$GIT_PAGER";		\
-		echo "$msg"; read key;;
-
-*.[mM][sS].[bB][zZ]2)
-		bunzip2 -c "$file" | nroff -ms | "$GIT_PAGER";		\
-		echo "$msg"; read key;;
-
-*.[1-9nN] |\
-*.[1-9nN][xXmM])
-		nroff -man "$file" | "$GIT_PAGER";			\
-		echo "$msg"; read key;;
-
-*.[1-9nN][xXmM].[gG][zZ] |\
-*.[1-9nN][xXmM].[zZ] |\
-*.[1-9nN].[gG][zZ] |\
-*.[1-9nN].[zZ])
-		gunzip -c -- "$file" | nroff -man | "$GIT_PAGER";	\
-		echo "$msg"; read key;;
-
-*.[1-9nN][xXmM].[bB][zZ] |\
-*.[1-9nN].[bB][zZ])
-		bunzip -c "$file" | nroff -man | "$GIT_PAGER";		\
-		echo "$msg"; read key;;
-
-*.[1-9nN][xXmM].[bB][zZ]2 |\
-*.[1-9nN].[bB][zZ]2)
-		bunzip2 -c "$file" | nroff -man | "$GIT_PAGER";		\
-		echo "$msg"; read key;;
-
-*.[iI][nN][fF][oO].[Bb][Zz]2 |\
-*.[iI][nN][fF][oO].[Gg][Zz]  |\
-*.[iI][nN][fF][oO])
-		info --file "$file";;
-
-[SR]MAIL)
-		for prog in emacs xemacs; do				\
-		    gitwhich "$prog";					\
-		    if test $? -eq 0; then				\
-		        FILE_VIEWER="$prog";				\
-		        break;						\
-		    fi;							\
-		done;							\
-		if test "$FILE_VIEWER"; then				\
-		    if test "$DISPLAY"; then				\
-		        ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
-		    else						\
-		        "$FILE_VIEWER" "$file";				\
-		    fi;							\
-		else							\
-		    echo "Emacs not found in PATH.";			\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-INBOX|OUTBOX)
-		gitwhich xemacs;					\
-		if test $? -eq 0; then					\
-		    FILE_VIEWER=xemacs;					\
-		fi;							\
-		if test "$FILE_VIEWER"; then				\
-		    if test "$DISPLAY"; then				\
-		        ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
-		    else						\
-		        "$FILE_VIEWER" "$file";				\
-		    fi;							\
-		else							\
-		    echo "XEmacs not found in PATH.";			\
-		    echo "$msgView"; read key;				\
-		    "$GIT_PAGER" "$file";				\
-		    echo "$msg"; read key;				\
-		fi;;
-
-*.[bB][zZ])
-		bunzip -c "$file" | "$GIT_PAGER";			\
-		echo "$msg"; read key;;
-
-*.[bB][zZ]2)
-		bunzip2 -c "$file" | "$GIT_PAGER";			\
-		echo "$msg"; read key;;
-
-*.[gG][zZ] |\
-*.[zZ])
-		gunzip -c -- "$file" | "$GIT_PAGER";			\
-		echo "$msg"; read key;;
-
-*.[zZ][iI][pP])
-		unzip -v "$file" | "$GIT_PAGER";			\
-		echo "$msg"; read key;;
-
-*.[aA][rR][jJ] |							\
-*.[aA][0-9][1-9])
-		unarj l "$file" | "$GIT_PAGER";				\
-		echo "$msg"; read key;;
-
-*.[rR][aA][rR])
-		unrar l "$file" | "$GIT_PAGER";				\
-		echo "$msg"; read key;;
-
-*.[jJ][aA][rR])
-		jar tvf "$file" 2>&1 | "$GIT_PAGER";			\
-		echo "$msg"; read key;;
-
-*.[cC][lL][aA][sS][sS])
-		javap -c -s -l -verbose `echo "$file"|sed 's/.class//'`	\
-		| "$GIT_PAGER";						\
-		echo "$msg"; read key;;
-
-*.[lL][hH][aA] |							\
-*.[lL][zZ][hH])
-		lha -v "$file" | "$GIT_PAGER";				\
-		echo "$msg"; read key;;
-
-*.[rR][pP][mM])
-		rpm -qilRsp -- "$file" | "$GIT_PAGER";			\
-		echo "$msg"; read key;;
-
-*.[dD][eE][bB])
-		(echo "$file"; dpkg --info "$file";			\
-		 echo; dpkg --contents "$file") | "$GIT_PAGER";		\
-		echo "$msg"; read key;;
-
 *)
-		FILE_VIEWER="$GIT_PAGER";				\
-		FILE_NAME="$file";					\
-		if test -x "$file"; then				\
-		    if test `uname` = "Linux"; then			\
-			FILE_OPTIONS="-L";				\
-		    fi;							\
-		    file $FILE_OPTIONS "$file" |			\
-			    grep "ELF" > /dev/null 2>&1;		\
-		    if test $? -eq 0; then				\
-		        file $FILE_OPTIONS "$file";			\
-		        ldd "$file";					\
-		        echo "$msg"; read key;				\
-		        exit;						\
-		    fi;							\
-		fi;							\
-		FILEOUT="`file --mime-type "$file" 2>/dev/null`";	\
-		if test $? -eq 0; then 					\
-		    MIMETYPE=`echo "$FILEOUT" | sed 's/.*: *//;'`;	\
-		fi;							\
-		gitwhich see;						\
-		if test $? -eq 0; then					\
-		    FILE_VIEWER="see";					\
-		    if test -n "$MIMETYPE"; then			\
-			FILE_NAME="${MIMETYPE}:${file}";		\
-		    fi;							\
-		else							\
-		    gitwhich metamail;					\
-		    if test $? -eq 0; then				\
-		        if test -n "$MIMETYPE"; then			\
-		            FILE_VIEWER="metamail";			\
-			    VIEWER_OPTIONS="-d -b -c $MIMETYPE";	\
-		        fi;						\
-		    fi;							\
-	        fi;							\
-		"$FILE_VIEWER" $VIEWER_OPTIONS "$FILE_NAME"; 		\
-		if test $? -ne 0; then					\
-		    if test "$FILE_VIEWER" != "$GIT_PAGER"; then	\
-		        echo "\"$FILE_VIEWER\" failed; falling back on \"$GIT_PAGER\"";	\
-			read key;					\
-			"$GIT_PAGER" "$file";				\
-		    fi;							\
-		fi;							\
-		echo "$msg"; read key;;
+		if test -x "$file"; then
+		    if test `uname` = "Linux"; then
+			FILE_OPTIONS="-L"
+		    fi
+		    file $FILE_OPTIONS "$file" | grep "ELF" > /dev/null 2>&1
+		    if test $? -eq 0; then
+		        file $FILE_OPTIONS "$file"
+		        ldd "$file"
+		        echo "$msg"; read key
+		        exit
+		    fi
+		fi
+		FILEOUT="`file --mime-type "$file" 2>/dev/null`"
+		if test $? -eq 0; then
+		    MIMETYPE=`echo "$FILEOUT" | sed 's/.*: *//;'`
+		fi
+		if test -n "$MIMETYPE"; then
+		    try see "${MIMETYPE}:${file}"
+		    try metamail -d -b -c "$MIMETYPE" "$file"
+	        fi
+		try "$GIT_PAGER" "$file"
+		try less "$file"
+		try more "$file"
+		try cat "file"
 esac
 
 exit 0
