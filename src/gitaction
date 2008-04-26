@@ -74,17 +74,41 @@ name=`basename "$0"`
 msg="Press ENTER to continue..."
 msgView="Press ENTER to view the file with \`$GIT_PAGER', or ^C to abort..."
 
+
+doexit()
+{
+    ret=$1
+    echo "$msg"; read key;
+    exit $ret
+}
+
+exitifdone
+{
+    if test $? -eq 0; then
+	doexit
+    fi
+}
+
+run()
+{
+    "$@"
+    exitifdone
+}
+
 try()
 {
     cmd="$1"
     shift
     gitwhich "$cmd";
     if test $? -eq 0; then
-	$cmd "$@"
-	if test $? -eq 0; then
-	    echo "$msg"; read key;
-	    exit 1
-	fi
+	run "$cmd" "$@"
+    fi
+}
+
+tryx()
+{
+    if test -n "$DISPLAY"
+	try "$@"
     fi
 }
 
@@ -94,19 +118,13 @@ trypaged()
     shift
     gitwhich "$cmd";
     if test $? -eq 0; then
-	$cmd "$@"  2>&1 | "$GIT_PAGER"
+	"$cmd" "$@"  2>&1 | "$GIT_PAGER"
 	if test $? -eq 0; then
 	    echo "$msg"; read key;
 	    exit 1
 	fi
     fi
 }
-#FIXME: special case tar to avoid decompressing
-# trybg		    ("$FILE_VIEWER" "$file" > /dev/null 2>&1 &);	\
-#tryx 		if test "$DISPLAY"; then				\
-#		fi
-
-# FIXME: trap, cleanup
 
 totempfile()
 {
@@ -123,45 +141,38 @@ totempfile()
     fi
 }
 
+tryvideo()
+{
+    for prog in gmplayer xine totem mplayer xanim aktion;
+    do 
+	tryx "$prog" "$file"
+    done
+    try mplayer -vo svga "$file"
+}
 
 if test "$#" -ne 2; then
     echo "$name: GIT internal script" >&2
-    echo "$msg"; read key;
-    exit 1
+    doexit 1
 fi
 
 if test ! -d "$1"; then
     echo "$name: $1 is not a directory"
-    echo "$msg"; read key;
-    exit 1
+    doexit 1
 fi
 
 if test ! -f "$1/$2"; then
     echo "$name: file $1/$2 does not exist"
-    echo "$msg"; read key;
-    exit 1
+    doexit 1
 fi
-
-done=0
 
 if test -f .gitaction; then
     ./.gitaction "$1" "$2"
-    done=$?
-fi
-
-if test $done -ne 0; then
-    echo "$msg"; read key;
-    exit 0
+    exitifdone
 fi
 
 if test -f $HOME/.gitaction; then
     $HOME/.gitaction "$1" "$2"
-    done=$?
-fi
-
-if test $done -ne 0; then
-    echo "$msg"; read key;
-    exit 0
+    exitifdone
 fi
 
 file="$1/$2"
@@ -174,17 +185,26 @@ if test $? -eq 0; then
 fi
 
 realfile="$file"
-lcfile="`echo "$file"|tr [:upper:] [:lower:]`"
+lcfile="$(echo "$file"|tr [:upper:] [:lower:])"
+
+# Handle listing compressed archives first, to avoid decompressing
+# them to disk just to list them
+
+case "$lcfile" in
+    *.tar.gz|*.pkg|*.t[arg]z) trypaged gunzip  -c "$file" | tar tvf -    ;;
+    *.tar.bz2)	              trypaged bunzip2 -c "$file" | tar tvf -    ;;
+    *.cpio.gz)                trypaged gunzip  -c "$file" | cpio -t 2>&1 ;;
+    *.cpio.bz2)               trypaged bunzip2 -c "$file" | cpio -t 2>&1 ;;
+esac
+
 if fgrep -q . "$lcfile"; then
-    lcext="$(echo $lcfile |sed -e 's/.*\.//')"
-    lcbase="$(basename "$lcfile" ".$lcext")"
+    lcbase="$(echo $lcfile |sed -e 's/\(.*\)\..*/\1/')"
 else
     lcbase="$lcfile"
-    lcext=""
 fi
 
 tempfile=""
-case "$lcext" in
+case "$lcfile" in
     *.gz)  tempfile="$(totempfile gunzip -c "$file")" ;;
     *.bz)  tempfile="$(totempfile bunzip -c "$file")" ;;
     *.bz2) tempfile="$(totempfile bzcat "$file")" ;;
@@ -209,112 +229,48 @@ case "$lcfile" in
 *.lo |\
 *.so |\
 *.so.[0-9]*)
-	objdump --syms --all-headers -- "$file" | "$GIT_PAGER"
-	echo "$msg"; read key;;
+		objdump --syms --all-headers -- "$file" | "$GIT_PAGER"
+		doexit;;
+*.a|*.sa)	trypaged ar -tv "$file"  ;;
+*.tar)		trypaged tar tvf "$file" ;;
+*.cpio)		trypaged cat "$file" | cpio -t 2>&1
+*.man)		trypaged nroff -man "$file" ;;
 
-*.a |\
-*.sa)
-		trypaged ar -tv "$file"  ;;
-
-*.tar)
-		trypaged tar tvf "$file" ;;
-
-*.pkg |\
-*.t[arg]z)
-#FIXME
-		(echo "Compressed archive:"
-		 gunzip -l -- "$file"
-		 echo
-		 echo "Tar archive:"
-		 gunzip -c -- "$file" | tar tvf -) | "$GIT_PAGER"
-		echo "$msg"; read key;;
-
-*.cpio)
-		cat "$file" | cpio -t 2>&1 | "$GIT_PAGER"
-		echo "$msg"; read key;;
-
-*.cpio.bz)
-		(echo "CPIO archive:"
-		 bunzip -c "$file" | cpio -t 2>&1) | "$GIT_PAGER"
-		echo "$msg"; read key;;
-
-*.cpio.bz2)
-		(echo "CPIO archive:"
-		 bunzip2 -c "$file" | cpio -t 2>&1) | "$GIT_PAGER"
-		echo "$msg"; read key;;
-
-*.cpio.gz |\
-*.cpio.z)
-		(echo "Compressed archive:"
-		 gunzip -l -- "$file"
-		 echo
-		 echo "Tar archive:"
-		 gunzip -c -- "$file" | cpio -t 2>&1) | "$GIT_PAGER"
-		echo "$msg"; read key;;
-
-*.man)
-		trypaged nroff -man "$file" ;;
-
-*.html |\
-*.htm)
-		if test "$GIT_BROWSER"; then
+*.html|*.htm)	if test "$GIT_BROWSER"; then
 		    try "$GIT_BROWSER" "$file"
 		else
 		    try lynx "$file"
 		fi;;
 
-utmp)
-		trypaged w
+utmp)		trypaged w ;;
 
 wtmp | wtmp.[0-9]*)
-		trypaged last -f "$file"
+		trypaged last -f "$file" ;;
 
-*ring.pgp)
-		trypaged pgp -kv -- "$file" ;;
+*ring.pgp)	trypaged pgp -kv -- "$file" ;;
+*pgp)		try pgp -- "$file" ;;
+*gpg)		try gpgv -- "$file" ;;
+*.fig)		tryx xfig "$file" ;;
 
-*pgp)
-		try pgp -- "$file" ;;
-
-*gpg)
-		try gpgv -- "$file" ;;
-
-*.fig)
-		tryx xfig "$file" ;;
-
-*.ppt)
-		tryx openoffice "$file"
+*.ppt)		tryx openoffice "$file"
 		tryx soffice "$file" ;;
-*.gif |
-*.jpg |
-*.jpeg |
-*.tga |
-*.bmp |
-*.ppm |
-*.pnm |
-*.pgm |
-*.pbm |
-*.tiff |
-*.tif |
-*.bm |
-*.xbm |
-*.xpm |
-*.ras |
-*.rgb |
-*.png |
-*.fts)
-		tryx xzgv "$file"
-		tryx kview "$file"
-		tryx ee "$file"
-		tryx display "$file"
-		tryx gimp "$file"
-		tryx xv "$file"
-		try  zgv "$file" ;;
+*.gif | *.jpg | *.jpeg |
+*.tga | *.bmp | *.ppm |
+*.pnm | *.pgm | *.pbm |
+*.tif | *.tiff | *.bm |
+*.xbm | *.xpm | *.ras |
+*.rgb | *.png | *.fts)
+		tryx xzgv        "$file"
+		tryx kview       "$file"
+		tryx ee          "$file"
+		tryx display     "$file"
+		tryx gimp        "$file"
+		tryx xv          "$file"
+		try  zgv         "$file" ;;
 
-*.xcf |\
-*.fit)
-		tryx gimp ;;
-*.mp[23])
-		tryx audacious   "$file"
+*.xcf | *.fit)	tryx gimp        "$file" ;;
+
+*.mp[23])	tryx audacious   "$file"
 		tryx xmms        "$file"
 		tryx amp         "$file"
 		tryx x11amp      "$file"
@@ -322,23 +278,16 @@ wtmp | wtmp.[0-9]*)
 		try  mpg123 -v   "$file"
 		try  amp         "$file" ;;
 
-*.asf |\
-*.wmv |\
-*.mov |\
-*.avi)|\
-*.mp[4g] |\
-*.mpeg) |\
-*.fl[icv])
-		for prog in gmplayer xine totem mplayer xanim aktion;
-		do 
-		    tryx "$prog" "$file"
-		done
-		try mplayer -vo svga "$file"
-		try flip "$file"
-		try mpeg_vga "$file" ;;
+*.asf | *.wmv |
+*.mov | *.avi)	tryvideo         "$file" ;;
 
-*.gl)
-		tryx xgrasp "$file"
+*.mp[4g]|*.mpeg) tryvideo        "$file" 
+		 try mpeg_vga    "$file" ;;
+
+*.fl[icv])	tryvideo         "$file" 
+		try flip         "$file" ;;
+
+*.gl)		tryx xgrasp "$file" ;;
 
 *.mod | *.mod.lha | *.mod.lzh | *.mod.zip |\
 *.669 | *.669.lha | *.669.lzh | *.669.zip |\
@@ -357,90 +306,80 @@ wtmp | wtmp.[0-9]*)
 		for prog in gmplayer mplayer realplay rvplayer raplayer; 
 		do
 		    tryx "$prog" "$file"
-		done
-*.voc)
-		(vplay "$file" > /dev/null 2>&1 &);;
+		done;;
+*.voc)		(vplay "$file" > /dev/null 2>&1 &);;
 
 *.wav)
 		for prog in audacious xmms kmedia wavplay
 		do
 		    tryx "$prog" "$file"
 		done
-		try wavplay "$file"
+		try wavplay "$file" ;;
 
-*.aiff)
-		 echo "No AIFF player known."
+*.aiff)		 echo "No AIFF player known."
 		 echo "$msgView"; read key
 		 "$GIT_PAGER" "$file"
 		 echo "$msg"; read key;;
 
-*.aifc)
-		 echo "No AIFC player known."
+*.aifc)		 echo "No AIFC player known."
 		 echo "$msgView"; read key
 		 "$GIT_PAGER" "$file"
 		 echo "$msg"; read key;;
 
-*.rmd)
-		(rmdtopvf -8 "$file" 2> /dev/null |			\
+*.rmd)		(rmdtopvf -8 "$file" 2> /dev/null |
 		 pvftobasic > /dev/audio 2> /dev/null &);;
 
-*.pvf)
-		(pvftobasic > /dev/audio 2> /dev/null &);;
+*.pvf)		(pvftobasic > /dev/audio 2> /dev/null &);;
+*.au)		(cat "$file" > /dev/audio 2> /dev/null &);;
 
-*.au)
-		(cat "$file" > /dev/audio 2> /dev/null &);;
+*.midi |*.mid)	(playmidi $PLAYMIDIOPT "$file" > /dev/null 2>&1 &);;
 
-*.midi |\
-*.mid)
-		(playmidi $PLAYMIDIOPT "$file" > /dev/null 2>&1 &);;
+*.sf2 | *.sfx | *.sbk)
+		tryx swami         "$file" ;;
 
-*.sf2 |\
-*.sfx |\
-*.sbk)
-		tryx swami         "$file"
-*.ps |\
-*.eps)		tryx evince        "$file"
+*.ps | *.eps)	tryx evince        "$file"
 		tryx gv            "$file"
 		tryx kghostview    "$file"
 		tryx ggv           "$file"
 		tryx ghostview     "$file"
-		try  gs            "$file"
+		try  gs            "$file" ;;
 
 *.dvi)		tryx kdvi          "$file"
-		tryx xdvi          "$file"
+		tryx xdvi          "$file" ;;
 
 *.lyx)		tryx klyx          "$file"
-		tryx lyx           "$file"
+		tryx lyx           "$file" ;;
 
-*.doc)		tryx openoffice    "$file"
+*.doc)		tryx openoffice    "$file" 
 		tryx AbiWord       "$file"
-		tryx soffice       "$file"
+		tryx soffice       "$file" ;;
 
 *.pdf)		tryx evince        "$file"
 		tryx acroread      "$file"
-		tryx xpdf          "$file"
+		tryx xpdf          "$file" ;;
 
-*.ms)		trypaged nroff -ms "$file"
+*.ms)		trypaged nroff -ms "$file" ;;
+
 *.[1-9n] |\
 *.[1-9n][xXmM])
-		trypaged nroff -man "$file" | "$GIT_PAGER"
+		trypaged nroff -man "$file" ;;
 
 *.[iI]nfo)	try info --file "$file";;
 
 [SR]MAIL)	try emacs   "$file"
-		try xemacs  "$file"
+		try xemacs  "$file" ;;
 
-INBOX|OUTBOX)	try xemacs  "$file"
+INBOX|OUTBOX)	try xemacs  "$file" ;;
 
 
 *.arj |\
-*.a[0-9][1-9])	trypaged unarj l "$file" 
-*.zip)		trypaged unzip -v "$file"
-*.rar)		trypaged unrar l "$file"
-*.jar)		trypaged jar tvf "$file"
-*.class)	trypaged javap -c -s -l -verbose "$(basename "$realfile" .class)"
-*.lha|*.lzh)	trypaged lha -v "$file"
-*.rpm)		trypaged rpm -qilRsp -- "$file"
+*.a[0-9][1-9])	trypaged unarj l "$file"  ;;
+*.zip)		trypaged unzip -v "$file" ;;
+*.rar)		trypaged unrar l "$file"  ;;
+*.jar)		trypaged jar tvf "$file"  ;;
+*.lha|*.lzh)	trypaged lha -v "$file"   ;;
+*.class)	trypaged javap -c -s -l -verbose "$(basename "$realfile" .class)" ;;
+*.rpm)		trypaged rpm -qilRsp -- "$file" ;;
 
 *.deb)		(echo "$file"; dpkg --info "$file"
 		 echo; dpkg --contents "$file") | "$GIT_PAGER"
@@ -467,9 +406,9 @@ INBOX|OUTBOX)	try xemacs  "$file"
 		    try metamail -d -b -c "$MIMETYPE" "$file"
 	        fi
 		try "$GIT_PAGER" "$file"
-		try less "$file"
-		try more "$file"
-		try cat "file"
+		try less         "$file"
+		try more         "$file"
+		try cat          "$file"
 esac
 
 exit 0
