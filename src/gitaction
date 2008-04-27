@@ -72,69 +72,89 @@
 
 name=`basename "$0"`
 msg="Press ENTER to continue..."
-msgView="Press ENTER to view the file with \`$GIT_PAGER', or ^C to abort..."
+GIT_PAGER=${GIT_PAGER:-more}
 
+#################### helper functions ####################
+
+cleanup()
+{
+    if test -n "$tempfile" && test -f "$tempfile"; then
+	rm -f "$tempfile"
+    fi
+}
 
 doexit()
 {
     ret=$1
     echo "$msg"; read key;
+    cleanup
     exit $ret
 }
 
-exitifdone
+exitifdone()
 {
     if test $? -eq 0; then
 	doexit
     fi
 }
 
-run()
+whichlist()
 {
-    "$@"
-    exitifdone
+    while test $# -gt 0
+    do
+	gitwhich "$1"
+	if test $? -ne 0; then
+	    return 1
+	fi
+	shift
+    done
+    return 0
+}
+
+TRY_NORMAL=0
+TRY_PAGED=1
+TRY_X=2
+
+dotry()
+{
+    type=$1
+    cmd="$2"
+    shift
+    shift
+    if whichlist "$cmd"; then
+	case $type in
+	    $TRY_NORMAL)	"$cmd" "$@" ;;
+	    $TRY_PAGED)		"$cmd" "$@"  2>&1 | "$GIT_PAGER" ;;
+	    $TRY_X)		("$cmd" "$@"  >/dev/null 2>&1 ; cleanup ) & 
+	    			tempfile=  ;; # don't delete tempfile now
+	    *) 			 echo "$name: INTERNAL ERROR: unknown type ($type)" ;;
+	esac
+    fi
+    doexit
 }
 
 try()
 {
-    cmd="$1"
-    shift
-    gitwhich "$cmd";
-    if test $? -eq 0; then
-	run "$cmd" "$@"
-    fi
-}
-
-tryx()
-{
-    if test -n "$DISPLAY"
-	try "$@"
-    fi
+    dotry $TRY_NORMAL "$@"
 }
 
 trypaged()
 {
-    cmd="$1"
-    shift
-    gitwhich "$cmd";
-    if test $? -eq 0; then
-	"$cmd" "$@"  2>&1 | "$GIT_PAGER"
-	if test $? -eq 0; then
-	    echo "$msg"; read key;
-	    exit 1
-	fi
+    dotry $TRY_PAGED "$@"
+}
+
+tryx()
+{
+    if test -n "$DISPLAY"; then
+	dotry $TRY_X "$@"
     fi
 }
 
 totempfile()
 {
     tmpfile="${TMPDIR:-/tmp}/gitaction.$$"
-    cmd="$1"
-    shift
-    gitwhich "$cmd";
-    if test $? -eq 0; then
-	trap "rm -f $tmpfile" 0 1 2 5 15
-	$cmd "$@" > "$tmpfile"
+    if whichlist "$1"; then
+	"$@" > "$tmpfile"
 	if test $? -eq 0; then
 	    echo "$tmpfile"
 	fi
@@ -149,6 +169,8 @@ tryvideo()
     done
     try mplayer -vo svga "$file"
 }
+
+#################### Main logic ####################
 
 if test "$#" -ne 2; then
     echo "$name: GIT internal script" >&2
@@ -178,30 +200,36 @@ fi
 file="$1/$2"
 
 istext=0
-gitwhich file;
-if test $? -eq 0; then
+if whichlist file; then
     file "$file" |grep -q '.*:.*text'
     istext=$?
 fi
 
-realfile="$file"
 lcfile="$(echo "$file"|tr [:upper:] [:lower:])"
 
 # Handle listing compressed archives first, to avoid decompressing
 # them to disk just to list them
 
 case "$lcfile" in
-    *.tar.gz|*.pkg|*.t[arg]z) trypaged gunzip  -c "$file" | tar tvf -    ;;
-    *.tar.bz2)	              trypaged bunzip2 -c "$file" | tar tvf -    ;;
-    *.cpio.gz)                trypaged gunzip  -c "$file" | cpio -t 2>&1 ;;
-    *.cpio.bz2)               trypaged bunzip2 -c "$file" | cpio -t 2>&1 ;;
+    *.tar.gz|*.pkg|*.t[arg]z) if whichlist gunzip tar; then
+				  gunzip  -c "$file" | tar tvf -    | "$GIT_PAGER"
+				  doexit
+			      fi ;;
+    *.tar.bz2)	              if whichlist bunzip2 tar; then
+				  bunzip2 -c "$file" | tar tvf -    | "$GIT_PAGER"
+				  doexit
+			      fi ;;
+    *.cpio.gz)                if whichlist gunzip cpio; then
+				  gunzip  -c "$file" | cpio -t 2>&1 | "$GIT_PAGER"
+				  doexit
+			      fi ;;
+    *.cpio.bz2)               if whichlist gunzip cpio; then
+				  bunzip2 -c "$file" | cpio -t 2>&1 | "$GIT_PAGER"
+				  doexit
+			      fi ;;
 esac
 
-if fgrep -q . "$lcfile"; then
-    lcbase="$(echo $lcfile |sed -e 's/\(.*\)\..*/\1/')"
-else
-    lcbase="$lcfile"
-fi
+lcbase="$(echo $lcfile |sed -e 's/\(.*\)\..*/\1/')"
 
 tempfile=""
 case "$lcfile" in
@@ -211,7 +239,7 @@ case "$lcfile" in
     *.z)   tempfile="$(totempfile uncompress -c "$file")" ;;
 esac
 
-if test -n "$tempfile"
+if test -n "$tempfile"; then
     file="$tempfile"
     lcfile="$lcbase"
 fi
@@ -225,16 +253,13 @@ if test `uname -s` = "Darwin"; then
 fi
 
 case "$lcfile" in
-*.o |\
-*.lo |\
-*.so |\
-*.so.[0-9]*)
-		objdump --syms --all-headers -- "$file" | "$GIT_PAGER"
-		doexit;;
-*.a|*.sa)	trypaged ar -tv "$file"  ;;
-*.tar)		trypaged tar tvf "$file" ;;
-*.cpio)		trypaged cat "$file" | cpio -t 2>&1
-*.man)		trypaged nroff -man "$file" ;;
+*.so | *.so.[0-9]* |\
+*.o | *.lo)	trypaged objdump --syms --all-headers -- "$file" ;;
+
+*.a|*.sa)	trypaged ar -tv       "$file" ;;
+*.tar)		trypaged tar tvf      "$file" ;;
+*.cpio)		trypaged cpio -t -F   "$file" ;;
+*.man)		trypaged nroff -man   "$file" ;;
 
 *.html|*.htm)	if test "$GIT_BROWSER"; then
 		    try "$GIT_BROWSER" "$file"
@@ -254,11 +279,11 @@ wtmp | wtmp.[0-9]*)
 
 *.ppt)		tryx openoffice "$file"
 		tryx soffice "$file" ;;
-*.gif | *.jpg | *.jpeg |
-*.tga | *.bmp | *.ppm |
-*.pnm | *.pgm | *.pbm |
-*.tif | *.tiff | *.bm |
-*.xbm | *.xpm | *.ras |
+*.gif | *.jpg | *.jpeg |\
+*.tga | *.bmp | *.ppm |\
+*.pnm | *.pgm | *.pbm |\
+*.tif | *.tiff | *.bm |\
+*.xbm | *.xpm | *.ras |\
 *.rgb | *.png | *.fts)
 		tryx xzgv        "$file"
 		tryx kview       "$file"
@@ -275,10 +300,10 @@ wtmp | wtmp.[0-9]*)
 		tryx amp         "$file"
 		tryx x11amp      "$file"
 		try  mpg123 -v   "$file"
-		try  mpg123 -v   "$file"
+		try  mpg321 -v   "$file"
 		try  amp         "$file" ;;
 
-*.asf | *.wmv |
+*.asf | *.wmv |\
 *.mov | *.avi)	tryvideo         "$file" ;;
 
 *.mp[4g]|*.mpeg) tryvideo        "$file" 
@@ -297,42 +322,47 @@ wtmp | wtmp.[0-9]*)
 *.mtm | *.mtm.lha | *.mtm.lzh | *.mtm.zip |\
 *.ult | *.ult.lha | *.ult.lzh | *.ult.zip |\
 *.it | *.it.lha | *.it.lzh | *.it.zip |\
-*.xm | *.xm.lha | *.xm.lzh | *.xm.zip |\ 
+*.xm | *.xm.lha | *.xm.lzh | *.xm.zip |\
 *.s[3t]m | *.s[3t]m.lha| *.s[3t]m.lzh| *.s[3t]m.zip)
 		(mikmod -t "$file" > /dev/null 2>&1 &);;
 
-*.r[av] |\
-*.ram)
-		for prog in gmplayer mplayer realplay rvplayer raplayer; 
-		do
-		    tryx "$prog" "$file"
-		done;;
-*.voc)		(vplay "$file" > /dev/null 2>&1 &);;
-
-*.wav)
-		for prog in audacious xmms kmedia wavplay
+*.r[av]|*.ram)	for prog in realplay rvplayer raplayer
 		do
 		    tryx "$prog" "$file"
 		done
-		try wavplay "$file" ;;
+		tryvideo "$file" ;;
 
-*.aiff)		 echo "No AIFF player known."
-		 echo "$msgView"; read key
-		 "$GIT_PAGER" "$file"
-		 echo "$msg"; read key;;
+*.voc)		(vplay "$file" > /dev/null 2>&1 &);;
 
-*.aifc)		 echo "No AIFC player known."
-		 echo "$msgView"; read key
-		 "$GIT_PAGER" "$file"
-		 echo "$msg"; read key;;
+*.wav)		for prog in audacious xmms kmedia wavplay
+		do
+		    tryx "$prog" "$file"
+		done
+		try wavplay "$file"
+		try play    "$file" ;;
 
-*.rmd)		(rmdtopvf -8 "$file" 2> /dev/null |
-		 pvftobasic > /dev/audio 2> /dev/null &);;
+*.aiff|*.aifc)	tryx audacious       "$file"
+		tryx alsaplayer-gtk  "$file"
+		try  alsaplayer-text "$file"
+		tryx alsaplayer      "$file"
+		try  alsaplayer      "$file"  ;;
 
-*.pvf)		(pvftobasic > /dev/audio 2> /dev/null &);;
-*.au)		(cat "$file" > /dev/audio 2> /dev/null &);;
+*.rmd)		if whichlist rmdtopvf pvftobasic; then
+		    (rmdtopvf -8 "$file" 2> /dev/null |
+		     pvftobasic > /dev/audio 2> /dev/null &)
+		     doexit
+		fi;;
 
-*.midi |*.mid)	(playmidi $PLAYMIDIOPT "$file" > /dev/null 2>&1 &);;
+*.pvf)		if whichlist pvftobasic; then
+		    (pvftobasic > /dev/audio 2> /dev/null &)
+		    doexit
+		fi;;
+*.au)		(cat "$file" > /dev/audio 2> /dev/null &); doexit ;;
+
+*.midi |*.mid)	if whichlist playmidi; then
+		    (playmidi $PLAYMIDIOPT "$file" > /dev/null 2>&1 &)
+		    doexit
+		fi;;
 
 *.sf2 | *.sfx | *.sbk)
 		tryx swami         "$file" ;;
@@ -361,8 +391,7 @@ wtmp | wtmp.[0-9]*)
 *.ms)		trypaged nroff -ms "$file" ;;
 
 *.[1-9n] |\
-*.[1-9n][xXmM])
-		trypaged nroff -man "$file" ;;
+*.[1-9n][xXmM])	trypaged nroff -man "$file" ;;
 
 *.[iI]nfo)	try info --file "$file";;
 
@@ -378,37 +407,39 @@ INBOX|OUTBOX)	try xemacs  "$file" ;;
 *.rar)		trypaged unrar l "$file"  ;;
 *.jar)		trypaged jar tvf "$file"  ;;
 *.lha|*.lzh)	trypaged lha -v "$file"   ;;
-*.class)	trypaged javap -c -s -l -verbose "$(basename "$realfile" .class)" ;;
+*.class)	trypaged javap -c -s -l -verbose "$(basename "$file" .class)" ;;
 *.rpm)		trypaged rpm -qilRsp -- "$file" ;;
 
-*.deb)		(echo "$file"; dpkg --info "$file"
-		 echo; dpkg --contents "$file") | "$GIT_PAGER"
-		echo "$msg"; read key;;
-*)
-		if test -x "$file"; then
-		    if test `uname` = "Linux"; then
-			FILE_OPTIONS="-L"
-		    fi
-		    file $FILE_OPTIONS "$file" | grep "ELF" > /dev/null 2>&1
-		    if test $? -eq 0; then
-		        file $FILE_OPTIONS "$file"
-		        ldd "$file"
-		        echo "$msg"; read key
-		        exit
-		    fi
+*.deb)		if whichlist dpkg; then
+		    (echo "$file"; dpkg --info "$file";
+		     echo; dpkg --contents "$file") | "$GIT_PAGER"
+		    doexit
 		fi
-		FILEOUT="`file --mime-type "$file" 2>/dev/null`"
-		if test $? -eq 0; then
-		    MIMETYPE=`echo "$FILEOUT" | sed 's/.*: *//;'`
-		fi
-		if test -n "$MIMETYPE"; then
-		    try see "${MIMETYPE}:${file}"
-		    try metamail -d -b -c "$MIMETYPE" "$file"
-	        fi
-		try "$GIT_PAGER" "$file"
-		try less         "$file"
-		try more         "$file"
-		try cat          "$file"
 esac
 
-exit 0
+if test -x "$file"; then
+    if test `uname` = "Linux"; then
+	FILE_OPTIONS="-L"
+    fi
+    file $FILE_OPTIONS "$file" | grep "ELF" > /dev/null 2>&1
+    if test $? -eq 0; then
+	file $FILE_OPTIONS "$file"
+	ldd "$file"
+	doexit
+    fi
+fi
+FILEOUT="$(file --mime-type "$file" 2>/dev/null)"
+if test $? -eq 0; then
+    MIMETYPE="$(echo "$FILEOUT" | sed 's/.*: *//;')
+fi
+if test -n "$MIMETYPE" && test $istext -ne 1; then
+    try see "${MIMETYPE}:${file}"
+    try metamail -d -b -c "$MIMETYPE" "$file"
+fi
+try "$GIT_PAGER" "$file"
+try less         "$file"
+try more         "$file"
+try cat          "$file"
+
+cleanup
+exit 1
