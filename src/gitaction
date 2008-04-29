@@ -167,31 +167,25 @@ tryvideo()
 {
     for prog in gmplayer gxine xine vlc totem mplayer xanim aktion xfmedia;
     do 
-	tryx "$prog" "$file"
+	tryx "$prog" "$1"
     done
-    try mplayer -vo svga   "$file"
-    try vlc -I rc -V caca  "$file"
-    try aaxine             "$file"
+    try mplayer -vo svga      "$1"
+    try vlc -I rc -V caca     "$1"
+    try aaxine                "$1"
 }
 
 tryaudio()
 {
-    tryx audacious       "$file"
-    tryx xmms            "$file"
-    tryx amp             "$file"
-    tryx x11amp          "$file"
-    tryx alsaplayer-gtk  "$file"
-    tryx rhythmbox       "$file"
-    tryx bmp-play-files-2.0 "$file"
-    tryx bmp             "$file"
-    tryx esdplay         "$file"
-    tryx herrie          "$file"
-    tryx kwave           "$file"
-    tryx noatun --nofork "$file"
-    try  alsaplayer      "$file"
-    try  alsaplayer-text "$file"
-    try  play            "$file"
-    try  amp             "$file"
+    for prog in  audacious xmms amp x11amp alsaplayer-gtk rhythmbox \
+                 bmp-play-files-2.0 bmp esdplay herrie kwave;
+    do 
+	tryx "$prog" "$1"
+    done
+    tryx noatun --nofork      "$1"
+    try  alsaplayer           "$1"
+    try  alsaplayer-text      "$1"
+    try  play                 "$1"
+    try  amp                  "$1"
 }
 
 #################### Main logic ####################
@@ -278,12 +272,42 @@ if test `uname -s` = "Darwin"; then
 fi
 
 case "$lcfile" in
-*.so | *.so.[0-9]* |\
-*.o | *.lo)	trypaged objdump --syms --all-headers -- "$file" ;;
-
-*.a|*.sa)	trypaged ar -tv       "$file" ;;
-*.tar|*.cbt)	trypaged tar tvf      "$file" ;;
-*.cpio)		trypaged cpio -t -F   "$file" ;;
+*.[iI]nfo)	try      info --file       "$file" ;;
+*.aiff|*.aifc)	tryaudio                   "$file" ;;
+*.a|*.sa)	trypaged ar -tv            "$file" ;;
+*.cpio)		trypaged cpio -t -F        "$file" ;;
+*.db)		trypaged db_dump           "$file" ;;
+*.dbf)		trypaged dbview            "$file" ;;
+*.dia)		tryx     dia               "$file" ;;
+*.dot)		tryx     dotty             "$file" ;;
+*.dxf)		tryx     qcad              "$file" ;;
+*.fig)		tryx     xfig              "$file" ;;
+*.gl)		tryx     xgrasp            "$file" ;;
+*.gnumeric)	tryx     gnumeric          "$file" ;;
+*.jar)		trypaged jar tvf           "$file" ;;
+*.lha|*.lzh)	trypaged lha -v            "$file" ;;
+*.mgp)		tryx     mgp -S            "$file" ;;
+*.mov)		tryvideo                   "$file" ;;
+*.ms)		trypaged nroff -ms         "$file" ;;
+*.oleo)		try      oleo              "$file" ;;
+*.po)		tryx     kbabel            "$file" ;;
+*.pod)		trypaged pod2text          "$file" ;;
+*.rar|*.cbr)	trypaged unrar l           "$file" ;;
+*.rpm)		trypaged rpm -qilRsp --    "$file" ;;
+*.sqlite)	trypaged sqlite            "$file" .dump ;; 
+*.tar|*.cbt)	trypaged tar tvf           "$file" ;;
+*.torrent)	trypaged btshowmetainfo    "$file" ;;
+*.wma | *.gsm)	tryaudio                   "$file" ;;
+*.wrl)		tryx     vrweb             "$file" ;;
+*.zip|*.cbz)	trypaged unzip -v          "$file" ;;
+*.zoo)		trypaged zoo -list         "$file" ;;
+*gpg)		try      gpgv --           "$file" ;;
+*pgp)		try      pgp --            "$file" ;;
+*ring.pgp)	trypaged pgp -kv --        "$file" ;;
+INBOX|OUTBOX)	try xemacs                 "$file" ;;
+*.voc)		(vplay "$file" > /dev/null 2>&1 &) ;;
+*.au)		(cat "$file" > /dev/audio 2> /dev/null &); doexit ;;
+*.class)	trypaged javap -c -s -l -verbose "$(basename "$file" .class)" ;;
 
 *.html|*.htm)	if test "$GIT_BROWSER"; then
 		    try "$GIT_BROWSER" "$file"
@@ -301,30 +325,27 @@ case "$lcfile" in
 		try  safari           "$file"
 		trypaged html2text    "$file"  ;;
 
-*.chm)		tryx gnochm      "$file"
-		tryx kchmviewer  "$file"
-		tryx chmsee      "$file"
-		tryx xchm        "$file" ;;
+*.pdf)		tryx evince        "$file"
+		tryx epdfview      "$file"
+		tryx gv            "$file"
+		tryx kpdf          "$file"
+		tryx acroread      "$file"
+		tryx xpdf          "$file"
+		trypaged pstotext  "$file" ;;
 
-*.sqlite)	trypaged sqlite  "$file" .dump ;; 
-*.db)		trypaged db_dump "$file" ;;
-*.dbf)		trypaged dbview  "$file" ;;
-*.dia)		tryx     dia     "$file" ;;
-*.dot)		tryx     dotty   "$file" ;;
+*.ps | *.eps)	tryx evince        "$file"
+		tryx gv            "$file"
+		tryx kghostview    "$file"
+		tryx ggv           "$file"
+		tryx ghostview     "$file"
+		tryx karbon        "$file"
+		try  fbgs          "$file"
+		try  gs            "$file"
+		trypaged pstotext  "$file" ;;
 
-*.djvu)		tryx djview4     "$file"
-		tryx djview3     "$file"
-		tryx djview      "$file" ;;
-
-utmp)		trypaged w ;;
-
-wtmp | wtmp.[0-9]*)
-		trypaged last -f "$file" ;;
-
-*ring.pgp)	trypaged pgp -kv --  "$file" ;;
-*pgp)		try      pgp --      "$file" ;;
-*gpg)		try      gpgv --     "$file" ;;
-*.fig)		tryx     xfig        "$file" ;;
+*.dvi)		tryx evince        "$file"
+		tryx kdvi          "$file"
+		tryx xdvi          "$file" ;;
 
 *.123 | *.602 | *.dbf | *.doc |\
 *.wri | *.ot  | *.mml | *.ppt |\
@@ -344,15 +365,8 @@ wtmp | wtmp.[0-9]*)
 		tryx Ted           "$file"
 		trypaged unrtf --text "$file" ;;
 
-*.gnumeric)	tryx gnumeric      "$file" ;;
-*.oleo)		try oleo           "$file" ;;
-
-*.afm | *.bdf | *.cff | *.cid |\
-*.mmm | *.ocf | *.ofm | *.otf |\
-*.pcf | *.pfa | *.pfb | *.pfm |\
-*.ttf | *.font)	tryx gfontview     "$file" ;;
-		tryx gwaterfall    "$file" ;;
-
+*.lyx)		tryx klyx          "$file"
+		tryx lyx           "$file" ;;
 
 *.gif | *.jpg | *.jpeg |\
 *.tga | *.bmp | *.ppm |\
@@ -360,29 +374,14 @@ wtmp | wtmp.[0-9]*)
 *.tif | *.tiff | *.bm |\
 *.xbm | *.xpm | *.ras |\
 *.rgb | *.png | *.fts |\
-*.pam | *.ico)	tryx xzgv          "$file"
-		tryx kview         "$file"
-		tryx ee            "$file"
-		tryx display       "$file"
-		tryx xli           "$file"
-		tryx xloadimage    "$file"
-		tryx gimageview    "$file"
-		tryx feh           "$file"
-		tryx gqview        "$file"
-		tryx feh           "$file"
-		tryx gm display    "$file"
-		tryx grita         "$file"
-		tryx qiv -tfi      "$file"
-		tryx paul          "$file"
-		tryx gimp          "$file"
-		tryx xv            "$file"
-		tryx gpe-gallery   "$file"
+*.pam | *.ico)	for prog in xzgv kview ee display xli xloadimage gimageview feh \
+                            gqview feh gm  display grita qiv -tfi paul gimp xv gpe-gallery;
+		do
+		    tryx "$prog"   "$file"
+		done
 		try  zgv           "$file"
 		try  fbi           "$file"
 		try  cacaview      "$file" ;;
-
-*.xcf | *.fit)	tryx gimp          "$file"
-		tryx xcfview       "$file" ;;
 
 *.mp[23])	tryaudio           "$file"
 		tryx mp3blaster    "$file"
@@ -395,40 +394,41 @@ wtmp | wtmp.[0-9]*)
 *.flac)		tryaudio           "$file"
 		try  flac123       "$file" ;;
 
-*.wma | *.gsm)	tryaudio           "$file" ;;
-
 *.asx | *.m3u |\
 *.pls)		tryaudio              "$file"
 		try mplayer -playlist "$file" ;;
 
-*.mov)		tryvideo           "$file" ;;
+*.r[avm]|*.ram)	tryx realplay "$file"
+		tryx rvplayer "$file"
+		tryx raplayer "$file"
+		tryvideo      "$file" ;;
 
-*.asf | *.wm[vf] |\
-*.avi)		tryvideo            "$file"
-		tryx avifile-player "$file" ;;
+*.wav)		for prog in audacious xmms kmedia wavplay
+		do
+		    tryx "$prog" "$file"
+		done
+		try wavplay "$file"
+		try play    "$file" ;;
 
-*.mp[4g]|*.mpeg) tryvideo          "$file" 
-		 tryx gtv          "$file" 
-		 tryx plaympeg     "$file"
-		 try mpeg_vga      "$file" ;;
+*.rmd)		if whichlist rmdtopvf pvftobasic; then
+		    (rmdtopvf -8 "$file" 2> /dev/null |
+		     pvftobasic > /dev/audio 2> /dev/null &)
+		     doexit
+		fi;;
 
-*.fl[icv])	tryvideo           "$file" 
-		try flip           "$file" ;;
+*.pvf)		if whichlist pvftobasic; then
+		    (pvftobasic > /dev/audio 2> /dev/null &)
+		    doexit
+		fi;;
+*.midi |*.mid)	
+		tryx timidity -ia "$file"
+		tryx xplaymidi    "$file"
+		try  timidity -id "$file"
+		try  playmidi     "$file"
+		try  pmidi        "$file"  ;;
 
-*.swf)		tryx swfdec-player "$file"
-		tryx firefox       "$file"
-		tryx iceweasel     "$file" ;;
-
-*.svg)		tryx gthumb        "$file"
-		tryx ksvg          "$file"
-		tryx display       "$file"
-		tryx firefox       "$file"
-		tryx iceweasel     "$file"
-		tryx inkscape      "$file"
-		tryx sodipodi      "$file"
-		tryx gimp          "$file" ;;
-
-*.gl)		tryx xgrasp        "$file" ;;
+*.sf2 | *.sfx | *.sbk)
+		tryx swami         "$file" ;;
 
 *.mod | *.mod.lha | *.mod.lzh | *.mod.zip |\
 *.nst | *.nst.lha | *.nst.lzh | *.nst.zip |\
@@ -451,92 +451,76 @@ wtmp | wtmp.[0-9]*)
 		try  mikmod -t    "$file"
 		tryx soundtracker "$file" ;;
 
-*.r[av]|*.ram)	for prog in realplay rvplayer raplayer
-		do
-		    tryx "$prog" "$file"
-		done
-		tryvideo "$file" ;;
+*.asf | *.wm[vf] |\
+*.avi)		tryvideo            "$file"
+		tryx avifile-player "$file" ;;
 
-*.voc)		(vplay "$file" > /dev/null 2>&1 &);;
+*.mp[4g]|*.mpeg) tryvideo          "$file" 
+		 tryx gtv          "$file" 
+		 tryx plaympeg     "$file"
+		 try mpeg_vga      "$file" ;;
 
-*.wav)		for prog in audacious xmms kmedia wavplay
-		do
-		    tryx "$prog" "$file"
-		done
-		try wavplay "$file"
-		try play    "$file" ;;
+*.djvu)		tryx djview4     "$file"
+		tryx djview3     "$file"
+		tryx djview      "$file" ;;
 
-*.aiff|*.aifc)	tryx audacious       "$file"
-		tryx alsaplayer-gtk  "$file"
-		try  alsaplayer-text "$file"
-		try  alsaplayer      "$file"  ;;
+*.chm)		tryx gnochm      "$file"
+		tryx kchmviewer  "$file"
+		tryx chmsee      "$file"
+		tryx xchm        "$file" ;;
 
-*.rmd)		if whichlist rmdtopvf pvftobasic; then
-		    (rmdtopvf -8 "$file" 2> /dev/null |
-		     pvftobasic > /dev/audio 2> /dev/null &)
-		     doexit
-		fi;;
+utmp)		trypaged w ;;
 
-*.pvf)		if whichlist pvftobasic; then
-		    (pvftobasic > /dev/audio 2> /dev/null &)
-		    doexit
-		fi;;
-*.au)		(cat "$file" > /dev/audio 2> /dev/null &); doexit ;;
+wtmp | wtmp.[0-9]*)
+		trypaged last -f "$file" ;;
 
-*.midi |*.mid)	
-		tryx timidity -ia "$file"
-		tryx xplaymidi    "$file"
-		try  timidity -id "$file"
-		try  playmidi     "$file"
-		try  pmidi        "$file"  ;;
+*.afm | *.bdf | *.cff | *.cid |\
+*.mmm | *.ocf | *.ofm | *.otf |\
+*.pcf | *.pfa | *.pfb | *.pfm |\
+*.ttf | *.font)	tryx gfontview     "$file" ;;
+		tryx gwaterfall    "$file" ;;
 
-*.sf2 | *.sfx | *.sbk)
-		tryx swami         "$file" ;;
+*.xcf | *.fit)	tryx gimp          "$file"
+		tryx xcfview       "$file" ;;
 
-*.torrent)	trypaged btshowmetainfo "$file" ;;
-*.wrl)		tryx vrweb         "$file" ;;
 
-*.ps | *.eps)	tryx evince        "$file"
-		tryx gv            "$file"
-		tryx kghostview    "$file"
-		tryx ggv           "$file"
-		tryx ghostview     "$file"
-		tryx karbon        "$file"
-		try  fbgs          "$file"
-		try  gs            "$file"
-		trypaged pstotext  "$file" ;;
- ;;
+*.fl[icv])	tryvideo           "$file" 
+		try flip           "$file" ;;
 
-*.dvi)		tryx evince        "$file"
-		tryx kdvi          "$file"
-		tryx xdvi          "$file" ;;
+*.swf)		tryx swfdec-player "$file"
+		tryx firefox       "$file"
+		tryx iceweasel     "$file" ;;
 
-*.lyx)		tryx klyx          "$file"
-		tryx lyx           "$file" ;;
+*.svg)		tryx gthumb        "$file"
+		tryx ksvg          "$file"
+		tryx display       "$file"
+		tryx firefox       "$file"
+		tryx iceweasel     "$file"
+		tryx inkscape      "$file"
+		tryx sodipodi      "$file"
+		tryx gimp          "$file" ;;
 
-*.pdf)		tryx evince        "$file"
-		tryx epdfview      "$file"
-		tryx gv            "$file"
-		tryx kpdf          "$file"
-		tryx acroread      "$file"
-		tryx xpdf          "$file"
-		trypaged pstotext  "$file" ;;
-
-*.pod)		trypaged pod2text  "$file" ;;
-*.po)		tryx     kbabel    "$file" ;;
-*.ms)		trypaged nroff -ms "$file" ;;
-*.dxf)		tryx     qcad      "$file" ;;
-     
 *.g3)		tryx     kfax      "$file"
 		tryx     viewfax   "$file"
 		tryx     xli       "$file"
 		try      cacaview  "$file" ;;
 
+*.so | *.so.[0-9]* |\
+*.o | *.lo)	trypaged objdump --syms --all-headers -- "$file" ;;
+
+[SR]MAIL)	try emacs   "$file"
+		try xemacs  "$file" ;;
+
+*.arj |\
+*.a[0-9][1-9])	trypaged unarj l   "$file" ;;
+
+*.deb)		if whichlist dpkg; then
+		    (echo "$file"; dpkg --info "$file";
+		     echo; dpkg --contents "$file") | "$GIT_PAGER"
+		    doexit
+		fi
 *.tnef)		tryx     ktnef      "$file"
 		trypaged tnef -t -f "$file" ;;
-
-*.mgp)		tryx     mgp -S    "$file" ;;
-
 
 *.[1-9n] | *.[1-9n][xm] | *.[1357]ssl | *.[137]posix |\
 *.[1-9]fun | *.[1-9n]freebsd | *.1emacs[0-9][0-9] |\
@@ -556,29 +540,6 @@ wtmp | wtmp.[0-9]*)
 *.7g | *.7wn | *.8cdebconf | *.8mailutils | *.8postfix |\
 *.8tp | *.man)	trypaged nroff -man "$file" ;;
 
-*.[iI]nfo)	try info --file "$file";;
-
-[SR]MAIL)	try emacs   "$file"
-		try xemacs  "$file" ;;
-
-INBOX|OUTBOX)	try xemacs  "$file" ;;
-
-
-*.arj |\
-*.a[0-9][1-9])	trypaged unarj l   "$file" ;;
-*.zip|*.cbz)	trypaged unzip -v  "$file" ;;
-*.rar|*.cbr)	trypaged unrar l   "$file" ;;
-*.zoo)		trypaged zoo -list "$file" ;;
-*.jar)		trypaged jar tvf   "$file" ;;
-*.lha|*.lzh)	trypaged lha -v    "$file" ;;
-*.class)	trypaged javap -c -s -l -verbose "$(basename "$file" .class)" ;;
-*.rpm)		trypaged rpm -qilRsp -- "$file" ;;
-
-*.deb)		if whichlist dpkg; then
-		    (echo "$file"; dpkg --info "$file";
-		     echo; dpkg --contents "$file") | "$GIT_PAGER"
-		    doexit
-		fi
 esac
 
 if test -x "$file"; then
