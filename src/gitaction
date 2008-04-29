@@ -23,7 +23,8 @@
 ###  http://www.gnu.org/licenses/.                                          ###
 ###									    ###
 ###		    Written by Tudor Hulubei and Andrei Pitis.		    ###
-###			  Enhanced by Verdoolaege Sven.		            ###
+###			  Enhanced by Verdoolaege Sven		            ###
+###			       and Ian Beckwith.			    ###
 ###									    ###
 ###############################################################################
 
@@ -241,7 +242,7 @@ case "$lcfile" in
 				  gunzip  -c "$file" | cpio -t 2>&1 | "$GIT_PAGER"
 				  doexit
 			      fi ;;
-    *.cpio.bz2)               if whichlist gunzip cpio; then
+    *.cpio.bz2)               if whichlist bunzip2 cpio; then
 				  bunzip2 -c "$file" | cpio -t 2>&1 | "$GIT_PAGER"
 				  doexit
 			      fi ;;

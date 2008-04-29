@@ -1,3 +1,7 @@
+2008-04-29  Ian Beckwith  <ianb@erislabs.net>
+
+	* rewrote gitaction, adding more file types.
+
 2008-04-13  Ian Beckwith  <ianb@erislabs.net>
 
 	* bumped version to 4.9.4

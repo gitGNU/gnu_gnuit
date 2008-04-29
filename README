@@ -55,14 +55,24 @@ and some are only for obscure file formats.
 
 Tools used include:
 
-objdump, ar, tar, bzip, bzip2, gzip, cpio, nroff, pgp, gpg, xfig,
-openoffice, soffice, xzgv, xv, kview, ee, imagemagick, gimp, zgv,
-audacious, xmms, amp, x11amp, mplayer, xine, totem, xanim, aktion,
-mpeg_vga, flip, xgrasp, mikmod, rvplayer, raplayer, kmedia, wavplay,
-rmd2pmv, pvf2basic, playmidi, evince, kghostview, ggv, gv, ghostview,
-gs, kdvi, xdvi, klyx, lyx, abiword, acroread, xpdf, emacs, xemacs,
-unzip, unarj, unrar, jar, javap, lha, rpm, dpkg, ldd, metamail,
-run-mailcap.
+aaxine abiword acroread aktion alsaplayer alsaplayer-gtk alsaplayer-text
+amp ar audacious avifile-player bmp btshowmetainfo bunzip bunzip2
+cacaview chmsee cpio db_dump dbview dia display djview djview3 djview4
+dotty dpkg ee elinks emacs epdfview esdplay evince fbgs fbi feh file
+firefox flac123 flip galeon gfontview ggv ghostview gimageview gimp gm
+gmplayer gnash gnochm gnumeric gpe-gallery gpgv gqview grita gs gthumb
+gtv gunzip gv gwaterfall gxine herrie html2text iceape iceweasel info
+inkscape jar javap karbon kbabel kchmviewer kdvi kfax kghostview klyx
+kmedia konqueror kpdf ksvg ktnef kview kwave last ldd less lha lynx lyx
+metamail mgp mikmod more mp3blaster mpeg_vga mpg123 mpg321 mplayer
+noatun nroff objdump ogg123 oleo open openoffice paul pgp play playmidi
+plaympeg pmidi pod2text pstotext pvftobasic qcad qiv raplayer realplay
+rhythmbox rmdtopvf rpm rvplayer safari seamonkey see sensible-browser
+sodipodi soffice soundtracker sqlite swami swfdec-player tar ted
+timidity tnef totem tvf unarj uncompress unrar unrtf unzip uudecode
+viewfax vlc vplay vrweb w3m wavplay x11amp xanim xcfview xchm xdvi
+xemacs xfig xfmedia xgrasp xine xli xloadimage xmms xmp xpdf xplaymidi
+xv xzgv zgv zoo
 
 ** There are many configuration files in GNUIT:
 
