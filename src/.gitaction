@@ -54,4 +54,10 @@ case "$2" in
 *)      done=0
 esac
 
-exit $done
+ret=$?
+
+if test $done -eq 0; then
+    exit 1
+else
+    exit $ret
+fi
