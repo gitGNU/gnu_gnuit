@@ -166,7 +166,7 @@ totempfile()
 
 tryvideo()
 {
-    for prog in gmplayer gxine xine vlc totem mplayer xanim aktion xfmedia;
+    for prog in gmplayer gxine xine vlc totem totem-xine mplayer xanim aktion xfmedia;
     do 
 	tryx "$prog" "$1"
     done
@@ -177,16 +177,44 @@ tryvideo()
 
 tryaudio()
 {
-    for prog in  audacious xmms amp x11amp alsaplayer-gtk rhythmbox \
-                 bmp-play-files-2.0 bmp esdplay herrie kwave;
+    for prog in audacious xmms amp x11amp rhythmbox bmp-play-files-2.0 \
+        	bmp-play-files esdplay herrie kwave;
     do 
 	tryx "$prog" "$1"
     done
+    tryx bmpx -f              "$1"
+    tryx bmp2 -f              "$1"
+    tryx bmp  -f              "$1"
     tryx noatun --nofork      "$1"
     try  alsaplayer           "$1"
-    try  alsaplayer-text      "$1"
     try  play                 "$1"
     try  amp                  "$1"
+}
+
+trybrowse()
+{
+    if test "$GIT_BROWSER"; then
+	try "$GIT_BROWSER" "$1"
+    fi
+    try  lynx                  "$1"
+    try  w3m                   "$1"
+    try  elinks                "$1"
+    tryx firefox               "$1"
+    tryx iceweasel             "$1"
+    tryx seamonkey             "$1"
+    tryx iceape                "$1"
+    tryx galeon                "$1"
+    tryx konqueror             "$1"
+    try  sensible-browser      "$1"
+    try  safari                "$1"
+}
+
+trypgp ()
+{
+    try  pgp   --              "$1"
+    try  pgp5  --              "$1" 
+    try  pgp5i --              "$1"
+    try  gpgv  --              "$1"
 }
 
 #################### Main logic ####################
@@ -302,29 +330,18 @@ case "$lcfile" in
 *.wrl)		tryx     vrweb             "$file" ;;
 *.zip|*.cbz)	trypaged unzip -v          "$file" ;;
 *.zoo)		trypaged zoo -list         "$file" ;;
-*gpg)		try      gpgv --           "$file" ;;
-*pgp)		try      pgp --            "$file" ;;
-*ring.pgp)	trypaged pgp -kv --        "$file" ;;
 INBOX|OUTBOX)	try xemacs                 "$file" ;;
 *.voc)		(vplay "$file" > /dev/null 2>&1 &) ;;
 *.au)		(cat "$file" > /dev/audio 2> /dev/null &); doexit ;;
 *.class)	trypaged javap -c -s -l -verbose "$(basename "$file" .class)" ;;
 
-*.html|*.htm)	if test "$GIT_BROWSER"; then
-		    try "$GIT_BROWSER" "$file"
-		fi
-		try  lynx                  "$file"
-		try  w3m                   "$file"
-		try  elinks                "$file"
-		tryx firefox               "$file"
-		tryx iceweasel             "$file"
-		tryx seamonkey             "$file"
-		tryx iceape                "$file"
-		tryx galeon                "$file"
-		tryx konqueror             "$file"
-		try  sensible-browser      "$file"
-		try  safari                "$file"
-		trypaged html2text         "$file"  ;;
+*.url)		url="$(grep '^URL=' "$file" |tr -d '\015'|sed -e 's/^URL=//')"
+		if test -n "$url"; then
+		    trybrowse  "$url"
+		fi ;;
+
+*.html|*.htm)	trybrowse                  "$file"
+		trypaged   html2text       "$file"  ;;
 
 *.pdf)		tryx evince                "$file"
 		tryx epdfview              "$file"
@@ -358,11 +375,15 @@ INBOX|OUTBOX)	try xemacs                 "$file" ;;
 *.sx[cdgimw] | *.xls[mx] |\
 *.xlt[mx])	tryx openoffice            "$file"
 		tryx soffice               "$file"
-		tryx AbiWord               "$file" ;;
+		tryx abiword               "$file"
+		tryx AbiWord               "$file"
+		tryx kword                 "$file" ;;
 
 *.rtf)		tryx openoffice            "$file"
 		tryx soffice               "$file"
+		tryx abiword               "$file"
 		tryx AbiWord               "$file"
+		tryx kword                 "$file"
 		tryx Ted                   "$file"
 		trypaged unrtf --text      "$file" ;;
 
@@ -375,11 +396,13 @@ INBOX|OUTBOX)	try xemacs                 "$file" ;;
 *.tif | *.tiff | *.bm |\
 *.xbm | *.xpm | *.ras |\
 *.rgb | *.png | *.fts |\
-*.pam | *.ico)	for prog in xzgv kview ee display xli xloadimage gimageview feh \
-                            gqview feh gm  display grita qiv -tfi paul gimp xv gpe-gallery;
+*.pam | *.ico)	for prog in xzgv kview display xli xloadimage gimv \
+			    feh feh display krita qiv paul \
+    			    gimp xv gpe-gallery ee;
 		do
 		    tryx "$prog"           "$file"
 		done
+		tryx gm display            "$file"
 		try  zgv                   "$file"
 		try  fbi                   "$file"
 		try  cacaview              "$file" ;;
@@ -423,10 +446,7 @@ INBOX|OUTBOX)	try xemacs                 "$file" ;;
 		fi;;
 *.midi |*.mid)	
 		tryx timidity -ia          "$file"
-		tryx xplaymidi             "$file"
-		try  timidity -id          "$file"
-		try  playmidi              "$file"
-		try  pmidi                 "$file"  ;;
+		try  timidity -id          "$file" ;;
 
 *.sf2 | *.sfx | *.sbk)
 		tryx swami                 "$file" ;;
@@ -454,7 +474,7 @@ INBOX|OUTBOX)	try xemacs                 "$file" ;;
 
 *.asf | *.wm[vf] |\
 *.avi)		tryvideo                   "$file"
-		tryx avifile-player        "$file" ;;
+		tryx aviplay	           "$file" ;;
 
 *.mp[4g]|*.mpeg) tryvideo                  "$file" 
 		 tryx gtv                  "$file" 
@@ -478,8 +498,7 @@ wtmp | wtmp.[0-9]*)
 *.afm | *.bdf | *.cff | *.cid |\
 *.mmm | *.ocf | *.ofm | *.otf |\
 *.pcf | *.pfa | *.pfb | *.pfm |\
-*.ttf | *.font)	tryx gfontview             "$file"
-		tryx gwaterfall            "$file" ;;
+*.ttf | *.font)	tryx gfontview             "$file" ;;
 
 *.xcf | *.fit)	tryx gimp                  "$file"
 		tryx xcfview               "$file" ;;
@@ -490,13 +509,15 @@ wtmp | wtmp.[0-9]*)
 
 *.swf)		tryx swfdec-player         "$file"
 		tryx gnash                 "$file"
+		tryx swfplayer             "$file"
 		tryx firefox               "$file"
 		tryx iceweasel             "$file"
 		try  safari                "$file" ;;
 
 *.svg)		tryx gthumb                "$file"
-		tryx ksvg                  "$file"
+		tryx svgdisplay            "$file"
 		tryx display               "$file"
+		tryx gm display            "$file"
 		tryx firefox               "$file"
 		tryx iceweasel             "$file"
 		tryx inkscape              "$file"
@@ -522,8 +543,22 @@ wtmp | wtmp.[0-9]*)
 		     echo; dpkg --contents "$file") | "$GIT_PAGER"
 		    doexit
 		fi;;
+
 *.tnef)		tryx     ktnef             "$file"
 		trypaged tnef -t -f        "$file" ;;
+
+*ring.gpg)	try      gpg --list-keys --no-default-keyring --keyring "$file"
+		try      gpgv          --  "$file" ;;
+
+*gpg)		try      gpg --verify  --  "$file"
+		try      gpgv          --  "$file" ;;
+
+*ring.pgp)	trypaged pgpk    --        "$file"
+		trypaged pgp -kv --        "$file"
+		trypgp                     "$file" ;;
+
+*pgp)		try     pgpv     --        "$file"
+		trypgp                     "$file" ;;
 
 *.[1-9n] | *.[1-9n][xm] | *.[1357]ssl | *.[137]posix |\
 *.[1-9]fun | *.[1-9n]freebsd | *.1emacs[0-9][0-9] |\
