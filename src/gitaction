@@ -62,14 +62,7 @@
 ###
 ### Note:
 ### Not all the programs called here are able to handle the -- command
-### line switch.  These are: emacs, ghostview, tar, basename, ar, xv,
-### xanim, xfig, lynx, mpeg_vga, zip/unzip.  There are some that I couldn't
-### test.
-###
-### When these programs will be fixed, we should add -- to them...
-### Until then, we will fail to run commands like `xfig -P -P' to
-### process a file called `-P'.
-###
+### line switch.  
 
 name=`basename "$0"`
 msg="Press ENTER to continue..."
@@ -128,7 +121,7 @@ dotry()
 	    $TRY_PAGED)		"$cmd" "$@"  2>&1 | "$GIT_PAGER" ;;
 	    $TRY_X)		("$cmd" "$@"  >/dev/null 2>&1 ; cleanup ) & 
 	    			tempfile=  ;; # don't delete tempfile now
-	    *) 			 echo "$name: INTERNAL ERROR: unknown type ($type)" ;;
+	    *) 			echo "$name: INTERNAL ERROR: unknown type ($type)" ;;
 	esac
 	doexit
     fi
@@ -213,12 +206,21 @@ trybrowse()
     try  safari                "$1"
 }
 
-trypgp ()
+trypgp()
 {
     try  pgp   --              "$1"
     try  pgp5  --              "$1" 
     try  pgp5i --              "$1"
     try  gpgv  --              "$1"
+}
+
+tryoffice()
+{
+    tryx openoffice         -- "$1"
+    tryx soffice            -- "$1"
+    tryx abiword            -- "$1"
+    tryx AbiWord            -- "$1"
+    tryx kword              -- "$1"
 }
 
 #################### Main logic ####################
@@ -310,7 +312,6 @@ case "$lcfile" in
 *.a|*.sa)	trypaged ar -tv            "$file" ;;
 *.cpio)		trypaged cpio -t -F        "$file" ;;
 *.db)		trypaged db_dump        -- "$file" ;;
-*.dbf)		trypaged dbview         -- "$file" ;;
 *.dia)		tryx     dia            -- "$file" ;;
 *.dot)		tryx     dotty             "$file" ;;
 *.dxf)		tryx     qcad           -- "$file" ;;
@@ -332,7 +333,6 @@ case "$lcfile" in
 *.torrent)	trypaged btshowmetainfo    "$file" ;;
 *.wma | *.gsm)	tryaudio                   "$file" ;;
 *.wrl)		tryx     vrweb             "$file" ;;
-*.zip|*.cbz)	trypaged unzip -v       -- "$file" ;;
 *.zoo)		trypaged zoo -list         "$file" ;;
 INBOX|OUTBOX)	try xemacs              -- "$file" ;;
 *.voc)		(vplay "$file" > /dev/null 2>&1 &) ;;
@@ -369,7 +369,10 @@ INBOX|OUTBOX)	try xemacs              -- "$file" ;;
 		tryx kdvi               -- "$file"
 		tryx xdvi                  "$file" ;;
 
-*.123 | *.602 | *.dbf | *.doc |\
+*.dbf)		tryoffice                  "$file"
+		trypaged dbview         -- "$file" ;;
+
+*.123 | *.602 | *.doc |\
 *.wri | *.ot  | *.mml | *.ppt |\
 *.wb2 | *.wp  | *.wps | *.xls |\
 *.xl[sct]  | *.wp[5ds] | *.doc[mx] |\
@@ -377,17 +380,9 @@ INBOX|OUTBOX)	try xemacs              -- "$file" ;;
 *.pot[mx] | *.pps[mx]  | *.ppt[mx] |\
 *.sd[abcdfsw] | *.sg[lk] | *.st[cdiw] |\
 *.sx[cdgimw] | *.xls[mx] |\
-*.xlt[mx])	tryx openoffice         -- "$file"
-		tryx soffice            -- "$file"
-		tryx abiword            -- "$file"
-		tryx AbiWord            -- "$file"
-		tryx kword              -- "$file" ;;
+*.xlt[mx])	tryoffice                  "$file" ;;
 
-*.rtf)		tryx openoffice         -- "$file"
-		tryx soffice            -- "$file"
-		tryx abiword            -- "$file"
-		tryx AbiWord            -- "$file"
-		tryx kword              -- "$file"
+*.rtf)		tryoffice                  "$file"
 		tryx Ted                   "$file"
 		trypaged unrtf --text      "$file" ;;
 
@@ -478,6 +473,8 @@ INBOX|OUTBOX)	try xemacs              -- "$file" ;;
 		tryx xmp                -- "$file"
 		try  mikmod -t          -- "$file"
 		tryx soundtracker       -- "$file" ;;
+
+*.zip|*.cbz)	trypaged unzip -v       -- "$file" ;;
 
 *.asf | *.wm[vf] |\
 *.avi)		tryvideo                   "$file"
