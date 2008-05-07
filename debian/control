@@ -16,7 +16,7 @@ Conflicts: git (<< 4.9.2-1)
 Description: GNU Interactive Tools, a file browser/viewer and process viewer/killer
  gnuit (GNU Interactive Tools) is a set of interactive text-mode tools,
  closely integrated with the shell.  It contains an extensible file
- system browser (similar to Norton Commander and XTree), an ascii/hex
+ system browser (similar to Norton Commander and XTree), an ASCII/hex
  file viewer, a process viewer/killer and some other related utilities
  and shell scripts.  It can be used to increase the speed and
  efficiency of most of the daily tasks such as copying and moving
