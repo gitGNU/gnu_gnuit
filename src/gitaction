@@ -255,7 +255,9 @@ file="$1/$2"
 istext=0
 if whichlist file; then
     file "$file" |grep -q '.*:.*text'
-    istext=$?
+    if test $? -eq 0; then
+	istext=1
+    fi
 fi
 
 lcfile="$(echo "$file"|tr [:upper:] [:lower:])"
@@ -315,7 +317,7 @@ case "$lcfile" in
 *.dia)		tryx     dia            -- "$file" ;;
 *.dot)		tryx     dotty             "$file" ;;
 *.dxf)		tryx     qcad           -- "$file" ;;
-*.fig)		tryx     xfig           -- "$file" ;;
+*.fig)		tryx     xfig              "$file" ;;
 *.gl)		tryx     xgrasp            "$file" ;;
 *.gnumeric)	tryx     gnumeric       -- "$file" ;;
 *.jar)		trypaged jar tvf           "$file" ;;
@@ -470,9 +472,9 @@ INBOX|OUTBOX)	try xemacs              -- "$file" ;;
 *.it | *.it.lha | *.it.lzh | *.it.zip |\
 *.xm | *.xm.lha | *.xm.lzh | *.xm.zip |\
 *.s[3t]m | *.s[3t]m.lha| *.s[3t]m.lzh| *.s[3t]m.zip)
-		tryx xmp                -- "$file"
+		tryx soundtracker       -- "$file"
 		try  mikmod -t          -- "$file"
-		tryx soundtracker       -- "$file" ;;
+		try  xmp                -- "$file" ;;
 
 *.zip|*.cbz)	trypaged unzip -v       -- "$file" ;;
 
@@ -599,7 +601,9 @@ FILEOUT="$(file --mime-type "$file" 2>/dev/null)"
 if test $? -eq 0; then
     MIMETYPE="$(echo "$FILEOUT" | sed 's/.*: *//;')"
 fi
-if test -n "$MIMETYPE" && test $istext -ne 1; then
+if test -n "$MIMETYPE" && \
+   test "$MIMETYPE" != "application/octet-stream" && \
+   test $istext -ne 1; then
     try see -- "${MIMETYPE}:${file}"
     try metamail -d -b -c "$MIMETYPE" "$file"
 fi

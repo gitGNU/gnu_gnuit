@@ -49,30 +49,30 @@ although gnuit falls back on an internal implementation.
 For production of info, pdf and html documentation, you will want the
 texinfo package installed, and optionally the texi2html package.
 
-gitaction will attempt to use many programs/viewers
-if they are installed. Some you will already have on your system,
-and some are only for obscure file formats.
+gitaction will attempt to use many programs/viewers if they are
+installed. Some you will already have on your system, and some are only
+for obscure file formats.
 
 Tools used include:
 
-aaxine abiword acroread aktion alsaplayer alsaplayer-gtk alsaplayer-text
-amp ar audacious avifile-player bmp btshowmetainfo bunzip bunzip2
-cacaview chmsee cpio db_dump dbview dia display djview djview3 djview4
-dotty dpkg ee elinks emacs epdfview esdplay evince fbgs fbi feh file
-firefox flac123 flip galeon gfontview ggv ghostview gimageview gimp gm
-gmplayer gnash gnochm gnumeric gpe-gallery gpgv gqview grita gs gthumb
-gtv gunzip gv gwaterfall gxine herrie html2text iceape iceweasel info
-inkscape jar javap karbon kbabel kchmviewer kdvi kfax kghostview klyx
-kmedia konqueror kpdf ksvg ktnef kview kwave last ldd less lha lynx lyx
-metamail mgp mikmod more mp3blaster mpeg_vga mpg123 mpg321 mplayer
-noatun nroff objdump ogg123 oleo open openoffice paul pgp play playmidi
-plaympeg pmidi pod2text pstotext pvftobasic qcad qiv raplayer realplay
-rhythmbox rmdtopvf rpm rvplayer safari seamonkey see sensible-browser
-sodipodi soffice soundtracker sqlite swami swfdec-player tar ted
-timidity tnef totem tvf unarj uncompress unrar unrtf unzip uudecode
-viewfax vlc vplay vrweb w3m wavplay x11amp xanim xcfview xchm xdvi
-xemacs xfig xfmedia xgrasp xine xli xloadimage xmms xmp xpdf xplaymidi
-xv xzgv zgv zoo
+aaxine abiword acroread aktion alsaplayer amp ar audacious aviplay bmp
+bmp-play-files bmp-play-files-2.0 bmp2 bmpx btshowmetainfo bunzip
+bunzip2 bzcat cacaview chmsee cpio db_dump dbview dia display djview
+djview3 djview4 dotty dpkg ee elinks emacs epdfview esdplay evince fbgs
+fbi feh firefox flac123 flip galeon gfontview ggv ghostview gimp gimv gm
+gmplayer gnash gnochm gnumeric gpe-gallery gpg gpgv gs gthumb gtv gunzip
+gv gxine herrie html2text iceape iceweasel info inkscape jar javap
+karbon kbabel kchmviewer kdvi kfax kghostview klyx konqueror kpdf krita
+ktnef kview kwave kword last ldd less lha lynx lyx metamail mgp mikmod
+more mp3blaster mpeg_vga mpg123 mpg321 mplayer noatun nroff objdump
+ogg123 oleo open openoffice pgp pgp5 pgp5i pgpk pgpv play plaympeg
+pod2text pstotext pvftobasic qcad qiv raplayer realplay rhythmbox
+rmdtopvf rpm rvplayer safari seamonkey see sensible-browser sodipodi
+soffice soundtracker sqlite svgdisplay swami swfdec-player swfplayer tar
+ted timidity tnef totem totem-xine unarj uncompress unrar unrtf unzip
+uudecode viewfax vlc vplay vrweb w w3m wavplay x11amp xanim xcfview xchm
+xdvi xemacs xfig xfmedia xgrasp xine xli xloadimage xmms xmp xpdf xv
+xzgv zgv zoo
 
 ** There are many configuration files in GNUIT:
 
