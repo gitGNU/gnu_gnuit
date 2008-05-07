@@ -1,6 +1,6 @@
-2008-04-29  Ian Beckwith  <ianb@erislabs.net>
+2008-05-07  Ian Beckwith  <ianb@erislabs.net>
 
-	* rewrote gitaction, adding more file types.
+	* rewrote gitaction, adding more file types and viewers.
 
 2008-04-13  Ian Beckwith  <ianb@erislabs.net>
 
