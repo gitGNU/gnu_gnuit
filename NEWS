@@ -4,6 +4,16 @@
 			      GNU Interactive Tools
 			      =====================
 
+* Version 4.9.4
+================
+
+** Rewrote gitaction, adding more file types and viewers.
+
+** Fixed input in incremental-search mode.
+
+** Use base 1024 when autoscaling.
+
+** More fixes to large file support.
 
 * Version 4.9.3
 ================
