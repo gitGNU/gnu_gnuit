@@ -15,6 +15,8 @@ debian/git.substvars
 debian/gnuit.substvars
 debian/git
 debian/gnuit
+debian/git.debhelper.log
+debian/gnuit.debhelper.log
 doc/gnuit.html
 lib/Makefile
 lib/alloca.h
