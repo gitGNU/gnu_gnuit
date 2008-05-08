@@ -60,9 +60,20 @@
 ###
 
 ###
-### Note:
-### Not all the programs called here are able to handle the -- command
-### line switch.  
+### Note: Not all the programs called here are able to handle the --
+### command line switch.  These are: 
+###   emacs lynx elinks ar btshowmetainfo html2text lha pstotext tar w3m
+###   xli xloadimage zoo jar avifile-player xchm iceweasel firefox gv
+###   sensible-browser kfax xdvi ted unrtf dotty fbgs gm xcfview sqlite
+###   gm xfmedia uncompress djview djview3 javap lyx vrweb metamail
+### programs with multiple implementations that we can't rely on supporting --:
+###    file last more ldd nroff cpio uudecode objdump tar ar uncompress
+### There are some that I couldn't test.
+###
+### When these programs will be fixed, we should add -- to them...
+### Until then, we will fail to run commands like `xfig -P -P' to
+### process a file called `-P'.
+###
 
 name=`basename "$0"`
 msg="Press ENTER to continue..."
