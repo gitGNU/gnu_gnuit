@@ -3648,6 +3648,16 @@ Read the html documentation using the viewer specified in
 @findex HTML
 @kindex ^X h
 
+@noindent
+@kbd{^X ^A}
+@display
+Show the key-bindings for commands matching a specified string
+(@samp{apropos}).
+@end display
+@cindex Searching for key-bindings
+@findex apropos
+@kindex ^X ^A
+
 @node Exit, , Documentation, gitfm
 @subsection Exiting GNU Interactive Tools
 

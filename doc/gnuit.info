@@ -1972,6 +1972,10 @@ File: gnuit.info,  Node: Documentation,  Next: Exit,  Prev: Sync,  Up: gitfm
      GIT_BROWSER, or with lynx if GIT_BROWSER is not set
      (`HTML').
    
+`^X ^A'
+     Show the key-bindings for commands matching a specified string
+     (`apropos').
+   
 
 File: gnuit.info,  Node: Exit,  Prev: Documentation,  Up: gitfm
 
@@ -3508,6 +3512,7 @@ Key Index
 * ^X 1:                                  Modes.                (line 26)
 * ^X 2:                                  Modes.                (line 29)
 * ^X 4 a:                                Editing Files.        (line 21)
+* ^X ^A:                                 Documentation.        (line 21)
 * ^X ^F:                                 Editing Files.        (line 17)
 * ^X ^I:                                 Inserting Text.       (line 24)
 * ^X ^L:                                 Resetting.            (line  9)
@@ -3644,6 +3649,7 @@ Command Index
 
 * adapt-current-directory:               Changing Dirs.        (line 15)
 * Adapt-other-directory:                 Changing Dirs.        (line 19)
+* apropos:                               Documentation.        (line 21)
 * ASCII-MAIL:                            Mail.                 (line  9)
 * B-ASCII-MAIL:                          Mail.                 (line 13)
 * B-BINARY-MAIL:                         Mail.                 (line 21)
@@ -4251,6 +4257,7 @@ Concept Index
 * Scroll step:                           Moving.               (line 42)
 * Searching binaries:                    Searching Files.      (line 20)
 * Searching files:                       Searching Files.      (line  9)
+* Searching for key-bindings:            Documentation.        (line 21)
 * Searching patterns in files:           Grep.                 (line  9)
 * Searching programs:                    Searching Files.      (line 20)
 * Searching regular expressions:         Grep.                 (line  9)
@@ -4424,63 +4431,63 @@ Node: Environment63690
 Node: Processes64099
 Node: Sync66195
 Node: Documentation66448
-Node: Exit66944
-Node: gitps67164
-Node: gitview68686
-Node: gitkeys69540
-Node: gitwipe69929
-Node: gitmount70658
-Node: gitaction71422
-Node: gitunpack73312
-Node: gitrgrep73724
-Node: Customization74207
-Node: Environment Variables74510
-Node: Configuration Files75832
-Node: Key Sequences78923
-Node: Setup80256
-Node: gitfm Sections81211
-Node: GITFM-Setup81665
-Node: GITFM-Color84252
-Node: GITFM-Monochrome84621
-Node: GITFM-Keys85026
-Node: key-sequence85931
-Node: command-name86570
-Node: formatted-command87315
-Node: %s88642
-Node: %f89169
-Node: %d89414
-Node: %l89661
-Node: %t89914
-Node: %z90149
-Node: %a90380
-Node: %m90595
-Node: %g90799
-Node: %o91004
-Node: %p91209
-Node: %b91414
-Node: %i91629
-Node: %?91854
-Node: new-dir92346
-Node: save-screen92772
-Node: pause93472
-Node: hide93811
-Node: GITFM-FTI94691
-Node: gitps Sections95272
-Node: GITPS-Setup95666
-Node: GITPS-Color95906
-Node: GITPS-Monochrome96274
-Node: GITPS-Keys96679
-Node: gitview Sections96809
-Node: GITVIEW-Setup97192
-Node: GITVIEW-Color97442
-Node: GITVIEW-Monochrome97824
-Node: GITVIEW-Keys98243
-Node: Limitations98379
-Node: Bugs99789
-Node: Copying This Manual100059
-Node: Key Index122434
-Node: Command Index142273
-Node: Variable Index161470
-Node: Concept Index163674
+Node: Exit67042
+Node: gitps67262
+Node: gitview68784
+Node: gitkeys69638
+Node: gitwipe70027
+Node: gitmount70756
+Node: gitaction71520
+Node: gitunpack73410
+Node: gitrgrep73822
+Node: Customization74305
+Node: Environment Variables74608
+Node: Configuration Files75930
+Node: Key Sequences79021
+Node: Setup80354
+Node: gitfm Sections81309
+Node: GITFM-Setup81763
+Node: GITFM-Color84350
+Node: GITFM-Monochrome84719
+Node: GITFM-Keys85124
+Node: key-sequence86029
+Node: command-name86668
+Node: formatted-command87413
+Node: %s88740
+Node: %f89267
+Node: %d89512
+Node: %l89759
+Node: %t90012
+Node: %z90247
+Node: %a90478
+Node: %m90693
+Node: %g90897
+Node: %o91102
+Node: %p91307
+Node: %b91512
+Node: %i91727
+Node: %?91952
+Node: new-dir92444
+Node: save-screen92870
+Node: pause93570
+Node: hide93909
+Node: GITFM-FTI94789
+Node: gitps Sections95370
+Node: GITPS-Setup95764
+Node: GITPS-Color96004
+Node: GITPS-Monochrome96372
+Node: GITPS-Keys96777
+Node: gitview Sections96907
+Node: GITVIEW-Setup97290
+Node: GITVIEW-Color97540
+Node: GITVIEW-Monochrome97922
+Node: GITVIEW-Keys98341
+Node: Limitations98477
+Node: Bugs99887
+Node: Copying This Manual100157
+Node: Key Index122532
+Node: Command Index142444
+Node: Variable Index161714
+Node: Concept Index163918
 
 End Tag Table
