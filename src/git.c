@@ -136,7 +136,7 @@ char **dir_history;
 int dir_history_count;
 int dir_history_point;
 
-#define BUILTIN_OPERATIONS                       88
+#define BUILTIN_OPERATIONS                       89
 
 #define BUILTIN_copy				 -1
 #define BUILTIN_move				 -2
@@ -226,6 +226,7 @@ int dir_history_point;
 #define BUILTIN_horizontal_scroll_right		-86
 #define BUILTIN_select_extension		-87
 #define BUILTIN_unselect_extension		-88
+#define BUILTIN_apropos				-89
 
 #define MAX_BUILTIN_NAME			 35
 
@@ -320,6 +321,7 @@ char builtin[BUILTIN_OPERATIONS][MAX_BUILTIN_NAME] =
     "horizontal-scroll-right",
     "select-extension",
     "unselect-extension",
+    "apropos",
 };
 
 
@@ -333,8 +335,8 @@ typedef struct
     char  hide;         /* Hide the output, emulating a builtin command.  */
     char  builtin;      /* This is a builtin command.  */
     char *sequence;     /* The ascii representation of the key sequence on
-			   which the command is binded; used only for error
-			   reporting purposes.  */
+			   which the command is bound; used for error
+			   reporting and the apropos command.  */
     xstack_t *history;  /* The history of the strings used to expand the
 			   command body.  */
 } command_t;
@@ -1812,7 +1814,7 @@ main(argc, argv)
     int output_final_path = OFF;
     input_line_t *saved_il = NULL;
     char *panel_path, *current_path;
-    char *lock_password, *unlock_password;
+    char *lock_password, *unlock_password, *aproposstr;
     int child_exit_code, repeat_count, keys;
     int action_status, i, retval, to_case, cmp_mode, r1, r2;
     int c, ansi_colors = -1, use_last_screen_character = ON;
@@ -3197,6 +3199,62 @@ main(argc, argv)
 	    case BUILTIN_unselect_extension:
 		panel_action(src_panel, act_UNSELECT_EXTENSION, dst_panel,
 			     NULL, 1);
+		break;
+
+	    case BUILTIN_apropos:
+		aproposstr=NULL;
+		il_read_line("Apropos: ", &aproposstr,
+			     (char *)NULL, command->history);
+
+		if (aproposstr)
+		{
+		    if(*aproposstr != '\0')
+		    {
+			extern tty_key_t *key_list_head;
+			tty_key_t *key;
+			int fd;
+			FILE *fp=NULL;
+			command_t *cmd;
+			int gotmatch=0;
+			char tmpfn[]="/tmp/gnuit-apropos-XXXXXX";
+			fd=mkstemp(tmpfn);
+			if(fd != -1)
+			    fp=fdopen(fd,"w");
+			if(!fp)
+			{
+			    il_read_char("Error opening temporary file", NULL, IL_ERROR|IL_BEEP);
+			    break;
+			}
+			for(key=key_list_head;key;key=key->next)
+			{
+			    cmd=(command_t *)key->aux_data;
+			    if(strcasestr(cmd->name, aproposstr))
+			    {
+				gotmatch=1;
+				fprintf(fp,"%s: %s\n",cmd->name, cmd->sequence);
+			    }
+			}
+			fclose(fp);
+			if(gotmatch)
+			{
+			    char *cmd, *pager;
+			    pager=getenv("GIT_PAGER");
+			    if(!pager) 
+				pager="more";
+			    cmd=xmalloc(strlen(pager)+strlen(tmpfn)+1+1);
+			    sprintf(cmd,"%s %s",pager,tmpfn);
+			    start(cmd,0);
+			    xfree(cmd);
+			    wait_msg=1;
+			}
+			else
+			    il_read_char("No matches", NULL, 0);
+			unlink(tmpfn);
+		    }
+		    xfree(aproposstr);
+		    goto restart;
+		}
+
 		break;
 
 	    default:

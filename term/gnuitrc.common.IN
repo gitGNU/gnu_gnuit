@@ -715,6 +715,7 @@ F10	= exit
 ^X1	= enlarge-panel
 ^X2	= two-panels
 ^X\	= select-entry
+^X^A	= apropos
 ^Xa	= FILE-ACTION; gitaction %p %f
 ^X^C	= exit
 ^Xc	= exit
