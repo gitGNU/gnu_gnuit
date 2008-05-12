@@ -131,7 +131,8 @@ dotry()
 	    $TRY_NORMAL)	"$cmd" "$@" ;;
 	    $TRY_PAGED)		"$cmd" "$@"  2>&1 | "$GIT_PAGER" ;;
 	    $TRY_X)		("$cmd" "$@"  >/dev/null 2>&1 ; cleanup ) & 
-	    			tempfile=  ;; # don't delete tempfile now
+	    			tempfile=   # don't delete tempfile now
+				exit $? ;;
 	    *) 			echo "$name: INTERNAL ERROR: unknown type ($type)" ;;
 	esac
 	doexit
