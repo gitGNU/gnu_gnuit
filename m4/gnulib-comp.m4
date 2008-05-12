@@ -1,5 +1,5 @@
 # DO NOT EDIT! GENERATED AUTOMATICALLY!
-# Copyright (C) 2004-2007 Free Software Foundation, Inc.
+# Copyright (C) 2002-2008 Free Software Foundation, Inc.
 #
 # This file is free software, distributed under the terms of the GNU
 # General Public License.  As a special exception to the GNU General
@@ -40,6 +40,7 @@ AC_DEFUN([gl_INIT],
   m4_pushdef([AC_LIBOBJ], m4_defn([gl_LIBOBJ]))
   m4_pushdef([AC_REPLACE_FUNCS], m4_defn([gl_REPLACE_FUNCS]))
   m4_pushdef([AC_LIBSOURCES], m4_defn([gl_LIBSOURCES]))
+  gl_COMMON
   gl_source_base='lib'
   gl_FUNC_ALLOCA
   gl_ARGMATCH
@@ -144,6 +145,7 @@ AC_DEFUN([gl_INIT],
   m4_pushdef([AC_LIBOBJ], m4_defn([gltests_LIBOBJ]))
   m4_pushdef([AC_REPLACE_FUNCS], m4_defn([gltests_REPLACE_FUNCS]))
   m4_pushdef([AC_LIBSOURCES], m4_defn([gltests_LIBSOURCES]))
+  gl_COMMON
   gl_source_base='tests'
   m4_popdef([AC_LIBSOURCES])
   m4_popdef([AC_REPLACE_FUNCS])
@@ -347,7 +349,6 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/xstrtol.h
   lib/xstrtoul.c
   lib/xstrtoumax.c
-  m4/absolute-header.m4
   m4/alloca.m4
   m4/argmatch.m4
   m4/clock_time.m4
@@ -386,7 +387,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/memchr.m4
   m4/memmove.m4
   m4/nanosleep.m4
-  m4/onceonly_2_57.m4
+  m4/onceonly.m4
   m4/putenv.m4
   m4/quote.m4
   m4/quotearg.m4

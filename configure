@@ -774,20 +774,26 @@ GNULIB_GETSUBOPT
 GNULIB_MKDTEMP
 GNULIB_MKSTEMP
 GNULIB_PUTENV
+GNULIB_RPMATCH
 GNULIB_SETENV
+GNULIB_STRTOD
 GNULIB_UNSETENV
 HAVE_CALLOC_POSIX
 HAVE_GETSUBOPT
 HAVE_MKDTEMP
 HAVE_REALLOC_POSIX
+HAVE_RPMATCH
 HAVE_SETENV
+HAVE_STRTOD
 HAVE_UNSETENV
 REPLACE_MKSTEMP
 REPLACE_PUTENV
+REPLACE_STRTOD
 VOID_UNSETENV
 GNULIB_MEMMEM
 GNULIB_MEMPCPY
 GNULIB_MEMRCHR
+GNULIB_RAWMEMCHR
 GNULIB_STPCPY
 GNULIB_STPNCPY
 GNULIB_STRCHRNUL
@@ -818,6 +824,7 @@ GNULIB_STRSIGNAL
 HAVE_DECL_MEMMEM
 HAVE_MEMPCPY
 HAVE_DECL_MEMRCHR
+HAVE_RAWMEMCHR
 HAVE_STPCPY
 HAVE_STPNCPY
 HAVE_STRCHRNUL
@@ -843,6 +850,7 @@ REPLACE_TIMEGM
 LIB_NANOSLEEP
 GNULIB_CHOWN
 GNULIB_DUP2
+GNULIB_ENVIRON
 GNULIB_FCHDIR
 GNULIB_FTRUNCATE
 GNULIB_GETCWD
@@ -857,6 +865,7 @@ HAVE_FTRUNCATE
 HAVE_GETPAGESIZE
 HAVE_READLINK
 HAVE_SLEEP
+HAVE_DECL_ENVIRON
 HAVE_DECL_GETLOGIN_R
 HAVE_OS_H
 HAVE_SYS_PARAM_H
@@ -889,6 +898,7 @@ HAVE_WINT_T
 NEXT_WCTYPE_H
 HAVE_WCTYPE_H
 WCTYPE_H
+REPLACE_ISWCNTRL
 LIBGNU_LIBDEPS
 LIBGNU_LTLIBDEPS
 TEXI2DVI
@@ -6440,6 +6450,10 @@ fi
 done
 
 
+
+
+
+
 # The Ultrix 4.2 mips builtin alloca declared by alloca.h only works
 # for constant arguments.  Useless!
 { echo "$as_me:$LINENO: checking for working alloca.h" >&5
@@ -6969,8 +6983,8 @@ else
 	    gl_cv_double_slash_root='unknown, assuming no' ;;
 	esac
       else
-	set x `ls -di / //`
-	if test $2 = $4 && wc //dev/null >/dev/null 2>&1; then
+	set x `ls -di / // 2>/dev/null`
+	if test "$2" = "$4" && wc //dev/null >/dev/null 2>&1; then
 	  gl_cv_double_slash_root=no
 	else
 	  gl_cv_double_slash_root=yes
@@ -10582,17 +10596,22 @@ echo "${ECHO_T}$gl_cv_func_malloc_posix" >&6; }
   GNULIB_MKDTEMP=0;
   GNULIB_MKSTEMP=0;
   GNULIB_PUTENV=0;
+  GNULIB_RPMATCH=0;
   GNULIB_SETENV=0;
+  GNULIB_STRTOD=0;
   GNULIB_UNSETENV=0;
     HAVE_CALLOC_POSIX=1;
   HAVE_GETSUBOPT=1;
   HAVE_MALLOC_POSIX=1;
   HAVE_MKDTEMP=1;
   HAVE_REALLOC_POSIX=1;
+  HAVE_RPMATCH=1;
   HAVE_SETENV=1;
+  HAVE_STRTOD=1;
   HAVE_UNSETENV=1;
   REPLACE_MKSTEMP=0;
   REPLACE_PUTENV=0;
+  REPLACE_STRTOD=0;
   VOID_UNSETENV=0;
 
 
@@ -10886,6 +10905,7 @@ _ACEOF
   GNULIB_MEMMEM=0;
   GNULIB_MEMPCPY=0;
   GNULIB_MEMRCHR=0;
+  GNULIB_RAWMEMCHR=0;
   GNULIB_STPCPY=0;
   GNULIB_STPNCPY=0;
   GNULIB_STRCHRNUL=0;
@@ -10916,6 +10936,7 @@ _ACEOF
     HAVE_DECL_MEMMEM=1;
   HAVE_MEMPCPY=1;
   HAVE_DECL_MEMRCHR=1;
+  HAVE_RAWMEMCHR=1;
   HAVE_STPCPY=1;
   HAVE_STPNCPY=1;
   HAVE_STRCHRNUL=1;
@@ -10962,6 +10983,7 @@ _ACEOF
 
   GNULIB_CHOWN=0;
   GNULIB_DUP2=0;
+  GNULIB_ENVIRON=0;
   GNULIB_FCHDIR=0;
   GNULIB_FTRUNCATE=0;
   GNULIB_GETCWD=0;
@@ -10976,6 +10998,7 @@ _ACEOF
   HAVE_GETPAGESIZE=1;
   HAVE_READLINK=1;
   HAVE_SLEEP=1;
+  HAVE_DECL_ENVIRON=1;
   HAVE_DECL_GETLOGIN_R=1;
   HAVE_OS_H=0;
   HAVE_SYS_PARAM_H=0;
@@ -12196,6 +12219,9 @@ fi
 
 
 
+
+
+
   gl_source_base='lib'
 
 
@@ -12512,8 +12538,8 @@ else
 	    gl_cv_double_slash_root='unknown, assuming no' ;;
 	esac
       else
-	set x `ls -di / //`
-	if test $2 = $4 && wc //dev/null >/dev/null 2>&1; then
+	set x `ls -di / // 2>/dev/null`
+	if test "$2" = "$4" && wc //dev/null >/dev/null 2>&1; then
 	  gl_cv_double_slash_root=no
 	else
 	  gl_cv_double_slash_root=yes
@@ -18000,7 +18026,7 @@ cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
 #include <string.h>
-			#include <stdlib.h>
+			 #include <stdlib.h>
 int
 main ()
 {
@@ -19411,6 +19437,7 @@ echo "${ECHO_T}$gl_cv_next_wchar_h" >&6; }
 
 
 
+
   :
 
 
@@ -19443,7 +19470,112 @@ echo "${ECHO_T}$gl_cv_next_wchar_h" >&6; }
   WCTYPE_H=wctype.h
   if test $ac_cv_header_wctype_h = yes; then
     if test $ac_cv_func_iswcntrl = yes; then
-      WCTYPE_H=
+                  { echo "$as_me:$LINENO: checking whether iswcntrl works" >&5
+echo $ECHO_N "checking whether iswcntrl works... $ECHO_C" >&6; }
+if test "${gl_cv_func_iswcntrl_works+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+
+          if test "$cross_compiling" = yes; then
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <stdlib.h>
+                          #if __GNU_LIBRARY__ == 1
+                          Linux libc5 i18n is broken.
+                          #endif
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  gl_cv_func_iswcntrl_works=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	gl_cv_func_iswcntrl_works=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <stddef.h>
+                      #include <stdio.h>
+                      #include <time.h>
+                      #include <wchar.h>
+                      #include <wctype.h>
+                      int main () { return iswprint ('x') == 0; }
+_ACEOF
+rm -f conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_link") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+  { (case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_try") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  gl_cv_func_iswcntrl_works=yes
+else
+  echo "$as_me: program exited with status $ac_status" >&5
+echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+( exit $ac_status )
+gl_cv_func_iswcntrl_works=no
+fi
+rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
+fi
+
+
+
+fi
+{ echo "$as_me:$LINENO: result: $gl_cv_func_iswcntrl_works" >&5
+echo "${ECHO_T}$gl_cv_func_iswcntrl_works" >&6; }
+      if test $gl_cv_func_iswcntrl_works = yes; then
+        WCTYPE_H=
+      fi
     fi
 
 
@@ -19499,6 +19631,13 @@ echo "${ECHO_T}$gl_cv_next_wctype_h" >&6; }
     HAVE_WCTYPE_H=0
   fi
 
+
+
+  if test "$gl_cv_func_iswcntrl_works" = no; then
+    REPLACE_ISWCNTRL=1
+  else
+    REPLACE_ISWCNTRL=0
+  fi
 
 
 
@@ -19774,6 +19913,9 @@ echo "${ECHO_T}$gl_cv_func_wcwidth_works" >&6; }
 
   gltests_libdeps=
   gltests_ltlibdeps=
+
+
+
 
 
 
@@ -24075,20 +24217,26 @@ GNULIB_GETSUBOPT!$GNULIB_GETSUBOPT$ac_delim
 GNULIB_MKDTEMP!$GNULIB_MKDTEMP$ac_delim
 GNULIB_MKSTEMP!$GNULIB_MKSTEMP$ac_delim
 GNULIB_PUTENV!$GNULIB_PUTENV$ac_delim
+GNULIB_RPMATCH!$GNULIB_RPMATCH$ac_delim
 GNULIB_SETENV!$GNULIB_SETENV$ac_delim
+GNULIB_STRTOD!$GNULIB_STRTOD$ac_delim
 GNULIB_UNSETENV!$GNULIB_UNSETENV$ac_delim
 HAVE_CALLOC_POSIX!$HAVE_CALLOC_POSIX$ac_delim
 HAVE_GETSUBOPT!$HAVE_GETSUBOPT$ac_delim
 HAVE_MKDTEMP!$HAVE_MKDTEMP$ac_delim
 HAVE_REALLOC_POSIX!$HAVE_REALLOC_POSIX$ac_delim
+HAVE_RPMATCH!$HAVE_RPMATCH$ac_delim
 HAVE_SETENV!$HAVE_SETENV$ac_delim
+HAVE_STRTOD!$HAVE_STRTOD$ac_delim
 HAVE_UNSETENV!$HAVE_UNSETENV$ac_delim
 REPLACE_MKSTEMP!$REPLACE_MKSTEMP$ac_delim
 REPLACE_PUTENV!$REPLACE_PUTENV$ac_delim
+REPLACE_STRTOD!$REPLACE_STRTOD$ac_delim
 VOID_UNSETENV!$VOID_UNSETENV$ac_delim
 GNULIB_MEMMEM!$GNULIB_MEMMEM$ac_delim
 GNULIB_MEMPCPY!$GNULIB_MEMPCPY$ac_delim
 GNULIB_MEMRCHR!$GNULIB_MEMRCHR$ac_delim
+GNULIB_RAWMEMCHR!$GNULIB_RAWMEMCHR$ac_delim
 GNULIB_STPCPY!$GNULIB_STPCPY$ac_delim
 GNULIB_STPNCPY!$GNULIB_STPNCPY$ac_delim
 GNULIB_STRCHRNUL!$GNULIB_STRCHRNUL$ac_delim
@@ -24107,12 +24255,6 @@ GNULIB_MBSRCHR!$GNULIB_MBSRCHR$ac_delim
 GNULIB_MBSSTR!$GNULIB_MBSSTR$ac_delim
 GNULIB_MBSCASECMP!$GNULIB_MBSCASECMP$ac_delim
 GNULIB_MBSNCASECMP!$GNULIB_MBSNCASECMP$ac_delim
-GNULIB_MBSPCASECMP!$GNULIB_MBSPCASECMP$ac_delim
-GNULIB_MBSCASESTR!$GNULIB_MBSCASESTR$ac_delim
-GNULIB_MBSCSPN!$GNULIB_MBSCSPN$ac_delim
-GNULIB_MBSPBRK!$GNULIB_MBSPBRK$ac_delim
-GNULIB_MBSSPN!$GNULIB_MBSSPN$ac_delim
-GNULIB_MBSSEP!$GNULIB_MBSSEP$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -24154,12 +24296,19 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+GNULIB_MBSPCASECMP!$GNULIB_MBSPCASECMP$ac_delim
+GNULIB_MBSCASESTR!$GNULIB_MBSCASESTR$ac_delim
+GNULIB_MBSCSPN!$GNULIB_MBSCSPN$ac_delim
+GNULIB_MBSPBRK!$GNULIB_MBSPBRK$ac_delim
+GNULIB_MBSSPN!$GNULIB_MBSSPN$ac_delim
+GNULIB_MBSSEP!$GNULIB_MBSSEP$ac_delim
 GNULIB_MBSTOK_R!$GNULIB_MBSTOK_R$ac_delim
 GNULIB_STRERROR!$GNULIB_STRERROR$ac_delim
 GNULIB_STRSIGNAL!$GNULIB_STRSIGNAL$ac_delim
 HAVE_DECL_MEMMEM!$HAVE_DECL_MEMMEM$ac_delim
 HAVE_MEMPCPY!$HAVE_MEMPCPY$ac_delim
 HAVE_DECL_MEMRCHR!$HAVE_DECL_MEMRCHR$ac_delim
+HAVE_RAWMEMCHR!$HAVE_RAWMEMCHR$ac_delim
 HAVE_STPCPY!$HAVE_STPCPY$ac_delim
 HAVE_STPNCPY!$HAVE_STPNCPY$ac_delim
 HAVE_STRCHRNUL!$HAVE_STRCHRNUL$ac_delim
@@ -24185,6 +24334,7 @@ REPLACE_TIMEGM!$REPLACE_TIMEGM$ac_delim
 LIB_NANOSLEEP!$LIB_NANOSLEEP$ac_delim
 GNULIB_CHOWN!$GNULIB_CHOWN$ac_delim
 GNULIB_DUP2!$GNULIB_DUP2$ac_delim
+GNULIB_ENVIRON!$GNULIB_ENVIRON$ac_delim
 GNULIB_FCHDIR!$GNULIB_FCHDIR$ac_delim
 GNULIB_FTRUNCATE!$GNULIB_FTRUNCATE$ac_delim
 GNULIB_GETCWD!$GNULIB_GETCWD$ac_delim
@@ -24199,6 +24349,7 @@ HAVE_FTRUNCATE!$HAVE_FTRUNCATE$ac_delim
 HAVE_GETPAGESIZE!$HAVE_GETPAGESIZE$ac_delim
 HAVE_READLINK!$HAVE_READLINK$ac_delim
 HAVE_SLEEP!$HAVE_SLEEP$ac_delim
+HAVE_DECL_ENVIRON!$HAVE_DECL_ENVIRON$ac_delim
 HAVE_DECL_GETLOGIN_R!$HAVE_DECL_GETLOGIN_R$ac_delim
 HAVE_OS_H!$HAVE_OS_H$ac_delim
 HAVE_SYS_PARAM_H!$HAVE_SYS_PARAM_H$ac_delim
@@ -24231,6 +24382,7 @@ HAVE_WINT_T!$HAVE_WINT_T$ac_delim
 NEXT_WCTYPE_H!$NEXT_WCTYPE_H$ac_delim
 HAVE_WCTYPE_H!$HAVE_WCTYPE_H$ac_delim
 WCTYPE_H!$WCTYPE_H$ac_delim
+REPLACE_ISWCNTRL!$REPLACE_ISWCNTRL$ac_delim
 LIBGNU_LIBDEPS!$LIBGNU_LIBDEPS$ac_delim
 LIBGNU_LTLIBDEPS!$LIBGNU_LTLIBDEPS$ac_delim
 TEXI2DVI!$TEXI2DVI$ac_delim
@@ -24241,16 +24393,6 @@ HTMLDOCS_MAKEINFO_TRUE!$HTMLDOCS_MAKEINFO_TRUE$ac_delim
 HTMLDOCS_MAKEINFO_FALSE!$HTMLDOCS_MAKEINFO_FALSE$ac_delim
 PRODUCT!$PRODUCT$ac_delim
 HOST!$HOST$ac_delim
-MAKE!$MAKE$ac_delim
-INSTALL!$INSTALL$ac_delim
-INCLUDES!$INCLUDES$ac_delim
-CLEANFILES!$CLEANFILES$ac_delim
-LIBOBJS!$LIBOBJS$ac_delim
-LTLIBOBJS!$LTLIBOBJS$ac_delim
-gl_LIBOBJS!$gl_LIBOBJS$ac_delim
-gl_LTLIBOBJS!$gl_LTLIBOBJS$ac_delim
-gltests_LIBOBJS!$gltests_LIBOBJS$ac_delim
-gltests_LTLIBOBJS!$gltests_LTLIBOBJS$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -24285,6 +24427,59 @@ N; s/^.*\n//; s/[,\\&]/\\&/g; s/@/@|#_!!_#|/g; b n
 ' >>$CONFIG_STATUS <conf$$subs.sed
 rm -f conf$$subs.sed
 cat >>$CONFIG_STATUS <<_ACEOF
+CEOF$ac_eof
+_ACEOF
+
+
+ac_delim='%!_!# '
+for ac_last_try in false false false false false :; do
+  cat >conf$$subs.sed <<_ACEOF
+MAKE!$MAKE$ac_delim
+INSTALL!$INSTALL$ac_delim
+INCLUDES!$INCLUDES$ac_delim
+CLEANFILES!$CLEANFILES$ac_delim
+LIBOBJS!$LIBOBJS$ac_delim
+LTLIBOBJS!$LTLIBOBJS$ac_delim
+gl_LIBOBJS!$gl_LIBOBJS$ac_delim
+gl_LTLIBOBJS!$gl_LTLIBOBJS$ac_delim
+gltests_LIBOBJS!$gltests_LIBOBJS$ac_delim
+gltests_LTLIBOBJS!$gltests_LTLIBOBJS$ac_delim
+_ACEOF
+
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 10; then
+    break
+  elif $ac_last_try; then
+    { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
+echo "$as_me: error: could not make $CONFIG_STATUS" >&2;}
+   { (exit 1); exit 1; }; }
+  else
+    ac_delim="$ac_delim!$ac_delim _$ac_delim!! "
+  fi
+done
+
+ac_eof=`sed -n '/^CEOF[0-9]*$/s/CEOF/0/p' conf$$subs.sed`
+if test -n "$ac_eof"; then
+  ac_eof=`echo "$ac_eof" | sort -nru | sed 1q`
+  ac_eof=`expr $ac_eof + 1`
+fi
+
+cat >>$CONFIG_STATUS <<_ACEOF
+cat >"\$tmp/subs-4.sed" <<\CEOF$ac_eof
+/@[a-zA-Z_][a-zA-Z_0-9]*@/!b end
+_ACEOF
+sed '
+s/[,\\&]/\\&/g; s/@/@|#_!!_#|/g
+s/^/s,@/; s/!/@,|#_!!_#|/
+:n
+t n
+s/'"$ac_delim"'$/,g/; t
+s/$/\\/; p
+N; s/^.*\n//; s/[,\\&]/\\&/g; s/@/@|#_!!_#|/g; b n
+' >>$CONFIG_STATUS <conf$$subs.sed
+rm -f conf$$subs.sed
+cat >>$CONFIG_STATUS <<_ACEOF
+:end
+s/|#_!!_#|//g
 CEOF$ac_eof
 _ACEOF
 
@@ -24538,7 +24733,7 @@ s&@abs_top_builddir@&$ac_abs_top_builddir&;t t
 s&@INSTALL@&$ac_INSTALL&;t t
 s&@MKDIR_P@&$ac_MKDIR_P&;t t
 $ac_datarootdir_hack
-" $ac_file_inputs | sed -f "$tmp/subs-1.sed" | sed -f "$tmp/subs-2.sed" | sed -f "$tmp/subs-3.sed" | sed 's/|#_!!_#|//g' >$tmp/out
+" $ac_file_inputs | sed -f "$tmp/subs-1.sed" | sed -f "$tmp/subs-2.sed" | sed -f "$tmp/subs-3.sed" | sed -f "$tmp/subs-4.sed" >$tmp/out
 
 test -z "$ac_datarootdir_hack$ac_datarootdir_seen" &&
   { ac_out=`sed -n '/\${datarootdir}/p' "$tmp/out"`; test -n "$ac_out"; } &&
