@@ -36,7 +36,7 @@ License: other
  gives unlimited permission to copy and/or distribute it,
  with or without modifications, as long as this notice is preserved.
 
-Files: m4/gnulib-cache.m4, m4/gnulib-comp.m4, m4/onceonly_2_57.m4
+Files: m4/gnulib-cache.m4, m4/gnulib-comp.m4, m4/onceonly.m4
 Copyright: © 2002-2007 Free Software Foundation, Inc.
 License: GPL-any | other
  This file is free software, distributed under the terms of the GNU

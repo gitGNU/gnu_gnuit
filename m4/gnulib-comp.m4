@@ -1,5 +1,5 @@
 # DO NOT EDIT! GENERATED AUTOMATICALLY!
-# Copyright (C) 2004-2007 Free Software Foundation, Inc.
+# Copyright (C) 2002-2008 Free Software Foundation, Inc.
 #
 # This file is free software, distributed under the terms of the GNU
 # General Public License.  As a special exception to the GNU General
@@ -40,6 +40,7 @@ AC_DEFUN([gl_INIT],
   m4_pushdef([AC_LIBOBJ], m4_defn([gl_LIBOBJ]))
   m4_pushdef([AC_REPLACE_FUNCS], m4_defn([gl_REPLACE_FUNCS]))
   m4_pushdef([AC_LIBSOURCES], m4_defn([gl_LIBSOURCES]))
+  gl_COMMON
   gl_source_base='lib'
   gl_FUNC_ALLOCA
   gl_ARGMATCH
@@ -78,6 +79,8 @@ AC_DEFUN([gl_INIT],
   gl_MBITER
   gl_FUNC_MEMCHR
   gl_FUNC_MEMMOVE
+  gl_FUNC_MKSTEMP
+  gl_STDLIB_MODULE_INDICATOR([mkstemp])
   gl_FUNC_NANOSLEEP
   gl_FUNC_PUTENV
   gl_STDLIB_MODULE_INDICATOR([putenv])
@@ -93,6 +96,9 @@ AC_DEFUN([gl_INIT],
   gl_STDINT_H
   gl_STDLIB_H
   gl_STRCASE
+  gl_FUNC_STRCASESTR
+  gl_FUNC_STRCASESTR_SIMPLE
+  gl_STRING_MODULE_INDICATOR([strcasestr])
   gl_FUNC_STRERROR
   gl_STRING_MODULE_INDICATOR([strerror])
   gl_HEADER_STRING_H
@@ -109,8 +115,11 @@ AC_DEFUN([gl_INIT],
   gl_FUNC_STRTOULL
   gl_FUNC_STRTOUMAX
   gl_INTTYPES_MODULE_INDICATOR([strtoumax])
+  gl_HEADER_SYS_STAT_H
+  AC_PROG_MKDIR_P
   gl_HEADER_SYS_TIME_H
   AC_PROG_MKDIR_P
+  gl_FUNC_GEN_TEMPNAME
   gl_HEADER_TIME_H
   gl_TIMESPEC
   gl_UNISTD_H
@@ -144,6 +153,7 @@ AC_DEFUN([gl_INIT],
   m4_pushdef([AC_LIBOBJ], m4_defn([gltests_LIBOBJ]))
   m4_pushdef([AC_REPLACE_FUNCS], m4_defn([gltests_REPLACE_FUNCS]))
   m4_pushdef([AC_LIBSOURCES], m4_defn([gltests_LIBSOURCES]))
+  gl_COMMON
   gl_source_base='tests'
   m4_popdef([AC_LIBSOURCES])
   m4_popdef([AC_REPLACE_FUNCS])
@@ -289,6 +299,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/mbuiter.h
   lib/memchr.c
   lib/memmove.c
+  lib/mkstemp.c
   lib/nanosleep.c
   lib/putenv.c
   lib/quote.c
@@ -307,7 +318,9 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/stdint.in.h
   lib/stdlib.in.h
   lib/str-kmp.h
+  lib/str-two-way.h
   lib/strcasecmp.c
+  lib/strcasestr.c
   lib/streq.h
   lib/strerror.c
   lib/string.in.h
@@ -324,7 +337,10 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/strtoul.c
   lib/strtoull.c
   lib/strtoumax.c
+  lib/sys_stat.in.h
   lib/sys_time.in.h
+  lib/tempname.c
+  lib/tempname.h
   lib/time.in.h
   lib/timespec.h
   lib/unistd.in.h
@@ -347,7 +363,6 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/xstrtol.h
   lib/xstrtoul.c
   lib/xstrtoumax.c
-  m4/absolute-header.m4
   m4/alloca.m4
   m4/argmatch.m4
   m4/clock_time.m4
@@ -385,8 +400,9 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/mbstate_t.m4
   m4/memchr.m4
   m4/memmove.m4
+  m4/mkstemp.m4
   m4/nanosleep.m4
-  m4/onceonly_2_57.m4
+  m4/onceonly.m4
   m4/putenv.m4
   m4/quote.m4
   m4/quotearg.m4
@@ -399,6 +415,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/stdint.m4
   m4/stdlib_h.m4
   m4/strcase.m4
+  m4/strcasestr.m4
   m4/strerror.m4
   m4/string_h.m4
   m4/strings_h.m4
@@ -410,7 +427,9 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/strtoul.m4
   m4/strtoull.m4
   m4/strtoumax.m4
+  m4/sys_stat_h.m4
   m4/sys_time_h.m4
+  m4/tempname.m4
   m4/time_h.m4
   m4/timespec.m4
   m4/unistd_h.m4

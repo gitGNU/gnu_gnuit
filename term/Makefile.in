@@ -65,20 +65,22 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/alloca.m4 \
 	$(top_srcdir)/m4/mbiter.m4 $(top_srcdir)/m4/mbrtowc.m4 \
 	$(top_srcdir)/m4/mbslen.m4 $(top_srcdir)/m4/mbsstr.m4 \
 	$(top_srcdir)/m4/mbstate_t.m4 $(top_srcdir)/m4/memchr.m4 \
-	$(top_srcdir)/m4/memmove.m4 $(top_srcdir)/m4/nanosleep.m4 \
-	$(top_srcdir)/m4/onceonly_2_57.m4 $(top_srcdir)/m4/putenv.m4 \
-	$(top_srcdir)/m4/quote.m4 $(top_srcdir)/m4/quotearg.m4 \
-	$(top_srcdir)/m4/readlink.m4 $(top_srcdir)/m4/rename.m4 \
-	$(top_srcdir)/m4/safe-read.m4 $(top_srcdir)/m4/safe-write.m4 \
-	$(top_srcdir)/m4/ssize_t.m4 $(top_srcdir)/m4/stdbool.m4 \
-	$(top_srcdir)/m4/stdint.m4 $(top_srcdir)/m4/stdlib_h.m4 \
-	$(top_srcdir)/m4/strcase.m4 $(top_srcdir)/m4/strerror.m4 \
+	$(top_srcdir)/m4/memmove.m4 $(top_srcdir)/m4/mkstemp.m4 \
+	$(top_srcdir)/m4/nanosleep.m4 $(top_srcdir)/m4/onceonly.m4 \
+	$(top_srcdir)/m4/putenv.m4 $(top_srcdir)/m4/quote.m4 \
+	$(top_srcdir)/m4/quotearg.m4 $(top_srcdir)/m4/readlink.m4 \
+	$(top_srcdir)/m4/rename.m4 $(top_srcdir)/m4/safe-read.m4 \
+	$(top_srcdir)/m4/safe-write.m4 $(top_srcdir)/m4/ssize_t.m4 \
+	$(top_srcdir)/m4/stdbool.m4 $(top_srcdir)/m4/stdint.m4 \
+	$(top_srcdir)/m4/stdlib_h.m4 $(top_srcdir)/m4/strcase.m4 \
+	$(top_srcdir)/m4/strcasestr.m4 $(top_srcdir)/m4/strerror.m4 \
 	$(top_srcdir)/m4/string_h.m4 $(top_srcdir)/m4/strings_h.m4 \
 	$(top_srcdir)/m4/strndup.m4 $(top_srcdir)/m4/strnlen.m4 \
 	$(top_srcdir)/m4/strtoimax.m4 $(top_srcdir)/m4/strtol.m4 \
 	$(top_srcdir)/m4/strtoll.m4 $(top_srcdir)/m4/strtoul.m4 \
 	$(top_srcdir)/m4/strtoull.m4 $(top_srcdir)/m4/strtoumax.m4 \
-	$(top_srcdir)/m4/sys_time_h.m4 $(top_srcdir)/m4/time_h.m4 \
+	$(top_srcdir)/m4/sys_stat_h.m4 $(top_srcdir)/m4/sys_time_h.m4 \
+	$(top_srcdir)/m4/tempname.m4 $(top_srcdir)/m4/time_h.m4 \
 	$(top_srcdir)/m4/timespec.m4 $(top_srcdir)/m4/unistd_h.m4 \
 	$(top_srcdir)/m4/utimbuf.m4 $(top_srcdir)/m4/utime.m4 \
 	$(top_srcdir)/m4/utimes-null.m4 $(top_srcdir)/m4/wchar.m4 \
@@ -146,6 +148,7 @@ GL_COND_LIBTOOL_TRUE = @GL_COND_LIBTOOL_TRUE@
 GNULIB_CALLOC_POSIX = @GNULIB_CALLOC_POSIX@
 GNULIB_CHOWN = @GNULIB_CHOWN@
 GNULIB_DUP2 = @GNULIB_DUP2@
+GNULIB_ENVIRON = @GNULIB_ENVIRON@
 GNULIB_FCHDIR = @GNULIB_FCHDIR@
 GNULIB_FTRUNCATE = @GNULIB_FTRUNCATE@
 GNULIB_GETCWD = @GNULIB_GETCWD@
@@ -177,8 +180,10 @@ GNULIB_MEMRCHR = @GNULIB_MEMRCHR@
 GNULIB_MKDTEMP = @GNULIB_MKDTEMP@
 GNULIB_MKSTEMP = @GNULIB_MKSTEMP@
 GNULIB_PUTENV = @GNULIB_PUTENV@
+GNULIB_RAWMEMCHR = @GNULIB_RAWMEMCHR@
 GNULIB_READLINK = @GNULIB_READLINK@
 GNULIB_REALLOC_POSIX = @GNULIB_REALLOC_POSIX@
+GNULIB_RPMATCH = @GNULIB_RPMATCH@
 GNULIB_SETENV = @GNULIB_SETENV@
 GNULIB_SLEEP = @GNULIB_SLEEP@
 GNULIB_STPCPY = @GNULIB_STPCPY@
@@ -193,6 +198,7 @@ GNULIB_STRPBRK = @GNULIB_STRPBRK@
 GNULIB_STRSEP = @GNULIB_STRSEP@
 GNULIB_STRSIGNAL = @GNULIB_STRSIGNAL@
 GNULIB_STRSTR = @GNULIB_STRSTR@
+GNULIB_STRTOD = @GNULIB_STRTOD@
 GNULIB_STRTOIMAX = @GNULIB_STRTOIMAX@
 GNULIB_STRTOK_R = @GNULIB_STRTOK_R@
 GNULIB_STRTOUMAX = @GNULIB_STRTOUMAX@
@@ -200,6 +206,7 @@ GNULIB_UNSETENV = @GNULIB_UNSETENV@
 GNULIB_WCWIDTH = @GNULIB_WCWIDTH@
 GREP = @GREP@
 HAVE_CALLOC_POSIX = @HAVE_CALLOC_POSIX@
+HAVE_DECL_ENVIRON = @HAVE_DECL_ENVIRON@
 HAVE_DECL_GETLOGIN_R = @HAVE_DECL_GETLOGIN_R@
 HAVE_DECL_IMAXABS = @HAVE_DECL_IMAXABS@
 HAVE_DECL_IMAXDIV = @HAVE_DECL_IMAXDIV@
@@ -222,12 +229,15 @@ HAVE_GETSUBOPT = @HAVE_GETSUBOPT@
 HAVE_INTTYPES_H = @HAVE_INTTYPES_H@
 HAVE_ISWCNTRL = @HAVE_ISWCNTRL@
 HAVE_LONG_LONG_INT = @HAVE_LONG_LONG_INT@
+HAVE_LSTAT = @HAVE_LSTAT@
 HAVE_MALLOC_POSIX = @HAVE_MALLOC_POSIX@
 HAVE_MEMPCPY = @HAVE_MEMPCPY@
 HAVE_MKDTEMP = @HAVE_MKDTEMP@
 HAVE_OS_H = @HAVE_OS_H@
+HAVE_RAWMEMCHR = @HAVE_RAWMEMCHR@
 HAVE_READLINK = @HAVE_READLINK@
 HAVE_REALLOC_POSIX = @HAVE_REALLOC_POSIX@
+HAVE_RPMATCH = @HAVE_RPMATCH@
 HAVE_SETENV = @HAVE_SETENV@
 HAVE_SIGNED_SIG_ATOMIC_T = @HAVE_SIGNED_SIG_ATOMIC_T@
 HAVE_SIGNED_WCHAR_T = @HAVE_SIGNED_WCHAR_T@
@@ -242,6 +252,7 @@ HAVE_STRCHRNUL = @HAVE_STRCHRNUL@
 HAVE_STRNDUP = @HAVE_STRNDUP@
 HAVE_STRPBRK = @HAVE_STRPBRK@
 HAVE_STRSEP = @HAVE_STRSEP@
+HAVE_STRTOD = @HAVE_STRTOD@
 HAVE_STRUCT_TIMEVAL = @HAVE_STRUCT_TIMEVAL@
 HAVE_SYS_BITYPES_H = @HAVE_SYS_BITYPES_H@
 HAVE_SYS_INTTYPES_H = @HAVE_SYS_INTTYPES_H@
@@ -290,6 +301,7 @@ NEXT_STDINT_H = @NEXT_STDINT_H@
 NEXT_STDLIB_H = @NEXT_STDLIB_H@
 NEXT_STRINGS_H = @NEXT_STRINGS_H@
 NEXT_STRING_H = @NEXT_STRING_H@
+NEXT_SYS_STAT_H = @NEXT_SYS_STAT_H@
 NEXT_SYS_TIME_H = @NEXT_SYS_TIME_H@
 NEXT_TIME_H = @NEXT_TIME_H@
 NEXT_UNISTD_H = @NEXT_UNISTD_H@
@@ -313,10 +325,12 @@ REPLACE_FCHDIR = @REPLACE_FCHDIR@
 REPLACE_GETCWD = @REPLACE_GETCWD@
 REPLACE_GETPAGESIZE = @REPLACE_GETPAGESIZE@
 REPLACE_GETTIMEOFDAY = @REPLACE_GETTIMEOFDAY@
+REPLACE_ISWCNTRL = @REPLACE_ISWCNTRL@
 REPLACE_LCHOWN = @REPLACE_LCHOWN@
 REPLACE_LOCALTIME_R = @REPLACE_LOCALTIME_R@
 REPLACE_LSEEK = @REPLACE_LSEEK@
 REPLACE_MEMMEM = @REPLACE_MEMMEM@
+REPLACE_MKDIR = @REPLACE_MKDIR@
 REPLACE_MKSTEMP = @REPLACE_MKSTEMP@
 REPLACE_NANOSLEEP = @REPLACE_NANOSLEEP@
 REPLACE_PUTENV = @REPLACE_PUTENV@
@@ -325,6 +339,7 @@ REPLACE_STRERROR = @REPLACE_STRERROR@
 REPLACE_STRPTIME = @REPLACE_STRPTIME@
 REPLACE_STRSIGNAL = @REPLACE_STRSIGNAL@
 REPLACE_STRSTR = @REPLACE_STRSTR@
+REPLACE_STRTOD = @REPLACE_STRTOD@
 REPLACE_TIMEGM = @REPLACE_TIMEGM@
 REPLACE_WCWIDTH = @REPLACE_WCWIDTH@
 SET_MAKE = @SET_MAKE@
@@ -334,6 +349,7 @@ SIZE_T_SUFFIX = @SIZE_T_SUFFIX@
 STDBOOL_H = @STDBOOL_H@
 STDINT_H = @STDINT_H@
 STRIP = @STRIP@
+SYS_STAT_H = @SYS_STAT_H@
 SYS_TIME_H = @SYS_TIME_H@
 SYS_TIME_H_DEFINES_STRUCT_TIMESPEC = @SYS_TIME_H_DEFINES_STRUCT_TIMESPEC@
 TEXI2DVI = @TEXI2DVI@
