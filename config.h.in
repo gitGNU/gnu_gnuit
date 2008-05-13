@@ -695,6 +695,9 @@
 /* Define to `int' if <sys/types.h> does not define. */
 #undef mode_t
 
+/* Define to the type of st_nlink in struct stat, or a supertype. */
+#undef nlink_t
+
 /* Define to `long int' if <sys/types.h> does not define. */
 #undef off_t
 

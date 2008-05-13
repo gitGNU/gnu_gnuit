@@ -3214,9 +3214,11 @@ main(argc, argv)
 			tty_key_t *key;
 			int fd;
 			FILE *fp=NULL;
-			command_t *cmd;
 			int gotmatch=0;
-			char tmpfn[]="/tmp/gnuit-apropos-XXXXXX";
+			char *template="gnuit-apropos-XXXXXX";
+			char *tmpfn;
+			tmpfn=xmalloc(strlen(temporary_directory)+strlen(template)+1+2);
+			sprintf(tmpfn,"%s/%s",temporary_directory,template);
 			fd=mkstemp(tmpfn);
 			if(fd != -1)
 			    fp=fdopen(fd,"w");
@@ -3227,11 +3229,11 @@ main(argc, argv)
 			}
 			for(key=key_list_head;key;key=key->next)
 			{
-			    cmd=(command_t *)key->aux_data;
-			    if(strcasestr(cmd->name, aproposstr))
+			    command_t *command=(command_t *)key->aux_data;
+			    if(strcasestr(command->name, aproposstr))
 			    {
 				gotmatch=1;
-				fprintf(fp,"%s: %s\n",cmd->name, cmd->sequence);
+				fprintf(fp,"%s: %s\n",command->name, command->sequence);
 			    }
 			}
 			fclose(fp);
@@ -3250,6 +3252,7 @@ main(argc, argv)
 			else
 			    il_read_char("No matches", NULL, 0);
 			unlink(tmpfn);
+			xfree(tmpfn);
 		    }
 		    xfree(aproposstr);
 		    goto restart;
