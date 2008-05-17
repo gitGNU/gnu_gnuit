@@ -131,7 +131,6 @@ dotry()
 	    $TRY_NORMAL)	"$cmd" "$@" ;;
 	    $TRY_PAGED)		"$cmd" "$@"  2>&1 | "$GIT_PAGER" ;;
 	    $TRY_X)		("$cmd" "$@"  >/dev/null 2>&1 ; cleanup ) & 
-	    			tempfile=   # don't delete tempfile now
 				exit $? ;;
 	    *) 			echo "$name: INTERNAL ERROR: unknown type ($type)" ;;
 	esac
@@ -349,8 +348,8 @@ case "$lcfile" in
 *.wrl)		tryx     vrweb             "$file" ;;
 *.zoo)		trypaged zoo -list         "$file" ;;
 INBOX|OUTBOX)	try xemacs              -- "$file" ;;
-*.voc)		(vplay "$file" > /dev/null 2>&1 &) ;;
-*.au)		(cat "$file" > /dev/audio 2> /dev/null &); doexit ;;
+*.voc)		(vplay "$file" > /dev/null 2>&1 ; cleanup ) & exit 0 ;;
+*.au)		(cat "$file" > /dev/audio 2> /dev/null ; cleanup ) & exit 0 ;;
 *.class)	trypaged javap -c -s -l -verbose "$(basename "$file" .class)" ;;
 
 *.url)		url="$(grep '^URL=' "$file" |tr -d '\015'|sed -e 's/^URL=//')"
@@ -452,13 +451,13 @@ INBOX|OUTBOX)	try xemacs              -- "$file" ;;
 
 *.rmd)		if whichlist rmdtopvf pvftobasic; then
 		    (rmdtopvf -8 "$file" 2> /dev/null |
-		     pvftobasic > /dev/audio 2> /dev/null &)
-		     doexit
+		     pvftobasic > /dev/audio 2> /dev/null ; cleanup ) &
+		     exit 0
 		fi;;
 
 *.pvf)		if whichlist pvftobasic; then
-		    (pvftobasic > /dev/audio 2> /dev/null &)
-		    doexit
+		    (pvftobasic > /dev/audio 2> /dev/null ; cleaup ) &
+		    exit 0
 		fi;;
 *.midi |*.mid)	
 		tryx timidity -ia       -- "$file"
@@ -550,7 +549,7 @@ wtmp | wtmp.[0-9]*)
 *.so | *.so.[0-9]* |\
 *.o | *.lo)	trypaged objdump --syms --all-headers -- "$file" ;;
 
-[SR]MAIL)	try emacs                  "$file"
+[sr]mail)	try emacs                  "$file"
 		try xemacs              -- "$file" ;;
 
 *.arj |\
