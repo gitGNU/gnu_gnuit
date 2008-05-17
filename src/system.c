@@ -65,9 +65,10 @@ extern char *screen;
 
 extern char il_read_char PROTO ((char *, char *, int));
 
+char *stdout_log_template = NULL;
+char *stderr_log_template = NULL;
 char *stdout_log_name = NULL;
 char *stderr_log_name = NULL;
-
 
 /*
  * A modified (and incompatible) version of system().
@@ -80,11 +81,54 @@ my_system(command, hide)
 {
     pid_t pid;
     int status;
+    FILE *stdout_log=NULL;
+    FILE *stderr_log=NULL;
+    int stdout_log_fd, stderr_log_fd;
+    int old_stdout, old_stderr;
 
     /* Preserve the system() semantics.  UNIX always has a command
        processor.  */
     if (command == NULL)
 	return 1;
+
+    remove_log();
+
+    /* We have to call mkstemp here, so the parent knows
+       the values of std{out,err}_log_name, then clean up
+       in the parent code below */
+
+    old_stdout = dup(1);
+    old_stderr = dup(2);
+
+    close(1);
+    close(2);
+
+    strcpy(stdout_log_name,stdout_log_template);
+    stdout_log_fd = mkstemp(stdout_log_name);
+    if(stdout_log_fd != -1)
+	stdout_log = fdopen(stdout_log_fd, "w");
+
+    strcpy(stderr_log_name,stderr_log_template);
+    stderr_log_fd = mkstemp(stderr_log_name);
+    if(stderr_log_fd != -1)
+	stderr_log = fdopen(stderr_log_fd, "w");
+
+    if(!stdout_log || !stderr_log)
+    {
+	if(stdout_log)
+	    fclose(stdout_log);
+	if(stderr_log)
+	    fclose(stderr_log);
+
+	remove_log();
+
+	dup(old_stdout);
+	dup(old_stderr);
+
+	close(old_stdout);
+	close(old_stderr);
+	return -1;
+    }
 
     /* POSIX.2 says that we should ignore SIGINT & SIGQUIT.  It
        actually makes sense :-), but we won't bother to do it, as we
@@ -102,15 +146,6 @@ my_system(command, hide)
 
 	if (hide)
 	{
-	    FILE *stdout_log;
-	    FILE *stderr_log;
-
-	    close(1);
-	    close(2);
-
-	    stdout_log = fopen(stdout_log_name, "w");
-	    stderr_log = fopen(stderr_log_name, "w");
-
 	    /* The reason we want stdin closed is that some programs
 	       (like gunzip) try to ask the user what to do in certain
 	       situations.  If stdin is closed, they default to a
@@ -134,6 +169,16 @@ my_system(command, hide)
     else
     {
 	/* This is the parent code.  */
+	if(stdout_log)
+	    fclose(stdout_log);
+	if(stderr_log)
+	    fclose(stderr_log);
+
+	dup(old_stdout);
+	dup(old_stderr);
+
+	close(old_stdout);
+	close(old_stderr);
 	while (wait(&status) != pid);
     }
 
@@ -189,7 +234,6 @@ remove_log()
     if (stderr_log_name)
 	unlink(stderr_log_name);
 }
-
 
 void
 display_errors(command)

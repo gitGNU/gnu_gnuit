@@ -1816,7 +1816,7 @@ main(argc, argv)
     char *panel_path, *current_path;
     char *lock_password, *unlock_password, *aproposstr;
     int child_exit_code, repeat_count, keys;
-    int action_status, i, retval, to_case, cmp_mode, r1, r2;
+    int action_status, i, retval, to_case, cmp_mode;
     int c, ansi_colors = -1, use_last_screen_character = ON;
     int entry, key, app_end = 0, first_time = 1, errors = 0;
     char *left_panel_path, *right_panel_path, *output_string;
@@ -1951,17 +1951,12 @@ main(argc, argv)
     if (temporary_directory == NULL)
 	temporary_directory = "/tmp";
 
-    stdout_log_name = xmalloc(32 + strlen(temporary_directory) + 1);
-    stderr_log_name = xmalloc(32 + strlen(temporary_directory) + 1);
-
-    srand(time(NULL));
-    r1 = 1 + (int) (100000000.0 * rand() / (RAND_MAX + 1.0));
-    r2 = 1 + (int) (100000000.0 * rand() / (RAND_MAX + 1.0));
-
-    sprintf(stdout_log_name, "%s/git.1.%d.%d",
-	    temporary_directory, (int)getpid(), r1);
-    sprintf(stderr_log_name, "%s/git.2.%d.%d",
-	    temporary_directory, (int)getpid(), r2);
+    stdout_log_template = xmalloc(32 + strlen(temporary_directory) + 1);
+    stderr_log_template = xmalloc(32 + strlen(temporary_directory) + 1);
+    stdout_log_name     = xmalloc(32 + strlen(temporary_directory) + 1);
+    stderr_log_name     = xmalloc(32 + strlen(temporary_directory) + 1);
+    sprintf(stdout_log_template, "%s/gnuit.1.XXXXXX", temporary_directory);
+    sprintf(stderr_log_template, "%s/gnuit.2.XXXXXX", temporary_directory);
 
     use_section("[Setup]");
 

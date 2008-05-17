@@ -154,6 +154,8 @@ int StartupScrollStep;
 int RefreshAfterKill;
 char *stdout_log_name;
 char *stderr_log_name;
+char *stdout_log_template;
+char *stderr_log_template;
 char **ps_vect;
 char *screen;
 char *global_buf;
@@ -722,8 +724,10 @@ int
 ps(args)
     char **args;
 {
-    FILE *stdout_log, *stderr_log;
+    FILE *stdout_log=NULL, *stderr_log=NULL;
+    int stdout_log_fd, stderr_log_fd;
 
+    remove_log();
     /* See the comment in system.c on closing tty descriptors.  */
     int old_stdout = dup(1);
     int old_stderr = dup(2);
@@ -731,8 +735,34 @@ ps(args)
     close(1);
     close(2);
 
-    stdout_log = fopen(stdout_log_name, "w");
-    stderr_log = fopen(stderr_log_name, "w");
+    strcpy(stdout_log_name,stdout_log_template);
+    stdout_log_fd = mkstemp(stdout_log_name);
+    if(stdout_log_fd != -1)
+	stdout_log = fdopen(stdout_log_fd, "w");
+
+    strcpy(stderr_log_name,stderr_log_template);
+    stderr_log_fd = mkstemp(stderr_log_name);
+    if(stderr_log_fd != -1)
+	stderr_log = fdopen(stderr_log_fd, "w");
+
+    if(!stdout_log || !stderr_log)
+    {
+	if(stdout_log)
+	    fclose(stdout_log);
+	if(stderr_log)
+	    fclose(stderr_log);
+
+	remove_log();
+
+	dup(old_stdout);
+	dup(old_stderr);
+
+	close(old_stdout);
+	close(old_stderr);
+	fprintf(stderr, "%s: cannot write temp file: %s.\n",
+		g_program, ((stdout_log==NULL) ? stdout_log_name : stderr_log_name));
+	return 0;
+    }
 
     if (ps_cmd)
 	xfree(ps_cmd);
@@ -761,6 +791,8 @@ ps(args)
     {
 	fclose(stdout_log);
 	fclose(stderr_log);
+
+	remove_log();
 
 	dup(old_stdout);
 	dup(old_stderr);
@@ -998,7 +1030,7 @@ main(argc, argv)
     FILE *stdout_log;
     int repeat_count;
     char **arguments;
-    int i, no_of_arguments, exit_code = 0, r1, r2;
+    int i, no_of_arguments, exit_code = 0;
     int need_update, need_update_all, old_current_process;
     int c, ansi_colors = -1, use_last_screen_character = ON;
 
@@ -1133,17 +1165,12 @@ main(argc, argv)
 	    g_program);
 #endif /* !HAVE_LONG_FILE_NAMES */
 
-    stdout_log_name = xmalloc(32 + strlen(temporary_directory) + 1);
-    stderr_log_name = xmalloc(32 + strlen(temporary_directory) + 1);
-
-    srand(time(NULL));
-    r1 = 1 + (int) (100000000.0 * rand() / (RAND_MAX + 1.0));
-    r2 = 1 + (int) (100000000.0 * rand() / (RAND_MAX + 1.0));
-
-    sprintf(stdout_log_name, "%s/gitps.1.%d.%d",
-	    temporary_directory, (int)getpid(), r1);
-    sprintf(stderr_log_name, "%s/gitps.2.%d.%d",
-	    temporary_directory, (int)getpid(), r2);
+    stdout_log_template = xmalloc(32 + strlen(temporary_directory) + 1);
+    stderr_log_template = xmalloc(32 + strlen(temporary_directory) + 1);
+    stdout_log_name     = xmalloc(32 + strlen(temporary_directory) + 1);
+    stderr_log_name     = xmalloc(32 + strlen(temporary_directory) + 1);
+    sprintf(stdout_log_template, "%s/gitps.1.XXXXXX", temporary_directory);
+    sprintf(stderr_log_template, "%s/gitps.2.XXXXXX", temporary_directory);
 
     if (ps(arguments) == 0)
 	return 1;
