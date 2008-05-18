@@ -622,7 +622,7 @@ if test -n "$MIMETYPE" && \
     try see -- "${MIMETYPE}:${file}"
     try metamail -d -b -c "$MIMETYPE" "$file"
 fi
-try "$GNUIT_PAGER  "$file"
+try "$GNUIT_PAGER" "$file"
 try less        -- "$file"
 try more           "$file"
 try cat            "$file"
