@@ -47,10 +47,10 @@
 ###
 
 ###
-### Instead of hardcoding `more' or `less' here, we can use GIT_PAGER,
+### Instead of hardcoding `more' or `less' here, we can use GNUIT_PAGER,
 ### a shell environment variable that is bound on one of them, depending
 ### on your environment.  The default is to call `more', but you can
-### change GIT_PAGER to point to your favorite pager...
+### change GNUIT_PAGER to point to your favorite pager...
 ###
 
 ###
@@ -78,6 +78,10 @@
 name=`basename "$0"`
 msg="Press ENTER to continue..."
 GIT_PAGER=${GIT_PAGER:-more}
+GNUIT_PAGER=${GNUIT_PAGER:-$GIT_PAGER}
+GIT_BROWSER=${GIT_BROWSER:-lynx}
+GNUIT_BROWSER=${GNUIT_BROWSER:-$GIT_BROWSER}
+export GNUIT_PAGER GNUIT_BROWSER
 
 #################### helper functions ####################
 
@@ -129,7 +133,7 @@ dotry()
     if whichlist "$cmd"; then
 	case $type in
 	    $TRY_NORMAL)	"$cmd" "$@" ;;
-	    $TRY_PAGED)		"$cmd" "$@"  2>&1 | "$GIT_PAGER" ;;
+	    $TRY_PAGED)		"$cmd" "$@"  2>&1 | "$GNUIT_PAGER" ;;
 	    $TRY_X)		("$cmd" "$@"  >/dev/null 2>&1 ; cleanup ) & 
 				exit $? ;;
 	    *) 			echo "$name: INTERNAL ERROR: unknown type ($type)" ;;
@@ -201,8 +205,8 @@ tryaudio()
 
 trybrowse()
 {
-    if test "$GIT_BROWSER"; then
-	try "$GIT_BROWSER" "$1"
+    if test "$GNUIT_BROWSER"; then
+	try "$GNUIT_BROWSER" "$1"
     fi
     try  lynx                  "$1"
     try  w3m                   "$1"
@@ -278,19 +282,19 @@ lcfile="$(echo "$file"|tr [:upper:] [:lower:])"
 
 case "$lcfile" in
     *.tar.gz|*.pkg|*.t[arg]z) if whichlist gunzip tar; then
-				  gunzip  -c -- "$file" | tar tvf -    | "$GIT_PAGER"
+				  gunzip  -c -- "$file" | tar tvf -    | "$GNUIT_PAGER"
 				  doexit
 			      fi ;;
     *.tar.bz2|*.tbz)          if whichlist bunzip2 tar; then
-				  bunzip2 -c -- "$file" | tar tvf -    | "$GIT_PAGER"
+				  bunzip2 -c -- "$file" | tar tvf -    | "$GNUIT_PAGER"
 				  doexit
 			      fi ;;
     *.cpio.gz)                if whichlist gunzip cpio; then
-				  gunzip  -c -- "$file" | cpio -t 2>&1 | "$GIT_PAGER"
+				  gunzip  -c -- "$file" | cpio -t 2>&1 | "$GNUIT_PAGER"
 				  doexit
 			      fi ;;
     *.cpio.bz2)               if whichlist bunzip2 cpio; then
-				  bunzip2 -c -- "$file" | cpio -t 2>&1 | "$GIT_PAGER"
+				  bunzip2 -c -- "$file" | cpio -t 2>&1 | "$GNUIT_PAGER"
 				  doexit
 			      fi ;;
 esac
@@ -557,7 +561,7 @@ wtmp | wtmp.[0-9]*)
 
 *.deb)		if whichlist dpkg; then
 		    (echo "$file"; dpkg --info -- "$file";
-		     echo; dpkg --contents -- "$file") | "$GIT_PAGER"
+		     echo; dpkg --contents -- "$file") | "$GNUIT_PAGER"
 		    doexit
 		fi;;
 
@@ -618,7 +622,7 @@ if test -n "$MIMETYPE" && \
     try see -- "${MIMETYPE}:${file}"
     try metamail -d -b -c "$MIMETYPE" "$file"
 fi
-try "$GIT_PAGER"   "$file"
+try "$GNUIT_PAGER  "$file"
 try less        -- "$file"
 try more           "$file"
 try cat            "$file"

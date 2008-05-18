@@ -746,7 +746,7 @@ StatusBrightness		= OFF
 ^[[009q	    = MAKE; make %s{Options: ,-k };;;y		# F9
 ^[[010q	    = exit					# F10
 ^[[011q	    = GITPS; gitps;;n				# F11
-^[[012q	    = READ-MAIL; $GIT_RMAIL;;n			# F12
+^[[012q	    = READ-MAIL; $GNUIT_RMAIL;;n			# F12
 
 
 ###

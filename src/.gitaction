@@ -50,7 +50,7 @@ file="$1/$2"
 
 case "$2" in
 *.foo)  ls -la "$file";;
-*.bar)  "$GIT_PAGER" "$file";;
+*.bar)  "$GNUIT_PAGER" "$file";;
 *)      done=0
 esac
 

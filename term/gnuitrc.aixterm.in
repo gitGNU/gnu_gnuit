@@ -742,7 +742,7 @@ StatusBrightness		= OFF
 [GITFM-Keys]
 ^[[010q = exit						# F10
 ^[[011q = GITPS; gitps;;n				# F11
-^[[012q = READ-MAIL; $GIT_RMAIL;;n			# F12
+^[[012q = READ-MAIL; $GNUIT_RMAIL;;n			# F12
 ^[[139q	= select-entry					# INS
 ^[[P	= delete-char					# DEL
 ^[[146q	= end-of-panel					# END

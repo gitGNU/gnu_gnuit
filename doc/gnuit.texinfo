@@ -1654,9 +1654,11 @@ Call the default editor in order to edit the @file{ChangeLog} file
 @kindex ^X 4 a
 
 The default editor can be specified using the @var{EDITOR} or
-@var{GIT_EDITOR} environment variables.  @xref{Environment Variables},
+@var{GNUIT_EDITOR} environment variables.  @xref{Environment Variables},
 for more information.
 
+@var{$GNUIT_EDITOR} used to be called @var{$GIT_EDITOR}. The old
+name is still accepted for backwards-compatibility.
 
 @node Viewing Files, Compressing Files, Editing Files, Files
 @subsubsection Viewing Files
@@ -3125,8 +3127,12 @@ Run the @code{emacs -f rmail} command.  This will start the Emacs's
 @noindent
 @kbd{^X z}
 @display
-Call a sub-shell as specified by the @var{$GIT_SHELL} environment
+Call a sub-shell as specified by the @var{$GNUIT_SHELL} environment
 variable (@samp{SUB-SHELL}).
+
+@var{$GNUIT_SHELL} used to be called @var{$GIT_SHELL}. The old
+name is still accepted for backwards-compatibility.
+
 @end display
 @xref{Environment Variables}, for more information.
 @cindex Shell
@@ -3473,10 +3479,13 @@ users (@samp{USERS}).
 @noindent
 @kbd{ESC S v}
 @display
-Call @code{$GIT_VMSTAT}(1) in order to get the current virtual memory
+Call @code{$GNUIT_VMSTAT}(1) in order to get the current virtual memory
 status.  This is very system dependent, @code{Linux} uses @code{free},
-other systems use @code{vmstat}, so the @var{$GIT_VMSTAT} variable is
+other systems use @code{vmstat}, so the @var{$GNUIT_VMSTAT} variable is
 used to deal with this (@samp{VIRTUAL-MEMORY-STATUS}).
+
+@var{$GNUIT_VMSTAT} used to be called @var{$GIT_VMSTAT}. The old
+name is still accepted for backwards-compatibility.
 @end display
 @xref{Environment Variables}, for more information.
 @cindex Virtual memory status
@@ -3641,8 +3650,12 @@ name (@samp{INFO}).
 @kbd{^X h}
 @display
 Read the html documentation using the viewer specified in
-@var{GIT_BROWSER}, or with lynx if @var{GIT_BROWSER} is not set
+@var{GNUIT_BROWSER}, or with lynx if @var{GNUIT_BROWSER} is not set
 (@samp{HTML}).
+
+@var{$GNUIT_BROWSER} used to be called @var{$GIT_BROWSER}. The old
+name is still accepted for backwards-compatibility.
+
 @end display
 @cindex Reading the html documentation
 @findex HTML
@@ -3889,49 +3902,53 @@ egrep and fgrep programs.
 
 The configuration files use shell environment variables to call the
 shell, editor, mail reader, html viewer, compress and virtual memory
-status utility.  That means that if you set @var{GIT_SHELL},
-@var{GIT_EDITOR}, @var{GIT_RMAIL}, @var{GIT_BROWSER}, or
-@var{GIT_VMSTAT} to some value, that value will be used instead of the
+status utility.  That means that if you set @var{GNUIT_SHELL},
+@var{GNUIT_EDITOR}, @var{GNUIT_RMAIL}, @var{GNUIT_BROWSER}, or
+@var{GNUIT_VMSTAT} to some value, that value will be used instead of the
 default one.  The defaults are:
 
 @display
-	GIT_SHELL='/bin/sh'
-	GIT_EDITOR='vi'
-	GIT_RMAIL='emacs -f rmail'
-	GIT_PAGER='more
-	GIT_VMSTAT='free'
-	GIT_BROWSER='lynx'
+	GNUIT_SHELL='/bin/sh'
+	GNUIT_EDITOR='vi'
+	GNUIT_RMAIL='emacs -f rmail'
+	GNUIT_PAGER='more
+	GNUIT_VMSTAT='free'
+	GNUIT_BROWSER='lynx'
 @end display
 
 if the @code{configure} script is passed @samp{--enable-debian}, some of
 the defaults are changed as follows:
 
 @display
-	GIT_EDITOR='sensible-editor'
-	GIT_PAGER='sensible-pager'
-	GIT_BROWSER='sensible-browser'
+	GNUIT_EDITOR='sensible-editor'
+	GNUIT_PAGER='sensible-pager'
+	GNUIT_BROWSER='sensible-browser'
 @end display
 
-If @var{SHELL} is defined, @var{GIT_SHELL} will be set to that value.
-If @var{PAGER} is defined, @var{GIT_PAGER} will be set to that value.
-If @var{EDITOR} is defined, @var{GIT_EDITOR} will be set to that value.
+If @var{SHELL} is defined, @var{GNUIT_SHELL} will be set to that value.
+If @var{PAGER} is defined, @var{GNUIT_PAGER} will be set to that value.
+If @var{EDITOR} is defined, @var{GNUIT_EDITOR} will be set to that value.
 If you want to change the default settings, put something like this into
 your @file{.profile}:
 
 @display
-	export GIT_SHELL='/usr/local/bin/bash'
-	export GIT_EDITOR='emacs'
-	export GIT_RMAIL='elm'
-	export GIT_PAGER='less'
-	export GIT_VMSTAT='vmstat'
-	export GIT_BROWSER='netscape'
+	export GNUIT_SHELL='/usr/local/bin/bash'
+	export GNUIT_EDITOR='emacs'
+	export GNUIT_RMAIL='elm'
+	export GNUIT_PAGER='less'
+	export GNUIT_VMSTAT='vmstat'
+	export GNUIT_BROWSER='netscape'
 @end display
 
-@vindex GIT_SHELL
-@vindex GIT_EDITOR
-@vindex GIT_RMAIL
-@vindex GIT_VMSTAT
-@vindex GIT_BROWSER
+These variables used to be prefixed with @var{GIT_}
+(e.g. @var{GIT_PAGER}). The old names are still accepted for backwards
+compatibility.
+
+@vindex GNUIT_SHELL
+@vindex GNUIT_EDITOR
+@vindex GNUIT_RMAIL
+@vindex GNUIT_VMSTAT
+@vindex GNUIT_BROWSER
 @vindex SHELL
 @vindex EDITOR
 

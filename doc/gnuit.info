@@ -954,9 +954,12 @@ File: gnuit.info,  Node: Editing Files,  Next: Viewing Files,  Prev: Inode,  Up:
      Call the default editor in order to edit the `ChangeLog' file
      (`CHANGE-LOG').
    
-   The default editor can be specified using the EDITOR or GIT_EDITOR
+   The default editor can be specified using the EDITOR or GNUIT_EDITOR
 environment variables.  *Note Environment Variables::, for more
 information.
+
+   $GNUIT_EDITOR used to be called $GIT_EDITOR. The old name is still
+accepted for backwards-compatibility.
 
 
 File: gnuit.info,  Node: Viewing Files,  Next: Compressing Files,  Prev: Editing Files,  Up: Files
@@ -1690,8 +1693,11 @@ File: gnuit.info,  Node: Shell,  Next: Grep,  Prev: Mail,  Up: gitfm
 ---------------------------
 
 `^X z'
-     Call a sub-shell as specified by the $GIT_SHELL environment
+     Call a sub-shell as specified by the $GNUIT_SHELL environment
      variable (`SUB-SHELL').
+
+     $GNUIT_SHELL used to be called $GIT_SHELL. The old
+     name is still accepted for backwards-compatibility.
    *Note Environment Variables::, for more information.  
 
 
@@ -1869,10 +1875,13 @@ File: gnuit.info,  Node: Sysinfo,  Next: Environment,  Prev: Mounting,  Up: gitf
      users (`USERS').
    
 `ESC S v'
-     Call `$GIT_VMSTAT'(1) in order to get the current virtual memory
+     Call `$GNUIT_VMSTAT'(1) in order to get the current virtual memory
      status.  This is very system dependent, `Linux' uses `free',
-     other systems use `vmstat', so the $GIT_VMSTAT variable is
+     other systems use `vmstat', so the $GNUIT_VMSTAT variable is
      used to deal with this (`VIRTUAL-MEMORY-STATUS').
+
+     $GNUIT_VMSTAT used to be called $GIT_VMSTAT. The old
+     name is still accepted for backwards-compatibility.
    *Note Environment Variables::, for more information.  
 
 `ESC S w'
@@ -1969,8 +1978,11 @@ File: gnuit.info,  Node: Documentation,  Next: Exit,  Prev: Sync,  Up: gitfm
    
 `^X h'
      Read the html documentation using the viewer specified in
-     GIT_BROWSER, or with lynx if GIT_BROWSER is not set
+     GNUIT_BROWSER, or with lynx if GNUIT_BROWSER is not set
      (`HTML').
+
+     $GNUIT_BROWSER used to be called $GIT_BROWSER. The old
+     name is still accepted for backwards-compatibility.
    
 `^X ^A'
      Show the key-bindings for commands matching a specified string
@@ -2191,35 +2203,38 @@ File: gnuit.info,  Node: Environment Variables,  Next: Configuration Files,  Up:
 
 The configuration files use shell environment variables to call the
 shell, editor, mail reader, html viewer, compress and virtual memory
-status utility.  That means that if you set GIT_SHELL, GIT_EDITOR,
-GIT_RMAIL, GIT_BROWSER, or GIT_VMSTAT to some value, that value will be
-used instead of the default one.  The defaults are:
+status utility.  That means that if you set GNUIT_SHELL, GNUIT_EDITOR,
+GNUIT_RMAIL, GNUIT_BROWSER, or GNUIT_VMSTAT to some value, that value
+will be used instead of the default one.  The defaults are:
 
-     	GIT_SHELL='/bin/sh'
-     	GIT_EDITOR='vi'
-     	GIT_RMAIL='emacs -f rmail'
-     	GIT_PAGER='more
-     	GIT_VMSTAT='free'
-     	GIT_BROWSER='lynx'
+     	GNUIT_SHELL='/bin/sh'
+     	GNUIT_EDITOR='vi'
+     	GNUIT_RMAIL='emacs -f rmail'
+     	GNUIT_PAGER='more
+     	GNUIT_VMSTAT='free'
+     	GNUIT_BROWSER='lynx'
 
    if the `configure' script is passed `--enable-debian', some of the
 defaults are changed as follows:
 
-     	GIT_EDITOR='sensible-editor'
-     	GIT_PAGER='sensible-pager'
-     	GIT_BROWSER='sensible-browser'
+     	GNUIT_EDITOR='sensible-editor'
+     	GNUIT_PAGER='sensible-pager'
+     	GNUIT_BROWSER='sensible-browser'
 
-   If SHELL is defined, GIT_SHELL will be set to that value.  If PAGER
-is defined, GIT_PAGER will be set to that value.  If EDITOR is defined,
-GIT_EDITOR will be set to that value.  If you want to change the
-default settings, put something like this into your `.profile':
+   If SHELL is defined, GNUIT_SHELL will be set to that value.  If
+PAGER is defined, GNUIT_PAGER will be set to that value.  If EDITOR is
+defined, GNUIT_EDITOR will be set to that value.  If you want to change
+the default settings, put something like this into your `.profile':
 
-     	export GIT_SHELL='/usr/local/bin/bash'
-     	export GIT_EDITOR='emacs'
-     	export GIT_RMAIL='elm'
-     	export GIT_PAGER='less'
-     	export GIT_VMSTAT='vmstat'
-     	export GIT_BROWSER='netscape'
+     	export GNUIT_SHELL='/usr/local/bin/bash'
+     	export GNUIT_EDITOR='emacs'
+     	export GNUIT_RMAIL='elm'
+     	export GNUIT_PAGER='less'
+     	export GNUIT_VMSTAT='vmstat'
+     	export GNUIT_BROWSER='netscape'
+
+   These variables used to be prefixed with GIT_ (e.g. GIT_PAGER). The
+old names are still accepted for backwards compatibility.
 
 
 File: gnuit.info,  Node: Configuration Files,  Prev: Environment Variables,  Up: Customization
@@ -3512,7 +3527,7 @@ Key Index
 * ^X 1:                                  Modes.                (line 26)
 * ^X 2:                                  Modes.                (line 29)
 * ^X 4 a:                                Editing Files.        (line 21)
-* ^X ^A:                                 Documentation.        (line 21)
+* ^X ^A:                                 Documentation.        (line 24)
 * ^X ^F:                                 Editing Files.        (line 17)
 * ^X ^I:                                 Inserting Text.       (line 24)
 * ^X ^L:                                 Resetting.            (line  9)
@@ -3525,7 +3540,7 @@ Key Index
 * ^X e:                                  Editing Files.        (line 13)
 * ^X G:                                  Grep.                 (line 13)
 * ^X g:                                  Grep.                 (line  9)
-* ^X h:                                  Documentation.        (line 17)
+* ^X h:                                  Documentation.        (line 20)
 * ^X H:                                  Environment.          (line 13)
 * ^X I:                                  Spell Checking Files. (line  9)
 * ^X k:                                  Processes.            (line 50)
@@ -3538,7 +3553,7 @@ Key Index
 * ^X v:                                  Viewing Files.        (line 13)
 * ^X W:                                  Searching Files.      (line 20)
 * ^X w:                                  Searching Files.      (line 17)
-* ^X z:                                  Shell.                (line  9)
+* ^X z:                                  Shell.                (line 12)
 * ^Y:                                    Yanking.              (line  9)
 * DEL, ^D:                               Erasing.              (line  8)
 * DOWN, ^N:                              Moving.               (line 16)
@@ -3612,8 +3627,8 @@ Key Index
 * ESC s s:                               Sorting.              (line 20)
 * ESC S u:                               Sysinfo.              (line 29)
 * ESC s u:                               Sorting.              (line 49)
-* ESC S v:                               Sysinfo.              (line 35)
-* ESC S w:                               Sysinfo.              (line 40)
+* ESC S v:                               Sysinfo.              (line 38)
+* ESC S w:                               Sysinfo.              (line 43)
 * ESC SPC:                               Erasing.              (line 32)
 * ESC u:                                 Case Changes.         (line 13)
 * ESC w:                                 Erasing.              (line 45)
@@ -3649,7 +3664,7 @@ Command Index
 
 * adapt-current-directory:               Changing Dirs.        (line 15)
 * Adapt-other-directory:                 Changing Dirs.        (line 19)
-* apropos:                               Documentation.        (line 21)
+* apropos:                               Documentation.        (line 24)
 * ASCII-MAIL:                            Mail.                 (line  9)
 * B-ASCII-MAIL:                          Mail.                 (line 13)
 * B-BINARY-MAIL:                         Mail.                 (line 21)
@@ -3770,7 +3785,7 @@ Command Index
 * HOME-DIR:                              Hot Keys.             (line 17)
 * horizontal-scroll-left:                Moving.               (line 32)
 * horizontal-scroll-right:               Moving.               (line 35)
-* HTML:                                  Documentation.        (line 17)
+* HTML:                                  Documentation.        (line 20)
 * INCLUDE-DIR:                           Hot Keys.             (line 20)
 * INFO:                                  Documentation.        (line 12)
 * isearch-backward:                      Isearch.              (line 25)
@@ -3876,7 +3891,7 @@ Command Index
 * set-mark:                              Setting Mark.         (line  8)
 * set-scroll-step:                       Moving.               (line 42)
 * SPLIT:                                 Splitting Files.      (line  9)
-* SUB-SHELL:                             Shell.                (line  9)
+* SUB-SHELL:                             Shell.                (line 12)
 * switch-panels:                         Moving.               (line 49)
 * SYMLINK:                               Linking Files.        (line 17)
 * SYNC:                                  Sync.                 (line  9)
@@ -3902,10 +3917,10 @@ Command Index
 * UUDECODE:                              Encoding Files.       (line 15)
 * UUENCODE:                              Encoding Files.       (line  8)
 * VIEW:                                  Viewing Files.        (line  9)
-* VIRTUAL-MEMORY-STATUS:                 Sysinfo.              (line 35)
+* VIRTUAL-MEMORY-STATUS:                 Sysinfo.              (line 38)
 * WHEREIS:                               Searching Files.      (line 17)
 * WHICH:                                 Searching Files.      (line 20)
-* WHO:                                   Sysinfo.              (line 40)
+* WHO:                                   Sysinfo.              (line 43)
 * WIPE:                                  Wiping Files.         (line  9)
 * XHOST:                                 Environment.          (line 13)
 * yank:                                  Yanking.              (line  9)
@@ -3923,17 +3938,17 @@ Variable Index
 * CommandLineModeHelp:                   GITFM-Setup.          (line 75)
 * ConfirmOnExit:                         GITFM-Setup.          (line 38)
 * EDITOR:                                Environment Variables.
-                                                               (line 38)
-* GIT_BROWSER:                           Environment Variables.
-                                                               (line 38)
-* GIT_EDITOR:                            Environment Variables.
-                                                               (line 38)
-* GIT_RMAIL:                             Environment Variables.
-                                                               (line 38)
-* GIT_SHELL:                             Environment Variables.
-                                                               (line 38)
-* GIT_VMSTAT:                            Environment Variables.
-                                                               (line 38)
+                                                               (line 41)
+* GNUIT_BROWSER:                         Environment Variables.
+                                                               (line 41)
+* GNUIT_EDITOR:                          Environment Variables.
+                                                               (line 41)
+* GNUIT_RMAIL:                           Environment Variables.
+                                                               (line 41)
+* GNUIT_SHELL:                           Environment Variables.
+                                                               (line 41)
+* GNUIT_VMSTAT:                          Environment Variables.
+                                                               (line 41)
 * GroupDigits:                           GITFM-Setup.          (line 33)
 * HistoryFile:                           GITFM-Setup.          (line 43)
 * InfoDisplay:                           GITFM-Setup.          (line 48)
@@ -3941,7 +3956,7 @@ Variable Index
 * MaxUnscaledDigits:                     GITFM-Setup.          (line 28)
 * NormalModeHelp:                        GITFM-Setup.          (line 75)
 * SHELL:                                 Environment Variables.
-                                                               (line 38)
+                                                               (line 41)
 * StartupFileDisplayMode:                GITFM-Setup.          (line 13)
 * StartupFileSortMethod:                 GITFM-Setup.          (line 20)
 * StartupScrollStep:                     Setup.                (line 26)
@@ -3976,7 +3991,7 @@ Concept Index
 * Backward delete char:                  Erasing.              (line 11)
 * Backward kill word:                    Erasing.              (line 14)
 * Backward word:                         Moving Point.         (line 14)
-* bash:                                  Shell.                (line  9)
+* bash:                                  Shell.                (line 12)
 * Beginning of line:                     Moving Point.         (line 20)
 * Beginning of panel:                    Moving.               (line 20)
 * Binary comparison:                     Comparing Files.      (line 19)
@@ -4038,7 +4053,7 @@ Concept Index
                                                                (line 22)
 * Creating tar archives:                 Archive Files.        (line  9)
 * Creating tar archives in background:   Archive Files.        (line 13)
-* csh:                                   Shell.                (line  9)
+* csh:                                   Shell.                (line 12)
 * Current disk quota:                    Sysinfo.              (line 21)
 * Cursor backward:                       Moving Point.         (line  8)
 * Cursor backward one word:              Moving Point.         (line 14)
@@ -4238,7 +4253,7 @@ Concept Index
 * Quota:                                 Sysinfo.              (line 21)
 * Re-reading directories.:               Refreshing.           (line 20)
 * Reading mail:                          Mail.                 (line 34)
-* Reading the html documentation:        Documentation.        (line 17)
+* Reading the html documentation:        Documentation.        (line 20)
 * Reading the info documentation:        Documentation.        (line 12)
 * Reading the manual pages:              Documentation.        (line  8)
 * Recursive grep:                        Grep.                 (line 13)
@@ -4257,7 +4272,7 @@ Concept Index
 * Scroll step:                           Moving.               (line 42)
 * Searching binaries:                    Searching Files.      (line 20)
 * Searching files:                       Searching Files.      (line  9)
-* Searching for key-bindings:            Documentation.        (line 21)
+* Searching for key-bindings:            Documentation.        (line 24)
 * Searching patterns in files:           Grep.                 (line  9)
 * Searching programs:                    Searching Files.      (line 20)
 * Searching regular expressions:         Grep.                 (line  9)
@@ -4276,8 +4291,8 @@ Concept Index
 * Sending text by mail:                  Mail.                 (line  9)
 * Set mark:                              Setting Mark.         (line  8)
 * Set the mark:                          Setting Mark.         (line  8)
-* sh:                                    Shell.                (line  9)
-* Shell:                                 Shell.                (line  9)
+* sh:                                    Shell.                (line 12)
+* Shell:                                 Shell.                (line 12)
 * Sorted by date:                        Sorting.              (line 24)
 * Sorted by extension:                   Sorting.              (line 16)
 * Sorted by group id:                    Sorting.              (line 36)
@@ -4300,14 +4315,14 @@ Concept Index
 * Spell checking:                        Spell Checking Files. (line  9)
 * Splitting files:                       Splitting Files.      (line  9)
 * Splitting files in background:         Splitting Files.      (line 14)
-* Swapping:                              Sysinfo.              (line 35)
+* Swapping:                              Sysinfo.              (line 38)
 * Switch panels:                         Moving.               (line 49)
 * Symbolic links to files:               Linking Files.        (line 17)
 * sync:                                  Sync.                 (line  9)
 * Synchronizing file systems:            Sync.                 (line  9)
 * System users:                          Sysinfo.              (line 29)
 * Tar archive:                           Archive Files.        (line  9)
-* tcsh:                                  Shell.                (line  9)
+* tcsh:                                  Shell.                (line 12)
 * Terminal reset:                        Resetting.            (line  9)
 * Time and date:                         Modes.                (line 48)
 * Time, date:                            Modes.                (line 48)
@@ -4346,10 +4361,10 @@ Concept Index
 * Viewing multiple files:                Viewing Files.        (line 13)
 * Viewing processes:                     Processes.            (line 35)
 * Viewing the process tree:              Processes.            (line 46)
-* Virtual memory status:                 Sysinfo.              (line 35)
+* Virtual memory status:                 Sysinfo.              (line 38)
 * whereis:                               Searching Files.      (line 17)
 * which:                                 Searching Files.      (line 20)
-* who:                                   Sysinfo.              (line 40)
+* who:                                   Sysinfo.              (line 43)
 * Wiping files:                          Wiping Files.         (line  9)
 * Wrapped incremental search:            Isearch.              (line 10)
 * Wrapped isearch:                       Isearch.              (line 10)
@@ -4392,102 +4407,102 @@ Node: Splitting Files29906
 Node: Packing Files30410
 Node: Inode31751
 Node: Editing Files33429
-Node: Viewing Files34161
-Node: Compressing Files34548
-Node: Encoding Files35949
-Node: Encrypting Files36892
-Node: Comparing Files37185
-Node: Spell Checking Files37852
-Node: Printing Files38110
-Node: Wiping Files38575
-Node: Searching Files38911
-Node: Archive Files39453
-Node: DEB Packages41285
-Node: RPM Packages44253
-Node: File Types45637
-Node: MSDOS Files45856
-Node: Actions47954
-Node: Directories48884
-Node: Creating Dirs49649
-Node: Copying Dirs49926
-Node: Deleting Dirs50408
-Node: Moving Dirs50847
-Node: Renaming Dirs51326
-Node: Comparing Dirs51769
-Node: Dirs Usage53004
-Node: Changing Dirs53280
-Node: Dirs History53958
-Node: Hot Keys55029
-Node: Compiling55658
-Node: Mail56059
-Node: Shell57215
-Node: Grep57504
-Node: Locking57932
-Node: Refreshing58330
-Node: Resetting59067
-Node: Mounting59321
-Node: Sysinfo62422
-Node: Environment63690
-Node: Processes64099
-Node: Sync66195
-Node: Documentation66448
-Node: Exit67042
-Node: gitps67262
-Node: gitview68784
-Node: gitkeys69638
-Node: gitwipe70027
-Node: gitmount70756
-Node: gitaction71520
-Node: gitunpack73410
-Node: gitrgrep73822
-Node: Customization74305
-Node: Environment Variables74608
-Node: Configuration Files75930
-Node: Key Sequences79021
-Node: Setup80354
-Node: gitfm Sections81309
-Node: GITFM-Setup81763
-Node: GITFM-Color84350
-Node: GITFM-Monochrome84719
-Node: GITFM-Keys85124
-Node: key-sequence86029
-Node: command-name86668
-Node: formatted-command87413
-Node: %s88740
-Node: %f89267
-Node: %d89512
-Node: %l89759
-Node: %t90012
-Node: %z90247
-Node: %a90478
-Node: %m90693
-Node: %g90897
-Node: %o91102
-Node: %p91307
-Node: %b91512
-Node: %i91727
-Node: %?91952
-Node: new-dir92444
-Node: save-screen92870
-Node: pause93570
-Node: hide93909
-Node: GITFM-FTI94789
-Node: gitps Sections95370
-Node: GITPS-Setup95764
-Node: GITPS-Color96004
-Node: GITPS-Monochrome96372
-Node: GITPS-Keys96777
-Node: gitview Sections96907
-Node: GITVIEW-Setup97290
-Node: GITVIEW-Color97540
-Node: GITVIEW-Monochrome97922
-Node: GITVIEW-Keys98341
-Node: Limitations98477
-Node: Bugs99887
-Node: Copying This Manual100157
-Node: Key Index122532
-Node: Command Index142444
-Node: Variable Index161714
-Node: Concept Index163918
+Node: Viewing Files34272
+Node: Compressing Files34659
+Node: Encoding Files36060
+Node: Encrypting Files37003
+Node: Comparing Files37296
+Node: Spell Checking Files37963
+Node: Printing Files38221
+Node: Wiping Files38686
+Node: Searching Files39022
+Node: Archive Files39564
+Node: DEB Packages41396
+Node: RPM Packages44364
+Node: File Types45748
+Node: MSDOS Files45967
+Node: Actions48065
+Node: Directories48995
+Node: Creating Dirs49760
+Node: Copying Dirs50037
+Node: Deleting Dirs50519
+Node: Moving Dirs50958
+Node: Renaming Dirs51437
+Node: Comparing Dirs51880
+Node: Dirs Usage53115
+Node: Changing Dirs53391
+Node: Dirs History54069
+Node: Hot Keys55140
+Node: Compiling55769
+Node: Mail56170
+Node: Shell57326
+Node: Grep57731
+Node: Locking58159
+Node: Refreshing58557
+Node: Resetting59294
+Node: Mounting59548
+Node: Sysinfo62649
+Node: Environment64037
+Node: Processes64446
+Node: Sync66542
+Node: Documentation66795
+Node: Exit67511
+Node: gitps67731
+Node: gitview69253
+Node: gitkeys70107
+Node: gitwipe70496
+Node: gitmount71225
+Node: gitaction71989
+Node: gitunpack73879
+Node: gitrgrep74291
+Node: Customization74774
+Node: Environment Variables75077
+Node: Configuration Files76575
+Node: Key Sequences79666
+Node: Setup80999
+Node: gitfm Sections81954
+Node: GITFM-Setup82408
+Node: GITFM-Color84995
+Node: GITFM-Monochrome85364
+Node: GITFM-Keys85769
+Node: key-sequence86674
+Node: command-name87313
+Node: formatted-command88058
+Node: %s89385
+Node: %f89912
+Node: %d90157
+Node: %l90404
+Node: %t90657
+Node: %z90892
+Node: %a91123
+Node: %m91338
+Node: %g91542
+Node: %o91747
+Node: %p91952
+Node: %b92157
+Node: %i92372
+Node: %?92597
+Node: new-dir93089
+Node: save-screen93515
+Node: pause94215
+Node: hide94554
+Node: GITFM-FTI95434
+Node: gitps Sections96015
+Node: GITPS-Setup96409
+Node: GITPS-Color96649
+Node: GITPS-Monochrome97017
+Node: GITPS-Keys97422
+Node: gitview Sections97552
+Node: GITVIEW-Setup97935
+Node: GITVIEW-Color98185
+Node: GITVIEW-Monochrome98567
+Node: GITVIEW-Keys98986
+Node: Limitations99122
+Node: Bugs100532
+Node: Copying This Manual100802
+Node: Key Index123177
+Node: Command Index143089
+Node: Variable Index162359
+Node: Concept Index164563
 
 End Tag Table

@@ -1920,17 +1920,26 @@ main(argc, argv)
     printf(copyright);
 
 #ifdef DEBIAN
-    add_to_environment("GIT_EDITOR",  "EDITOR",     "sensible-editor");
-    add_to_environment("GIT_PAGER",   "PAGER",      "sensible-pager");
-    add_to_environment("GIT_BROWSER", (char *)NULL, "sensible-browser");
-#else /* DEBIAN */
-    add_to_environment("GIT_EDITOR",  "EDITOR",     "vi");
-    add_to_environment("GIT_PAGER",   "PAGER",      "more");
-    add_to_environment("GIT_BROWSER", (char *)NULL, "lynx");
-#endif /* DEBIAN */
-    add_to_environment("GIT_SHELL",   "SHELL",      "/bin/sh");
-    add_to_environment("GIT_RMAIL",   (char *)NULL, "mail");
-    add_to_environment("GIT_VMSTAT",  (char *)NULL, "free");
+    add_to_environment("GIT_EDITOR",    "EDITOR",     "sensible-editor");
+    add_to_environment("GNUIT_EDITOR",  "GIT_EDITOR", "sensible-editor");
+    add_to_environment("GIT_PAGER",     "PAGER",      "sensible-pager");
+    add_to_environment("GNUIT_PAGER",   "GIT_PAGER",  "sensible-pager");
+    add_to_environment("GIT_BROWSER",   (char *)NULL, "sensible-browser");
+    add_to_environment("GNUIT_BROWSER", "GIT_BROWSER",  "sensible-browser");
+#else /* !DEBIAN */
+    add_to_environment("GIT_EDITOR",    "EDITOR",     "vi");
+    add_to_environment("GNUIT_EDITOR",  "GIT_EDITOR", "vi");
+    add_to_environment("GIT_PAGER",     "PAGER",      "more");
+    add_to_environment("GNUIT_PAGER",   "GIT_PAGER",  "more");
+    add_to_environment("GIT_BROWSER",   (char *)NULL, "lynx");
+    add_to_environment("GNUIT_BROWSER", "GIT_BROWSER",  "lynx");
+#endif /* !DEBIAN */
+    add_to_environment("GIT_SHELL",     "SHELL",      "/bin/sh");
+    add_to_environment("GNUIT_SHELL",   "GIT_SHELL",  "/bin/sh");
+    add_to_environment("GIT_RMAIL",     (char *)NULL, "mail");
+    add_to_environment("GNUIT_RMAIL",   "GIT_RMAIL",    "mail");
+    add_to_environment("GIT_VMSTAT",    (char *)NULL, "free");
+    add_to_environment("GNUIT_VMSTAT",  "GIT_VMSTAT",   "free");
 
     tty_init(TTY_RESTRICTED_INPUT);
 
@@ -3235,7 +3244,7 @@ main(argc, argv)
 			if(gotmatch)
 			{
 			    char *cmd, *pager;
-			    pager=getenv("GIT_PAGER");
+			    pager=getenv("GNUIT_PAGER");
 			    if(!pager) 
 				pager="more";
 			    cmd=xmalloc(strlen(pager)+strlen(tmpfn)+1+1);

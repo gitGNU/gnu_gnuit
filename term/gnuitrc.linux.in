@@ -293,7 +293,7 @@ StatusBrightness		= OFF
 ^[[4~	    = end-of-panel				# END
 ^[[21~ 	    = exit					# F10
 ^[[23~	    = GITPS; gitps;;n				# F11
-^[[24~ 	    = READ-MAIL; $GIT_RMAIL;;n			# F12
+^[[24~ 	    = READ-MAIL; $GNUIT_RMAIL;;n			# F12
 
 
 ###

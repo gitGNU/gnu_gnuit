@@ -291,7 +291,7 @@ StatusBrightness		= OFF
 
 [GITFM-Keys]
 ^[OZ	    = GITPS; gitps;;n				# F11
-^[O[ 	    = READ-MAIL; $GIT_RMAIL;;n			# F12
+^[O[ 	    = READ-MAIL; $GNUIT_RMAIL;;n			# F12
 
 
 ###
