@@ -320,7 +320,14 @@ if test `uname -s` = "Darwin"; then
     # don't run open(1) on text files
     if test $istext -eq 0 ; then
 	try open "$file"
-    fi;
+    fi
+fi
+
+if ps x | grep -q '[g]nome-session'; then
+    # don't run gnome-open on text files
+    if test $istext -eq 0 ; then
+	tryx gnome-open "$file"
+    fi
 fi
 
 case "$lcfile" in
