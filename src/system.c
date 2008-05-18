@@ -84,7 +84,7 @@ my_system(command, hide)
     FILE *stdout_log=NULL;
     FILE *stderr_log=NULL;
     int stdout_log_fd, stderr_log_fd;
-    int old_stdout, old_stderr;
+    int old_stdout=-1, old_stderr=-1;
 
     /* Preserve the system() semantics.  UNIX always has a command
        processor.  */
@@ -93,41 +93,44 @@ my_system(command, hide)
 
     remove_log();
 
-    /* We have to call mkstemp here, so the parent knows
-       the values of std{out,err}_log_name, then clean up
-       in the parent code below */
-
-    old_stdout = dup(1);
-    old_stderr = dup(2);
-
-    close(1);
-    close(2);
-
-    strcpy(stdout_log_name,stdout_log_template);
-    stdout_log_fd = mkstemp(stdout_log_name);
-    if(stdout_log_fd != -1)
-	stdout_log = fdopen(stdout_log_fd, "w");
-
-    strcpy(stderr_log_name,stderr_log_template);
-    stderr_log_fd = mkstemp(stderr_log_name);
-    if(stderr_log_fd != -1)
-	stderr_log = fdopen(stderr_log_fd, "w");
-
-    if(!stdout_log || !stderr_log)
+    if(hide)
     {
-	if(stdout_log)
-	    fclose(stdout_log);
-	if(stderr_log)
-	    fclose(stderr_log);
+	/* We have to call mkstemp here, so the parent knows
+	   the values of std{out,err}_log_name, then clean up
+	   in the parent code below */
 
-	remove_log();
+	old_stdout = dup(1);
+	old_stderr = dup(2);
 
-	dup(old_stdout);
-	dup(old_stderr);
+	close(1);
+	close(2);
 
-	close(old_stdout);
-	close(old_stderr);
-	return -1;
+	strcpy(stdout_log_name,stdout_log_template);
+	stdout_log_fd = mkstemp(stdout_log_name);
+	if(stdout_log_fd != -1)
+	    stdout_log = fdopen(stdout_log_fd, "w");
+
+	strcpy(stderr_log_name,stderr_log_template);
+	stderr_log_fd = mkstemp(stderr_log_name);
+	if(stderr_log_fd != -1)
+	    stderr_log = fdopen(stderr_log_fd, "w");
+
+	if(!stdout_log || !stderr_log)
+	{
+	    if(stdout_log)
+		fclose(stdout_log);
+	    if(stderr_log)
+		fclose(stderr_log);
+
+	    remove_log();
+
+	    dup(old_stdout);
+	    dup(old_stderr);
+
+	    close(old_stdout);
+	    close(old_stderr);
+	    return -1;
+	}
     }
 
     /* POSIX.2 says that we should ignore SIGINT & SIGQUIT.  It
@@ -169,16 +172,18 @@ my_system(command, hide)
     else
     {
 	/* This is the parent code.  */
-	if(stdout_log)
-	    fclose(stdout_log);
-	if(stderr_log)
-	    fclose(stderr_log);
+	if(hide)
+	{
+	    if(stdout_log)
+		fclose(stdout_log);
+	    if(stderr_log)
+		fclose(stderr_log);
+	    dup(old_stdout);
+	    dup(old_stderr);
 
-	dup(old_stdout);
-	dup(old_stderr);
-
-	close(old_stdout);
-	close(old_stderr);
+	    close(old_stdout);
+	    close(old_stderr);
+	}
 	while (wait(&status) != pid);
     }
 
