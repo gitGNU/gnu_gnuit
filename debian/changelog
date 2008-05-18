@@ -3,8 +3,9 @@ gnuit (4.9.4-1) unstable; urgency=low
   * New upstream version.
   * Fix typo in long description (Closes: #479175).
   * Update debian/copyright to match updated gnulib.
+  * Add Vcs- headers.
 
- -- Ian Beckwith <ianb@erislabs.net>  Mon, 12 May 2008 20:06:28 +0100
+ -- Ian Beckwith <ianb@erislabs.net>  Sun, 18 May 2008 18:43:47 +0100
 
 gnuit (4.9.3-1) unstable; urgency=low
 
