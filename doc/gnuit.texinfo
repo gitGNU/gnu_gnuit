@@ -45,9 +45,7 @@ Texts.  A copy of the license is included in the section entitled
 @subtitle A Set of Interactive Programs
 @subtitle Edition @value{EDITION}, for GNUIT version @value{VERSION}
 @subtitle @value{UPDATED}
-@author by Tudor Hulubei and Andrei Pitis
-@author "Politehnica" University of Bucharest
-@author Romania
+@author by Tudor Hulubei, Andrei Pitis and Ian Beckwith
 
 @page
 @vskip 0pt plus 1filll
@@ -3829,22 +3827,26 @@ The first parameter is the current directory name and the second one is
 the file name to be matched against the default patterns.  The matching
 is done using the shell 'case' statement.
 
-If you press @kbd{F2}, @kbd{ESC 2} or @kbd{^Xa} on a @file{*.c} file,
-@code{gitfm} will compile it, if you press @kbd{F2}, @kbd{ESC 2} or
-@kbd{^Xa} on a @file{*.tar.gz} file, @code{gitfm} will list the tar
-archive contents, if you press the same keys on a @file{*.gz} file,
-@code{gitfm} will display its uncompressed contents on the screen, etc
-@dots{}
+If you press @kbd{F2}, @kbd{ESC 2} or @kbd{^Xa} on a @file{*.html} file,
+@code{gitfm} will invoke a browser to view it, if you press @kbd{F2},
+@kbd{ESC 2} or @kbd{^Xa} on a @file{*.tar.gz} file, @code{gitfm} will
+list the tar archive contents, if you press the same keys on a
+@file{*.gz} file, @code{gitfm} will display its uncompressed contents on
+the screen, etc @dots{}
+
+If you press @kbd{F2}, @kbd{ESC 2} or @kbd{^Xa} on a @file{*.gif} file
+or @file{*.jpg} file and you have the @code{xzgv} utility installed, you
+will be able to see it.  If you want to change the gif/jpeg viewer, all
+you need to do is to change its name in the @code{gitaction} script.
+
+There are many more file types and viewers that gitaction knows about.
+In addition, if you are running under GNOME, gnome-open is used, and on
+MacOS, open(1) is used. see(1) and metamail(1) are also used as
+fallbacks. If all else fails, the file is displayed using $GNUIT_PAGER.
 
 If you want to find out what the default action for each file type is
 (or if you want to modify it), just read/modify the @code{gitaction}
-script.  If no pattern is found, the file is displayed using
-@code{more}.
-
-If you press @kbd{F2}, @kbd{ESC 2} or @kbd{^Xa} on a @file{*.gif} file
-or @file{*.jpg} file and you have the @code{zgv} utility installed, you
-will be able to see it.  If you want to change the gif/jpeg viewer, all
-you need to do is to change its name in the @code{gitaction} script.
+script.
 
 Also, you can add a @code{.gitaction} shell script in your home
 directory and/or in any other directory.  Before trying to match a file

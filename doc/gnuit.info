@@ -2129,20 +2129,25 @@ type specified.  It is called by the `gitfm' program when pressing
 is the file name to be matched against the default patterns.  The
 matching is done using the shell 'case' statement.
 
-   If you press `F2', `ESC 2' or `^Xa' on a `*.c' file, `gitfm' will
-compile it, if you press `F2', `ESC 2' or `^Xa' on a `*.tar.gz' file,
-`gitfm' will list the tar archive contents, if you press the same keys
-on a `*.gz' file, `gitfm' will display its uncompressed contents on the
-screen, etc ...
+   If you press `F2', `ESC 2' or `^Xa' on a `*.html' file, `gitfm' will
+invoke a browser to view it, if you press `F2', `ESC 2' or `^Xa' on a
+`*.tar.gz' file, `gitfm' will list the tar archive contents, if you
+press the same keys on a `*.gz' file, `gitfm' will display its
+uncompressed contents on the screen, etc ...
+
+   If you press `F2', `ESC 2' or `^Xa' on a `*.gif' file or `*.jpg'
+file and you have the `xzgv' utility installed, you will be able to see
+it.  If you want to change the gif/jpeg viewer, all you need to do is
+to change its name in the `gitaction' script.
+
+   There are many more file types and viewers that gitaction knows
+about.  In addition, if you are running under GNOME, gnome-open is
+used, and on MacOS, open(1) is used. see(1) and metamail(1) are also
+used as fallbacks. If all else fails, the file is displayed using
+$GNUIT_PAGER.
 
    If you want to find out what the default action for each file type is
 (or if you want to modify it), just read/modify the `gitaction' script.
-If no pattern is found, the file is displayed using `more'.
-
-   If you press `F2', `ESC 2' or `^Xa' on a `*.gif' file or `*.jpg'
-file and you have the `zgv' utility installed, you will be able to see
-it.  If you want to change the gif/jpeg viewer, all you need to do is
-to change its name in the `gitaction' script.
 
    Also, you can add a `.gitaction' shell script in your home directory
 and/or in any other directory.  Before trying to match a file name,
@@ -4453,56 +4458,56 @@ Node: gitkeys70107
 Node: gitwipe70496
 Node: gitmount71225
 Node: gitaction71989
-Node: gitunpack73879
-Node: gitrgrep74291
-Node: Customization74774
-Node: Environment Variables75077
-Node: Configuration Files76575
-Node: Key Sequences79666
-Node: Setup80999
-Node: gitfm Sections81954
-Node: GITFM-Setup82408
-Node: GITFM-Color84995
-Node: GITFM-Monochrome85364
-Node: GITFM-Keys85769
-Node: key-sequence86674
-Node: command-name87313
-Node: formatted-command88058
-Node: %s89385
-Node: %f89912
-Node: %d90157
-Node: %l90404
-Node: %t90657
-Node: %z90892
-Node: %a91123
-Node: %m91338
-Node: %g91542
-Node: %o91747
-Node: %p91952
-Node: %b92157
-Node: %i92372
-Node: %?92597
-Node: new-dir93089
-Node: save-screen93515
-Node: pause94215
-Node: hide94554
-Node: GITFM-FTI95434
-Node: gitps Sections96015
-Node: GITPS-Setup96409
-Node: GITPS-Color96649
-Node: GITPS-Monochrome97017
-Node: GITPS-Keys97422
-Node: gitview Sections97552
-Node: GITVIEW-Setup97935
-Node: GITVIEW-Color98185
-Node: GITVIEW-Monochrome98567
-Node: GITVIEW-Keys98986
-Node: Limitations99122
-Node: Bugs100532
-Node: Copying This Manual100802
-Node: Key Index123177
-Node: Command Index143089
-Node: Variable Index162359
-Node: Concept Index164563
+Node: gitunpack74124
+Node: gitrgrep74536
+Node: Customization75019
+Node: Environment Variables75322
+Node: Configuration Files76820
+Node: Key Sequences79911
+Node: Setup81244
+Node: gitfm Sections82199
+Node: GITFM-Setup82653
+Node: GITFM-Color85240
+Node: GITFM-Monochrome85609
+Node: GITFM-Keys86014
+Node: key-sequence86919
+Node: command-name87558
+Node: formatted-command88303
+Node: %s89630
+Node: %f90157
+Node: %d90402
+Node: %l90649
+Node: %t90902
+Node: %z91137
+Node: %a91368
+Node: %m91583
+Node: %g91787
+Node: %o91992
+Node: %p92197
+Node: %b92402
+Node: %i92617
+Node: %?92842
+Node: new-dir93334
+Node: save-screen93760
+Node: pause94460
+Node: hide94799
+Node: GITFM-FTI95679
+Node: gitps Sections96260
+Node: GITPS-Setup96654
+Node: GITPS-Color96894
+Node: GITPS-Monochrome97262
+Node: GITPS-Keys97667
+Node: gitview Sections97797
+Node: GITVIEW-Setup98180
+Node: GITVIEW-Color98430
+Node: GITVIEW-Monochrome98812
+Node: GITVIEW-Keys99231
+Node: Limitations99367
+Node: Bugs100777
+Node: Copying This Manual101047
+Node: Key Index123422
+Node: Command Index143334
+Node: Variable Index162604
+Node: Concept Index164808
 
 End Tag Table
