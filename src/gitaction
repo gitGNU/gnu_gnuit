@@ -331,7 +331,7 @@ if ps x | grep -q '[g]nome-session'; then
 fi
 
 case "$lcfile" in
-*.[iI]nfo)	try      info --file    -- "$file" ;;
+*.info)		try      info --file    -- "$file" ;;
 *.aiff|*.aifc)	tryaudio                   "$file" ;;
 *.a|*.sa)	trypaged ar -tv            "$file" ;;
 *.cpio)		trypaged cpio -t -F        "$file" ;;
@@ -358,7 +358,7 @@ case "$lcfile" in
 *.wma | *.gsm)	tryaudio                   "$file" ;;
 *.wrl)		tryx     vrweb             "$file" ;;
 *.zoo)		trypaged zoo -list         "$file" ;;
-INBOX|OUTBOX)	try xemacs              -- "$file" ;;
+inbox|outbox)	try xemacs              -- "$file" ;;
 *.voc)		(vplay "$file" > /dev/null 2>&1 ; cleanup ) & exit 0 ;;
 *.au)		(cat "$file" > /dev/audio 2> /dev/null ; cleanup ) & exit 0 ;;
 *.class)	trypaged javap -c -s -l -verbose "$(basename "$file" .class)" ;;
