@@ -7,6 +7,12 @@
 * Version 4.9.4
 ================
 
+** New apropos command (^X^A) for key-binding search.
+
+** Environment variables used by gnuit now start with GNUIT_
+   rather than GIT_ (eg GNUIT_PAGER, GNUIT_BROWSER, etc.).
+   The old names are still accepted for backwards compatibility.
+
 ** Rewrote gitaction, adding more file types and viewers.
 
 ** Fixed input in incremental-search mode.

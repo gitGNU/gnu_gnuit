@@ -1,6 +1,11 @@
 2008-05-18  Ian Beckwith  <ianb@erislabs.net>
 
+	* Add apropos command (^X^A) for key-binding search.
+	* Change GIT_ env vars to GNUIT_ (eg GNUIT_PAGER).
+	  Fall back to old names for backwards compatibility.
 	* Use mkstemp() for temporary files.
+	* Update to gnulib 20080512 commit 6ea7ea7.
+	* Fix make distcheck: remove absolute-header.m4 from EXTRA_DIST.
 
 2008-05-07  Ian Beckwith  <ianb@erislabs.net>
 
