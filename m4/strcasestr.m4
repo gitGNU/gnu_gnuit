@@ -1,4 +1,4 @@
-# strcasestr.m4 serial 9
+# strcasestr.m4 serial 11
 dnl Copyright (C) 2005, 2007, 2008 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -48,10 +48,28 @@ AC_DEFUN([gl_FUNC_STRCASESTR],
 	result = strcasestr (haystack, needle);
       }
     return !result;]])],
-      [gl_cv_func_strcasestr_linear=yes], [gl_cv_func_strcasestr_linear=no],
-      [dnl pessimistically assume the worst, since even glibc 2.6.1
-       dnl has quadratic complexity in its strcasestr
-       gl_cv_func_strcasestr_linear="guessing no"])])
+	[gl_cv_func_strcasestr_linear=yes], [gl_cv_func_strcasestr_linear=no],
+        [dnl Only glibc >= 2.9 and cygwin >= 1.7.0 are known to have a
+         dnl strcasestr that works in linear time.
+	 AC_EGREP_CPP([Lucky user],
+	   [
+#include <features.h>
+#ifdef __GNU_LIBRARY__
+ #if (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 9) || (__GLIBC__ > 2)
+  Lucky user
+ #endif
+#endif
+#ifdef __CYGWIN__
+ #include <cygwin/version.h>
+ #if CYGWIN_VERSION_DLL_MAJOR >= 1007
+  Lucky user
+ #endif
+#endif
+	   ],
+	   [gl_cv_func_strcasestr_linear=yes],
+	   [gl_cv_func_strcasestr_linear="guessing no"])
+	])
+      ])
     if test "$gl_cv_func_strcasestr_linear" != yes; then
       REPLACE_STRCASESTR=1
       AC_LIBOBJ([strcasestr])

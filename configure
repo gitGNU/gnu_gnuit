@@ -11287,6 +11287,7 @@ _ACEOF
 
 
 
+
 for ac_func in strcasestr
 do
 as_ac_var=`echo "ac_cv_func_$ac_func" | $as_tr_sh`
@@ -12428,6 +12429,8 @@ fi
 
 
 
+
+
   gl_source_base='lib'
 
 
@@ -12483,6 +12486,7 @@ _ACEOF
   else
     ALLOCA_H=alloca.h
   fi
+
 
 
 
@@ -12696,6 +12700,7 @@ done
 
 
 
+
   gl_LIBOBJS="$gl_LIBOBJS basename.$ac_objext"
 
 
@@ -12705,7 +12710,9 @@ done
 
 
 
+
   gl_LIBOBJS="$gl_LIBOBJS dirname.$ac_objext"
+
 
 
 
@@ -12761,6 +12768,8 @@ cat >>confdefs.h <<\_ACEOF
 _ACEOF
 
   fi
+
+
 
 
 
@@ -12832,6 +12841,7 @@ if test $ac_cv_lib_error_at_line = no; then
 
 
 
+
   gl_LIBOBJS="$gl_LIBOBJS error.$ac_objext"
 
 fi
@@ -12848,6 +12858,7 @@ fi
 
 
   XGETTEXT_EXTRA_OPTIONS="$XGETTEXT_EXTRA_OPTIONS --flag=error_at_line:5:c-format"
+
 
 
 
@@ -13140,6 +13151,7 @@ fi
 
 
   :
+
 
 
 
@@ -13782,6 +13794,7 @@ fi
 
 
 
+
   gl_LIBOBJS="$gl_LIBOBJS fsusage.$ac_objext"
 
 
@@ -14012,7 +14025,9 @@ echo "${ECHO_T}$fu_cv_sys_truncating_statfs" >&6; }
 
 
 
+
   gl_LIBOBJS="$gl_LIBOBJS getopt.$ac_objext"
+
 
 
 
@@ -14043,6 +14058,7 @@ _ACEOF
 
 
 fi
+
 
 
 
@@ -14217,6 +14233,7 @@ echo "${ECHO_T}$gl_cv_func_gettimeofday_clobber" >&6; }
  if test $gl_cv_func_gettimeofday_clobber = yes; then
    REPLACE_GETTIMEOFDAY=1
    SYS_TIME_H=sys/time.h
+
 
 
 
@@ -14498,6 +14515,7 @@ _ACEOF
 
 
 
+
   gl_LIBOBJS="$gl_LIBOBJS gettimeofday.$ac_objext"
 
 
@@ -14752,10 +14770,12 @@ done
 
 
 
+
   gl_LIBOBJS="$gl_LIBOBJS human.$ac_objext"
 
 
     :
+
 
 
 
@@ -15507,6 +15527,7 @@ _ACEOF
 
 
 
+
   gl_LIBOBJS="$gl_LIBOBJS malloc.$ac_objext"
 
     HAVE_MALLOC_POSIX=0
@@ -15548,6 +15569,7 @@ _ACEOF
 
 
   :
+
 
 
 
@@ -15815,6 +15837,7 @@ done
 
 
 
+
 for ac_func in memmove
 do
 as_ac_var=`echo "ac_cv_func_$ac_func" | $as_tr_sh`
@@ -16002,6 +16025,7 @@ echo "${ECHO_T}$gl_cv_func_working_mkstemp" >&6; }
 
   if test $gl_cv_func_working_mkstemp != yes; then
     REPLACE_MKSTEMP=1
+
 
 
 
@@ -16245,6 +16269,7 @@ _ACEOF
 
 
 
+
   gl_LIBOBJS="$gl_LIBOBJS nanosleep.$ac_objext"
 
 
@@ -16353,6 +16378,7 @@ echo "${ECHO_T}$gl_cv_func_svid_putenv" >&6; }
 
 
 
+
   gl_LIBOBJS="$gl_LIBOBJS putenv.$ac_objext"
 
   fi
@@ -16369,7 +16395,9 @@ echo "${ECHO_T}$gl_cv_func_svid_putenv" >&6; }
 
 
 
+
   gl_LIBOBJS="$gl_LIBOBJS quote.$ac_objext"
+
 
 
 
@@ -16537,6 +16565,7 @@ _ACEOF
 
 
 
+
   gl_LIBOBJS="$gl_LIBOBJS readlink.$ac_objext"
 
 
@@ -16626,6 +16655,7 @@ echo "${ECHO_T}$gl_cv_func_rename_trailing_slash_bug" >&6; }
 
 
 
+
   gl_LIBOBJS="$gl_LIBOBJS rename.$ac_objext"
 
 
@@ -16649,7 +16679,9 @@ _ACEOF
 
 
 
+
   gl_LIBOBJS="$gl_LIBOBJS safe-read.$ac_objext"
+
 
 
 
@@ -17875,6 +17907,7 @@ echo "${ECHO_T}$gl_cv_next_stdlib_h" >&6; }
 
 
 
+
 for ac_func in strcasecmp
 do
 as_ac_var=`echo "ac_cv_func_$ac_func" | $as_tr_sh`
@@ -17979,6 +18012,7 @@ done
   :
 
   fi
+
 
 
 
@@ -18175,7 +18209,36 @@ if test "${gl_cv_func_strcasestr_linear+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   if test "$cross_compiling" = yes; then
-                gl_cv_func_strcasestr_linear="guessing no"
+           	 cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+#include <features.h>
+#ifdef __GNU_LIBRARY__
+ #if (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 9) || (__GLIBC__ > 2)
+  Lucky user
+ #endif
+#endif
+#ifdef __CYGWIN__
+ #include <cygwin/version.h>
+ #if CYGWIN_VERSION_DLL_MAJOR >= 1007
+  Lucky user
+ #endif
+#endif
+
+_ACEOF
+if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
+  $EGREP "Lucky user" >/dev/null 2>&1; then
+  gl_cv_func_strcasestr_linear=yes
+else
+  gl_cv_func_strcasestr_linear="guessing no"
+fi
+rm -f conftest*
+
+
 else
   cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
@@ -18247,6 +18310,7 @@ rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext conftest.$a
 fi
 
 
+
 fi
 { echo "$as_me:$LINENO: result: $gl_cv_func_strcasestr_linear" >&5
 echo "${ECHO_T}$gl_cv_func_strcasestr_linear" >&6; }
@@ -18259,10 +18323,12 @@ echo "${ECHO_T}$gl_cv_func_strcasestr_linear" >&6; }
 
 
 
+
   gl_LIBOBJS="$gl_LIBOBJS strcasestr.$ac_objext"
 
     fi
   fi
+
 
 
 
@@ -18388,6 +18454,7 @@ done
 
 
   if test $gl_cv_func_working_strerror = no; then
+
 
 
 
@@ -18619,6 +18686,7 @@ _ACEOF
 
 
 
+
   gl_LIBOBJS="$gl_LIBOBJS strndup.$ac_objext"
 
     :
@@ -18724,6 +18792,7 @@ test $ac_cv_func_strnlen_working = no &&
 
 
 
+
   gl_LIBOBJS="$gl_LIBOBJS strnlen.$ac_objext"
 
 
@@ -18777,6 +18846,7 @@ fi
 echo "${ECHO_T}$gl_cv_func_strtoimax_macro" >&6; }
 
   if test "$gl_cv_func_strtoimax_macro" != yes; then
+
 
 
 
@@ -18971,6 +19041,7 @@ fi
 
 
 
+
 for ac_func in strtol
 do
 as_ac_var=`echo "ac_cv_func_$ac_func" | $as_tr_sh`
@@ -19073,6 +19144,7 @@ done
 
 
   if test "$ac_cv_type_long_long_int" = yes; then
+
 
 
 
@@ -19195,6 +19267,7 @@ done
 
 
 
+
 for ac_func in strtoul
 do
 as_ac_var=`echo "ac_cv_func_$ac_func" | $as_tr_sh`
@@ -19297,6 +19370,7 @@ done
 
 
   if test "$ac_cv_type_unsigned_long_long_int" = yes; then
+
 
 
 
@@ -19443,6 +19517,7 @@ fi
 echo "${ECHO_T}$gl_cv_func_strtoumax_macro" >&6; }
 
   if test "$gl_cv_func_strtoumax_macro" != yes; then
+
 
 
 
@@ -19865,6 +19940,7 @@ echo "${ECHO_T}$MKDIR_P" >&6; }
 
 
 
+
   gl_LIBOBJS="$gl_LIBOBJS tempname.$ac_objext"
 
 
@@ -19947,6 +20023,7 @@ echo "${ECHO_T}$gl_cv_next_unistd_h" >&6; }
 
 
   if test $ac_cv_func_utime_null = no; then
+
 
 
 
@@ -20565,6 +20642,7 @@ echo "${ECHO_T}$gl_cv_func_wcwidth_works" >&6; }
 
 
 
+
   gl_LIBOBJS="$gl_LIBOBJS wcwidth.$ac_objext"
 
   fi
@@ -20576,6 +20654,7 @@ echo "${ECHO_T}$gl_cv_func_wcwidth_works" >&6; }
 
 
   GNULIB_WCWIDTH=1
+
 
 
 
@@ -20609,7 +20688,9 @@ echo "${ECHO_T}$gl_cv_func_wcwidth_works" >&6; }
 
 
 
+
   gl_LIBOBJS="$gl_LIBOBJS xstrtol.$ac_objext"
+
 
 
 
@@ -20627,7 +20708,13 @@ echo "${ECHO_T}$gl_cv_func_wcwidth_works" >&6; }
 
 
 
+
   gl_LIBOBJS="$gl_LIBOBJS xstrtol-error.$ac_objext"
+
+
+
+
+
 
 
 
@@ -20642,7 +20729,12 @@ echo "${ECHO_T}$gl_cv_func_wcwidth_works" >&6; }
 
 
 
+
+
   gl_source_base='tests'
+
+
+
 
 
 

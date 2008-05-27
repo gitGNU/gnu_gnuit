@@ -1,3 +1,7 @@
+2008-05-27  Ian Beckwith  <ianb@erislabs.net>
+
+	* Update to gnulib 20080527 commit 49c2c800
+
 2008-05-18  Ian Beckwith  <ianb@erislabs.net>
 
 	* Add apropos command (^X^A) for key-binding search.
