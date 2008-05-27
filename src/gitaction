@@ -61,7 +61,7 @@
 
 ###
 ### Note: Not all the programs called here are able to handle the --
-### command line switch.  These are: 
+### command line switch.  These are:
 ###   emacs lynx elinks ar btshowmetainfo html2text lha pstotext tar w3m
 ###   xli xloadimage zoo jar avifile-player xchm iceweasel firefox gv
 ###   sensible-browser kfax xdvi ted unrtf dotty fbgs gm xcfview sqlite
@@ -134,7 +134,7 @@ dotry()
 	case $type in
 	    $TRY_NORMAL)	"$cmd" "$@" ;;
 	    $TRY_PAGED)		"$cmd" "$@"  2>&1 | "$GNUIT_PAGER" ;;
-	    $TRY_X)		("$cmd" "$@"  >/dev/null 2>&1 ; cleanup ) & 
+	    $TRY_X)		("$cmd" "$@"  >/dev/null 2>&1 ; cleanup ) &
 				exit $? ;;
 	    *) 			echo "$name: INTERNAL ERROR: unknown type ($type)" ;;
 	esac
@@ -175,7 +175,7 @@ totempfile()
 tryvideo()
 {
     for prog in gmplayer gxine xine vlc totem totem-xine mplayer;
-    do 
+    do
 	tryx "$prog" -- "$1"
     done
     tryx xfmedia               "$1"
@@ -190,7 +190,7 @@ tryaudio()
 {
     for prog in audacious xmms rhythmbox bmp-play-files-2.0 \
         	bmp-play-files esdplay herrie kwave;
-    do 
+    do
 	tryx "$prog" -- "$1"
     done
     tryx x11amp            -- "$1"
@@ -224,7 +224,7 @@ trybrowse()
 trypgp()
 {
     try  pgp   --              "$1"
-    try  pgp5  --              "$1" 
+    try  pgp5  --              "$1"
     try  pgp5i --              "$1"
     try  gpgv  --              "$1"
 }
@@ -319,7 +319,8 @@ fi
 if test `uname -s` = "Darwin"; then
     # don't run open(1) on text files
     if test $istext -eq 0 ; then
-	try open "$file"
+	# bypass tryx as we don't want DISPLAY checked on macos
+	dotry $TRY_X open "$file"
     fi
 fi
 
@@ -352,7 +353,7 @@ case "$lcfile" in
 *.pod)		trypaged pod2text       -- "$file" ;;
 *.rar|*.cbr)	trypaged unrar l        -- "$file" ;;
 *.rpm)		trypaged rpm -qilRsp    -- "$file" ;;
-*.sqlite)	trypaged sqlite            "$file" .dump ;; 
+*.sqlite)	trypaged sqlite            "$file" .dump ;;
 *.tar|*.cbt)	trypaged tar tvf           "$file" ;;
 *.torrent)	trypaged btshowmetainfo    "$file" ;;
 *.wma | *.gsm)	tryaudio                   "$file" ;;
@@ -424,7 +425,7 @@ inbox|outbox)	try xemacs              -- "$file" ;;
 		    tryx "$prog"        -- "$file"
 		done
 		tryx xli                   "$file"
-		tryx xloadimage            "$file" 
+		tryx xloadimage            "$file"
 		tryx gimp               -- "$file"
 		tryx xv                    "$file"
 		tryx gm display            "$file"
@@ -470,7 +471,7 @@ inbox|outbox)	try xemacs              -- "$file" ;;
 		    (pvftobasic > /dev/audio 2> /dev/null ; cleaup ) &
 		    exit 0
 		fi;;
-*.midi |*.mid)	
+*.midi |*.mid)
 		tryx timidity -ia       -- "$file"
 		try  timidity -id       -- "$file" ;;
 
@@ -504,8 +505,8 @@ inbox|outbox)	try xemacs              -- "$file" ;;
 *.avi)		tryvideo                   "$file"
 		tryx aviplay	           "$file" ;;
 
-*.mp[4g]|*.mpeg) tryvideo                  "$file" 
-		 tryx gtv               -- "$file" 
+*.mp[4g]|*.mpeg) tryvideo                  "$file"
+		 tryx gtv               -- "$file"
 		 tryx plaympeg          -- "$file"
 		 try mpeg_vga              "$file" ;;
 
@@ -532,7 +533,7 @@ wtmp | wtmp.[0-9]*)
 		tryx xcfview               "$file" ;;
 
 
-*.fl[icv])	tryvideo                   "$file" 
+*.fl[icv])	tryvideo                   "$file"
 		try flip                   "$file" ;;
 
 *.swf)		tryx swfdec-player      -- "$file"
