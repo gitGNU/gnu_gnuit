@@ -1,11 +1,14 @@
 gnuit (4.9.4-1) unstable; urgency=low
 
   * New upstream version.
+  * Fix debian/rules bashism, thanks to Chris Lamb (Closes: #484388).
   * Fix typo in long description (Closes: #479175).
   * Update debian/copyright to match updated gnulib.
   * Add Vcs- headers.
+  * Add debian/watch.
+  * Standards-Version: 3.8.0 (no changes).
 
- -- Ian Beckwith <ianb@erislabs.net>  Sun, 18 May 2008 18:43:47 +0100
+ -- Ian Beckwith <ianb@erislabs.net>  Tue, 10 Jun 2008 02:46:44 +0100
 
 gnuit (4.9.3-1) unstable; urgency=low
 
