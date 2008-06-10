@@ -363,7 +363,7 @@ inbox|outbox)	try xemacs              -- "$file" ;;
 *.au)		(cat "$file" > /dev/audio 2> /dev/null ; cleanup ) & exit 0 ;;
 *.class)	trypaged javap -c -s -l -verbose "$(basename "$file" .class)" ;;
 
-*.rar|*.cbr)	trypaged unrar l        -- "$file" ;;
+*.rar|*.cbr)	trypaged unrar l        -- "$file"
 		trypaged rar   l        -- "$file" ;;
 
 *.url)		url="$(grep '^URL=' "$file" |tr -d '\015'|sed -e 's/^URL=//')"
