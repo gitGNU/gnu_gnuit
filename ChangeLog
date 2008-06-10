@@ -1,3 +1,8 @@
+2008-06-10  Ian Beckwith  <ianb@erislabs.net>
+
+	* Update to gnulib 20080610 commit 765ede78
+	  (fixes strcasestr configure test hang).
+
 2008-05-27  Ian Beckwith  <ianb@erislabs.net>
 
 	* Update to gnulib 20080527 commit 9c504099.

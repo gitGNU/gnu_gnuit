@@ -18247,6 +18247,7 @@ cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
 
+#include <signal.h> /* for signal */
 #include <string.h> /* for memmem */
 #include <stdlib.h> /* for malloc */
 #include <unistd.h> /* for alarm */
@@ -18260,6 +18261,7 @@ size_t m = 1000000;
     void *result = 0;
     /* Failure to compile this test due to missing alarm is okay,
        since all such platforms (mingw) also lack strcasestr.  */
+    signal (SIGALRM, SIG_DFL);
     alarm (5);
     /* Check for quadratic performance.  */
     if (haystack && needle)
