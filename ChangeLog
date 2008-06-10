@@ -2,6 +2,9 @@
 
 	* Update to gnulib 20080610 commit 765ede78
 	  (fixes strcasestr configure test hang).
+	* gitaction:
+	  + unzip: use -l instead of -v.
+	  + try rar as well as unrar for *.rar|*.cbr.
 
 2008-05-27  Ian Beckwith  <ianb@erislabs.net>
 

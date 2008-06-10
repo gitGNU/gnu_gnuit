@@ -351,7 +351,6 @@ case "$lcfile" in
 *.oleo)		try      oleo           -- "$file" ;;
 *.po)		tryx     kbabel         -- "$file" ;;
 *.pod)		trypaged pod2text       -- "$file" ;;
-*.rar|*.cbr)	trypaged unrar l        -- "$file" ;;
 *.rpm)		trypaged rpm -qilRsp    -- "$file" ;;
 *.sqlite)	trypaged sqlite            "$file" .dump ;;
 *.tar|*.cbt)	trypaged tar tvf           "$file" ;;
@@ -363,6 +362,9 @@ inbox|outbox)	try xemacs              -- "$file" ;;
 *.voc)		(vplay "$file" > /dev/null 2>&1 ; cleanup ) & exit 0 ;;
 *.au)		(cat "$file" > /dev/audio 2> /dev/null ; cleanup ) & exit 0 ;;
 *.class)	trypaged javap -c -s -l -verbose "$(basename "$file" .class)" ;;
+
+*.rar|*.cbr)	trypaged unrar l        -- "$file" ;;
+		trypaged rar   l        -- "$file" ;;
 
 *.url)		url="$(grep '^URL=' "$file" |tr -d '\015'|sed -e 's/^URL=//')"
 		if test -n "$url"; then
@@ -499,7 +501,7 @@ inbox|outbox)	try xemacs              -- "$file" ;;
 		try  mikmod -t          -- "$file"
 		try  xmp                -- "$file" ;;
 
-*.zip|*.cbz)	trypaged unzip -v       -- "$file" ;;
+*.zip|*.cbz)	trypaged unzip -l       -- "$file" ;;
 
 *.asf | *.wm[vf] |\
 *.avi)		tryvideo                   "$file"
