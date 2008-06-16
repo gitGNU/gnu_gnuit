@@ -1,3 +1,9 @@
+2008-06-16  Ian Beckwith  <ianb@erislabs.net>
+
+	* gitaction:
+	  + support .7z files
+	  + MacOS: don't run open(1) on archives, it expands them.
+
 2008-06-10  Ian Beckwith  <ianb@erislabs.net>
 
 	* Update to gnulib 20080610 commit 765ede78

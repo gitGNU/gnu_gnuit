@@ -159,6 +159,12 @@ tryx()
     fi
 }
 
+trymac()
+{
+    # like tryx but don't check $DISPLAY
+    dotry $TRY_X "$@"
+}
+
 totempfile()
 {
     tmpfile="${TMPDIR:-/tmp}/gitaction.$$"
@@ -319,8 +325,11 @@ fi
 if test `uname -s` = "Darwin"; then
     # don't run open(1) on text files
     if test $istext -eq 0 ; then
-	# bypass tryx as we don't want DISPLAY checked on macos
-	dotry $TRY_X open "$file"
+	# don't run open(1) on archives, it uncompresses them
+	case "$lcfile" in
+	    *.7z|*.arj|*.cpio|*.rar|*.tar|*.zip|*.zoo) ;;
+	    *)   dotry $TRY_X open "$file" ;;
+	esac
     fi
 fi
 
@@ -568,6 +577,9 @@ wtmp | wtmp.[0-9]*)
 
 *.arj |\
 *.a[0-9][1-9])	trypaged unarj l        -- "$file" ;;
+
+*.7z)		trypaged 7z  l          -- "$file"
+		trypaged 7za l          -- "$file" ;;
 
 *.deb)		if whichlist dpkg; then
 		    (echo "$file"; dpkg --info -- "$file";
