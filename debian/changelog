@@ -7,8 +7,9 @@ gnuit (4.9.4-1) unstable; urgency=low
   * Add Vcs- headers.
   * Add debian/watch.
   * Standards-Version: 3.8.0 (no changes).
+  * Add reportbug presubj to git transitional package.
 
- -- Ian Beckwith <ianb@erislabs.net>  Tue, 10 Jun 2008 02:46:44 +0100
+ -- Ian Beckwith <ianb@erislabs.net>  Mon, 16 Jun 2008 20:47:46 +0100
 
 gnuit (4.9.3-1) unstable; urgency=low
 
