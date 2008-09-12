@@ -796,7 +796,7 @@ uninstall-am: uninstall-binPROGRAMS uninstall-binSCRIPTS \
 
 
 install-exec-hook:
-@TRANSITION_TRUE@	$(INSTALL_PROGRAM) -m 755 $(srcdir)/git.transition $(DESTDIR)$(bindir)/git
+@TRANSITION_TRUE@	$(INSTALL_SCRIPT) $(srcdir)/git.transition $(DESTDIR)$(bindir)/git
 	ln -sf gitrgrep $(DESTDIR)$(bindir)/gitregrep
 	ln -sf gitrgrep $(DESTDIR)$(bindir)/gitrfgrep
 

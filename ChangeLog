@@ -1,3 +1,8 @@
+2008-09-12  Ian Beckwith  <ianb@erislabs.net>
+
+	* Fix incorrect INSTALL_PROGRAM calls.
+	  Thanks to James Rowe.
+
 2008-06-16  Ian Beckwith  <ianb@erislabs.net>
 
 	* gitaction:

@@ -4,6 +4,7 @@ ORIG_MANS = gitfm.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 gitunpack.1 \
 man_MANS= $(ORIG_MANS)
 BUILT_SOURCES = gnuit.html
 html_DATA = gnuit.html
+pkgdata_DATA = dpkg-help.txt
 EXTRA_DIST = gitfm.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 gitunpack.1\
 	     gnuit.html git.1 gitps.1 gitview.1 gitwipe.1 gitinternal.1 \
 	     gitdpkgname.1 dpkg-help.txt fdl.texi
@@ -38,7 +39,6 @@ dist-hook: html
 # ignoring git.1 in case the other git is using it
 # The same applies for infodir, $(prefix)/info vs $(prefix)/share/info
 install-data-hook:
-	$(INSTALL_PROGRAM) -m 644 $(srcdir)/dpkg-help.txt $(DESTDIR)$(datadir)/gnuit/dpkg-help.txt
 	for i in $(GIT_GREPS);\
 	do\
 	    rm -f $(DESTDIR)$(mandir)/man1/$${i}.1;\
@@ -63,7 +63,6 @@ install-data-hook:
 	fi
 
 uninstall-local:
-	rm -f $(DESTDIR)$(datadir)/gnuit/dpkg-help.txt
 	-rmdir $(DESTDIR)$(htmldir)
 	for i in $(GIT_GREPS);\
 	do\

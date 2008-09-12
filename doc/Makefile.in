@@ -100,7 +100,7 @@ MAKEINFOHTML = $(MAKEINFO) --html
 AM_MAKEINFOHTMLFLAGS = $(AM_MAKEINFOFLAGS)
 DVIPS = dvips
 am__installdirs = "$(DESTDIR)$(infodir)" "$(DESTDIR)$(man1dir)" \
-	"$(DESTDIR)$(htmldir)"
+	"$(DESTDIR)$(htmldir)" "$(DESTDIR)$(pkgdatadir)"
 man1dir = $(mandir)/man1
 NROFF = nroff
 MANS = $(man_MANS)
@@ -111,7 +111,8 @@ am__vpath_adj = case $$p in \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
 htmlDATA_INSTALL = $(INSTALL_DATA)
-DATA = $(html_DATA)
+pkgdataDATA_INSTALL = $(INSTALL_DATA)
+DATA = $(html_DATA) $(pkgdata_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 INSTALL = @INSTALL@
 ACLOCAL = @ACLOCAL@
@@ -424,6 +425,7 @@ ORIG_MANS = gitfm.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 gitunpack.1 \
 man_MANS = $(ORIG_MANS) $(am__append_1)
 BUILT_SOURCES = gnuit.html
 html_DATA = gnuit.html
+pkgdata_DATA = dpkg-help.txt
 EXTRA_DIST = gitfm.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 gitunpack.1\
 	     gnuit.html git.1 gitps.1 gitview.1 gitwipe.1 gitinternal.1 \
 	     gitdpkgname.1 dpkg-help.txt fdl.texi
@@ -631,6 +633,23 @@ uninstall-htmlDATA:
 	  echo " rm -f '$(DESTDIR)$(htmldir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(htmldir)/$$f"; \
 	done
+install-pkgdataDATA: $(pkgdata_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(pkgdatadir)" || $(mkdir_p) "$(DESTDIR)$(pkgdatadir)"
+	@list='$(pkgdata_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(pkgdataDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(pkgdatadir)/$$f'"; \
+	  $(pkgdataDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(pkgdatadir)/$$f"; \
+	done
+
+uninstall-pkgdataDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(pkgdata_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(pkgdatadir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(pkgdatadir)/$$f"; \
+	done
 tags: TAGS
 TAGS:
 
@@ -673,7 +692,7 @@ check: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) check-am
 all-am: Makefile $(INFO_DEPS) $(MANS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(infodir)" "$(DESTDIR)$(man1dir)" "$(DESTDIR)$(htmldir)"; do \
+	for dir in "$(DESTDIR)$(infodir)" "$(DESTDIR)$(man1dir)" "$(DESTDIR)$(htmldir)" "$(DESTDIR)$(pkgdatadir)"; do \
 	  test -z "$$dir" || $(mkdir_p) "$$dir"; \
 	done
 install: $(BUILT_SOURCES)
@@ -721,7 +740,8 @@ info: info-am
 
 info-am: $(INFO_DEPS)
 
-install-data-am: install-htmlDATA install-info-am install-man
+install-data-am: install-htmlDATA install-info-am install-man \
+	install-pkgdataDATA
 	@$(NORMAL_INSTALL)
 	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
 
@@ -781,7 +801,7 @@ ps: ps-am
 ps-am: $(PSS)
 
 uninstall-am: uninstall-htmlDATA uninstall-info-am uninstall-local \
-	uninstall-man
+	uninstall-man uninstall-pkgdataDATA
 
 uninstall-man: uninstall-man1
 
@@ -790,12 +810,13 @@ uninstall-man: uninstall-man1
 	html-am info info-am install install-am install-data \
 	install-data-am install-data-hook install-exec install-exec-am \
 	install-htmlDATA install-info install-info-am install-man \
-	install-man1 install-strip installcheck installcheck-am \
-	installdirs maintainer-clean maintainer-clean-aminfo \
-	maintainer-clean-generic mostlyclean mostlyclean-aminfo \
-	mostlyclean-generic pdf pdf-am ps ps-am uninstall uninstall-am \
-	uninstall-htmlDATA uninstall-info-am uninstall-local \
-	uninstall-man uninstall-man1
+	install-man1 install-pkgdataDATA install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
+	maintainer-clean-aminfo maintainer-clean-generic mostlyclean \
+	mostlyclean-aminfo mostlyclean-generic pdf pdf-am ps ps-am \
+	uninstall uninstall-am uninstall-htmlDATA uninstall-info-am \
+	uninstall-local uninstall-man uninstall-man1 \
+	uninstall-pkgdataDATA
 
 
 #AM_MAKEINFOHTMLFLAGS = --no-split
@@ -815,7 +836,6 @@ dist-hook: html
 # ignoring git.1 in case the other git is using it
 # The same applies for infodir, $(prefix)/info vs $(prefix)/share/info
 install-data-hook:
-	$(INSTALL_PROGRAM) -m 644 $(srcdir)/dpkg-help.txt $(DESTDIR)$(datadir)/gnuit/dpkg-help.txt
 	for i in $(GIT_GREPS);\
 	do\
 	    rm -f $(DESTDIR)$(mandir)/man1/$${i}.1;\
@@ -840,7 +860,6 @@ install-data-hook:
 	fi
 
 uninstall-local:
-	rm -f $(DESTDIR)$(datadir)/gnuit/dpkg-help.txt
 	-rmdir $(DESTDIR)$(htmldir)
 	for i in $(GIT_GREPS);\
 	do\

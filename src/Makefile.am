@@ -44,7 +44,7 @@ endif
 
 install-exec-hook:
 if TRANSITION
-	$(INSTALL_PROGRAM) -m 755 $(srcdir)/git.transition $(DESTDIR)$(bindir)/git
+	$(INSTALL_SCRIPT) $(srcdir)/git.transition $(DESTDIR)$(bindir)/git
 endif
 	ln -sf gitrgrep $(DESTDIR)$(bindir)/gitregrep
 	ln -sf gitrgrep $(DESTDIR)$(bindir)/gitrfgrep
