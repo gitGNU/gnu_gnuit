@@ -222,6 +222,7 @@ trybrowse()
     tryx seamonkey             "$1"
     tryx iceape             -- "$1"
     tryx galeon             -- "$1"
+    tryx kfmclient openURL  -- "$1"
     tryx konqueror          -- "$1"
     try  sensible-browser      "$1"
     try  safari                "$1"
@@ -321,22 +322,25 @@ if test -n "$tempfile"; then
     lcfile="$lcbase"
 fi
 
-# MacOS only
-if test `uname -s` = "Darwin"; then
-    # don't run open(1) on text files
-    if test $istext -eq 0 ; then
-	# don't run open(1) on archives, it uncompresses them
+# don't run open(1) on text files
+if test $istext -eq 0 ; then
+    if test `uname -s` = "Darwin"; then
+        # Macos: don't run open(1) on archives, it uncompresses them
 	case "$lcfile" in
 	    *.7z|*.arj|*.cpio|*.rar|*.tar|*.zip|*.zoo) ;;
 	    *)   dotry $TRY_X open "$file" ;;
 	esac
-    fi
-fi
-
-if ps x | grep -q '[g]nome-session'; then
-    # don't run gnome-open on text files
-    if test $istext -eq 0 ; then
+    elif whichlist xdg-open; then
+	tryx xdg-open "$file"
+    elif [ -n "$GNOME_DESKTOP_SESSION_ID" ]; then
 	tryx gnome-open "$file"
+    elif [ "$KDE_FULL_SESSION" = true ]; then
+	tryx kfmclient exec  "$file"
+    elif whichlist xprop; then
+	# xfce
+	if xprop -root _DT_SAVE_MODE | grep ' = \"xfce4\"$' >/dev/null 2>&1; then
+	    tryx exo-open "$file"
+	fi
     fi
 fi
 
