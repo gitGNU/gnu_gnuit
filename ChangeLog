@@ -1,5 +1,6 @@
 2008-09-12  Ian Beckwith  <ianb@erislabs.net>
 
+	* Bump version to 4.9.5.
 	* Fix incorrect INSTALL_PROGRAM calls.
 	  Thanks to James Rowe.
 	* gitaction: add xdg-open, kfmclient, exo-open.

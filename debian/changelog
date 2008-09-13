@@ -1,3 +1,10 @@
+gnuit (4.9.5-1) unstable; urgency=low
+
+  * New upstream version.
+  * Suggests: xdg-utils (for xdg-open(1)).
+
+ -- Ian Beckwith <ianb@erislabs.net>  Sat, 13 Sep 2008 02:18:22 +0100
+
 gnuit (4.9.4-1) unstable; urgency=low
 
   * New upstream version.
