@@ -49,11 +49,13 @@ AC_DEFUN([gl_INIT],
   gl_CLOCK_TIME
   gl_DIRNAME
   gl_DOUBLE_SLASH_ROOT
+  gl_HEADER_ERRNO_H
   gl_ERROR
   m4_ifdef([AM_XGETTEXT_OPTION],
     [AM_XGETTEXT_OPTION([--flag=error:3:c-format])
      AM_XGETTEXT_OPTION([--flag=error_at_line:5:c-format])])
   gl_EXITFAIL
+  gl_FCNTL_H
   AC_C_FLEXIBLE_ARRAY_MEMBER
   # No macro. You should also use one of fnmatch-posix or fnmatch-gnu.
   gl_FUNC_FNMATCH_GNU
@@ -84,15 +86,24 @@ AC_DEFUN([gl_INIT],
   gl_FUNC_MKSTEMP
   gl_STDLIB_MODULE_INDICATOR([mkstemp])
   gl_FUNC_NANOSLEEP
+  gl_FUNC_OPEN
+  gl_MODULE_INDICATOR([open])
+  gl_FCNTL_MODULE_INDICATOR([open])
   gl_FUNC_PUTENV
   gl_STDLIB_MODULE_INDICATOR([putenv])
   gl_QUOTE
   gl_QUOTEARG
+  AC_REPLACE_FUNCS(raise)
   gl_FUNC_READLINK
   gl_UNISTD_MODULE_INDICATOR([readlink])
   gl_FUNC_RENAME
   gl_SAFE_READ
   gl_SAFE_WRITE
+  gl_SIGACTION
+  gl_SIGNAL_MODULE_INDICATOR([sigaction])
+  gl_SIGNAL_H
+  gl_SIGNALBLOCKING
+  gl_SIGNAL_MODULE_INDICATOR([sigprocmask])
   gt_TYPE_SSIZE_T
   AM_STDBOOL_H
   gl_STDINT_H
@@ -117,6 +128,10 @@ AC_DEFUN([gl_INIT],
   gl_FUNC_STRTOULL
   gl_FUNC_STRTOUMAX
   gl_INTTYPES_MODULE_INDICATOR([strtoumax])
+  gl_HEADER_SYS_SELECT
+  AC_PROG_MKDIR_P
+  gl_HEADER_SYS_SOCKET
+  AC_PROG_MKDIR_P
   gl_HEADER_SYS_STAT_H
   AC_PROG_MKDIR_P
   gl_HEADER_SYS_TIME_H
@@ -134,10 +149,10 @@ AC_DEFUN([gl_INIT],
   gl_XSTRNDUP
   gl_XSTRTOL
   m4_ifval(gl_LIBSOURCES_LIST, [
-    m4_syscmd([test ! -d ]gl_LIBSOURCES_DIR[ ||
+    m4_syscmd([test ! -d ]m4_defn([gl_LIBSOURCES_DIR])[ ||
       for gl_file in ]gl_LIBSOURCES_LIST[ ; do
-        if test ! -r ]gl_LIBSOURCES_DIR[/$gl_file ; then
-          echo "missing file ]gl_LIBSOURCES_DIR[/$gl_file" >&2
+        if test ! -r ]m4_defn([gl_LIBSOURCES_DIR])[/$gl_file ; then
+          echo "missing file ]m4_defn([gl_LIBSOURCES_DIR])[/$gl_file" >&2
           exit 1
         fi
       done])dnl
@@ -173,10 +188,10 @@ AC_DEFUN([gl_INIT],
   gl_COMMON
   gl_source_base='tests'
   m4_ifval(gltests_LIBSOURCES_LIST, [
-    m4_syscmd([test ! -d ]gltests_LIBSOURCES_DIR[ ||
+    m4_syscmd([test ! -d ]m4_defn([gltests_LIBSOURCES_DIR])[ ||
       for gl_file in ]gltests_LIBSOURCES_LIST[ ; do
-        if test ! -r ]gltests_LIBSOURCES_DIR[/$gl_file ; then
-          echo "missing file ]gltests_LIBSOURCES_DIR[/$gl_file" >&2
+        if test ! -r ]m4_defn([gltests_LIBSOURCES_DIR])[/$gl_file ; then
+          echo "missing file ]m4_defn([gltests_LIBSOURCES_DIR])[/$gl_file" >&2
           exit 1
         fi
       done])dnl
@@ -274,10 +289,12 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/config.charset
   lib/dirname.c
   lib/dirname.h
+  lib/errno.in.h
   lib/error.c
   lib/error.h
   lib/exitfail.c
   lib/exitfail.h
+  lib/fcntl.in.h
   lib/fnmatch.c
   lib/fnmatch.in.h
   lib/fnmatch_loop.c
@@ -315,11 +332,13 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/memmove.c
   lib/mkstemp.c
   lib/nanosleep.c
+  lib/open.c
   lib/putenv.c
   lib/quote.c
   lib/quote.h
   lib/quotearg.c
   lib/quotearg.h
+  lib/raise.c
   lib/readlink.c
   lib/ref-add.sin
   lib/ref-del.sin
@@ -328,6 +347,10 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/safe-read.h
   lib/safe-write.c
   lib/safe-write.h
+  lib/sig-handler.h
+  lib/sigaction.c
+  lib/signal.in.h
+  lib/sigprocmask.c
   lib/stdbool.in.h
   lib/stdint.in.h
   lib/stdlib.in.h
@@ -351,6 +374,8 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/strtoul.c
   lib/strtoull.c
   lib/strtoumax.c
+  lib/sys_select.in.h
+  lib/sys_socket.in.h
   lib/sys_stat.in.h
   lib/sys_time.in.h
   lib/tempname.c
@@ -385,9 +410,11 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/dos.m4
   m4/double-slash-root.m4
   m4/eealloc.m4
+  m4/errno_h.m4
   m4/error.m4
   m4/exitfail.m4
   m4/extensions.m4
+  m4/fcntl_h.m4
   m4/flexmember.m4
   m4/fnmatch.m4
   m4/fsusage.m4
@@ -417,6 +444,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/mkstemp.m4
   m4/nanosleep.m4
   m4/onceonly.m4
+  m4/open.m4
   m4/putenv.m4
   m4/quote.m4
   m4/quotearg.m4
@@ -424,6 +452,10 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/rename.m4
   m4/safe-read.m4
   m4/safe-write.m4
+  m4/sigaction.m4
+  m4/signal_h.m4
+  m4/signalblocking.m4
+  m4/sockpfaf.m4
   m4/ssize_t.m4
   m4/stdbool.m4
   m4/stdint.m4
@@ -441,6 +473,8 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/strtoul.m4
   m4/strtoull.m4
   m4/strtoumax.m4
+  m4/sys_select_h.m4
+  m4/sys_socket_h.m4
   m4/sys_stat_h.m4
   m4/sys_time_h.m4
   m4/tempname.m4
