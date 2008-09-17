@@ -20,8 +20,10 @@ debian/gnuit.debhelper.log
 doc/gnuit.html
 lib/Makefile
 lib/alloca.h
-lib/libgnu.a
+lib/fcntl.h
 lib/inttypes.h
+lib/libgnu.a
+lib/signal.h
 lib/.deps
 lib/uniwidth/.deps
 src/.deps
