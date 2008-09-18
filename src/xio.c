@@ -88,6 +88,15 @@ xread(fd, buf, count)
 #endif
 }
 
+/* write wide chars */
+int
+wxwrite(fd, buf, count)
+    int fd;
+    const wchar_t *buf;
+    size_t count;
+{
+    return xwrite(fd, (const char *)buf, (count * sizeof(wchar_t)));
+}
 
 int
 xwrite(fd, buf, count)

@@ -36,6 +36,7 @@
 
 extern int xread PROTO ((int, char *, size_t));
 extern int xwrite PROTO ((int, const char *, size_t));
+extern int wxwrite PROTO ((int, const wchar_t *, size_t));
 
 #ifndef HAVE_RENAME
 extern int rename PROTO ((const char *, const char *));

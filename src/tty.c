@@ -160,12 +160,12 @@ static int rv_cache = INVALID_CACHE;
 
 /* tty_scr the current status of the screen, while tty_atr is used to
    keep the current status of the attributes.  */
-static unsigned char *tty_scr;
+static wchar_t *tty_scr;
 static unsigned char *tty_atr;
 
 /* tty_prev_scr will always contain the copy of the previous screen,
    while tty_atr will contain the copy of the previous attributes.  */
-static unsigned char *tty_prev_scr;
+static wchar_t *tty_prev_scr;
 static unsigned char *tty_prev_atr;
 
 
@@ -243,9 +243,11 @@ tty_key_t default_key;
    data that are too big.  I'm not sure I fully understand the problem,
    but 10Kb didn't work and 1Kb did.  xwrite() reported success,
    but the screen was not correctly updated.  xterm bug!?  */
+/* Now tty_cache is wchar_t, it is 4 times the size, but
+   hopefully the above bug no longer applies */
 #define TTY_CACHE_SIZE 1024
 
-static char tty_cache[TTY_CACHE_SIZE];
+static wchar_t tty_cache[TTY_CACHE_SIZE];
 static int tty_index;
 
 #ifndef HAVE_LINUX
@@ -823,7 +825,7 @@ tty_flush()
 
     while (bytes_transferred < tty_index)
     {
-	int count = xwrite(TTY_OUTPUT,
+	int count = wxwrite(TTY_OUTPUT,
 			   tty_cache + bytes_transferred,
 			   tty_index - bytes_transferred);
 	if (count < 0)
@@ -843,12 +845,12 @@ tty_flush()
  */
 int
 tty_writec(c)
-    int c;
+    wchar_t c;
 {
     if (tty_index == TTY_CACHE_SIZE)
 	tty_flush();
 
-    tty_cache[tty_index++] = (char)c;
+    tty_cache[tty_index++] = c;
     return 1;
 }
 
@@ -1973,13 +1975,13 @@ tty_resize()
     if (tty_prev_atr)
 	xfree(tty_prev_atr);
 
-    tty_scr = (unsigned char *)xcalloc(
-	tty_columns * tty_lines, sizeof(unsigned char));
+    tty_scr = (wchar_t *)xcalloc(
+	tty_columns * tty_lines, sizeof(wchar_t));
     tty_atr = (unsigned char *)xcalloc(
 	tty_columns * tty_lines, sizeof(unsigned char));
 
-    tty_prev_scr = (unsigned char *)xcalloc(
-	tty_columns * tty_lines, sizeof(unsigned char));
+    tty_prev_scr = (wchar_t *)xcalloc(
+	tty_columns * tty_lines, sizeof(wchar_t));
     tty_prev_atr = (unsigned char *)xcalloc(
 	tty_columns * tty_lines, sizeof(unsigned char));
 
