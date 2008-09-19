@@ -39,7 +39,7 @@ extern void status_init PROTO ((char *));
 extern void status_end PROTO (());
 extern void status_resize PROTO ((size_t, size_t));
 extern void status_update PROTO (());
-extern void status PROTO ((char *, int, int));
+extern void status PROTO ((wchar_t *, int, int));
 extern void status_default PROTO (());
 
 

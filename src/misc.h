@@ -111,7 +111,7 @@ extern struct tm *get_local_time PROTO (());
 extern int is_a_bg_command PROTO ((char *));
 extern int is_an_empty_command PROTO ((char *));
 extern void get_file_type_info PROTO (());
-extern void toprintable PROTO ((char *, size_t));
+extern void toprintable PROTO ((wchar_t *, size_t));
 extern int needs_quotes PROTO ((char *, size_t));
 extern int xsetenv PROTO ((char *, char *));
 

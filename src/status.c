@@ -25,6 +25,7 @@
 #endif
 
 #include <stdio.h>
+#include <wchar.h>
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
@@ -45,6 +46,7 @@
 #include <assert.h>
 
 #include "xtime.h"
+#include "xio.h"
 
 #include "xstring.h"
 #include "xmalloc.h"
@@ -59,11 +61,11 @@ extern int AnsiColors;
 
 
 static window_t *status_window;
-static char *status_message;
+static wchar_t *status_message;
 static char status_type;
 static char status_alignment;
-static char *status_buffer;
-static char *status_default_message;
+static wchar_t *status_buffer;
+static wchar_t *status_default_message;
 
 #ifdef HAVE_UTSNAME
 static struct utsname u;
@@ -116,8 +118,8 @@ status_init(default_message)
 
     get_colorset_var(StatusBarColors, StatusBarFields, STATUSBAR_FIELDS);
 
-    status_default_message = xstrdup(default_message);
-    toprintable(status_default_message, strlen(status_default_message));
+    status_default_message = mbsduptowcs(default_message);
+    toprintable(status_default_message, wcslen(status_default_message));
     status_window = window_init();
 
 #ifdef HAVE_UTSNAME
@@ -140,7 +142,7 @@ status_resize(columns, line)
     if (status_buffer)
 	xfree(status_buffer);
 
-    status_buffer = xmalloc(columns * sizeof(char));
+    status_buffer = xmalloc(columns * sizeof(wchar_t));
 
     window_resize(status_window, 0, line, 1, columns);
 }
@@ -151,14 +153,15 @@ build_message()
 {
     int i, j;
     struct tm *time;
-    char date_str[32];
-    char *ptr, *temp_msg;
+    wchar_t date_str[32];
+    char *ptr;
+    wchar_t *temp_msg;
     size_t len, temp_msg_len;
 
     assert(status_message);
 
     memset(status_buffer, ' ', status_window->columns);
-    temp_msg = xmalloc(temp_msg_len = (strlen(status_message) + 1));
+    temp_msg = xmalloc(temp_msg_len = (wcslen(status_message) + 1));
 
     for (i = 0, j = 0; status_message[i]; i++)
 	if (status_message[i] == '\\')
@@ -189,15 +192,15 @@ build_message()
 		  get_system_info:
 		    if (ptr[0])
 		    {
-			len = strlen(ptr);
+			len = mbstowcs(NULL,ptr,0);
 			temp_msg = xrealloc(temp_msg, temp_msg_len += len);
-			memcpy(&temp_msg[j], ptr, len);
+			mbstowcs(&temp_msg[j], ptr, len);
 		    }
 		    else
 		    {
 			len = 6;
 			temp_msg = xrealloc(temp_msg, temp_msg_len += len);
-			memcpy(&temp_msg[j], "(none)", len);
+			memcpy(&temp_msg[j], L"(none)", len);
 		    }
 
 		    j += len;
@@ -206,10 +209,10 @@ build_message()
 
 		case 'd' :
 		    time = get_local_time();
-		    sprintf(date_str, "%s %s %02d %d",
+		    swprintf(date_str, 31, L"%s %s %02d %d",
 			    day_name[time->tm_wday], month_name[time->tm_mon],
 			    time->tm_mday, time->tm_year + 1900);
-		    len = strlen(date_str);
+		    len = wcslen(date_str);
 		    temp_msg = xrealloc(temp_msg, temp_msg_len += len);
 		    memcpy(&temp_msg[j], date_str, len);
 		    j += len;
@@ -235,7 +238,7 @@ build_message()
 	    if (status_message[i] == '\t')
 	    {
 		temp_msg = xrealloc(temp_msg, temp_msg_len += 8);
-		memcpy(&temp_msg[j], "        ", 8);
+		memcpy(&temp_msg[j], L"        ", (8*sizeof(wchar_t)));
 		j += 8;
 	    }
 	    else
@@ -244,14 +247,14 @@ build_message()
 
     temp_msg[j] = 0;
 
-    len = strlen(temp_msg);
+    len = wcslen(temp_msg);
 
     if (status_alignment == STATUS_CENTERED &&
 	(int)len < status_window->columns)
 	memcpy(status_buffer + ((status_window->columns - len) >> 1),
-	       temp_msg, len);
+	       temp_msg, (len*sizeof(wchar_t)));
     else
-	memcpy(status_buffer, temp_msg, min((int)len, status_window->columns));
+	memcpy(status_buffer, temp_msg, (sizeof(wchar_t) * min((int)len, status_window->columns)));
 
     xfree(temp_msg);
 
@@ -299,14 +302,14 @@ status_update()
 
 void
 status(message, type, alignment)
-    char *message;
+    wchar_t *message;
     int type, alignment;
 {
     if (status_message)
 	xfree(status_message);
 
-    status_message = xstrdup(message);
-    toprintable(status_message, strlen(status_message));
+    status_message = xwcsdup(message);
+    toprintable(status_message, wcslen(status_message));
     status_type = type;
     status_alignment = alignment;
 
@@ -317,5 +320,5 @@ status(message, type, alignment)
 void
 status_default()
 {
-    status(xstrdup(status_default_message), STATUS_OK, STATUS_CENTERED);
+    status(xwcsdup(status_default_message), STATUS_OK, STATUS_CENTERED);
 }

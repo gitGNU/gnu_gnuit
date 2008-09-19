@@ -309,3 +309,28 @@ xbasename(name)
     base = strrchr(name, '/');
     return base ? base + 1 : name;
 }
+
+wchar_t *
+xwcsdup(wstr)
+    wchar_t *wstr;
+{
+    wchar_t *ptr;
+    if(!wstr)
+	return NULL;
+    ptr=wcsdup(wstr);
+    if(!ptr)
+	xalloc_die();
+    return ptr;
+}
+
+wchar_t *
+mbsduptowcs(src)
+    char *src;
+{
+    size_t len;
+    wchar_t *dest;
+    len=mbstowcs(NULL,src,0);
+    dest=xmalloc( ((len+1) * sizeof(wchar_t)));
+    mbstowcs(dest,src,len);
+    return dest;
+}

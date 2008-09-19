@@ -37,7 +37,8 @@
 extern int xread PROTO ((int, char *, size_t));
 extern int xwrite PROTO ((int, const char *, size_t));
 extern int wxwrite PROTO ((int, const wchar_t *, size_t));
-
+extern wchar_t *xwcsdup PROTO ((wchar_t *));
+extern wchar_t *mbsduptowcs PROTO ((char *));
 #ifndef HAVE_RENAME
 extern int rename PROTO ((const char *, const char *));
 #endif /* HAVE_RENAME */
@@ -55,6 +56,5 @@ extern int xlstat PROTO ((const char *, struct stat *));
 extern char *xgetcwd PROTO (());
 extern char *xdirname PROTO ((char *));
 extern char *xbasename PROTO ((char *));
-
 
 #endif /* _GIT_XIO_H */

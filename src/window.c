@@ -79,7 +79,7 @@ window_resize(window, x, y, lines, columns)
 int
 window_puts(window, str, length)
     window_t *window;
-    char *str;
+    wchar_t *str;
     int length;
 {
     int x = window->cursor_x;

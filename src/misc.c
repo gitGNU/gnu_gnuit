@@ -625,15 +625,12 @@ xsetenv(variable, value)
 
 void
 toprintable(string, length)
-    char *string;
+    wchar_t *string;
     size_t length;
 {
     size_t i;
-    return;
-    /* FIXME: remove or switch to iswprint? */
-    /* how do we iterate along a wide-char string? */
     for (i = 0; i < length; i++)
-	if (!isprint((int)string[i]))
+	if (!iswprint(string[i]))
 	    string[i] = '?';
 }
 

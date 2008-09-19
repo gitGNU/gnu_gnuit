@@ -26,6 +26,7 @@
 
 #include <sys/types.h>
 #include <limits.h>
+#include <wchar.h>
 
 #ifdef HAVE_STDDEF_H
 #include <stddef.h>
@@ -188,6 +189,7 @@ typedef struct
 typedef struct
 {
     char *name;
+    wchar_t *wname;
     off64_t size;
     mode_t mode;
     uid_t uid;

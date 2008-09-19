@@ -438,6 +438,11 @@ panel_end(this)
 	    xfree(this->dir_entry[i].name);
 	    this->dir_entry[i].name = NULL;
 	}
+	if (this->dir_entry[i].wname)
+	{
+	    xfree(this->dir_entry[i].wname);
+	    this->dir_entry[i].wname = NULL;
+	}
 
     xfree(this->dir_entry);
     xfree(this->temp);
@@ -1023,7 +1028,7 @@ panel_read_directory(this, directory, verify)
 
     DIR *tmpdir;
     struct stat s;
-    int namelen;
+    int namelen,wnamelen;
     char *old_path;
     struct dirent *d;
     int dotdot_found = 0;
@@ -1221,6 +1226,9 @@ panel_read_directory(this, directory, verify)
 	this->dir_entry[this->entries].name = xmalloc(namelen + 1);
 	strcpy(this->dir_entry[this->entries].name, d->d_name);
 	this->maxname = max(this->maxname, namelen);
+	wnamelen=mbstowcs(NULL,d->d_name,0);
+	this->dir_entry[this->entries].wname = xmalloc(wnamelen + 1);
+	mbstowcs(this->dir_entry[this->entries].wname,d->d_name,wnamelen);
 
 	panel_load_inode(this, this->entries);
     }
@@ -1838,7 +1846,7 @@ panel_update_entry(this, entry)
     if (c != '\0')
 	reserved++;
 
-    entry_length = strlen(this->dir_entry[entry].name);
+    entry_length = wcslen(this->dir_entry[entry].wname);
 
     if (this->columns - reserved >= entry_length)
 	offset = 0;
@@ -1849,7 +1857,7 @@ panel_update_entry(this, entry)
 	    offset = this->horizontal_offset;
 
     len = min(entry_length - offset, this->columns - reserved);
-    memcpy(&this->temp[1], this->dir_entry[entry].name + offset, len);
+    memcpy(&this->temp[1], this->dir_entry[entry].wname + offset, len);
 
     toprintable(&this->temp[1], len);
 
@@ -3079,12 +3087,16 @@ panel_act_DELETE(this, other)
     while ((entry = panel_get_next(this)) != -1)
     {
 	char *name = this->dir_entry[entry].name;
+	wchar_t *wname = this->dir_entry[entry].wname;
+	wchar_t *msg;
+	size_t len;
 	int interrupted=0;
 
 	service_pending_signals();
 
-	msg = xmalloc(32 + strlen(name));
-	sprintf(msg, "(DELETE) %s", name);
+	len=32 + wcslen(wname);
+	msg = xmalloc(len+1);
+	swprintf(msg, len, L"(DELETE) %ls", wname);
 	status(msg, STATUS_ERROR, STATUS_LEFT);
 	tty_update();
 	xfree(msg);
