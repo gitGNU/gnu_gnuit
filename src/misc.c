@@ -34,6 +34,7 @@
 
 #include <signal.h>
 #include <ctype.h>
+#include <wctype.h>
 #include <sys/types.h>
 
 #ifdef HAVE_STDDEF_H

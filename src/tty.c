@@ -25,6 +25,7 @@
 #endif
 
 #include <stdio.h>
+#include <wchar.h>
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
@@ -1062,13 +1063,13 @@ tty_update()
  */
 static int
 tty_writes(s, len)
-    char *s;
+    wchar_t *s;
     int len;
 {
     if (tty_index + len >= TTY_CACHE_SIZE)
 	tty_flush();
 
-    memcpy(tty_cache + tty_index, s, len);
+    wmemcpy(tty_cache + tty_index, s, len);
     tty_index += len;
     return len;
 }
@@ -1082,7 +1083,7 @@ tty_writes(s, len)
  */
 int
 tty_puts(buf, length)
-    char *buf;
+    wchar_t *buf;
     int length;
 {
     int tty_offset;
@@ -1114,10 +1115,10 @@ tty_puts(buf, length)
  */
 int
 tty_putc(c)
-    int c;
+    wchar_t c;
 {
-    char character = c;
-    return tty_puts(&character, sizeof(char));
+    wchar_t character = c;
+    return tty_puts(&character, sizeof(wchar_t));
 }
 
 
@@ -1174,10 +1175,10 @@ tty_clear()
 void
 tty_fill()
 {
-    memset(tty_scr, ' ',
-	   tty_lines * tty_columns * sizeof(unsigned char));
+    wmemset(tty_scr, L' ',
+	    tty_lines * tty_columns);
     memset(tty_atr, tty_current_attribute,
-	   tty_lines * tty_columns * sizeof(unsigned char));
+	    tty_lines * tty_columns * sizeof(unsigned char));
 
     tty_touch();
 }
@@ -1191,7 +1192,7 @@ tty_fill()
 void
 tty_touch()
 {
-    memset(tty_prev_scr, '\0', tty_lines*tty_columns * sizeof(unsigned char));
+    wmemset(tty_prev_scr, '\0', tty_lines*tty_columns);
 }
 
 
@@ -1706,17 +1707,17 @@ tty_key_print(key_seq)
     char *key_seq;
 {
     tty_status_t tty_status;
-    char *typed = "Keys typed so far: ";
-    char *incomplete = " ";
-    char *spaces;
+    wchar_t *typed = L"Keys typed so far: ";
+    wchar_t *incomplete = L" ";
+    wchar_t *spaces;
 
     tty_save(&tty_status);
     tty_goto(tty_lines - 1, 0);
     tty_background(WHITE);
     tty_foreground(BLACK);
 
-    spaces = xmalloc(tty_columns+1);
-    memset(spaces, ' ', tty_columns);
+    spaces = xmalloc( (tty_columns+1) * sizeof(wchar_t));
+    wmemset(spaces, L' ', tty_columns);
     spaces[tty_columns] = '\0';
     tty_puts(spaces, tty_columns);
     xfree(spaces);
@@ -1724,9 +1725,9 @@ tty_key_print(key_seq)
 
     tty_key_machine2human(key_seq);
 
-    tty_puts(typed, strlen(typed));
-    tty_puts((char *)keystr, strlen((char *)keystr));
-    tty_puts(incomplete, strlen(incomplete));
+    tty_puts(typed, wcslen(typed));
+    tty_puts((wchar_t *)keystr, wcslen((wchar_t *)keystr));
+    tty_puts(incomplete, wcslen(incomplete));
 
     tty_update();
     tty_restore(&tty_status);
@@ -2421,16 +2422,16 @@ tty_init(kbd_mode)
  */
 void
 tty_update_title(string)
-    char *string;
+    wchar_t *string;
 {
     if (tty_is_xterm(tty_type))
     {
-	size_t len = strlen(string);
-	char *temp = xmalloc(128 + len + 1);
-	char *printable_string = xstrdup(string);
+	size_t len = wcslen(string);
+	wchar_t *temp = xmalloc( (128 + len + 1) * sizeof(wchar_t));
+	wchar_t *printable_string = xwcsdup(string);
 
 	toprintable(printable_string, len);
-	sprintf(temp, "%c]2;%s - %s%c", 0x1b, PRODUCT, printable_string, 0x07);
+	swprintf(temp, len, L"%c]2;%s - %s%c", 0x1b, PRODUCT, printable_string, 0x07);
 
 	/* I don't know what can be considered a resonable limit here,
 	   I just arbitrarily chosed to truncate the length of the
@@ -2438,11 +2439,11 @@ tty_update_title(string)
 	   to make fvwm2 issue error messages.  */
 	if (128 + (int)len > 2 * tty_columns)
 	{
-	    temp[2 * tty_columns    ] = 0x07;
-	    temp[2 * tty_columns + 1] = '\0';
+	    temp[2 * tty_columns    ] = L'\07';
+	    temp[2 * tty_columns + 1] = L'\0';
 	}
 
-	xwrite(TTY_OUTPUT, temp, strlen(temp));
+	wxwrite(TTY_OUTPUT, temp, wcslen(temp));
 	xfree(printable_string);
 	xfree(temp);
 	fflush(stdout);

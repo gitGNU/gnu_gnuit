@@ -56,6 +56,7 @@
 extern int errno;
 #endif /* !errno */
 
+#include <wchar.h>
 
 #include "xmalloc.h"
 #include "xstring.h"

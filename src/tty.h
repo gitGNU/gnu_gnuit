@@ -126,7 +126,7 @@ extern void tty_defaults PROTO (());
 extern void tty_save PROTO ((tty_status_t *));
 extern void tty_restore PROTO ((tty_status_t *));
 extern int tty_putc PROTO ((int));
-extern int tty_puts PROTO ((char *, int));
+extern int tty_puts PROTO ((wchar_t *, int));
 extern int tty_getc PROTO (());
 extern void tty_flush PROTO (());
 extern void tty_update PROTO (());
@@ -142,7 +142,7 @@ extern void tty_key_print_async PROTO (());
 extern char *tty_get_symbol_key_seq PROTO ((char *));
 extern void tty_set_last_char_flag PROTO ((int));
 extern int tty_set_optimization_level PROTO ((int));
-extern void tty_update_title PROTO ((char *));
+extern void tty_update_title PROTO ((wchar_t *));
 
 extern void tty_start_cursorapp PROTO (());
 extern void tty_end_cursorapp PROTO (());
