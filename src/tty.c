@@ -1051,8 +1051,8 @@ tty_update()
 	tty_flush();
 
     /* Synchronize the screen copies.  */
-    memcpy(tty_prev_scr, tty_scr, tty_columns * tty_lines * sizeof(char));
-    memcpy(tty_prev_atr, tty_atr, tty_columns * tty_lines * sizeof(char));
+    wmemcpy(tty_prev_scr, tty_scr, tty_columns * tty_lines);
+    memcpy(tty_prev_atr, tty_atr, tty_columns * tty_lines);
 }
 
 
@@ -1103,7 +1103,7 @@ tty_puts(buf, length)
 
     tty_offset = (tty_cursor_y * tty_columns) + x;
 
-    memcpy(tty_scr + tty_offset, buf, length);
+    wmemcpy(tty_scr + tty_offset, buf, length);
     memset(tty_atr + tty_offset, tty_current_attribute, length);
 
     return length;
@@ -1159,10 +1159,10 @@ tty_clear()
 {
     tty_io_clear();
 
-    memset(tty_scr,      '\0', tty_lines*tty_columns * sizeof(unsigned char));
-    memset(tty_atr,      '\0', tty_lines*tty_columns * sizeof(unsigned char));
-    memset(tty_prev_scr, '\0', tty_lines*tty_columns * sizeof(unsigned char));
-    memset(tty_prev_atr, '\0', tty_lines*tty_columns * sizeof(unsigned char));
+    wmemset(tty_scr,      L'\0', tty_lines*tty_columns);
+    memset(tty_atr,        '\0', tty_lines*tty_columns);
+    wmemset(tty_prev_scr, L'\0', tty_lines*tty_columns);
+    memset(tty_prev_atr,   '\0', tty_lines*tty_columns);
 
     tty_cursor_x = 0;
     tty_cursor_y = 0;
@@ -1192,7 +1192,7 @@ tty_fill()
 void
 tty_touch()
 {
-    wmemset(tty_prev_scr, '\0', tty_lines*tty_columns);
+    wmemset(tty_prev_scr, L'\0', tty_lines*tty_columns);
 }
 
 
@@ -2147,8 +2147,7 @@ tty_put_screen(buf)
 	    if (vcs_io(buf, VCS_WRITE) == 0)
 		tty_clear();
 	    else
-		memset(tty_scr, '\0',
-		       tty_lines * tty_columns * sizeof(unsigned char));
+		wmemset(tty_scr, L'\0',tty_lines * tty_columns);
 	}
 	else
 	    tty_clear();
@@ -2431,7 +2430,7 @@ tty_update_title(string)
 	wchar_t *printable_string = xwcsdup(string);
 
 	toprintable(printable_string, len);
-	swprintf(temp, len, L"%c]2;%s - %s%c", 0x1b, PRODUCT, printable_string, 0x07);
+	swprintf(temp, len, L"%c]2;%s - %ls%c", 0x1b, PRODUCT, printable_string, 0x07);
 
 	/* I don't know what can be considered a resonable limit here,
 	   I just arbitrarily chosed to truncate the length of the

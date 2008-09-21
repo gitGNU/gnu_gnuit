@@ -2098,6 +2098,13 @@ panel_get_path(this)
     return this->path;
 }
 
+wchar_t *
+panel_get_wpath(this)
+    panel_t *this;
+{
+    return this->wpath;
+}
+
 
 int
 canceled()

@@ -515,7 +515,7 @@ refresh(signum)
     tty_update();
 
     if (signum == SIGCONT)
-	tty_update_title(panel_get_path(src_panel));
+	tty_update_title(panel_get_wpath(src_panel));
 }
 
 
@@ -2069,7 +2069,7 @@ main(argc, argv)
 
     signal_handlers(ON);
 
-    tty_update_title(panel_get_path(src_panel));
+    tty_update_title(panel_get_wpath(src_panel));
 
   restart:
     if (wait_msg)
@@ -2081,7 +2081,7 @@ main(argc, argv)
 	wait_msg = 0;
     }
 
-    tty_update_title(panel_get_path(src_panel));
+    tty_update_title(panel_get_wpath(src_panel));
     alarm(60 - get_local_time()->tm_sec);
 
     src_panel = panel_no ? right_panel : left_panel;
@@ -2300,7 +2300,7 @@ main(argc, argv)
 		il_free(saved_il);
 		set_prompt();
 		saved_il = il_save();
-		tty_update_title(panel_get_path(src_panel));
+		tty_update_title(panel_get_wpath(src_panel));
 		break;
 
 	    case BUILTIN_previous_line:
@@ -2350,7 +2350,7 @@ main(argc, argv)
 		    case '\0':
 			action_status = panel_action(src_panel, act_ENTER,
 						     dst_panel, screen, 1);
-			tty_update_title(panel_get_path(src_panel));
+			tty_update_title(panel_get_wpath(src_panel));
 			il_kill_line(IL_DONT_STORE);
 			set_prompt();
 			break;
@@ -2438,7 +2438,7 @@ main(argc, argv)
 
 	    case BUILTIN_refresh:
 		reread();
-		tty_update_title(panel_get_path(src_panel));
+		tty_update_title(panel_get_wpath(src_panel));
 		refresh(0);
 		break;
 
@@ -2517,7 +2517,7 @@ main(argc, argv)
 				       STATUS_OK, STATUS_CENTERED);
 				il_kill_line(IL_DONT_STORE);
 				saved_il = il_save();
-				tty_update_title(panel_get_path(src_panel));
+				tty_update_title(panel_get_wpath(src_panel));
 				tty_update();
 			    }
 
@@ -2791,7 +2791,7 @@ main(argc, argv)
 		    il_restore(saved_il);
 		    set_prompt();
 		    saved_il = il_save();
-		    tty_update_title(panel_get_path(src_panel));
+		    tty_update_title(panel_get_wpath(src_panel));
 		}
 
 		break;
@@ -2837,14 +2837,14 @@ main(argc, argv)
 		il_free(saved_il);
 		set_prompt();
 		saved_il = il_save();
-		tty_update_title(panel_get_path(src_panel));
+		tty_update_title(panel_get_wpath(src_panel));
 		break;
 
 	    case BUILTIN_adapt_other_directory:
 		panel_action(dst_panel, act_CHDIR, src_panel,
 			     src_panel->path, 1);
 
-		dir_history_add(panel_get_path(dst_panel));
+		dir_history_add(panel_get_wpath(dst_panel));
 		break;
 
 	    case BUILTIN_set_scroll_step:
@@ -3039,7 +3039,7 @@ main(argc, argv)
 		il_restore(saved_il);
 		set_prompt();
 		saved_il = il_save();
-		tty_update_title(panel_get_path(src_panel));
+		tty_update_title(panel_get_wpath(src_panel));
 		break;
 
 	    case BUILTIN_next_directory:
@@ -3047,7 +3047,7 @@ main(argc, argv)
 		il_restore(saved_il);
 		set_prompt();
 		saved_il = il_save();
-		tty_update_title(panel_get_path(src_panel));
+		tty_update_title(panel_get_wpath(src_panel));
 		break;
 
 	    case BUILTIN_enlarge_other_panel:
@@ -3065,7 +3065,7 @@ main(argc, argv)
 		il_free(saved_il);
 		set_prompt();
 		saved_il = il_save();
-		tty_update_title(panel_get_path(src_panel));
+		tty_update_title(panel_get_wpath(src_panel));
 
 	    case BUILTIN_enlarge_panel:
 		panel_no_optimizations(src_panel);
@@ -3163,7 +3163,7 @@ main(argc, argv)
 		il_restore(saved_il);
 		set_prompt();
 		saved_il = il_save();
-		tty_update_title(panel_get_path(src_panel));
+		tty_update_title(panel_get_wpath(src_panel));
 		break;
 
 	    case BUILTIN_compare:

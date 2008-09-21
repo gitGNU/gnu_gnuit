@@ -96,7 +96,16 @@ wxwrite(fd, buf, count)
     const wchar_t *buf;
     size_t count;
 {
-    return xwrite(fd, (const char *)buf, (count * sizeof(wchar_t)));
+    int ret;
+    size_t len=wcstombs(NULL,buf,0);
+    if(len < 0)
+	/* FIXME */
+	exit(123);
+    char *convbuf=xmalloc(len+1);
+    wcstombs(convbuf,buf,len);
+    ret=xwrite(fd, (const char *)convbuf, len);
+    xfree(convbuf);
+    return ret;
 }
 
 int
@@ -333,5 +342,17 @@ mbsduptowcs(src)
     len=mbstowcs(NULL,src,0);
     dest=xmalloc( ((len+1) * sizeof(wchar_t)));
     mbstowcs(dest,src,len);
+    return dest;
+}
+
+char *
+wcsduptombs(src)
+    wchar_t *src;
+{
+    size_t len;
+    char *dest;
+    len=wcstombs(NULL,src,0);
+    dest=xmalloc(len+1);
+    wcstombs(dest,src,len);
     return dest;
 }

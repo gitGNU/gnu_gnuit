@@ -218,6 +218,7 @@ typedef struct
 #endif  /* HAVE_LINUX */
     int on_screen;		/* # of files on the screen.  */
     char *path;			/* The current path.  */
+    wchar_t *wpath;		/* The current path as wide chars.  */
     char *temp;			/* A temporary string.  */
     int current_entry;		/* The current file entry #.  */
     int first_on_screen;	/* The # of the entry displayed in the
@@ -258,6 +259,7 @@ extern void panel_no_optimizations PROTO ((panel_t *));
 extern int panel_action PROTO ((panel_t *, int, panel_t *, void *, int));
 extern window_t *panel_window PROTO ((panel_t *));
 extern char *panel_get_path PROTO ((panel_t *));
+extern wchar_t *panel_get_wpath PROTO ((panel_t *));
 extern char *panel_get_current_file_name PROTO ((panel_t *));
 extern uid_t panel_get_current_file_uid PROTO ((panel_t *));
 extern gid_t panel_get_current_file_gid PROTO ((panel_t *));

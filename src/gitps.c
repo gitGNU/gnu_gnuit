@@ -25,6 +25,8 @@
 #endif
 
 #include <stdio.h>
+#include <wchar.h>
+#include <wctype.h>
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
@@ -37,6 +39,7 @@
 #ifdef HAVE_STDDEF_H
 #include <stddef.h>
 #endif
+#include <inttypes.h>
 
 #ifdef HAVE_LOCALE_H
 #include <locale.h>
@@ -77,7 +80,7 @@ extern int errno;
 #include "tilde.h"
 #include "signals.h"
 #include "misc.h"
-
+#include "xio.h"
 
 #define MAX_KEYS        2048
 #define MAX_LINE	2048
@@ -148,7 +151,7 @@ char *g_program;
 char *program_name;
 char *ps_cmd;
 char *temporary_directory;
-char header_text[MAX_LINE];
+wchar_t header_text[MAX_LINE];
 int UseLastScreenChar;
 int StartupScrollStep;
 int RefreshAfterKill;
@@ -156,21 +159,22 @@ char *stdout_log_name;
 char *stderr_log_name;
 char *stdout_log_template;
 char *stderr_log_template;
-char **ps_vect;
+wchar_t **ps_vect;
 char *screen;
-char *global_buf;
+wchar_t *global_buf;
 int first_on_screen, current_process, scroll_step;
 static int horizontal_offset=0;
 window_t *title_window, *header_window, *processes_window, *status_window;
-static char *title_text;
-static char *help;
-static char no_perm[] = "not owner !";
-static char no_proc[] = "no such process ! (REFRESH recommended)";
+static wchar_t *title_text;
+static int title_len;
+static wchar_t *help;
+static wchar_t no_perm[] = L"not owner !";
+static wchar_t no_proc[] = L"no such process ! (REFRESH recommended)";
 
 
 typedef struct
 {
-    char signame[10];
+    wchar_t signame[10];
     int signal;
 } xsignal_t;
 
@@ -178,91 +182,91 @@ int signal_type = 0;
 
 static xsignal_t sigdesc[] =
 {
-    { "SIGALRM  ", SIGALRM   },
-    { "SIGABRT  ", SIGABRT   },
+    { L"SIGALRM  ", SIGALRM   },
+    { L"SIGABRT  ", SIGABRT   },
 #ifdef SIGBUS
-    { "SIGBUS   ", SIGBUS    },
+    { L"SIGBUS   ", SIGBUS    },
 #endif
 #ifdef SIGCHLD
-    { "SIGCHLD  ", SIGCHLD   },
+    { L"SIGCHLD  ", SIGCHLD   },
 #endif
 #ifdef SIGCLD
-    { "SIGCLD   ", SIGCLD    },
+    { L"SIGCLD   ", SIGCLD    },
 #endif
 #ifdef SIGCONT
-    { "SIGCONT  ", SIGCONT   },
+    { L"SIGCONT  ", SIGCONT   },
 #endif
 #ifdef SIGEMT
-    { "SIGEMT   ", SIGEMT    },
+    { L"SIGEMT   ", SIGEMT    },
 #endif
 #ifdef SIGFPE
-    { "SIGFPE   ", SIGFPE    },
+    { L"SIGFPE   ", SIGFPE    },
 #endif
-    { "SIGHUP   ", SIGHUP    },
+    { L"SIGHUP   ", SIGHUP    },
 #ifdef SIGILL
-    { "SIGILL   ", SIGILL    },
+    { L"SIGILL   ", SIGILL    },
 #endif
 #ifdef SIGINFO
-    { "SIGINFO  ", SIGINFO   },
+    { L"SIGINFO  ", SIGINFO   },
 #endif
-    { "SIGINT   ", SIGINT    },
+    { L"SIGINT   ", SIGINT    },
 #ifdef SIGIO
-    { "SIGIO    ", SIGIO     },
+    { L"SIGIO    ", SIGIO     },
 #endif
 #ifdef SIGIOT
-    { "SIGIOT   ", SIGIOT    },
+    { L"SIGIOT   ", SIGIOT    },
 #endif
-    { "SIGKILL  ", SIGKILL   },
-    { "SIGPIPE  ", SIGPIPE   },
+    { L"SIGKILL  ", SIGKILL   },
+    { L"SIGPIPE  ", SIGPIPE   },
 #ifdef SIGPOLL
-    { "SIGPOLL  ", SIGPOLL   },
+    { L"SIGPOLL  ", SIGPOLL   },
 #endif
 #ifdef SIGPROF
-    { "SIGPROF  ", SIGPROF   },
+    { L"SIGPROF  ", SIGPROF   },
 #endif
 #ifdef SIGPWR
-    { "SIGPWR   ", SIGPWR    },
+    { L"SIGPWR   ", SIGPWR    },
 #endif
-    { "SIGQUIT  ", SIGQUIT   },
-    { "SIGSEGV  ", SIGSEGV   },
+    { L"SIGQUIT  ", SIGQUIT   },
+    { L"SIGSEGV  ", SIGSEGV   },
 #ifdef SIGSTOP
-    { "SIGSTOP  ", SIGSTOP   },
+    { L"SIGSTOP  ", SIGSTOP   },
 #endif
 #ifdef SIGSYS
-    { "SIGSYS   ", SIGSYS    },
+    { L"SIGSYS   ", SIGSYS    },
 #endif
-    { "SIGTERM  ", SIGTERM   },
+    { L"SIGTERM  ", SIGTERM   },
 #ifdef SIGSTKFLT
-    { "SIGSTKFLT", SIGSTKFLT },
+    { L"SIGSTKFLT", SIGSTKFLT },
 #endif
 #ifdef SIGTRAP
-    { "SIGTRAP  ", SIGTRAP   },
+    { L"SIGTRAP  ", SIGTRAP   },
 #endif
 #ifdef SIGTSTP
-    { "SIGTSTP  ", SIGTSTP   },
+    { L"SIGTSTP  ", SIGTSTP   },
 #endif
 #ifdef SIGTTIN
-    { "SIGTTIN  ", SIGTTIN   },
+    { L"SIGTTIN  ", SIGTTIN   },
 #endif
 #ifdef SIGTTOU
-    { "SIGTTOU  ", SIGTTOU   },
+    { L"SIGTTOU  ", SIGTTOU   },
 #endif
 #ifdef SIGURG
-    { "SIGURG   ", SIGURG    },
+    { L"SIGURG   ", SIGURG    },
 #endif
-    { "SIGUSR1  ", SIGUSR1   },
-    { "SIGUSR2  ", SIGUSR2   },
+    { L"SIGUSR1  ", SIGUSR1   },
+    { L"SIGUSR2  ", SIGUSR2   },
 #ifdef SIGVTALRM
-    { "SIGVTALRM", SIGVTALRM },
+    { L"SIGVTALRM", SIGVTALRM },
 #endif
 #ifdef SIGWINCH
-    { "SIGWINCH ", SIGWINCH  },
+    { L"SIGWINCH ", SIGWINCH  },
 #endif
 #ifdef SIGXCPU
-    { "SIGXCPU  ", SIGXCPU   },
+    { L"SIGXCPU  ", SIGXCPU   },
 #endif
 #ifdef SIGXFSZ
-    { "SIGXFSZ  ", SIGXFSZ   },
+    { L"SIGXFSZ  ", SIGXFSZ   },
 #endif
 };
 
@@ -375,6 +379,15 @@ char built_in[BUILTIN_OPERATIONS][MAX_BUILTIN_NAME] =
     "horizontal-scroll-right",
 };
 
+static void
+update_title(str)
+    char *str;
+{
+    wchar_t *wstr=mbsduptowcs(str);
+    tty_update_title(wstr);
+    xfree(wstr);
+}
+
 
 void
 remove_log()
@@ -390,9 +403,9 @@ remove_log()
 void
 set_title()
 {
-    memset(global_buf, ' ', tty_columns);
-    memcpy(global_buf, title_text,
-	   min(tty_columns, (int)strlen(title_text)));
+    wmemset(global_buf, L' ', tty_columns);
+    wmemcpy(global_buf, title_text,
+	    min(tty_columns, wcslen(title_text)));
 
     tty_colors(TitleBrightness, TitleForeground, TitleBackground);
 
@@ -404,9 +417,9 @@ set_title()
 void
 set_header()
 {
-    memset(global_buf, ' ', tty_columns);
-    memcpy(global_buf + 2, header_text,
-	   min(tty_columns - 2, (int)strlen(header_text)));
+    wmemset(global_buf, L' ', tty_columns);
+    wmemcpy(global_buf + 2, header_text,
+	   min(tty_columns - 2, wcslen(header_text)));
 
     tty_colors(HeaderBrightness, HeaderForeground, HeaderBackground);
 
@@ -417,14 +430,14 @@ set_header()
 
 void
 set_status(what)
-   char *what;
+    wchar_t *what;
 {
-    memset(global_buf, ' ', tty_columns);
+    wmemset(global_buf, L' ', tty_columns);
 
     if (what)
-	memcpy(global_buf, what, min(tty_columns, (int)strlen(what)));
+	wmemcpy(global_buf, what, min(tty_columns, wcslen(what)));
     else
-	memcpy(global_buf, help, min(tty_columns, (int)strlen(help)));
+	wmemcpy(global_buf, help, min(tty_columns, wcslen(help)));
 
     tty_colors(StatusBrightness, StatusForeground, StatusBackground);
 
@@ -434,7 +447,7 @@ set_status(what)
 	window_puts(status_window, global_buf, tty_columns);
     else
     {
-	global_buf[tty_columns - 1 - (sizeof(sigdesc[0].signame)-1) - 1] = ' ';
+	global_buf[tty_columns - 1 - (sizeof(sigdesc[0].signame)-1) - 1] = L' ';
 	window_puts(status_window, global_buf,
 		    tty_columns - (sizeof(sigdesc[0].signame) - 1) - 1);
     }
@@ -476,11 +489,12 @@ report_undefined_key()
     if (length && (prev[length - 1] != key_INTERRUPT))
     {
 	char *str = (char *)tty_key_machine2human(tty_get_previous_key_seq());
-	char *buf = xmalloc(128 + strlen(str));
+	int len=128 + strlen(str);
+	wchar_t *buf = xmalloc(sizeof(wchar_t) * (len+1));
 
-	sprintf(buf, "%s: not defined.", str);
-	memset(global_buf, ' ', tty_columns);
-	memcpy(global_buf, buf, min(tty_columns, (int)strlen(buf)));
+	swprintf(buf, len, L"%s: not defined.", str);
+	wmemset(global_buf, L' ', tty_columns);
+	wmemcpy(global_buf, buf, min(tty_columns, wcslen(buf)));
 	xfree(buf);
 
 	tty_colors(ON, WHITE, RED);
@@ -513,13 +527,15 @@ free_ps_list()
 }
 
 
-char *
+wchar_t *
 read_ps_line(ps_output, line)
     FILE *ps_output;
     char *line;
 {
     int c;
     char *ok;
+    wchar_t *wok;
+    size_t wlen;
     size_t lastchar;
 
     ok = fgets(line, MAX_LINE - 1, ps_output);
@@ -533,7 +549,10 @@ read_ps_line(ps_output, line)
 	while ((c = fgetc(ps_output)) != '\n' && c != EOF)
 	    ;
 
-    return ok;
+    wlen=mbstowcs(NULL,ok,0);
+    wok=xmalloc(wlen*sizeof(wchar_t));
+    mbstowcs(wok,ok,wlen);
+    return wok;
 }
 
 
@@ -542,23 +561,23 @@ get_PID_index(ps_output)
     FILE *ps_output;
 {
     int i;
-    char *h = header_text;
+    wchar_t *h;
 
-    if (read_ps_line(ps_output, header_text) == NULL)
+    if ((h=read_ps_line(ps_output, header_text)) == NULL)
 	return -1;
 
-    if (strstr(header_text, "PID") == NULL)
+    if (wcsstr(h, L"PID") == NULL)
 	return -1;
 
     for (i = 0; ; i++)
     {
-	while (isspace((int)*h))
+	while (iswspace(*h))
 	    h++;
 
-	if (memcmp(h, "PID", 3) == 0)
+	if (wmemcmp(h, L"PID", 3) == 0)
 	    return i;
 
-	while (!isspace((int)*h))
+	while (!iswspace(*h))
 	    h++;
     }
 }
@@ -569,8 +588,8 @@ kill_process(process_index)
     int process_index;
 {
     int i;
-    char *p;
-    char pidstr[128];
+    wchar_t *p;
+    wchar_t pidstr[128];
     int pidnum;
 
     assert(process_index < processes);
@@ -579,30 +598,30 @@ kill_process(process_index)
 
 #ifdef __CYGWIN32__
     /* skip possible leading status char on cygwin ps */
-    if((!isspace((int)*p)) && (!isdigit((int)*p)))
+    if((!iswspace(*p)) && (!iswdigit(*p)))
 	p++;
 #endif
     for (i=0; i < PID_index; i++)
     {
-	while (isspace((int)*p))
+	while (iswspace(*p))
 	    p++;
 
-	while (!isspace((int)*p))
+	while (!iswspace(*p))
 	    p++;
     }
 
     i = 0;
 
-    while (isspace((int)*p))
+    while (iswspace(*p))
 	p++;
 
-    while (!isspace((int)*p))
+    while (!iswspace(*p))
 	pidstr[i++] = *p++;
 
     pidstr[i] = 0;
-    pidnum=atoi(pidstr);
+    pidnum=wcstoumax(pidstr,NULL,0);
     if(pidnum)
-	return !kill(atoi(pidstr), sigdesc[signal_type].signal);
+	return !kill(pidnum, sigdesc[signal_type].signal);
     else
 	return -1;
 }
@@ -617,8 +636,8 @@ build_ps_list(ps_output)
 
     for (i = 0; read_ps_line(ps_output, line); i++)
     {
-	ps_vect = (char **)xrealloc(ps_vect, (i + 1) * sizeof(char *));
-	ps_vect[i] = xstrdup(line);
+	ps_vect = (wchar_t **)xrealloc(ps_vect, (i + 1) * sizeof(wchar_t *));
+	ps_vect[i] = mbsduptowcs(line);
     }
 
     processes = i;
@@ -632,17 +651,17 @@ update_process(process, update_color)
     assert(process < processes);
 
     int ps_length,visible_length,offset;
-    ps_length=(int)strlen(ps_vect[process]);
+    ps_length=(int)wcslen(ps_vect[process]);
     visible_length=(tty_columns-2);
     if(visible_length >= ps_length)
 	offset=0;
     else
 	offset=min(horizontal_offset, (ps_length-visible_length));
-    memset(global_buf, ' ', tty_columns);
-    memcpy(global_buf + 2, (ps_vect[process]+offset),
-	   min(visible_length,strlen(ps_vect[process]+offset)));
-    global_buf[0] = (process == current_process) ? '>' : ' ';
-    global_buf[1] = ' ';
+    wmemset(global_buf, L' ', tty_columns);
+    wmemcpy(global_buf + 2, (ps_vect[process]+offset),
+	   min(visible_length,wcslen(ps_vect[process]+offset)));
+    global_buf[0] = (process == current_process) ? L'>' : L' ';
+    global_buf[1] = L' ';
 
     if (update_color)
     {
@@ -921,7 +940,7 @@ resize(resize_required)
      *	 >= 5 lines:	everything
      */
 
-    global_buf = xrealloc(global_buf, tty_columns + 1);
+    global_buf = xrealloc(global_buf, (tty_columns + 1) * sizeof(wchar_t));
 
     current_process = min(current_process, processes - 1);
     first_on_screen = max(0, current_process - (tty_lines - 3) + 1);
@@ -987,9 +1006,8 @@ refresh(signum)
     tty_update();
 
     if (signum == SIGCONT)
-	tty_update_title(ps_cmd);
+	update_title(ps_cmd);
 }
-
 
 void
 hide()
@@ -1024,7 +1042,7 @@ main(argc, argv)
     int argc;
     char *argv[];
 {
-    char *tmp;
+    wchar_t *tmp;
     int key, keys;
     tty_key_t *ks;
     FILE *stdout_log;
@@ -1038,6 +1056,7 @@ main(argc, argv)
     setlocale(LC_ALL,"");
 #endif
 
+    sleep(10);
     /* Make sure we don't get signals before we are ready to handle
        them.  */
     signals_init();
@@ -1112,8 +1131,9 @@ main(argc, argv)
     else
 	arguments = NULL;
 
-    title_text = xmalloc(strlen(PRODUCT) + strlen(VERSION) + 64);
-    sprintf(title_text, " %s %s - Process Viewer/Killer", PRODUCT, VERSION);
+    title_len = strlen(PRODUCT) + strlen(VERSION) + 64;
+    title_text = xmalloc(sizeof(wchar_t) * (title_len+1));
+    swprintf(title_text, title_len, L" %s %s - Process Viewer/Killer", PRODUCT, VERSION);
 
     tty_init(TTY_FULL_INPUT);
 
@@ -1144,7 +1164,7 @@ main(argc, argv)
     StartupScrollStep  = get_int_var("StartupScrollStep", (tty_lines - 3) / 2);
 
     use_section("[GITPS-Setup]");
-    help = get_string_var("Help", "");
+    help = mbsduptowcs(get_string_var("Help", ""));
     RefreshAfterKill = get_flag_var("RefreshAfterKill", ON);
 
     use_section(AnsiColors ? color_section : monochrome_section);
@@ -1192,7 +1212,7 @@ main(argc, argv)
 
     first_on_screen = current_process = 0;
 
-    tty_update_title(ps_cmd);
+    update_title(ps_cmd);
     set_signal(SIGTERM);
 
   restart:
@@ -1491,11 +1511,12 @@ main(argc, argv)
 		else
 		{
 		    int e = errno;
-
+		    int len;
 		    tty_beep();
-		    memset(global_buf, ' ', tty_columns);
-		    tmp = xmalloc(16 + strlen((e == EPERM) ? no_perm:no_proc));
-		    sprintf(tmp, "Error: %s", (e == EPERM) ? no_perm:no_proc);
+		    wmemset(global_buf, L' ', tty_columns);
+		    len=16 + wcslen((e == EPERM) ? no_perm:no_proc);
+		    tmp = xmalloc(sizeof(wchar_t) * (len+1));
+		    swprintf(tmp, len, L"Error: %ls", (e == EPERM) ? no_perm:no_proc);
 		    set_status(tmp);
 		    tty_update();
 		    xfree(tmp);

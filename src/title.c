@@ -25,6 +25,7 @@
 #endif
 
 #include <stdio.h>
+#include <wchar.h>
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
@@ -90,7 +91,7 @@ int TitleColors[TITLE_FIELDS] =
 #define ClockBrightness TitleColors[7]
 
 
-static char *product_name;
+static wchar_t *product_name;
 
 static int product_name_length;
 static int login_name_length;
@@ -100,12 +101,12 @@ static int tty_device_length;
    It also includes 6 characters for the clock.  */
 static int info_length;
 
-static char login_string[] = "User:";
-static char ttydev_string[] = "tty:";
+static wchar_t login_string[] = L"User:";
+static wchar_t ttydev_string[] = L"tty:";
 
-static char mail_have_none[] = "";
-static char mail_have_mail[] = "(Mail)";
-static char mail_have_new[] = "(New Mail)";
+static wchar_t mail_have_none[] = L"";
+static wchar_t mail_have_mail[] = L"(Mail)";
+static wchar_t mail_have_new[]  = L"(New Mail)";
 
 static char *mail_string = "";
 static char *mail_file=NULL;
@@ -134,11 +135,14 @@ calc_info_length()
 void
 title_init()
 {
-    product_name = xmalloc(1 + strlen(PRODUCT) + 1 + strlen(VERSION) + 1);
-    sprintf(product_name, " %s %s", PRODUCT, VERSION);
-    product_name_length = strlen(product_name);
-    login_name_length = strlen(login_name);
-    tty_device_length = strlen(tty_device);
+    wchar_t *product=mbsduptowcs(PRODUCT);
+    wchar_t *version=mbsduptowcs(VERSION);
+    int namelen= 1 + wcslen(product) + 1 + wcslen(version) + 1; 
+    product_name = xmalloc(namelen * sizeof(wchar_t));
+    swprintf(product_name, namelen, L" %ls %ls", product, version);
+    product_name_length = wcslen(product_name);
+    login_name_length = wcslen(login_name);
+    tty_device_length = wcslen(tty_device);
 
     mail_file=getenv("MAIL");
     if(mail_file)
