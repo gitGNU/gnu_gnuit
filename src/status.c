@@ -160,11 +160,12 @@ build_message()
 
     assert(status_message);
 
-    memset(status_buffer, ' ', status_window->columns);
-    temp_msg = xmalloc(temp_msg_len = (wcslen(status_message) + 1));
+    wmemset(status_buffer, L' ', status_window->columns);
+    temp_msg_len = wcslen(status_message);
+    temp_msg = xmalloc((temp_msg_len+1) * sizeof(wchar_t));
 
     for (i = 0, j = 0; status_message[i]; i++)
-	if (status_message[i] == '\\')
+	if (status_message[i] == L'\\')
 	    switch (status_message[i + 1])
 	    {
 		case 'h' :
@@ -200,7 +201,7 @@ build_message()
 		    {
 			len = 6;
 			temp_msg = xrealloc(temp_msg, temp_msg_len += len);
-			memcpy(&temp_msg[j], L"(none)", len);
+			wmemcpy(&temp_msg[j], L"(none)", len);
 		    }
 
 		    j += len;
@@ -238,7 +239,7 @@ build_message()
 	    if (status_message[i] == '\t')
 	    {
 		temp_msg = xrealloc(temp_msg, temp_msg_len += 8);
-		memcpy(&temp_msg[j], L"        ", (8*sizeof(wchar_t)));
+		wmemcpy(&temp_msg[j], L"        ", (8*sizeof(wchar_t)));
 		j += 8;
 	    }
 	    else
@@ -251,16 +252,16 @@ build_message()
 
     if (status_alignment == STATUS_CENTERED &&
 	(int)len < status_window->columns)
-	memcpy(status_buffer + ((status_window->columns - len) >> 1),
-	       temp_msg, (len*sizeof(wchar_t)));
+	wmemcpy(status_buffer + ((status_window->columns - len) >> 1),
+		temp_msg, len);
     else
-	memcpy(status_buffer, temp_msg, (sizeof(wchar_t) * min((int)len, status_window->columns)));
+	wmemcpy(status_buffer, temp_msg, min((int)len, status_window->columns));
 
     xfree(temp_msg);
 
     for (i = 0; i < status_window->columns; i++)
-	if (status_buffer[i] == '\r' || status_buffer[i] == '\n')
-	    status_buffer[i] = ' ';
+	if (status_buffer[i] == L'\r' || status_buffer[i] == L'\n')
+	    status_buffer[i] = L' ';
 }
 
 

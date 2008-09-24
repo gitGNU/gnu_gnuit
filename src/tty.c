@@ -23,7 +23,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
-
+#include <mpatrol.h>
 #include <stdio.h>
 #include <wchar.h>
 
@@ -1079,7 +1079,7 @@ tty_writes(s, len)
  * Write a string to the screen, at the current cursor position.
  * If the string is too long to fit between the current cursor
  * position and the end of the line, it is truncated (i.e. it doesn't
- * wrap arround).  Return the number of characters written.
+ * wrap around).  Return the number of characters written.
  */
 int
 tty_puts(buf, length)
@@ -1105,7 +1105,7 @@ tty_puts(buf, length)
 
     wmemcpy(tty_scr + tty_offset, buf, length);
     memset(tty_atr + tty_offset, tty_current_attribute, length);
-
+    tty_update(); /* FIXME: debug, remove */
     return length;
 }
 
@@ -1118,7 +1118,9 @@ tty_putc(c)
     wchar_t c;
 {
     wchar_t character = c;
-    return tty_puts(&character, sizeof(wchar_t));
+    int ret=tty_puts(&character, 1);
+    tty_update(); /* FIXME: debug, remove */
+    return ret;
 }
 
 
@@ -2431,7 +2433,6 @@ tty_update_title(string)
 
 	toprintable(printable_string, len);
 	swprintf(temp, len, L"%c]2;%s - %ls%c", 0x1b, PRODUCT, printable_string, 0x07);
-
 	/* I don't know what can be considered a resonable limit here,
 	   I just arbitrarily chosed to truncate the length of the
 	   title to twice the number of columns.  Longer strings seem

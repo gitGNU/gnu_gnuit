@@ -48,7 +48,7 @@ extern window_t *window_init PROTO (());
 extern void window_end PROTO ((window_t *));
 extern void window_resize PROTO ((window_t *, int, int, int, int));
 extern int window_puts PROTO ((window_t *, wchar_t *, int));
-extern int window_putc PROTO ((window_t *, int));
+extern int window_putc PROTO ((window_t *, wchar_t));
 extern void window_goto PROTO ((window_t *, int, int));
 extern int window_x PROTO ((window_t *));
 extern int window_y PROTO ((window_t *));

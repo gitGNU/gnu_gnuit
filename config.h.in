@@ -261,6 +261,9 @@
 /* Define to 1 if you have the `mempcpy' function. */
 #undef HAVE_MEMPCPY
 
+/* Define if using mpatrol */
+#undef HAVE_MPATROL
+
 /* Define to 1 if you have the `nanotime' function. */
 #undef HAVE_NANOTIME
 

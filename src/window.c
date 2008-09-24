@@ -39,7 +39,7 @@
 #endif
 
 #include <assert.h>
-
+#include <mpatrol.h>
 #include "window.h"
 #include "xmalloc.h"
 #include "tty.h"
@@ -103,7 +103,7 @@ window_puts(window, str, length)
 int
 window_putc(window, c)
     window_t *window;
-    int c;
+    wchar_t c;
 {
     if (++window->cursor_x > window->columns)
 	return 0;

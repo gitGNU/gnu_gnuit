@@ -25,7 +25,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
-
+#include <mpatrol.h>
 #include <sys/types.h>
 
 #ifdef HAVE_STDDEF_H
@@ -43,6 +43,14 @@ xalloc_die(void)
     fatal("virtual memory exhausted");
     /* NOTREACHED */
     abort();
+}
+
+void *xmalloc(size_t size)
+{
+    void *ptr=malloc(size);
+    if(ptr)
+	return ptr;
+    fatal("XMALLOC FAIL\n");
 }
 
 void

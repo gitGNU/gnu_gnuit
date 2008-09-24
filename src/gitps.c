@@ -151,7 +151,7 @@ char *g_program;
 char *program_name;
 char *ps_cmd;
 char *temporary_directory;
-wchar_t header_text[MAX_LINE];
+wchar_t *header_text;
 int UseLastScreenChar;
 int StartupScrollStep;
 int RefreshAfterKill;
@@ -417,10 +417,12 @@ set_title()
 void
 set_header()
 {
+    fprintf(stderr,"BEFORE: %ls\nGLOBAL%ls\n",header_text,global_buf);
     wmemset(global_buf, L' ', tty_columns);
+    fprintf(stderr,"AFTER: %ls\nGLOBAL%ls\n",header_text,global_buf);
     wmemcpy(global_buf + 2, header_text,
 	   min(tty_columns - 2, wcslen(header_text)));
-
+    fprintf(stderr,"SET: %ls\nGLOBAL%ls\n",header_text,global_buf);
     tty_colors(HeaderBrightness, HeaderForeground, HeaderBackground);
 
     window_goto(header_window, 0, 0);
@@ -443,13 +445,13 @@ set_status(what)
 
     window_goto(status_window, 0, 0);
 
-    if (tty_columns < (int)((sizeof(sigdesc[0].signame) - 1) + 1))
+    if (tty_columns < ((wcslen(sigdesc[0].signame) - 1) + 1))
 	window_puts(status_window, global_buf, tty_columns);
     else
     {
-	global_buf[tty_columns - 1 - (sizeof(sigdesc[0].signame)-1) - 1] = L' ';
+	global_buf[tty_columns - 1 - wcslen(sigdesc[0].signame) - 1] = L' ';
 	window_puts(status_window, global_buf,
-		    tty_columns - (sizeof(sigdesc[0].signame) - 1) - 1);
+		    tty_columns - wcslen(sigdesc[0].signame) - 1);
     }
 }
 
@@ -458,7 +460,7 @@ void
 set_signal(index)
     int index;
 {
-    int i, len = sizeof(sigdesc[0].signame) - 1;
+    int i, len=wcslen(sigdesc[0].signame);
 
     if (index >= 0)
 	for (i = 0; i < (int)(sizeof(sigdesc) / sizeof(xsignal_t)); i++)
@@ -473,7 +475,7 @@ set_signal(index)
 	tty_colors(StatusBrightness, WHITE, StatusBackground);
 	window_goto(status_window, 0, tty_columns - len - 1);
 	window_puts(status_window, sigdesc[signal_type].signame, len);
-	window_putc(status_window, ' ');
+	window_putc(status_window, L' ');
     }
 
     window_goto(status_window, 0, tty_columns - 1);
@@ -562,10 +564,12 @@ get_PID_index(ps_output)
 {
     int i;
     wchar_t *h;
+    char buf[MAX_LINE];
 
-    if ((h=read_ps_line(ps_output, header_text)) == NULL)
+    if ((header_text=read_ps_line(ps_output, buf)) == NULL)
 	return -1;
-
+    fprintf(stderr,"HEADER: %ls\n",header_text);
+    h=header_text;
     if (wcsstr(h, L"PID") == NULL)
 	return -1;
 
@@ -708,7 +712,7 @@ update_all()
 
     tty_colors(ScreenBrightness, ScreenForeground, ScreenBackground);
 
-    memset(global_buf, ' ', tty_columns);
+    wmemset(global_buf, L' ', tty_columns);
 
     for (; i - first_on_screen < tty_lines - 3; i++)
     {
@@ -998,11 +1002,11 @@ refresh(signum)
 	tty_clear();
     }
 
-    set_title();
-    set_header();
-    set_status((char *)NULL);
-    set_signal(-1);
-    update_all();
+/*    set_title();*/
+/*    set_header();*/
+/*    set_status((char *)NULL);*/
+/*    set_signal(-1);*/
+/*    update_all();*/
     tty_update();
 
     if (signum == SIGCONT)
@@ -1051,12 +1055,12 @@ main(argc, argv)
     int i, no_of_arguments, exit_code = 0;
     int need_update, need_update_all, old_current_process;
     int c, ansi_colors = -1, use_last_screen_character = ON;
+    printf("PID: %d\n",getpid());
+    sleep(10);
 
 #ifdef HAVE_SETLOCALE
     setlocale(LC_ALL,"");
 #endif
-
-    sleep(10);
     /* Make sure we don't get signals before we are ready to handle
        them.  */
     signals_init();
@@ -1132,9 +1136,12 @@ main(argc, argv)
 	arguments = NULL;
 
     title_len = strlen(PRODUCT) + strlen(VERSION) + 64;
+    fprintf(stderr,"title_len=%d\nwchar=%d\n",title_len,sizeof(wchar_t));
     title_text = xmalloc(sizeof(wchar_t) * (title_len+1));
+
     swprintf(title_text, title_len, L" %s %s - Process Viewer/Killer", PRODUCT, VERSION);
 
+    title_text=L"TITLE";
     tty_init(TTY_FULL_INPUT);
 
     common_configuration_init();
@@ -1165,6 +1172,7 @@ main(argc, argv)
 
     use_section("[GITPS-Setup]");
     help = mbsduptowcs(get_string_var("Help", ""));
+
     RefreshAfterKill = get_flag_var("RefreshAfterKill", ON);
 
     use_section(AnsiColors ? color_section : monochrome_section);

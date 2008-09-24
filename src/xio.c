@@ -25,7 +25,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
-
+#include <mpatrol.h>
 #include <sys/types.h>
 
 #ifdef HAVE_STDDEF_H
@@ -101,7 +101,7 @@ wxwrite(fd, buf, count)
     if(len < 0)
 	/* FIXME */
 	exit(123);
-    char *convbuf=xmalloc(len+1);
+    char *convbuf=xmalloc((len+1)*sizeof(wchar_t));
     wcstombs(convbuf,buf,len);
     ret=xwrite(fd, (const char *)convbuf, len);
     xfree(convbuf);
@@ -339,20 +339,9 @@ mbsduptowcs(src)
 {
     size_t len;
     wchar_t *dest;
-    len=mbstowcs(NULL,src,0);
-    dest=xmalloc( ((len+1) * sizeof(wchar_t)));
+    len=mbstowcs(NULL,src,0)+1;
+    dest=xmalloc((len+1) * sizeof(wchar_t));
     mbstowcs(dest,src,len);
     return dest;
 }
 
-char *
-wcsduptombs(src)
-    wchar_t *src;
-{
-    size_t len;
-    char *dest;
-    len=wcstombs(NULL,src,0);
-    dest=xmalloc(len+1);
-    wcstombs(dest,src,len);
-    return dest;
-}

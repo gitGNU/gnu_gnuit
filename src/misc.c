@@ -23,7 +23,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
-
+#include <mpatrol.h>
 #include <stdio.h>
 
 #ifdef HAVE_STDLIB_H
