@@ -403,10 +403,12 @@ remove_log()
 void
 set_title()
 {
+    char dbgbuf[4096];
     wmemset(global_buf, L' ', tty_columns);
     wmemcpy(global_buf, title_text,
 	    min(tty_columns, wcslen(title_text)));
-
+    wcstombs(dbgbuf,global_buf,4000);
+    fprintf(stderr,"DEBUG:%s x\n",dbgbuf);
     tty_colors(TitleBrightness, TitleForeground, TitleBackground);
 
     window_goto(title_window, 0, 0);
@@ -1002,7 +1004,7 @@ refresh(signum)
 	tty_clear();
     }
 
-/*    set_title();*/
+    set_title();
 /*    set_header();*/
 /*    set_status((char *)NULL);*/
 /*    set_signal(-1);*/
@@ -1203,7 +1205,7 @@ main(argc, argv)
     if (ps(arguments) == 0)
 	return 1;
 
-    tty_start_cursorapp();
+/*    tty_start_cursorapp();*/
 
     title_window  = window_init();
     header_window = window_init();
@@ -1220,13 +1222,13 @@ main(argc, argv)
 
     first_on_screen = current_process = 0;
 
-    update_title(ps_cmd);
-    set_signal(SIGTERM);
+/*    update_title(ps_cmd);
+      set_signal(SIGTERM);*/
 
   restart:
     stdout_log = fopen(stdout_log_name, "r");
     remove_log();
-
+/*
     if ((PID_index = get_PID_index(stdout_log)) == -1)
     {
 	exit_code = 1;
@@ -1234,7 +1236,7 @@ main(argc, argv)
     }
 
     free_ps_list();
-    build_ps_list(stdout_log);
+    build_ps_list(stdout_log);*/
     fclose(stdout_log);
 
     refresh(0);
@@ -1244,8 +1246,8 @@ main(argc, argv)
 	while ((ks = tty_get_key(&repeat_count)) == NULL)
 	    report_undefined_key();
 
-	set_status((char *)NULL);
-	set_signal(-1);
+/*	set_status((char *)NULL);
+	set_signal(-1);*/
 
 	key = ((char *)ks->aux_data - (char *)built_in) / MAX_BUILTIN_NAME;
 
