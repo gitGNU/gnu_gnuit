@@ -22,6 +22,9 @@
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
 
+/* FIXME: stdio only for debugging */
+#include <stdio.h>
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -56,6 +59,8 @@
 extern int errno;
 #endif /* !errno */
 
+#define _GNU_SOURCE
+#define __USE_GNU
 #include <wchar.h>
 
 #include "xmalloc.h"
