@@ -171,9 +171,9 @@ static unsigned char *tty_prev_atr;
 
 
 /* The ANSI color sequences.  */
-static char ansi_foreground[] = { 0x1b, '[', '3', '0', 'm' };
-static char ansi_background[] = { 0x1b, '[', '4', '0', 'm' };
-static char ansi_defaults[]   = { 0x1b, '[', '0', 'm' };
+static wchar_t ansi_foreground[] = { 0x1b, L'[', L'3', L'0', L'm' };
+static wchar_t ansi_background[] = { 0x1b, L'[', L'4', L'0', L'm' };
+static wchar_t ansi_defaults[]   = { 0x1b, L'[', L'0', L'm' };
 
 /* These variable tells us if we should use standard ANSI color sequences.
    Its value is taken from the configuration file.  */
@@ -838,14 +838,11 @@ tty_flush()
     tty_index = 0;
 }
 
-
 /*
- * Write a character to the screen.  Used by tputs() to output
- * characters.  Actually we are only storing them in a buffer
- * (tty_cache[]) and flush them later (in tty_flush()).
+ * Wide char equivalent of tty_writec
  */
 int
-tty_writec(c)
+tty_writewc(c)
     wchar_t c;
 {
     if (tty_index == TTY_CACHE_SIZE)
@@ -855,6 +852,24 @@ tty_writec(c)
     return 1;
 }
 
+/*
+ * Write a character to the screen.  Used by tputs() to output
+ * characters.  Actually we are only storing them in a buffer
+ * (tty_cache[]) and flush them later (in tty_flush()).
+ */
+int
+tty_writec(c)
+    char c;
+{
+    wchar_t wc;
+    int ret;
+    /* tty_writec is only called for terminal escape sequences */
+    /* which will always be single-byte characters */
+    ret=mbtowc(&wc,&c,1);
+    if(ret != 1)
+	wc=L'?'; /* "should" never happen */
+    return tty_writewc(wc);
+}
 
 /*
  * Send the `cl' sequence to the terminal.
@@ -1033,7 +1048,7 @@ tty_update()
 	    /* Output the color sequence, if necessary, then the
 	       character.  */
 	    tty_io_colors(tty_atr[pos]);
-	    tty_writec(tty_scr[pos]);
+	    tty_writewc(tty_scr[pos]);
 
 	    if (++tty_io_cursor_x == tty_columns)
 	    {
@@ -1108,7 +1123,6 @@ tty_puts(buf, length)
 
     wmemcpy(tty_scr + tty_offset, buf, length);
     memset(tty_atr + tty_offset, tty_current_attribute, length);
-    tty_update(); /* FIXME: debug, remove */
     return length;
 }
 
@@ -1212,7 +1226,7 @@ tty_io_goto(y, x)
        the cursor.  */
     if (TTY_MS_FLAG == 0)
 	tty_defaults();
-
+    fprintf(stderr,"tty_io_goto: x: %d/%d y: %d/%d\n",x,tty_columns,y,tty_lines);
     /* Sanity checking.  */
     if (x < 0 || x >= tty_columns ||
 	y < 0 || y >= tty_lines)

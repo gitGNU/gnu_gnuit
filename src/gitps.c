@@ -404,11 +404,11 @@ void
 set_title()
 {
     char dbgbuf[4096];
+    int len=min(tty_columns, wcslen(title_text));
     wmemset(global_buf, L' ', tty_columns);
-    wmemcpy(global_buf, title_text,
-	    min(tty_columns, wcslen(title_text)));
-    wcstombs(dbgbuf,global_buf,4000);
-    fprintf(stderr,"DEBUG:%s x\n",dbgbuf);
+    wmemcpy(global_buf, title_text, len);
+/*    wcstombs(dbgbuf,global_buf,len);
+      fprintf(stderr,"DEBUG:%*s x\n",len,dbgbuf);*/
     tty_colors(TitleBrightness, TitleForeground, TitleBackground);
 
     window_goto(title_window, 0, 0);
@@ -1009,6 +1009,7 @@ refresh(signum)
 /*    set_status((char *)NULL);*/
 /*    set_signal(-1);*/
 /*    update_all();*/
+    window_goto(title_window, 0, 0);
     tty_update();
 
     if (signum == SIGCONT)
@@ -1141,7 +1142,7 @@ main(argc, argv)
     fprintf(stderr,"title_len=%d\nwchar=%d\n",title_len,sizeof(wchar_t));
     title_text = xmalloc(sizeof(wchar_t) * (title_len+1));
 
-    swprintf(title_text, title_len, L" %s %s - Process Viewer/Killer", PRODUCT, VERSION);
+/*    swprintf(title_text, title_len, L" %s %s - Process Viewer/Killer", PRODUCT, VERSION);*/
 
     title_text=L"TITLE";
     tty_init(TTY_FULL_INPUT);
