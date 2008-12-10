@@ -1009,7 +1009,7 @@ refresh(signum)
 /*    set_status((char *)NULL);*/
 /*    set_signal(-1);*/
 /*    update_all();*/
-    window_goto(title_window, 0, 0);
+/*    window_goto(title_window, 0, 0);*/
     tty_update();
 
     if (signum == SIGCONT)
@@ -1058,8 +1058,6 @@ main(argc, argv)
     int i, no_of_arguments, exit_code = 0;
     int need_update, need_update_all, old_current_process;
     int c, ansi_colors = -1, use_last_screen_character = ON;
-    printf("PID: %d\n",getpid());
-    sleep(10);
 
 #ifdef HAVE_SETLOCALE
     setlocale(LC_ALL,"");
@@ -1081,9 +1079,13 @@ main(argc, argv)
 	ansi_colors = ON;
 
     /* Parse the command line.  */
-    while ((c = getopt(argc, argv, "hvcblp")) != -1)
+    while ((c = getopt(argc, argv, "hvcblpd")) != -1)
 	switch (c)
 	{
+	    case 'd':
+		printf("PID: %d\n",getpid());
+		sleep(10);
+		break;
 	    case 'h':
 		/* Help request.  */
 		usage();
@@ -1139,12 +1141,9 @@ main(argc, argv)
 	arguments = NULL;
 
     title_len = strlen(PRODUCT) + strlen(VERSION) + 64;
-    fprintf(stderr,"title_len=%d\nwchar=%d\n",title_len,sizeof(wchar_t));
     title_text = xmalloc(sizeof(wchar_t) * (title_len+1));
+    swprintf(title_text, title_len, L" %s %s - Process Viewer/Killer", PRODUCT, VERSION);
 
-/*    swprintf(title_text, title_len, L" %s %s - Process Viewer/Killer", PRODUCT, VERSION);*/
-
-    title_text=L"TITLE";
     tty_init(TTY_FULL_INPUT);
 
     common_configuration_init();
