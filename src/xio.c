@@ -104,19 +104,13 @@ wxwrite(fd, buf, count)
     int ret;
     size_t len;
     char *convbuf;
-    /* sigh, looks like wcstombs needs null-terminated strings */
-    wchar_t *tmpbuf=xmalloc((count+1)*sizeof(wchar_t));
-    wmemcpy(tmpbuf,buf,count);
-    tmpbuf[count]=0;
-    len=wcstombs(NULL,tmpbuf,count);
+    wchar_t *bufptr=(wchar_t *)buf;
+    len=wcsnrtombs(NULL,(const wchar_t **)&bufptr,count,0,NULL);
     if(len < 0)
 	exit(123); /* FIXME */
     convbuf=xmalloc((len+1)*sizeof(char));
-    wcstombs(convbuf,tmpbuf,len);
-    convbuf[len]=0;
-    fprintf(stderr,"BUF: <%*s>\n",count,convbuf);
-    fprintf(stderr,"COUNT: %d LEN: %d",count,len);
-/*    fprintf(stderr,"BUFEND: [%c] [%c] [%c]\n",convbuf[count-1],convbuf[count],convbuf[count+1]);*/
+    bufptr=(wchar_t *)buf;
+    wcsnrtombs(convbuf,(const wchar_t **)&bufptr,count,len,NULL);
     ret=xwrite(fd, (const char *)convbuf, len);
     xfree(convbuf);
     return ret;

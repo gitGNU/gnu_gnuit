@@ -403,12 +403,9 @@ remove_log()
 void
 set_title()
 {
-    char dbgbuf[4096];
     int len=min(tty_columns, wcslen(title_text));
     wmemset(global_buf, L' ', tty_columns);
     wmemcpy(global_buf, title_text, len);
-/*    wcstombs(dbgbuf,global_buf,len);
-      fprintf(stderr,"DEBUG:%*s x\n",len,dbgbuf);*/
     tty_colors(TitleBrightness, TitleForeground, TitleBackground);
 
     window_goto(title_window, 0, 0);

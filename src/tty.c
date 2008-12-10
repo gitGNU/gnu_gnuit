@@ -1022,10 +1022,6 @@ tty_update()
     int tty_io_cursor_x = -1;
     int tty_io_cursor_y = -1;
     int last_pos = tty_columns * tty_lines;
-    char dbgbuf[8191];
-    int ret;
-    ret=wcstombs(dbgbuf,tty_scr,8190);
-    fprintf(stderr,"TTY_UPDATE(%d)\n%s\n",ret,dbgbuf);
     /* Check if we should display the last character on the screen.  */
     if (tty_last_char_flag == OFF)
 	last_pos--;
