@@ -1233,8 +1233,8 @@ main(argc, argv)
 	while ((ks = tty_get_key(&repeat_count)) == NULL)
 	    report_undefined_key();
 
-/*	set_status((char *)NULL);
-	set_signal(-1);*/
+	set_status((char *)NULL);
+	set_signal(-1);
 
 	key = ((char *)ks->aux_data - (char *)built_in) / MAX_BUILTIN_NAME;
 
