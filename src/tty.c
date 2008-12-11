@@ -1132,7 +1132,6 @@ tty_putc(c)
 {
     wchar_t character = c;
     int ret=tty_puts(&character, 1);
-    tty_update(); /* FIXME: debug, remove */
     return ret;
 }
 
@@ -1222,7 +1221,6 @@ tty_io_goto(y, x)
        the cursor.  */
     if (TTY_MS_FLAG == 0)
 	tty_defaults();
-    fprintf(stderr,"tty_io_goto: x: %d/%d y: %d/%d\n",x,tty_columns,y,tty_lines);
     /* Sanity checking.  */
     if (x < 0 || x >= tty_columns ||
 	y < 0 || y >= tty_lines)

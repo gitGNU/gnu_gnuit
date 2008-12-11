@@ -416,12 +416,9 @@ set_title()
 void
 set_header()
 {
-    fprintf(stderr,"BEFORE: %ls\nGLOBAL%ls\n",header_text,global_buf);
     wmemset(global_buf, L' ', tty_columns);
-    fprintf(stderr,"AFTER: %ls\nGLOBAL%ls\n",header_text,global_buf);
     wmemcpy(global_buf + 2, header_text,
 	   min(tty_columns - 2, wcslen(header_text)));
-    fprintf(stderr,"SET: %ls\nGLOBAL%ls\n",header_text,global_buf);
     tty_colors(HeaderBrightness, HeaderForeground, HeaderBackground);
 
     window_goto(header_window, 0, 0);
@@ -562,7 +559,6 @@ get_PID_index(ps_output)
 
     if ((header_text=read_ps_line(ps_output, buf)) == NULL)
 	return -1;
-    fprintf(stderr,"HEADER: %ls\n",header_text);
     h=header_text;
     if (wcsstr(h, L"PID") == NULL)
 	return -1;
@@ -1001,7 +997,6 @@ refresh(signum)
     set_status((char *)NULL);
     set_signal(-1);
     update_all();
-/*    window_goto(title_window, 0, 0);*/
     tty_update();
 
     if (signum == SIGCONT)

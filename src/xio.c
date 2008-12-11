@@ -22,9 +22,6 @@
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
 
-/* FIXME: stdio only for debugging */
-#include <stdio.h>
-
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -60,7 +57,9 @@ extern int errno;
 #endif /* !errno */
 
 #define _GNU_SOURCE
+#ifndef __USE_GNU
 #define __USE_GNU
+#endif
 #include <wchar.h>
 
 #include "xmalloc.h"
@@ -107,7 +106,7 @@ wxwrite(fd, buf, count)
     wchar_t *bufptr=(wchar_t *)buf;
     len=wcsnrtombs(NULL,(const wchar_t **)&bufptr,count,0,NULL);
     if(len < 0)
-	exit(123); /* FIXME */
+	return(-1);
     convbuf=xmalloc((len+1)*sizeof(char));
     bufptr=(wchar_t *)buf;
     wcsnrtombs(convbuf,(const wchar_t **)&bufptr,count,len,NULL);
