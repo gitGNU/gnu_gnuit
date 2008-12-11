@@ -112,13 +112,13 @@ static int StatusBarColors[STATUSBAR_FIELDS] =
 
 void
 status_init(default_message)
-    char *default_message;
+    wchar_t *default_message;
 {
     use_section(AnsiColors ? color_section : monochrome_section);
 
     get_colorset_var(StatusBarColors, StatusBarFields, STATUSBAR_FIELDS);
 
-    status_default_message = mbsduptowcs(default_message);
+    status_default_message = default_message;
     toprintable(status_default_message, wcslen(status_default_message));
     status_window = window_init();
 

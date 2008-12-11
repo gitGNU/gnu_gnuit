@@ -119,7 +119,7 @@ int UseLastScreenChar;
 char color_section[]  = "[GITFM-Color]";
 char monochrome_section[] = "[GITFM-Monochrome]";
 
-char lock_bad[]   = "Bad password, try again...";
+wchar_t lock_bad[]   = L"Bad password, try again...";
 
 char *exit_msg;
 
@@ -127,8 +127,8 @@ char *screen;
 char PS1[4] = " $ ";
 panel_t *left_panel, *right_panel, *src_panel, *dst_panel, *tmp_panel;
 
-static char *NormalModeHelp      = "";
-static char *CommandLineModeHelp = "";
+static wchar_t *NormalModeHelp      = L"";
+static wchar_t *CommandLineModeHelp = L"";
 static int ConfirmOnExit;
 
 /* Directory history stuff.  */
@@ -529,8 +529,9 @@ report_undefined_key(status_message)
     if (length && (prev[length - 1] != key_INTERRUPT))
     {
 	char *str = (char *)tty_key_machine2human(prev);
-	char *buf = xmalloc(128 + strlen(str));
-	sprintf(buf, "%s: not defined.", str);
+	int len=128 + strlen(str);
+	wchar_t *buf = xmalloc(len * sizeof(wchar_t));
+	swprintf(buf, len, L"%s: not defined.", str);
 	status(buf, STATUS_ERROR, STATUS_LEFT);
 	xfree(buf);
 
@@ -542,7 +543,11 @@ report_undefined_key(status_message)
 	tty_beep();
 
     if (status_message)
-	status(status_message, STATUS_OK, STATUS_CENTERED);
+    {
+	wchar_t *msg=mbsduptowcs(status_message);
+	status(msg, STATUS_OK, STATUS_CENTERED);
+	xfree(msg);
+    }
     else
 	status_default();
     il_update_point();
@@ -829,25 +834,28 @@ il_read_char(message, options, flags)
     if (message)
     {
 	char *text = il_fix_text(message);
-
+	wchar_t *wtext=mbsduptowcs(text);
 	if (flags & IL_ERROR)
 	{
-	    il_insert_text("*** ");
+	    il_insert_text(L"*** ");
 	    il_set_error_flag(1);
 	}
 
-	il_insert_text(text);
+	il_insert_text(wtext);
 
 	if (flags & IL_HOME)
 	    il_beginning_of_line();
 
 	xfree(text);
+	xfree(wtext);
 
 	if (options)
 	{
 	    help = il_build_help_from_string(options);
-	    il_insert_text(help);
+	    wchar_t *whelp=mbsduptowcs(help);
+	    il_insert_text(whelp);
 	    xfree(help);
+	    xfree(whelp);
 	}
     }
 
@@ -948,7 +956,11 @@ il_read_line(static_text, dest, default_string, history)
     il_reset_line();
 
     if (static_text)
-	il_set_static_text(static_text);
+    {
+	wchar_t *txt=mbsduptowcs(static_text);
+	il_set_static_text(txt);
+	xfree(txt);
+    }
 
     if (default_string)
 	il_insert_text(default_string);
@@ -1101,7 +1113,11 @@ il_isearch(static_text, dest, status, action)
 	il_reset_line();
 
 	if (static_text)
-	    il_set_static_text(static_text);
+	{
+	    wchar_t *txt=mbsduptowcs(static_text);
+	    il_set_static_text(txt);
+	    xfree(txt);
+	}
 
 	return NULL;
     }
@@ -1768,10 +1784,11 @@ void
 set_prompt()
 {
     char temp[MAX_STATIC_SIZE + 1];
-
-    il_set_static_text(strcat(truncate_string(panel_get_path(src_panel), temp,
-					      MAX_STATIC_SIZE-strlen(PS1)+1),
-			      PS1));
+    char *prompt=strcat(truncate_string(panel_get_path(src_panel), temp,
+					MAX_STATIC_SIZE-strlen(PS1)+1), PS1);
+    wchar_t *wprompt=mbsduptowcs(prompt);
+    il_set_static_text(wprompt);
+    xfree(wprompt);
 }
 
 
@@ -1989,8 +2006,8 @@ main(argc, argv)
 	TypeSensitivity = OFF;
 
     ConfirmOnExit       = get_flag_var("ConfirmOnExit", OFF);
-    NormalModeHelp      = get_string_var("NormalModeHelp", "");
-    CommandLineModeHelp = get_string_var("CommandLineModeHelp", "");
+    NormalModeHelp      = mbsduptowcs(get_string_var("NormalModeHelp", ""));
+    CommandLineModeHelp = mbsduptowcs(get_string_var("CommandLineModeHelp", ""));
 
 
     use_section(AnsiColors ? color_section : monochrome_section);
@@ -2162,18 +2179,19 @@ main(argc, argv)
 			    {
 				size_t msglen = 32 + strlen(command->name) +
 				    strlen(cmd) + 1;
-				char *msg = xmalloc(msglen);
+				wchar_t *msg = xmalloc(msglen * sizeof(wchar_t));
 
-				sprintf(msg, "%s: %s", command->name, cmd);
+				swprintf(msg,msglen, L"%s: %s", command->name, cmd);
 				status(msg, STATUS_WARNING, STATUS_LEFT);
 				tty_update();
 				xfree(msg);
 
 				if (command->hide)
 				{
-				    msg = xmalloc(64+strlen(command->name)+1);
-				    sprintf(msg,
-					    "Wait, running %s command %s...",
+				    int msglen=64+strlen(command->name)+1;
+				    wchar_t *msg = xmalloc(msglen*sizeof(wchar_t));
+				    swprintf(msg,msglen,
+					    L"Wait, running %s command %s...",
 					    "user-defined", command->name);
 				    il_message(msg);
 				    tty_update();
@@ -2181,7 +2199,11 @@ main(argc, argv)
 				}
 
 				if (!is_a_bg_command(cmd))
-				    tty_update_title(cmd);
+				{
+				    wchar_t *wcmd=mbsduptowcs(cmd);
+				    tty_update_title(wcmd);
+				    xfree(wcmd);
+				}
 				child_exit_code = start(cmd, command->hide);
 				xfree(cmd);
 
@@ -2381,7 +2403,11 @@ main(argc, argv)
 
 			    bg_cmd = is_a_bg_command(output_string);
 			    if (!bg_cmd)
-				tty_update_title(output_string);
+			    {
+				wchar_t *wstr=mbsduptowcs(output_string);
+				tty_update_title(wstr);
+				xfree(wstr);
+			    }
 			    il_kill_line(IL_DONT_STORE);
 			    il_insert_text(output_string);
 			    start(output_string, bg_cmd);

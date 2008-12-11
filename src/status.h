@@ -35,7 +35,7 @@
 #define STATUS_LEFT		1
 
 
-extern void status_init PROTO ((char *));
+extern void status_init PROTO ((wchar_t *));
 extern void status_end PROTO (());
 extern void status_resize PROTO ((size_t, size_t));
 extern void status_update PROTO (());

@@ -28,6 +28,8 @@
 
 #include <sys/types.h>
 
+#include <wchar.h>
+
 #ifdef HAVE_STDDEF_H
 #include <stddef.h>
 #endif
@@ -124,7 +126,8 @@ static int InputLineColors[INPUTLINE_FIELDS] =
 #define IL_RESIZE(il_new_buffer_size)			\
 {							\
     il->size = il_new_buffer_size;			\
-    il->buffer = xrealloc(il->buffer, il->size);	\
+    il->buffer = xrealloc(il->buffer,			\
+			  (il->size * sizeof(wchar_t)));\
 }
 
 
@@ -197,7 +200,7 @@ il_region_command(flags)
 	il->length         -= region_size;
 	il->point           = region_start;
 	il->mark            = region_start;
-	strcpy(il->buffer + region_start, il->buffer + region_end);
+	wcscpy(il->buffer + region_start, il->buffer + region_end);
 	IL_RESIZE(il->length + 1);
     }
 }
@@ -849,13 +852,13 @@ il_capitalize_word()
  */
 void
 il_set_static_text(static_text)
-    char *static_text;
+    wchar_t *static_text;
 {
     size_t len;
 
     assert(static_text);
 
-    len = strlen(static_text);
+    len = wcslen(static_text);
 
     il->point += len - il->static_length;
     il->mark  += len - il->static_length;
@@ -863,11 +866,11 @@ il_set_static_text(static_text)
     if (len + il->dynamic_length + 1 > il->size)
 	IL_RESIZE(len + il->dynamic_length + 1);
 
-    memmove(il->buffer + len,
-	    il->buffer + il->static_length,
-	    il->dynamic_length + 1);
+    wmemmove(il->buffer + len,
+	     il->buffer + il->static_length,
+	     il->dynamic_length + 1);
 
-    memcpy(il->buffer, static_text, len);
+    wmemcpy(il->buffer, static_text, len);
 
     toprintable(il->buffer, len);
 
@@ -881,14 +884,14 @@ il_set_static_text(static_text)
  */
 void
 il_insert_text(text)
-    char *text;
+    wchar_t *text;
 {
     size_t len;
 
     if (text == NULL)
 	return;
 
-    len = strlen(text);
+    len = wcslen(text);
 
     if (il->length + len + 1 > il->size)
 	IL_RESIZE(il->size + len + 1 + 32);
@@ -1054,10 +1057,10 @@ il_get_contents(dest)
  */
 void
 il_message(message)
-    char *message;
+    wchar_t *message;
 {
     il_reset_line();
-    il_set_static_text(message ? message : "Wait....");
+    il_set_static_text(message ? message : L"Wait....");
     il_update();
     il_update_point();
 }
@@ -1100,7 +1103,7 @@ il_history(dir)
 		if (il->length + 1 > il->size)
 		    IL_RESIZE(il->length + 1);
 
-		strcpy(il->buffer + il->static_length, hist->line);
+		wcscpy(il->buffer + il->static_length, hist->line);
 
 		il_update();
 	    }
@@ -1123,7 +1126,7 @@ il_history(dir)
 		if (il->length + 1 > il->size)
 		    IL_RESIZE(il->length + 1);
 
-		strcpy(il->buffer + il->static_length, hist->line);
+		wcscpy(il->buffer + il->static_length, hist->line);
 	    }
 	    else
 		il_kill_line(IL_DONT_STORE);
@@ -1140,7 +1143,7 @@ il_history(dir)
 
 	    if ((hist = previous_history()))
 	    {
-		if (strcmp(il->buffer + il->static_length, hist->line) != 0)
+		if (wcscmp(il->buffer + il->static_length, hist->line) != 0)
 		{
 		    add_history(il->buffer + il->static_length);
 		    next_history();

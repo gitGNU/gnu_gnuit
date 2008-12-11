@@ -77,7 +77,7 @@ typedef struct
     size_t static_length;	/* The static text length.  */
     size_t dynamic_length;	/* The dynamic text length.  */
     size_t size;		/* The current buffer size.  */
-    char *buffer;		/* The data buffer.  */
+    wchar_t *buffer;		/* The data buffer.  */
     char *kill_ring;		/* The kill ring.  */
     char *history_file;		/* The name of the history file.  */
 } input_line_t;
@@ -119,12 +119,12 @@ extern void il_delete_horizontal_space PROTO (());
 extern void il_downcase_word PROTO (());
 extern void il_upcase_word PROTO (());
 extern void il_capitalize_word PROTO (());
-extern void il_set_static_text PROTO ((char *));
-extern void il_insert_text PROTO ((char *));
+extern void il_set_static_text PROTO ((wchar_t *));
+extern void il_insert_text PROTO ((wchar_t *));
 extern void il_update_point PROTO (());
 extern void il_update PROTO (());
 extern int il_get_contents PROTO ((char **));
-extern void il_message PROTO ((char *));
+extern void il_message PROTO ((wchar_t *));
 extern void il_set_error_flag PROTO ((int));
 extern void il_history PROTO ((int));
 
