@@ -506,7 +506,7 @@ report_undefined_key()
     else
 	tty_beep();
 
-    set_status((char *)NULL);
+    set_status(NULL);
     set_signal(-1);
     tty_update();
 }
@@ -994,7 +994,7 @@ refresh(signum)
 
     set_title();
     set_header();
-    set_status((char *)NULL);
+    set_status(NULL);
     set_signal(-1);
     update_all();
     tty_update();
@@ -1192,7 +1192,7 @@ main(argc, argv)
     if (ps(arguments) == 0)
 	return 1;
 
-/*    tty_start_cursorapp();*/
+    tty_start_cursorapp();
 
     title_window  = window_init();
     header_window = window_init();
@@ -1233,7 +1233,7 @@ main(argc, argv)
 	while ((ks = tty_get_key(&repeat_count)) == NULL)
 	    report_undefined_key();
 
-	set_status((char *)NULL);
+	set_status(NULL);
 	set_signal(-1);
 
 	key = ((char *)ks->aux_data - (char *)built_in) / MAX_BUILTIN_NAME;
@@ -1519,7 +1519,7 @@ main(argc, argv)
 		    xfree(tmp);
 		    errno = 0;
 		    tty_get_key(NULL);
-		    set_status((char *)NULL);
+		    set_status(NULL);
 		    set_signal(-1);
 		}
 		break;
