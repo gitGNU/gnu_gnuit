@@ -551,7 +551,7 @@ read_ps_line(ps_output, line)
 	    ;
 
     wlen=mbstowcs(NULL,ok,0);
-    wok=xmalloc(wlen*sizeof(wchar_t));
+    wok=xmalloc((wlen+1)*sizeof(wchar_t));
     mbstowcs(wok,ok,wlen);
     return wok;
 }

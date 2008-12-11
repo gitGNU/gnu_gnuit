@@ -194,13 +194,13 @@ build_message()
 		    if (ptr[0])
 		    {
 			len = mbstowcs(NULL,ptr,0);
-			temp_msg = xrealloc(temp_msg, temp_msg_len += len);
+			temp_msg = xrealloc(temp_msg, ((temp_msg_len += len) * sizeof(wchar_t)));
 			mbstowcs(&temp_msg[j], ptr, len);
 		    }
 		    else
 		    {
 			len = 6;
-			temp_msg = xrealloc(temp_msg, temp_msg_len += len);
+			temp_msg = xrealloc(temp_msg,  ((temp_msg_len += len) * sizeof(wchar_t)));
 			wmemcpy(&temp_msg[j], L"(none)", len);
 		    }
 
@@ -214,7 +214,7 @@ build_message()
 			    day_name[time->tm_wday], month_name[time->tm_mon],
 			    time->tm_mday, time->tm_year + 1900);
 		    len = wcslen(date_str);
-		    temp_msg = xrealloc(temp_msg, temp_msg_len += len);
+		    temp_msg = xrealloc(temp_msg,  ((temp_msg_len += len) * sizeof(wchar_t)));
 		    memcpy(&temp_msg[j], date_str, len);
 		    j += len;
 		    i++;
@@ -238,7 +238,7 @@ build_message()
 	{
 	    if (status_message[i] == '\t')
 	    {
-		temp_msg = xrealloc(temp_msg, temp_msg_len += 8);
+		temp_msg = xrealloc(temp_msg, ((temp_msg_len += 8) * sizeof(wchar_t)));
 		wmemcpy(&temp_msg[j], L"        ", (8*sizeof(wchar_t)));
 		j += 8;
 	    }
