@@ -51,6 +51,8 @@ void *xmalloc(size_t size)
     if(ptr)
 	return ptr;
     fatal("XMALLOC FAIL\n");
+    /* NOTREACHED */
+    abort();
 }
 
 void
