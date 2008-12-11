@@ -1226,9 +1226,7 @@ panel_read_directory(this, directory, verify)
 	this->dir_entry[this->entries].name = xmalloc(namelen + 1);
 	strcpy(this->dir_entry[this->entries].name, d->d_name);
 	this->maxname = max(this->maxname, namelen);
-	wnamelen=mbstowcs(NULL,d->d_name,0);
-	this->dir_entry[this->entries].wname = xmalloc((wnamelen+1) * sizeof(wchar_t));
-	mbstowcs(this->dir_entry[this->entries].wname,d->d_name,wnamelen);
+	this->dir_entry[this->entries].wname = mbsduptowcs(d->d_name);
 
 	panel_load_inode(this, this->entries);
     }

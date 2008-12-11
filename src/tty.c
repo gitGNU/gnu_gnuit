@@ -2441,11 +2441,12 @@ tty_update_title(string)
     if (tty_is_xterm(tty_type))
     {
 	size_t len = wcslen(string);
-	wchar_t *temp = (wchar_t *)xmalloc( (128 + len + 1) * sizeof(wchar_t));
+	size_t buflen = 128 + len + 1;
+	wchar_t *temp = (wchar_t *)xmalloc(buflen * sizeof(wchar_t));
 	wchar_t *printable_string = xwcsdup(string);
 
 	toprintable(printable_string, len);
-	swprintf(temp, len, L"%c]2;%s - %ls%c", 0x1b, PRODUCT, printable_string, 0x07);
+	swprintf(temp, buflen, L"%c]2;%s - %ls%c", 0x1b, PRODUCT, printable_string, 0x07);
 	/* I don't know what can be considered a resonable limit here,
 	   I just arbitrarily chosed to truncate the length of the
 	   title to twice the number of columns.  Longer strings seem

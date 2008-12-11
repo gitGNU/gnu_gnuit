@@ -349,7 +349,7 @@ mbsduptowcs(src)
     wchar_t *dest;
     len=mbstowcs(NULL,src,0);
     dest=xmalloc((len+1) * sizeof(wchar_t));
-    mbstowcs(dest,src,len);
+    mbstowcs(dest,src,len+1);
     return dest;
 }
 

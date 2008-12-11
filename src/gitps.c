@@ -535,8 +535,6 @@ read_ps_line(ps_output, line)
 {
     int c;
     char *ok;
-    wchar_t *wok;
-    size_t wlen;
     size_t lastchar;
 
     ok = fgets(line, MAX_LINE - 1, ps_output);
@@ -550,10 +548,7 @@ read_ps_line(ps_output, line)
 	while ((c = fgetc(ps_output)) != '\n' && c != EOF)
 	    ;
 
-    wlen=mbstowcs(NULL,ok,0);
-    wok=xmalloc((wlen+1)*sizeof(wchar_t));
-    mbstowcs(wok,ok,wlen);
-    return wok;
+    return mbsduptowcs(ok);
 }
 
 
@@ -1002,10 +997,10 @@ refresh(signum)
     }
 
     set_title();
-/*    set_header();*/
-/*    set_status((char *)NULL);*/
-/*    set_signal(-1);*/
-/*    update_all();*/
+    set_header();
+    set_status((char *)NULL);
+    set_signal(-1);
+    update_all();
 /*    window_goto(title_window, 0, 0);*/
     tty_update();
 
@@ -1219,13 +1214,13 @@ main(argc, argv)
 
     first_on_screen = current_process = 0;
 
-/*    update_title(ps_cmd);
-      set_signal(SIGTERM);*/
+    update_title(ps_cmd);
+    set_signal(SIGTERM);
 
   restart:
     stdout_log = fopen(stdout_log_name, "r");
     remove_log();
-/*
+
     if ((PID_index = get_PID_index(stdout_log)) == -1)
     {
 	exit_code = 1;
@@ -1233,7 +1228,7 @@ main(argc, argv)
     }
 
     free_ps_list();
-    build_ps_list(stdout_log);*/
+    build_ps_list(stdout_log);
     fclose(stdout_log);
 
     refresh(0);
