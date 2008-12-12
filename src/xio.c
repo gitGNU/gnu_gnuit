@@ -352,3 +352,15 @@ mbsduptowcs(src)
     return dest;
 }
 
+char *
+wcsduptombs(src)
+    wchar_t *src;
+{
+    size_t len;
+    char *dest;
+    len=wcstombs(NULL,src,0);
+    dest=xmalloc((len+1) * sizeof(char));
+    wcstombs(dest,src,len+1);
+    return dest;
+}
+

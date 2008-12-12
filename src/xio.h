@@ -39,6 +39,7 @@ extern int xwrite PROTO ((int, const char *, size_t));
 extern int wxwrite PROTO ((int, const wchar_t *, size_t));
 extern wchar_t *xwcsdup PROTO ((wchar_t *));
 extern wchar_t *mbsduptowcs PROTO ((char *));
+extern char *wcsduptombs PROTO ((wchar_t *));
 #ifndef HAVE_RENAME
 extern int rename PROTO ((const char *, const char *));
 #endif /* HAVE_RENAME */

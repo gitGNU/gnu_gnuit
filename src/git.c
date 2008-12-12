@@ -55,6 +55,9 @@
 
 #include <assert.h>
 
+#include <wchar.h>
+#include <wctype.h>
+
 #include "stdc.h"
 #include "xstring.h"
 #include "xmalloc.h"
@@ -72,7 +75,6 @@
 #include "history.h"
 #include "tilde.h"
 #include "misc.h"
-
 
 char *copyright =
 "GIT is free software; you can redistribute it and/or modify it under the\n\
@@ -566,11 +568,11 @@ report_undefined_key(status_message)
 
 
 extern int il_dispatch_commands PROTO ((int, int));
-extern char *il_fix_text PROTO ((char *));
+extern wchar_t *il_fix_text PROTO ((wchar_t *));
 extern char *il_build_help_from_string PROTO ((char *));
 extern char *il_isearch PROTO ((char *, char **, int, int *));
-extern char il_read_char PROTO ((char *, char *, int));
-extern char *il_read_line PROTO ((char *, char **, char *, xstack_t *));
+extern char il_read_char PROTO ((wchar_t *, char *, int));
+extern char *il_read_line PROTO ((char *, char **, wchar_t *, xstack_t *));
 
 
 /*
@@ -597,12 +599,12 @@ il_history_add_entry(history, text)
 /*
  * Preview a history string.
  */
-char *
+wchar_t *
 il_history_view_entry(history, offset)
     xstack_t *history;
     int offset;
 {
-    char *history_text;
+    wchar_t *history_text;
 
     return xstack_preview(history, &history_text, offset) ?
 	   history_text : NULL;
@@ -748,32 +750,34 @@ il_dispatch_commands(key, flags)
  * and expand tabs.  Return a malloc-ed pointer to the fixed text.
  * The caller should free the new text.
  */
-char *
+wchar_t *
 il_fix_text(text)
-   char *text;
+    wchar_t *text;
 {
     int i, j;
-    char *fixed_text;
+    wchar_t *fixed_text;
     size_t fixed_text_length;
 
 
     if (text == NULL)
 	return NULL;
 
-    fixed_text = xmalloc(fixed_text_length = (strlen(text) + 1));
+    fixed_text_length = wcslen(text) + 1;
+    fixed_text = xmalloc(fixed_text_length * sizeof(wchar_t));
 
     for (i = 0, j = 0; text[i]; i++)
-	if (text[i] == '\t')
+	if (text[i] == L'\t')
 	{
-	    fixed_text = xrealloc(fixed_text, fixed_text_length += 8);
-	    memcpy(&fixed_text[j], "        ", 8);
+	    fixed_text_length += 8;
+	    fixed_text = xrealloc(fixed_text, (fixed_text_length * sizeof(wchar_t)));
+	    wmemcpy(&fixed_text[j], L"        ", 8);
 	    j += 8;
 	}
 	else
-	    if (isprint((int)text[i]))
+	    if (iswprint(text[i]))
 		fixed_text[j++] = text[i];
 	    else
-		fixed_text[j++] = '?';
+		fixed_text[j++] = L'?';
 
     fixed_text[j] = 0;
 
@@ -816,7 +820,7 @@ il_build_help_from_string(options)
  */
 char
 il_read_char(message, options, flags)
-    char *message;
+    wchar_t *message;
     char *options;
     int flags;
 {
@@ -833,21 +837,19 @@ il_read_char(message, options, flags)
 
     if (message)
     {
-	char *text = il_fix_text(message);
-	wchar_t *wtext=mbsduptowcs(text);
+	wchar_t *text = il_fix_text(message);
 	if (flags & IL_ERROR)
 	{
 	    il_insert_text(L"*** ");
 	    il_set_error_flag(1);
 	}
 
-	il_insert_text(wtext);
+	il_insert_text(text);
 
 	if (flags & IL_HOME)
 	    il_beginning_of_line();
 
 	xfree(text);
-	xfree(wtext);
 
 	if (options)
 	{
@@ -944,7 +946,7 @@ char *
 il_read_line(static_text, dest, default_string, history)
     char *static_text;
     char **dest;
-    char *default_string;
+    wchar_t *default_string;
     xstack_t *history;
 {
     tty_key_t *ks;

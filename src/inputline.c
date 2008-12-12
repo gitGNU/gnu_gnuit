@@ -29,6 +29,7 @@
 #include <sys/types.h>
 
 #include <wchar.h>
+#include <wctype.h>
 
 #ifdef HAVE_STDDEF_H
 #include <stddef.h>
@@ -52,7 +53,7 @@
 #include "inputline.h"
 #include "tilde.h"
 #include "misc.h"
-
+#include "xio.h"
 
 extern int AnsiColors;
 
@@ -189,9 +190,9 @@ il_region_command(flags)
 	if (il->kill_ring)
 	    xfree(il->kill_ring);
 
-	il->kill_ring = xmalloc(region_size + 1);
-	memcpy(il->kill_ring, il->buffer + region_start, region_size);
-	il->kill_ring[region_size] = '\0';
+	il->kill_ring = xmalloc((region_size + 1) * sizeof(wchar_t));
+	wmemcpy(il->kill_ring, il->buffer + region_start, region_size);
+	il->kill_ring[region_size] = L'\0';
     }
 
     if (flags & IL_KILL)
@@ -317,12 +318,12 @@ il_save()
 
     if (saved_il->buffer)
     {
-	il->buffer = xmalloc(saved_il->size);
-	memcpy(il->buffer, saved_il->buffer, saved_il->size);
+	il->buffer = xmalloc(saved_il->size * sizeof(wchar_t));
+	wmemcpy(il->buffer, saved_il->buffer, saved_il->size);
     }
 
     if (saved_il->kill_ring)
-	il->kill_ring = xstrdup(saved_il->kill_ring);
+	il->kill_ring = xwcsdup(saved_il->kill_ring);
 
     return saved_il;
 }
@@ -542,17 +543,17 @@ il_end_of_line()
  */
 void
 il_insert_char(c)
-    int c;
+    wchar_t c;
 {
-    if (!isprint(c))
+    if (!iswprint(c))
 	return;
 
     if (il->length + 1 >= il->size)
 	IL_RESIZE(il->length + 1 + 32);
 
-    memmove(il->buffer + il->point + 1,
-	    il->buffer + il->point,
-	    il->length - il->point + 1);
+    wmemmove(il->buffer + il->point + 1,
+	     il->buffer + il->point,
+	     il->length - il->point + 1);
     il->buffer[il->point] = c;
     il->point++;
     il->length++;
@@ -570,9 +571,9 @@ il_delete_char()
 {
     if (il->point < il->length)
     {
-	memcpy(il->buffer + il->point,
-	       il->buffer + il->point + 1,
-	       il->length - il->point + 1);
+	wmemcpy(il->buffer + il->point,
+		il->buffer + il->point + 1,
+		il->length - il->point + 1);
 
 	il->length--;
 	il->dynamic_length--;
@@ -593,9 +594,9 @@ il_backward_delete_char()
 {
     if (il->point > il->static_length)
     {
-	memcpy(il->buffer + il->point - 1,
-	       il->buffer + il->point,
-	       il->length - il->point + 1);
+	wmemcpy(il->buffer + il->point - 1,
+		il->buffer + il->point,
+		il->length - il->point + 1);
 
 	il->point--;
 	il->length--;
@@ -676,7 +677,7 @@ il_reset_line()
 
     IL_RESIZE(1);
 
-    il->buffer[0] = '\0';
+    il->buffer[0] = L'\0';
 
     il->last_operation = IL_RESET_LINE;
 }
@@ -741,7 +742,7 @@ il_kill_to_end_of_line()
 void
 il_just_one_space()
 {
-    if (il->buffer[il->point] == ' ')
+    if (il->buffer[il->point] == L' ')
     {
 	il_delete_horizontal_space();
 	il_insert_char(' ');
@@ -756,9 +757,9 @@ il_just_one_space()
 void
 il_delete_horizontal_space()
 {
-    if (il->buffer[il->point] == ' ')
+    if (il->buffer[il->point] == L' ')
     {
-	while (il->buffer[il->point] == ' ')
+	while (il->buffer[il->point] == L' ')
 	    il_delete_char();
 
 	while (il->dynamic_length && il->buffer[il->point - 1] == ' ')
@@ -784,7 +785,7 @@ il_downcase_word()
 	il_forward_word();
 
 	for (i = previous_point; i < il->point; i++)
-	    il->buffer[i] = tolower((int)il->buffer[i]);
+	    il->buffer[i] = towlower(il->buffer[i]);
 
 	il->last_operation = IL_DOWNCASE_WORD;
     }
@@ -806,7 +807,7 @@ il_upcase_word()
 	il_forward_word();
 
 	for (i = previous_point; i < il->point; i++)
-	    il->buffer[i] = toupper((int)il->buffer[i]);
+	    il->buffer[i] = towupper(il->buffer[i]);
 
 	il->last_operation = IL_UPCASE_WORD;
     }
@@ -830,15 +831,15 @@ il_capitalize_word()
 	il_forward_word();
 
 	for (i = previous_point; i < il->point; i++)
-	    if (isalnum((int)il->buffer[i]))
+	    if (iswalnum(il->buffer[i]))
 	    {
 		if (first)
 		{
-		    il->buffer[i] = toupper((int)il->buffer[i]);
+		    il->buffer[i] = towupper((int)il->buffer[i]);
 		    first = 0;
 		}
 		else
-		    il->buffer[i] = tolower((int)il->buffer[i]);
+		    il->buffer[i] = towlower((int)il->buffer[i]);
 	    }
 
 	il->last_operation = IL_CAPITALIZE_WORD;
@@ -985,7 +986,7 @@ void
 il_update()
 {
     int scroll;
-    char *temp;
+    wchar_t *temp;
     unsigned len;
     tty_status_t status;
     size_t normal_static_length = 0;
@@ -1006,8 +1007,8 @@ il_update()
 	   il->point - il->columns + 1 +
 	   (scroll - 1) - ((il->point - il->columns) % scroll) : 0);
 
-    temp = xmalloc(il->columns);
-    memset(temp, ' ', il->columns);
+    temp = xmalloc(il->columns * sizeof(wchar_t));
+    wmemset(temp, L' ', il->columns);
 
     if (il->echo)
 	memcpy(temp, il->buffer + il->static_length + len,
@@ -1044,10 +1045,10 @@ il_update()
  */
 int
 il_get_contents(dest)
-    char **dest;
+    wchar_t **dest;
 {
-    *dest = xrealloc(*dest, il->dynamic_length + 1);
-    memcpy(*dest, il->buffer + il->static_length, il->dynamic_length + 1);
+    *dest = xrealloc(*dest, ((il->dynamic_length + 1) * sizeof(wchar_t)));
+    wmemcpy(*dest, il->buffer + il->static_length, il->dynamic_length + 1);
     return il->dynamic_length;
 }
 
@@ -1096,15 +1097,16 @@ il_history(dir)
 
 	    if ((hist = previous_history()))
 	    {
-		il->dynamic_length = strlen(hist->line);
+		wchar_t *line=mbsduptowcs(hist->line);
+		il->dynamic_length = wcslen(line);
 		il->length         = il->static_length + il->dynamic_length;
 		il->point          = il->length;
 
 		if (il->length + 1 > il->size)
 		    IL_RESIZE(il->length + 1);
 
-		wcscpy(il->buffer + il->static_length, hist->line);
-
+		wcscpy(il->buffer + il->static_length, line);
+		xfree(line);
 		il_update();
 	    }
 
@@ -1119,14 +1121,16 @@ il_history(dir)
 
 	    if ((hist = next_history()))
 	    {
-		il->dynamic_length = strlen(hist->line);
+		wchar_t *line=mbsduptowcs(hist->line);
+		il->dynamic_length = wcslen(line);
 		il->length         = il->static_length + il->dynamic_length;
 		il->point          = il->length;
 
 		if (il->length + 1 > il->size)
 		    IL_RESIZE(il->length + 1);
 
-		wcscpy(il->buffer + il->static_length, hist->line);
+		wcscpy(il->buffer + il->static_length, line);
+		xfree(line);
 	    }
 	    else
 		il_kill_line(IL_DONT_STORE);
@@ -1143,14 +1147,22 @@ il_history(dir)
 
 	    if ((hist = previous_history()))
 	    {
-		if (wcscmp(il->buffer + il->static_length, hist->line) != 0)
+		wchar_t *line=mbsduptowcs(hist->line);
+		if (wcscmp(il->buffer + il->static_length, line) != 0)
 		{
-		    add_history(il->buffer + il->static_length);
+		    char *newhist=wcsduptombs(il->buffer + il->static_length);
+		    add_history(newhist);
 		    next_history();
+		    xfree(newhist);
 		}
+		xfree(line);
 	    }
 	    else
-		add_history(il->buffer + il->static_length);
+	    {
+		char *newhist=wcsduptombs(il->buffer + il->static_length);
+		add_history(newhist);
+		xfree(newhist);
+	    }
 
 	    next_history();
 	    break;
