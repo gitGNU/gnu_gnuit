@@ -222,20 +222,20 @@ static int PanelColors[PANEL_FIELDS] =
 #define PanelFilesInfoBrightness        PanelColors[19]
 
 
-char *panel_il_message[] =
+wchar_t *panel_il_message[] =
 {
-    "Wait, reading directory...",
-    "Wait, copying file...",
-    "Wait, copying file(s)...",
-    "Wait, copying directory...",
-    "Wait, deleting directory...",
-    "Wait, deleting file(s)...",
-    "Wait, moving file...",
-    "Wait, moving file(s)...",
-    "Wait, moving directory...",
-    "Wait, comparing directories...",
-    "Wait, comparing files...",
-    "Wait, renaming file(s)...",
+    L"Wait, reading directory...",
+    L"Wait, copying file...",
+    L"Wait, copying file(s)...",
+    L"Wait, copying directory...",
+    L"Wait, deleting directory...",
+    L"Wait, deleting file(s)...",
+    L"Wait, moving file...",
+    L"Wait, moving file(s)...",
+    L"Wait, moving directory...",
+    L"Wait, comparing directories...",
+    L"Wait, comparing files...",
+    L"Wait, renaming file(s)...",
 };
 
 #define PANEL_READ_DIR_MSG      panel_il_message[ 0]
@@ -371,6 +371,8 @@ panel_init(path)
 
     minimize_path(this->path);
     this->pathlen = strlen(this->path);
+
+    this->wpath = mbsduptowcs(this->path);
 
     this->window = window_init();
 
@@ -714,7 +716,7 @@ panel_resize(this, x, y, lines, columns)
     else
 	this->scroll_step = StartupScrollStep;
 
-    this->temp = xrealloc(this->temp, this->columns);
+    this->temp = xrealloc(this->temp, (this->columns * sizeof(wchar_t)));
     window_resize(this->window, x, y, lines, columns);
     panel_center_current_entry(this);
     this->horizontal_offset = 0;
@@ -1035,7 +1037,8 @@ panel_read_directory(this, directory, verify)
 
     DIR *tmpdir;
     struct stat s;
-    int namelen,wnamelen;
+    int namelen;
+/* FIXME:     int wnamelen; */
     char *old_path;
     struct dirent *d;
     int dotdot_found = 0;
@@ -1371,7 +1374,7 @@ panel_update_entries(this)
 
     tty_colors(OFF, WHITE, PanelBackground);
 
-    memset(this->temp, ' ', this->columns);
+    wmemset(this->temp, L' ', this->columns);
     limit = min(this->lines - 2, this->on_screen);
 
     for (; i < limit; i++)
@@ -1401,8 +1404,8 @@ panel_update_path(this)
     tty_save(&status);
 
     len = this->columns - (1 + 1 + 1 + 14 + 1 + 1);
-    memset(this->temp, ' ', this->columns);
-    truncate_long_name(this->path, this->temp, len);
+    wmemset(this->temp, L' ', this->columns);
+    truncate_long_name(this->wpath, this->temp, len);
     toprintable(this->temp, len);
 
     tty_colors(PanelPathBrightness, PanelPath, PanelFrame);
@@ -1486,8 +1489,10 @@ void
 panel_update_size(this)
     panel_t *this;
 {
-    char buf[LONGEST_HUMAN_READABLE+3];
+    int buflen=LONGEST_HUMAN_READABLE+3;
+    wchar_t buf[buflen];
     char *sz;
+    wchar_t *wsz;
     tty_status_t status;
     struct fs_usage fsu;
     int viewable = this->columns - (1 + 1 + 1 + 1);
@@ -1499,13 +1504,13 @@ panel_update_size(this)
 
     fsu.fsu_blocks = (uintmax_t) -1;
 
+    wmemset(buf, L' ', buflen);
     /* get_fs_usage will fail on SVR2 (needs disk instead of NULL) */
     if (viewable < 6 ||
 	get_fs_usage(this->path, NULL, &fsu) < 0 ||
 	fsu.fsu_blocks == (uintmax_t) -1)
     {
-	memset(buf, ' ', sizeof(buf));
-	sz=buf;
+	wsz=wcsdup(buf);
 	tty_brightness(OFF);
 	tty_foreground(PanelFrame);
     }
@@ -1522,16 +1527,18 @@ panel_update_size(this)
 
 	sz=panel_beautify_number(buf, n, (human_autoscale|human_SI|human_base_1024));
 	sz=strcat(sz,"B");
+	wsz=mbsduptowcs(sz);
 	tty_brightness(PanelDeviceFreeSpaceBrightness);
 	tty_foreground(PanelDeviceFreeSpace);
     }
 
     tty_background(PanelFrame);
 
-    window_goto(this->window, 0, this->columns - 2 - min(strlen(sz), viewable));
-    window_puts(this->window, sz, min(strlen(sz), viewable));
+    window_goto(this->window, 0, this->columns - 2 - min(wcslen(wsz), viewable));
+    window_puts(this->window, wsz, min(wcslen(wsz), viewable));
 
     tty_restore(&status);
+    xfree(wsz);
 }
 
 
@@ -1736,7 +1743,7 @@ panel_build_entry_field(this, entry, display_mode, offset)
 	case ENABLE_SIZE:
 	case ENABLE_ABBREVSIZE:
 	{
-	    char *ptr;
+	    wchar_t *ptr;
 	    int buflen;
 	    int flags = 0;
 	    if((display_mode==ENABLE_ABBREVSIZE) ||
@@ -1750,10 +1757,10 @@ panel_build_entry_field(this, entry, display_mode, offset)
 	    ptr=this->temp + this->columns - 2 - offset;
 	    if(buflen < 10)
 	    {
-		memset(ptr,' ',10-buflen);
+		wmemset(ptr,L' ',10-buflen);
 		ptr += (10-buflen);
 	    }
-	    memcpy(ptr, hbuf, buflen);
+	    swprintf(ptr, buflen, L"%s", hbuf);
 	    break;
 	}
 
@@ -1997,7 +2004,7 @@ panel_update_frame(this)
 {
     int line;
     tty_status_t status;
-    char *buf = xmalloc(this->columns);
+    wchar_t *buf = xmalloc(this->columns * sizeof(wchar_t));
 
     if (!this->visible)
 	return;
@@ -2009,16 +2016,16 @@ panel_update_frame(this)
     for (line = 1; line < this->lines - 1; line++)
     {
 	window_goto(this->window, line, 0);
-	window_putc(this->window, ' ');
+	window_putc(this->window, L' ');
     }
 
     for (line = 1; line < this->lines - 1; line++)
     {
 	window_goto(this->window, line, this->columns - 1);
-	window_putc(this->window, ' ');
+	window_putc(this->window, L' ');
     }
 
-    memset(buf, ' ', this->columns);
+    wmemset(buf, L' ', this->columns);
     window_goto(this->window, 0, 0);
     window_puts(this->window, buf, this->columns);
     window_goto(this->window, this->lines - 1, 0);
@@ -2266,11 +2273,12 @@ panel_copy(this, src, dest, mode, uid, gid)
     uid_t uid;
     gid_t gid;
 {
-    size_t len;
+    size_t len, msglen;
     int sfd, dfd, error;
     off64_t flen, n, memsize;
     struct stat dest_statbuf;
-    char *buf, *dest_file, *msg;
+    char *buf, *dest_file;
+    wchar_t *msg;
     int bytes_transferred, bytes_to_transfer;
 
     if (S_ISLNK(mode))
@@ -2326,8 +2334,9 @@ panel_copy(this, src, dest, mode, uid, gid)
 	if (*dest_file == '\0')
 	    return D_CREATERR;
 
-	msg = xmalloc(32 + strlen(src) + strlen(dest));
-	sprintf(msg, "(COPY) cp -r \"%s\" \"%s\"", src, dest);
+	msglen=32 + strlen(src) + strlen(dest);
+	msg = xmalloc(msglen * sizeof(wchar_t));
+	swprintf(msg, msglen, L"(COPY) cp -r \"%s\" \"%s\"", src, dest);
 	status(msg, STATUS_WARNING, STATUS_LEFT);
 	tty_update();
 	xfree(msg);
@@ -2336,7 +2345,7 @@ panel_copy(this, src, dest, mode, uid, gid)
 	result = start(temp, 1);
 	xfree(temp);
 
-	tty_update_title(this->path);
+	tty_update_title(this->wpath);
 
 	if (WIFSIGNALED(result))
 	{
@@ -2381,12 +2390,13 @@ panel_copy(this, src, dest, mode, uid, gid)
 	    return error;
     }
 
-    msg = xmalloc(32 + strlen(src));
+    msglen=32 + strlen(src);
+    msg = xmalloc(msglen * sizeof(wchar_t));
 
     if (S_ISREG(mode))
-	sprintf(msg, "(COPY) [  0%%] %s", src);
+	swprintf(msg, msglen, L"(COPY) [  0%%] %s", src);
     else
-	sprintf(msg, "(COPY) [0 bytes] %s", src);
+	swprintf(msg, msglen, L"(COPY) [0 bytes] %s", src);
 
     status(msg, STATUS_WARNING, STATUS_LEFT);
     tty_update();
@@ -2490,19 +2500,20 @@ panel_copy(this, src, dest, mode, uid, gid)
 
 	if (n + bytes_to_transfer <= flen)
 	{
-	    msg = xmalloc(32 + strlen(src));
+	    msglen = 32 + strlen(src);
+	    msg = xmalloc(msglen * sizeof(wchar_t));
 
 	    if (S_ISREG(mode))
-		sprintf(msg, "(COPY) [%3d%%] %s",
+		swprintf(msg, msglen, L"(COPY) [%3d%%] %s",
 			panel_percent(n + bytes_to_transfer, flen),
 			src);
 	    else
 	    {
 #ifdef HAVE_64BIT_IO
-		sprintf(msg, "(COPY) [%Ld bytes] %s",
+		swprintf(msg, msglen, L"(COPY) [%Ld bytes] %s",
 			(long long)(n + bytes_to_transfer), src);
 #else /* !HAVE_64BIT_IO */
-		sprintf(msg, "(COPY) [%ld bytes] %s",
+		swprintf(msg, msglen, L"(COPY) [%ld bytes] %s",
 			(long)(n + bytes_to_transfer), src);
 #endif /* !HAVE_64BIT_IO */
 	    }
@@ -2563,7 +2574,9 @@ panel_move(this, from, to, mode)
     size_t len;
     struct stat to_statbuf;
     struct stat from_statbuf;
-    char *to_file, *msg;
+    char *to_file;
+    wchar_t *msg;
+    int msglen;
 
 
     if (S_ISDIR(mode))
@@ -2610,8 +2623,9 @@ panel_move(this, from, to, mode)
 	if (*to_file == '\0')
 	    return T_CREATERR;
 
-	msg = xmalloc(32 + strlen(from) + strlen(to));
-	sprintf(msg, "(MOVE) mv -f \"%s\" \"%s\"", from, to);
+	msglen=32 + strlen(from) + strlen(to);
+	msg = xmalloc(msglen * sizeof(wchar_t));
+	swprintf(msg, msglen, L"(MOVE) mv -f \"%s\" \"%s\"", from, to);
 	status(msg, STATUS_WARNING, STATUS_LEFT);
 	tty_update();
 	xfree(msg);
@@ -2620,7 +2634,7 @@ panel_move(this, from, to, mode)
 	result = start(temp, 1);
 	xfree(temp);
 
-	tty_update_title(this->path);
+	tty_update_title(this->wpath);
 
 	if (WIFSIGNALED(result))
 	    return FT_INTERRUPTED;
@@ -2684,8 +2698,9 @@ panel_move(this, from, to, mode)
 	    return error;
     }
 
-    msg = xmalloc(32 + strlen(from));
-    sprintf(msg, "(MOVE) %s", from);
+    msglen = 32 + strlen(from);
+    msg = xmalloc(msglen * sizeof(wchar_t));
+    swprintf(msg, msglen, L"(MOVE) %s", from);
     status(msg, STATUS_WARNING, STATUS_LEFT);
     tty_update();
     xfree(msg);
@@ -2832,6 +2847,7 @@ panel_act_ENTER(this, other)
     int back;
     char *old_path, *cmd, *old_entry_name;
     char *name = this->dir_entry[this->current_entry].name;
+    wchar_t *wname=this->dir_entry[this->current_entry].wname;
 
     switch (this->dir_entry[this->current_entry].type)
     {
@@ -2898,8 +2914,8 @@ panel_act_ENTER(this, other)
 		tty_get_screen(screen);
 		panel_no_optimizations(this);
 		panel_no_optimizations(other);
-		il_insert_text(name);
-		tty_update_title(this->path);
+		il_insert_text(wname);
+		tty_update_title(this->wpath);
 		return 1;
 	    }
 
@@ -3069,7 +3085,6 @@ void
 panel_act_DELETE(this, other)
     panel_t *this, *other;
 {
-    char *msg;
     char *command;
     int keep_asking = 1;
     int first_entry, entry, answer = 0, result;
@@ -3142,7 +3157,7 @@ panel_act_DELETE(this, other)
 		    result = start(command, 1);
 		    xfree(command);
 
-		    tty_update_title(this->path);
+		    tty_update_title(this->wpath);
 
 		    if(WIFSIGNALED(result))
 		    {
@@ -3598,7 +3613,8 @@ panel_compare(this, this_entry, this_size, other, other_entry, other_size)
     off64_t *other_size;
 {
     off64_t n;
-    char *msg;
+    wchar_t *msg;
+    int msglen;
     int fd1, fd2;
     char *buf1, *buf2;
     int read1, read2;
@@ -3636,11 +3652,12 @@ panel_compare(this, this_entry, this_size, other, other_entry, other_size)
     file2 = xmalloc(strlen(other->path) + 1 + strlen(name2) + 1);
     sprintf(file2, "%s/%s", other->path, name2);
 
-    msg = xmalloc(32 + strlen(file1) + 1);
+    msglen = 32 + strlen(file1) + 1;
+    msg = xmalloc(msglen * sizeof(wchar_t));
     if(!size)
-	sprintf(msg, "(CMP) %s", file1);
+	swprintf(msg, msglen, L"(CMP) %s", file1);
     else
-	sprintf(msg, "(CMP) [  0%%] %s", file1);
+	swprintf(msg, msglen, L"(CMP) [  0%%] %s", file1);
     status(msg, STATUS_WARNING, STATUS_LEFT);
     tty_update();
     xfree(msg);
@@ -3718,9 +3735,9 @@ panel_compare(this, this_entry, this_size, other, other_entry, other_size)
 	n += bytes_read;
 
 	if(!size)
-	    sprintf(msg, "(CMP) %s", file1);
+	    swprintf(msg, msglen, L"(CMP) %s", file1);
 	else
-	    sprintf(msg, "(CMP) [%3d%%] %s",
+	    swprintf(msg, msglen, L"(CMP) [%3d%%] %s",
 		    panel_percent(n, size), file1);
 	status(msg, STATUS_WARNING, STATUS_LEFT);
 	tty_update();
@@ -4027,7 +4044,8 @@ panel_case_rename(this, entry, upcase)
     int entry;
     int upcase;
 {
-    char *msg;
+    wchar_t *msg;
+    int msglen;
     char *new_name;
     int n = 0, error, first_time = 1, len;
     char *name = this->dir_entry[entry].name;
@@ -4047,8 +4065,9 @@ panel_case_rename(this, entry, upcase)
     if (strcmp(name, new_name) == 0)
 	goto done;
 
-    msg = xmalloc(32 + len + 1);
-    sprintf(msg, "(CASE) Renaming %s", name);
+    msglen = 32 + len + 1;
+    msg = xmalloc(msglen * sizeof(wchar_t));
+    swprintf(msg, msglen, L"(CASE) Renaming %s", name);
     status(msg, STATUS_WARNING, STATUS_LEFT);
     tty_update();
     xfree(msg);
@@ -4075,7 +4094,7 @@ panel_case_rename(this, entry, upcase)
 	    result = start(command, 1);
 	    xfree(command);
 
-	    tty_update_title(this->path);
+	    tty_update_title(this->wpath);
 
 	    if (WIFSIGNALED(result))
 	    {
@@ -4814,7 +4833,7 @@ panel_action(this, action, other, aux_info, repeat_count)
 
 	case act_ISEARCH_BACKWARD:
 	    iai = (isearch_aux_t *)aux_info;
-	    len = strlen(iai->string);
+	    len = wcslen(iai->string);
 
 	    switch (iai->action)
 	    {
@@ -4872,7 +4891,7 @@ panel_action(this, action, other, aux_info, repeat_count)
 
 	case act_ISEARCH_FORWARD:
 	    iai = (isearch_aux_t *)aux_info;
-	    len = strlen(iai->string);
+	    len = wcslen(iai->string);
 
 	    switch (iai->action)
 	    {

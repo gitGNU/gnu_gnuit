@@ -512,7 +512,7 @@ get_login_name()
 
 void
 truncate_long_name(name, dest, len)
-    char *name, *dest;
+    wchar_t *name, *dest;
     int len;
 {
     int name_len;
@@ -523,40 +523,40 @@ truncate_long_name(name, dest, len)
 	    break;
 
 	case 1:
-	    dest[0] = ' ';
+	    dest[0] = L' ';
 	    break;
 
 	case 2:
-	    dest[0] = dest[1] = ' ';
+	    dest[0] = dest[1] = L' ';
 	    break;
 
 	case 3:
-	    dest[0] = dest[1] = dest[2] = ' ';
+	    dest[0] = dest[1] = dest[2] = L' ';
 	    break;
 
 	default:
-	    name_len = strlen(name);
+	    name_len = wcslen(name);
 
 	    if (name_len > len)
 	    {
-		dest[0] = dest[1] = dest[2] = '.';
-		memcpy(dest + 3, name + name_len - len + 3, len - 3);
+		dest[0] = dest[1] = dest[2] = L'.';
+		wmemcpy(dest + 3, name + name_len - len + 3, len - 3);
 	    }
 	    else
-		memcpy(dest, name, name_len);
+		wmemcpy(dest, name, name_len);
 	    break;
     }
 }
 
 
-char *
+wchar_t *
 truncate_string(path, temppath, len)
-    char *path;
-    char *temppath;
+    wchar_t *path;
+    wchar_t *temppath;
     int len;
 {
     truncate_long_name(path, temppath, len - 1);
-    temppath[min(len - 1, (int)strlen(path))] = '\0';
+    temppath[min(len - 1, (int)wcslen(path))] = '\0';
     return temppath;
 }
 

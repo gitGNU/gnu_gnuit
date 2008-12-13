@@ -219,7 +219,7 @@ typedef struct
     int on_screen;		/* # of files on the screen.  */
     char *path;			/* The current path.  */
     wchar_t *wpath;		/* The current path as wide chars.  */
-    char *temp;			/* A temporary string.  */
+    wchar_t *temp;		/* A temporary string.  */
     int current_entry;		/* The current file entry #.  */
     int first_on_screen;	/* The # of the entry displayed in the
 				   panel's first line.  */

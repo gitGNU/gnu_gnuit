@@ -130,7 +130,7 @@ wchar_t lock_bad[]   = L"Bad password, try again...";
 wchar_t *exit_msg;
 
 char *screen;
-char PS1[4] = " $ ";
+wchar_t PS1[4] = L" $ ";
 panel_t *left_panel, *right_panel, *src_panel, *dst_panel, *tmp_panel;
 
 static wchar_t *NormalModeHelp      = L"";
@@ -1786,12 +1786,10 @@ hide()
 void
 set_prompt()
 {
-    char temp[MAX_STATIC_SIZE + 1];
-    char *prompt=strcat(truncate_string(panel_get_path(src_panel), temp,
-					MAX_STATIC_SIZE-strlen(PS1)+1), PS1);
-    wchar_t *wprompt=mbsduptowcs(prompt);
-    il_set_static_text(wprompt);
-    xfree(wprompt);
+    wchar_t temp[MAX_STATIC_SIZE + 1];
+    wchar_t *prompt=wcscat(truncate_string(panel_get_wpath(src_panel), temp,
+					   MAX_STATIC_SIZE-wcslen(PS1)+1), PS1);
+    il_set_static_text(prompt);
 }
 
 
