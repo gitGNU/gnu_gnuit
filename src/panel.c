@@ -1431,14 +1431,9 @@ static int panel_fit_number(buf, number, flags, maxlen)
 {
     char *str=NULL;
     int scaled=(flags & human_autoscale);
-    /* try grouping digits */
-    if(GroupDigits)
-	str=panel_beautify_number(buf,number,(flags|human_group_digits));
-    /* if not grouping digits or num was too big */
+    str=panel_beautify_number(buf,number,(flags | (GroupDigits ? human_group_digits : 0)));
+    /* if too big, force autoscale */
     if((str == NULL) || (strlen(str) > maxlen))
-	str=panel_beautify_number(buf,number,flags);
-    /* if still too big, force autoscale */
-    if(strlen(str) > maxlen)
     {
 	scaled=1;
 	str=panel_beautify_number(buf, number, (flags|human_autoscale|human_SI|human_base_1024));
@@ -1517,9 +1512,7 @@ panel_update_size(this)
     else
     {
 	off64_t n;
-	off64_t free_blocks =
-            (geteuid() == 0) ? fsu.fsu_bfree : fsu.fsu_bavail;
-
+	off64_t free_blocks = fsu.fsu_bavail;
 
 	/* Indeed, this might happen...  */
 	if (free_blocks < 0)

@@ -1,3 +1,10 @@
+2008-10-24  Ian Beckwith  <ianb@erislabs.net>
+
+	* panel_fit_number(): If number with commas is too big,
+	  go straight to autoscale without trying to drop commas first.
+	* panel_update_size(): show available space (fsu.fsu_bavail)
+	  instead of free space (fsu.fsu_bfree), even as root.
+
 2008-09-12  Ian Beckwith  <ianb@erislabs.net>
 
 	* Bump version to 4.9.5.
