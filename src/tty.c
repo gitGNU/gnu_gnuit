@@ -128,7 +128,8 @@ static struct ltchars new_ltarg;
 
 int tty_lines;
 int tty_columns;
-char *tty_device;
+wchar_t *tty_device;
+static char *tty_device_str;
 
 static unsigned char *tty_key_seq;
 
@@ -2048,8 +2049,8 @@ vcs_io(buf, op)
     vcs_is_monochrome = 0;
 
     /* First attempt: /dev/vcsaX.  */
-    vcsa_name[9] = tty_device[8];
-    vcsa_name[10] = tty_device[9];
+    vcsa_name[9] = tty_device_str[8];
+    vcsa_name[10] = tty_device_str[9];
     vcsfd = open(vcsa_name, flag);
 
     if (vcsfd != -1)
@@ -2084,8 +2085,8 @@ vcs_io(buf, op)
 	tty_clear();
 
     /* Third attempt: /dev/vcsX (B/W).  */
-    vcs_name[8] = tty_device[8];
-    vcs_name[9] = tty_device[9];
+    vcs_name[8] = tty_device_str[8];
+    vcs_name[9] = tty_device_str[9];
     vcsfd = open(vcs_name, flag);
 
     if (vcsfd != -1)
@@ -2399,12 +2400,13 @@ tty_init(kbd_mode)
 	exit(1);
     }
 
-    if ((tty_device = ttyname(1)) == NULL)
+    if ((tty_device_str = ttyname(1)) == NULL)
     {
 	fprintf(stderr, "%s: can't get terminal name.\n", g_program);
 	exit(1);
     }
-
+    tty_device=mbsduptowcs(tty_device_str);
+    
     /* Store the terminal settings in old_term. it will be used to restore
        them later.  */
 #ifdef HAVE_POSIX_TTY
@@ -2424,7 +2426,7 @@ tty_init(kbd_mode)
     default_key.next = NULL;
     tty_kbdmode = kbd_mode;
 
-    tty_device_length = strlen(tty_device);
+    tty_device_length = wcslen(tty_device);
     tty_get_capabilities();
 }
 

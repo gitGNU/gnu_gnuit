@@ -100,7 +100,7 @@ typedef unsigned char tty_status_t;
 extern int tty_lines;
 extern int tty_columns;
 extern char *tty_type;
-extern char *tty_device;
+extern wchar_t *tty_device;
 
 extern void tty_init PROTO ((int));
 extern void tty_end PROTO ((char *));

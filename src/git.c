@@ -55,6 +55,10 @@
 
 #include <assert.h>
 
+/* FIXME: use gnulib */
+#ifndef _ISOC99_SOURCE
+#define _ISOC99_SOURCE
+#endif
 #include <wchar.h>
 #include <wctype.h>
 
@@ -569,10 +573,10 @@ report_undefined_key(status_message)
 
 extern int il_dispatch_commands PROTO ((int, int));
 extern wchar_t *il_fix_text PROTO ((wchar_t *));
-extern char *il_build_help_from_string PROTO ((char *));
-extern char *il_isearch PROTO ((char *, char **, int, int *));
-extern char il_read_char PROTO ((wchar_t *, char *, int));
-extern char *il_read_line PROTO ((char *, char **, wchar_t *, xstack_t *));
+extern wchar_t *il_build_help_from_string PROTO ((wchar_t *));
+extern wchar_t *il_isearch PROTO ((char *, wchar_t **, int, int *));
+extern char il_read_char PROTO ((wchar_t *, wchar_t *, int));
+extern wchar_t *il_read_line PROTO ((wchar_t *, wchar_t **, wchar_t *, xstack_t *));
 
 
 /*
@@ -785,27 +789,27 @@ il_fix_text(text)
 }
 
 
-char *
+wchar_t *
 il_build_help_from_string(options)
-    char *options;
+    wchar_t *options;
 {
     size_t len = 0;
-    char *options_ptr = options;
-    char *help = xmalloc(1 + strlen(options) * 3 + 8);
+    wchar_t *options_ptr = options;
+    wchar_t *help = xmalloc((1 + wcslen(options) * 3 + 8) * sizeof(wchar_t));
 
-    help[len++] = '(';
+    help[len++] = L'(';
 
     for (; *(options_ptr + 1); options_ptr++)
     {
 	help[len++] = *options_ptr;
-	help[len++] = ',';
-	help[len++] = ' ';
+	help[len++] = L',';
+	help[len++] = L' ';
     }
 
     help[len++] = *options_ptr;
-    help[len++] = ')';
-    help[len++] = ' ';
-    help[len++] = '\0';
+    help[len++] = L')';
+    help[len++] = L' ';
+    help[len++] = L'\0';
 
     return help;
 }
@@ -821,10 +825,10 @@ il_build_help_from_string(options)
 char
 il_read_char(message, options, flags)
     wchar_t *message;
-    char *options;
+    wchar_t *options;
     int flags;
 {
-    char *help;
+    wchar_t *help;
     tty_key_t *ks;
     int key, repeat_count;
     command_t *command;
@@ -854,10 +858,8 @@ il_read_char(message, options, flags)
 	if (options)
 	{
 	    help = il_build_help_from_string(options);
-	    wchar_t *whelp=mbsduptowcs(help);
-	    il_insert_text(whelp);
+	    il_insert_text(help);
 	    xfree(help);
-	    xfree(whelp);
 	}
     }
 
@@ -908,7 +910,7 @@ il_read_char(message, options, flags)
 		if (options == NULL)
 		    goto done;
 
-		if (options && strchr(options, key))
+		if (options && wcschr(options, key))
 			goto done;
 
 		tty_beep();
@@ -942,15 +944,15 @@ il_read_char(message, options, flags)
  * the second case, it will reallocate the pointer as needed using
  * xrealloc().  The caller should free the memory allocated this way.
  */
-char *
+wchar_t *
 il_read_line(static_text, dest, default_string, history)
-    char *static_text;
-    char **dest;
+    wchar_t *static_text;
+    wchar_t **dest;
     wchar_t *default_string;
     xstack_t *history;
 {
     tty_key_t *ks;
-    char *history_text;
+    wchar_t *history_text;
     command_t *command;
     int key = 0, repeat_count, offset = 0;
 
@@ -958,11 +960,7 @@ il_read_line(static_text, dest, default_string, history)
     il_reset_line();
 
     if (static_text)
-    {
-	wchar_t *txt=mbsduptowcs(static_text);
-	il_set_static_text(txt);
-	xfree(txt);
-    }
+	il_set_static_text(static_text);
 
     if (default_string)
 	il_insert_text(default_string);
@@ -1096,10 +1094,10 @@ il_read_line(static_text, dest, default_string, history)
  *					   into the input line so we should try
  *					   to find a match for the new string
  */
-char *
+wchar_t *
 il_isearch(static_text, dest, status, action)
     char *static_text;
-    char **dest;
+    wchar_t **dest;
     int status;
     int *action;
 {
@@ -1370,7 +1368,7 @@ command_expand(command, dest, p, l)
 			goto bad_command;
 
 		    *ptr = 0;
-		     c = il_read_char(src, "yn", IL_MOVE);
+		     c = il_read_char(src, L"yn", IL_MOVE);
 		    *ptr = '}';
 
 		    if (c != 'y')
@@ -2213,8 +2211,8 @@ main(argc, argv)
 				{
 				    if(WIFSIGNALED(child_exit_code))
 				    {
-					il_read_char("Command interrupted by signal",
-						     (char *)NULL,
+					il_read_char(L"Command interrupted by signal",
+						     NULL,
 						     IL_BEEP|IL_ERROR);
 				    }
 				    else if(WIFEXITED(child_exit_code) &&
@@ -2266,15 +2264,17 @@ main(argc, argv)
 			}
 			else
 			{
-			    char *msg;
-			    msg = xmalloc(80+strlen((char *)ks->key_seq)+1);
-
-			    sprintf(msg,
-				    "%s: invalid command on key sequence %s !",
+			    wchar_t *key=mbsduptowcs((char *)ks->key_seq);
+			    int len=80+wcslen(key)+1;
+			    wchar_t *msg=xmalloc(len * sizeof(wchar_t));
+			    /* FIXME: command->sequence? shouldnt it be ks->key_seq? */
+			    swprintf(msg, len,
+				    L"%s: invalid command on key sequence %s !",
 				    command->name, command->sequence);
-			    il_read_char(msg, (char *)NULL,
+			    il_read_char(msg, NULL,
 					 IL_FREEZED|IL_BEEP|IL_SAVE|IL_ERROR);
 			    xfree(msg);
+			    xfree(key);
 			    continue;
 			}
 		    }
@@ -2397,7 +2397,7 @@ main(argc, argv)
 			    if (is_an_empty_command(output_string))
 			    {
 				saved_il = il_save();
-				il_read_char("Void command.", (char *)NULL,
+				il_read_char(L"Void command.", NULL,
 					     IL_FREEZED | IL_BEEP |
 					     IL_SAVE    | IL_ERROR);
 				break;
@@ -2428,7 +2428,7 @@ main(argc, argv)
 			    }
 			}
 			else
-			    il_read_char(output_string, (char *)NULL,
+			    il_read_char(output_string, NULL,
 					 IL_FREEZED | IL_BEEP |
 					 IL_SAVE    | IL_ERROR);
 			break;
@@ -2527,7 +2527,7 @@ main(argc, argv)
 
 				if (history_expand(cmdln, &output_string) < 0)
 				{
-				    il_read_char(output_string, (char *)NULL,
+				    il_read_char(output_string, NULL,
 						 IL_FREEZED | IL_BEEP |
 						 IL_SAVE    | IL_ERROR);
 				    saved_il = il_save();
@@ -2587,7 +2587,7 @@ main(argc, argv)
 
 			case BUILTIN_exit:
 			    if (ConfirmOnExit == OFF ||
-				il_read_char(exit_msg,"yn",IL_FREEZED) == 'y')
+				il_read_char(exit_msg,L"yn",IL_FREEZED) == 'y')
 			    {
 				app_end = 1;
 				goto end_tty_mode;
@@ -2683,7 +2683,7 @@ main(argc, argv)
 
 	    case BUILTIN_exit:
 		if (ConfirmOnExit == OFF ||
-		    il_read_char(exit_msg, "yn", IL_FREEZED) == 'y')
+		    il_read_char(exit_msg, L"yn", IL_FREEZED) == 'y')
 		    app_end = 1;
 
 		break;
@@ -2756,7 +2756,7 @@ main(argc, argv)
 		    xfree(ptr);
 		}
 
-		il_insert_text(" ");
+		il_insert_text(L" ");
 		saved_il = il_save();
 		break;
 
@@ -2799,7 +2799,7 @@ main(argc, argv)
 		break;
 
 	    case BUILTIN_change_directory:
-		if (il_read_line("Directory: ", &input, (char *)NULL,
+		if (il_read_line(L"Directory: ", &input, (char *)NULL,
 				 command->history))
 		{
 		    char *expanded_input;
@@ -2826,7 +2826,7 @@ main(argc, argv)
 
 	    case BUILTIN_select_files_matching_pattern:
 		if (il_read_line(
-		    "Select files matching one of the patterns: ",
+		    L"Select files matching one of the patterns: ",
 		    &input, (char *)NULL, command->history))
 		{
 		    if (input[0] == 0)
@@ -2842,7 +2842,7 @@ main(argc, argv)
 
 	    case BUILTIN_unselect_files_matching_pattern:
 		if (il_read_line(
-		    "Unselect files matching one of the patterns: ",
+		    L"Unselect files matching one of the patterns: ",
 		    &input, (char *)NULL, command->history))
 		{
 		    if (input[0] == 0)
@@ -2876,7 +2876,7 @@ main(argc, argv)
 		break;
 
 	    case BUILTIN_set_scroll_step:
-		if (il_read_line("Scroll step: ", &input, (char *)NULL,
+		if (il_read_line(L"Scroll step: ", &input, (char *)NULL,
 				 command->history))
 		{
 		    if (input[0] == 0)
@@ -2894,7 +2894,7 @@ main(argc, argv)
 	    case BUILTIN_isearch_backward:
 		previous_isearch_failed = 0;
 		resuming_previous_isearch = 0;
-		il_isearch("I-search backward: ", (char **)NULL,
+		il_isearch(L"I-search backward: ", (char **)NULL,
 			   IL_ISEARCH_BEGIN, (int *)NULL);
 		panel_action(src_panel, act_ISEARCH_BEGIN,
 			     dst_panel, NULL, 1);
@@ -2977,7 +2977,7 @@ main(argc, argv)
 	    case BUILTIN_isearch_forward:
 		previous_isearch_failed = 0;
 		resuming_previous_isearch = 0;
-		il_isearch("I-search: ", (char **)NULL,
+		il_isearch(L"I-search: ", (char **)NULL,
 			   IL_ISEARCH_BEGIN, (int *)NULL);
 		panel_action(src_panel, act_ISEARCH_BEGIN, dst_panel, NULL, 1);
 
@@ -3132,7 +3132,7 @@ main(argc, argv)
 		il_echo(0);
 
 		lock_password = NULL;
-		il_read_line("Enter a password: ", &lock_password,
+		il_read_line(L"Enter a password: ", &lock_password,
 			     (char *)NULL, (xstack_t *)NULL);
 
 		if (lock_password == NULL || *lock_password == '\0')
@@ -3143,7 +3143,7 @@ main(argc, argv)
 
 		for (unlock_password = NULL;;)
 		{
-		    il_read_line("Enter password to unlock: ",
+		    il_read_line(L"Enter password to unlock: ",
 				 &unlock_password, (char *)NULL,
 				 (xstack_t *)NULL);
 		    tty_update();
@@ -3199,7 +3199,7 @@ main(argc, argv)
 		break;
 
 	    case BUILTIN_bin_packing:
-		if (il_read_line("Bin size (in Kb): ", &input, "0",
+		if (il_read_line(L"Bin size (in Kb): ", &input, "0",
 				 command->history))
 		{
 		    if (input[0] == 0)
@@ -3235,7 +3235,7 @@ main(argc, argv)
 
 	    case BUILTIN_apropos:
 		aproposstr=NULL;
-		il_read_line("Apropos: ", &aproposstr,
+		il_read_line(L"Apropos: ", &aproposstr,
 			     (char *)NULL, command->history);
 
 		if (aproposstr)
@@ -3256,7 +3256,7 @@ main(argc, argv)
 			    fp=fdopen(fd,"w");
 			if(!fp)
 			{
-			    il_read_char("Error opening temporary file", NULL, IL_ERROR|IL_BEEP);
+			    il_read_char(L"Error opening temporary file", NULL, IL_ERROR|IL_BEEP);
 			    break;
 			}
 			for(key=key_list_head;key;key=key->next)
@@ -3282,7 +3282,7 @@ main(argc, argv)
 			    wait_msg=1;
 			}
 			else
-			    il_read_char("No matches", NULL, 0);
+			    il_read_char(L"No matches", NULL, 0);
 			unlink(tmpfn);
 			xfree(tmpfn);
 		    }

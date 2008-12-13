@@ -42,7 +42,7 @@
 
 extern char *g_home;
 extern char *g_program;
-extern char *login_name;
+extern wchar_t *login_name;
 
 extern char *day_name[];
 extern char *month_name[];

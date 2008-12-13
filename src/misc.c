@@ -53,7 +53,7 @@
 #include "file.h"
 #include "tty.h"
 #include "misc.h"
-
+#include "xio.h"
 
 static char   SYSTEM_CONFIGFILE_PREFIX[] = "/gnuitrc.";
 static char     USER_CONFIGFILE_PREFIX[] = "/.gnuitrc.";
@@ -62,7 +62,7 @@ static char OLD_USER_CONFIGFILE_PREFIX[] = "/.gitrc.";
 static char *termdir;
 static char *bindir;
 
-char *login_name;
+wchar_t *login_name;
 
 
 char *day_name[] =
@@ -504,7 +504,7 @@ get_login_name()
 	exit(1);
     }
 
-    login_name     = xstrdup(pwd->pw_name);
+    login_name     = mbsduptowcs(pwd->pw_name);
 }
 
 

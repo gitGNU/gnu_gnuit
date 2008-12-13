@@ -108,7 +108,7 @@ static wchar_t mail_have_none[] = L"";
 static wchar_t mail_have_mail[] = L"(Mail)";
 static wchar_t mail_have_new[]  = L"(New Mail)";
 
-static char *mail_string = "";
+static wchar_t *mail_string = L"";
 static char *mail_file=NULL;
 static off64_t mail_size=0;
 static time_t mail_mtime=0;
@@ -125,7 +125,7 @@ static int
 calc_info_length()
 {
     info_length = (sizeof(login_string)  - 1) + 1 + login_name_length + 1 +
-	          (strlen(mail_string)) + 1 +
+	          (wcslen(mail_string)) + 1 +
 		  (sizeof(ttydev_string) - 1) + 1 + tty_device_length + 1 +
 		  6 + 1;
     return(info_length);
@@ -186,7 +186,7 @@ clock_refresh(signum)
     int signum;
 {
     int hour;
-    char buf[16];
+    wchar_t buf[16];
     struct tm *time;
     int line, column;
     tty_status_t status;
@@ -202,7 +202,6 @@ clock_refresh(signum)
     {
 	title_update();
     }
-	    
 
     time = get_local_time();
 
@@ -214,11 +213,11 @@ clock_refresh(signum)
     if ((hour = time->tm_hour % 12) == 0)
 	hour = 12;
 
-    sprintf(buf, "%2d:%02d%c", hour, time->tm_min,
-	    (time->tm_hour < 12) ? 'a' : 'p');
+    swprintf(buf, 16, L"%2d:%02d%c", hour, time->tm_min,
+	     (time->tm_hour < 12) ? 'a' : 'p');
     window_goto(title_window, 0, title_window->columns - 7);
     tty_colors(ClockBrightness, ClockForeground, ClockBackground);
-    window_puts(title_window, buf, strlen(buf));
+    window_puts(title_window, buf, wcslen(buf));
 
     tty_goto(line, column);
     tty_restore(&status);
@@ -230,7 +229,7 @@ clock_refresh(signum)
 static int
 mail_check()
 {
-    char *old_mail=mail_string;
+    wchar_t *old_mail=mail_string;
     mail_string=mail_have_none;
     int total=0;
     int read=0;
@@ -293,7 +292,7 @@ mail_check()
 	}
     }
     info_length=calc_info_length();
-    if(strcmp(mail_string,old_mail) == 0)
+    if(wcscmp(mail_string,old_mail) == 0)
 	return 0; /* No change  */
     else
 	return 1; /* need to update title */
@@ -303,7 +302,7 @@ void
 title_update()
 {
     int length;
-    char *buf;
+    wchar_t *buf;
     tty_status_t status;
 
     tty_save(&status);
@@ -322,7 +321,7 @@ title_update()
 
 	assert(length > 0);
 
-	memset(buf, ' ', length);
+	wmemset(buf, L' ', length);
 	window_puts(title_window, buf, length);
 
 	window_goto(title_window, 0, product_name_length + length);
@@ -333,7 +332,7 @@ title_update()
 	window_puts(title_window, login_name, login_name_length);
 	window_putc(title_window, ' ');
 
-	window_puts(title_window, mail_string, strlen(mail_string));
+	window_puts(title_window, mail_string, wcslen(mail_string));
 
 	window_putc(title_window, ' ');
 
