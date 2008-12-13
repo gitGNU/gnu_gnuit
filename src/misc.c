@@ -26,6 +26,8 @@
 #include <mpatrol.h>
 #include <stdio.h>
 
+#include <wchar.h>
+
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #else /* !HAVE_STDLIB_H */

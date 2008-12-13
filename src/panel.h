@@ -181,7 +181,7 @@ typedef struct
 typedef struct
 {
     int action;		/* the action to be performed.  */
-    char *string;	/* the current isearched string.  */
+    wchar_t *string;	/* the current isearched string.  */
     size_t length;	/* the new length of the isearched string.  */
 } isearch_aux_t;
 

@@ -363,4 +363,3 @@ wcsduptombs(src)
     wcstombs(dest,src,len+1);
     return dest;
 }
-

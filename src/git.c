@@ -334,13 +334,13 @@ char builtin[BUILTIN_OPERATIONS][MAX_BUILTIN_NAME] =
 typedef struct
 {
     char *name;         /* The command name.  */
-    char *body;         /* The unexpanded command body.  */
+    wchar_t *body;      /* The unexpanded command body.  */
     char *new_dir;      /* If exit code == 0, goto this directory.  */
     char  save_screen;  /* Save the screen contents (if possible).  */
     char  pause;        /* Wait for a key before restoring the panels.  */
     char  hide;         /* Hide the output, emulating a builtin command.  */
     char  builtin;      /* This is a builtin command.  */
-    char *sequence;     /* The ascii representation of the key sequence on
+    wchar_t *sequence;  /* The ascii representation of the key sequence on
 			   which the command is bound; used for error
 			   reporting and the apropos command.  */
     xstack_t *history;  /* The history of the strings used to expand the
@@ -574,7 +574,7 @@ report_undefined_key(status_message)
 extern int il_dispatch_commands PROTO ((int, int));
 extern wchar_t *il_fix_text PROTO ((wchar_t *));
 extern wchar_t *il_build_help_from_string PROTO ((wchar_t *));
-extern wchar_t *il_isearch PROTO ((char *, wchar_t **, int, int *));
+extern wchar_t *il_isearch PROTO ((wchar_t *, wchar_t **, int, int *));
 extern char il_read_char PROTO ((wchar_t *, wchar_t *, int));
 extern wchar_t *il_read_line PROTO ((wchar_t *, wchar_t **, wchar_t *, xstack_t *));
 
@@ -1096,7 +1096,7 @@ il_read_line(static_text, dest, default_string, history)
  */
 wchar_t *
 il_isearch(static_text, dest, status, action)
-    char *static_text;
+    wchar_t *static_text;
     wchar_t **dest;
     int status;
     int *action;
@@ -1113,11 +1113,7 @@ il_isearch(static_text, dest, status, action)
 	il_reset_line();
 
 	if (static_text)
-	{
-	    wchar_t *txt=mbsduptowcs(static_text);
-	    il_set_static_text(txt);
-	    xfree(txt);
-	}
+	    il_set_static_text(static_text);
 
 	return NULL;
     }
@@ -1321,28 +1317,28 @@ fatal(postmsg)
 int
 command_expand(command, dest, p, l)
     command_t *command;
-    char **dest;
+    wchar_t **dest;
     panel_t *p, *l;
 {
-    char c;
+    wchar_t c;
     uid_t uid;
     gid_t gid;
     int retval;
     panel_t *t;
-    size_t len;
+    size_t len, qlen;
     struct group *grp;
     struct passwd *pwd;
     static int busy = 0;
-    char *answer = NULL;
-    char *question = NULL;
+    wchar_t *answer = NULL;
+    wchar_t *question = NULL;
     int i_flag = 0, entry;
     size_t oldtmplen, tmplen;
-    char *ptr, *tmp = NULL, *d, *flag;
-    char *src = command->body, *save_body;
+    char *sptr;
+    wchar_t *ptr, *tmp = NULL, *d, *flag;
+    wchar_t *src = command->body, *save_body;
 
-
-    len = strlen(src) + 1;
-    d = *dest = xmalloc(len);
+    len = wcslen(src) + 1;
+    d = *dest = xmalloc(len * sizeof(wchar_t));
 
     while (*src)
     {
@@ -1350,28 +1346,28 @@ command_expand(command, dest, p, l)
 	    *d++ = *src++;
 	else
 	{
-	    t = islower((int)*++src) ? p : l;
+	    t = iswlower(*++src) ? p : l;
 
 	    switch (*src)
 	    {
-		case '?':
+		case L'?':
 		    if (busy)
 		    {
 			busy = 0;
 			goto bad_command;
 		    }
 
-		    if (*++src != '{')
+		    if (*++src != L'{')
 			goto bad_command;
 
-		    if ((ptr = strchr(++src, '}')) == NULL)
+		    if ((ptr = wcschr(++src, L'}')) == NULL)
 			goto bad_command;
 
 		    *ptr = 0;
-		     c = il_read_char(src, L"yn", IL_MOVE);
-		    *ptr = '}';
+		    c = il_read_char(src, L"yn", IL_MOVE);
+		    *ptr = L'}';
 
-		    if (c != 'y')
+		    if (c != L'y')
 			goto strings_dont_match;
 
 		    src = ptr;
@@ -1385,10 +1381,10 @@ command_expand(command, dest, p, l)
 			goto bad_command;
 		    }
 
-		    if (*++src != '{')
+		    if (*++src != L'{')
 			goto bad_command;
 
-		    if ((ptr = strchr(++src, ',')) == NULL)
+		    if ((ptr = wcschr(++src, L',')) == NULL)
 			goto bad_command;
 
 		    *ptr = 0;
@@ -1403,26 +1399,26 @@ command_expand(command, dest, p, l)
 
 		    if (retval < 1)
 		    {
-			*ptr = ',';
+			*ptr = L',';
 			if (retval == 0)
 			    goto bad_command;
 			else
 			    goto strings_dont_match;
 		    }
 
-		    question = xmalloc(16 + strlen(command->name) +
-				       strlen(answer) + 1);
-		    sprintf(question, "%s: %s", command->name, answer);
+		    qlen=16 + strlen(command->name) + wcslen(answer) + 1;
+		    question = xmalloc(qlen * sizeof(wchar_t));
+		    swprintf(question, qlen, L"%s: %ls", command->name, answer);
 		    xfree(answer);
 		    answer =  NULL;
-		    *ptr++ = ',';
+		    *ptr++ = L',';
 
-		    if ((src = strchr(ptr, '}')) == NULL)
+		    if ((src = wcschr(ptr, L'}')) == NULL)
 			goto bad_command;
 
 		    *src = 0;
 
-		    if (strlen(question) > MAX_STATIC_SIZE)
+		    if (wcslen(question) > MAX_STATIC_SIZE)
 			question[MAX_STATIC_SIZE] = 0;
 
 		    busy = 1;
@@ -1436,7 +1432,7 @@ command_expand(command, dest, p, l)
 
 		    if (retval < 1)
 		    {
-			*src = '}';
+			*src = L'}';
 			xfree(question);
 			question = NULL;
 			if (retval == 0)
@@ -1453,11 +1449,11 @@ command_expand(command, dest, p, l)
 
 		    if (flag == NULL)
 		    {
-			*src = '}';
+			*src = L'}';
 			goto strings_dont_match;
 		    }
 
-		    *src = '}';
+		    *src = L'}';
 		    break;
 
 		case 'f':
@@ -1466,9 +1462,10 @@ command_expand(command, dest, p, l)
 			goto strings_dont_match;
 
 		  get_file_name:
-		    ptr = panel_get_current_file_name(t);
-		    tmp = xmalloc(1 + strlen(ptr) + 1 + 1);
-		    sprintf(tmp, "\"%s\"", ptr);
+		    sptr = panel_get_current_file_name(t);
+		    tmplen=1 + strlen(sptr) + 1 + 1;
+		    tmp = xmalloc(tmplen * sizeof(wchar_t));
+		    swprintf(tmp, tmplen, L"\"%s\"", sptr);
 		    break;
 
 		case 'd':
@@ -1501,8 +1498,9 @@ command_expand(command, dest, p, l)
 
 		case 'm':
 		case 'M':
-		    tmp = xmalloc(16);
-		    sprintf(tmp, "%o",
+		    tmplen=16;
+		    tmp = xmalloc(tmplen * sizeof(wchar_t));
+		    swprintf(tmp, tmplen, L"%o",
 			    (int)panel_get_current_file_mode(t) & 07777);
 		    break;
 
@@ -1512,11 +1510,12 @@ command_expand(command, dest, p, l)
 		    pwd = getpwuid(uid);
 
 		    if (pwd)
-			tmp = xstrdup(pwd->pw_name);
+			tmp = mbsduptowcs(pwd->pw_name);
 		    else
 		    {
-			tmp = xmalloc(16);
-			sprintf(tmp, "%o", (int)uid);
+			tmplen=16;
+			tmp = xmalloc(tmplen * sizeof(wchar_t));
+			swprintf(tmp, tmplen, L"%o", (int)uid);
 		    }
 
 		    break;
@@ -1527,38 +1526,41 @@ command_expand(command, dest, p, l)
 		    grp = getgrgid(gid);
 
 		    if (grp)
-			tmp = xstrdup(grp->gr_name);
+			tmp = mbsduptowcs(grp->gr_name);
 		    else
 		    {
-			tmp = xmalloc(16);
-			sprintf(tmp, "%o", (int)gid);
+			tmplen=16;
+			tmp = xmalloc(tmplen * sizeof(wchar_t));
+			swprintf(tmp, tmplen, L"%o", (int)gid);
 		    }
 
 		    break;
 
 		case 'p':
 		case 'P':
-		    tmp = xmalloc(1 + strlen(t->path) + 1 + 1);
-		    sprintf(tmp, "\"%s\"", t->path);
+		    tmplen=1 + strlen(t->path) + 1 + 1;
+		    tmp = xmalloc(tmplen * sizeof(wchar_t));
+		    swprintf(tmp, tmplen, L"\"%s\"", t->path);
 		    break;
 
 		case 'b':
 		case 'B':
-		    ptr = strrchr(t->path, '/');
-		    ptr = (*++ptr) ? ptr : "/root";
-		    tmp = xmalloc(1 + strlen(ptr) + 1 + 1);
-		    sprintf(tmp, "\"%s\"", ptr);
+		    sptr = strrchr(t->path, L'/');
+		    sptr = (*++sptr) ? sptr : "/root";
+		    tmplen = 1 + strlen(sptr) + 1 + 1;
+		    tmp = xmalloc(tmplen * sizeof(wchar_t));
+		    swprintf(tmp, tmplen, L"\"%ls\"", sptr);
 		    break;
 
 		case 'i':
 		case 'I':
-		    i_flag = (*src == 'i') ? 1 : 2;
+		    i_flag = (*src == L'i') ? 1 : 2;
 
 		    if (busy && t->selected_entries)
 		    {
-			tmplen = 20;
-			tmp = xmalloc(tmplen + 1);
-			strcpy(tmp, "selected entries");
+			tmplen = 21;
+			tmp = xmalloc(tmplen * sizeof(wchar_t));
+			wcscpy(tmp, L"selected entries");
 			break;
 		    }
 
@@ -1570,12 +1572,12 @@ command_expand(command, dest, p, l)
 		    while ((entry = panel_get_next(t)) != -1)
 		    {
 			oldtmplen = tmplen;
-			tmplen += 1 + strlen(t->dir_entry[entry].name) + 1 + 1;
-			tmp = xrealloc(tmp, tmplen + 1);
-			tmp[oldtmplen] = '"';
-			strcpy(tmp + oldtmplen + 1, t->dir_entry[entry].name);
-			tmp[tmplen - 2] = '"';
-			tmp[tmplen - 1] = ' ';
+			tmplen += 1 + wcslen(t->dir_entry[entry].wname) + 1 + 1  + 1;
+			tmp = xrealloc(tmp, (tmplen * sizeof(wchar_t)));
+			tmp[oldtmplen] = L'"';
+			wcscpy(tmp + oldtmplen + 1, t->dir_entry[entry].wname);
+			tmp[tmplen - 2] = L'"';
+			tmp[tmplen - 1] = L' ';
 			tmp[tmplen    ] = 0;
 		    }
 
@@ -1595,9 +1597,10 @@ command_expand(command, dest, p, l)
 
 	    if (tmp)
 	    {
-		*dest = xrealloc(*dest, len += strlen(tmp));
-		strcat(*dest, tmp);
-		d = *dest + strlen(*dest);
+		len += wcslen(tmp);
+		*dest = xrealloc(*dest, (len * sizeof(wchar_t)));
+		wcscat(*dest, tmp);
+		d = *dest + wcslen(*dest);
 		xfree(tmp);
 		tmp = NULL;
 	    }
@@ -1708,7 +1711,7 @@ read_keys(keys, errors)
 	    command->new_dir = xstrdup(contents[2]);
 
 	if (contents[1])
-	    command->body = xstrdup(contents[1]);
+	    command->body = mbsduptowcs(contents[1]);
 	else
 	    goto insert;
 
@@ -1740,7 +1743,7 @@ read_keys(keys, errors)
 		}
 	    }
 
-	command->sequence = xstrdup(key_seq);
+	command->sequence = mbsduptowcs(key_seq);
 
 	if (command->builtin || command->body || command->new_dir)
 	{
@@ -1824,21 +1827,23 @@ main(argc, argv)
     tty_key_t *ks;
     char *final_path;
     command_t *command;
-    size_t len = 0, ptrlen;
+    size_t len = 0;
     char *temporary_directory;
     int previous_isearch_failed;
     int resuming_previous_isearch;
     int output_final_path = OFF;
     input_line_t *saved_il = NULL;
     char *panel_path, *current_path;
-    char *lock_password, *unlock_password, *aproposstr;
+    wchar_t *lock_password, *unlock_password;
+    wchar_t *aproposstr;
     int child_exit_code, repeat_count, keys;
     int action_status, i, retval, to_case, cmp_mode;
     int c, ansi_colors = -1, use_last_screen_character = ON;
     int entry, key, app_end = 0, first_time = 1, errors = 0;
     char *left_panel_path, *right_panel_path;
-    char *scmdln=NULL, *soutput_string, *input = NULL, *ptr, *srcptr, *search_string = NULL;
-    wchar_t *cmdln = NULL, *output_string, *wptr, *wsrcptr;
+    char *scmdln=NULL, *soutput_string, *ptr, *srcptr;
+    wchar_t *cmdln = NULL, *output_string, *wptr, *wsrcptr, *input = NULL;
+    wchar_t *search_string = NULL;
     int exit_msg_len, wptrlen;
 
     /* Make sure we don't get signals before we are ready to handle
@@ -2804,7 +2809,7 @@ main(argc, argv)
 		break;
 
 	    case BUILTIN_change_directory:
-		if (il_read_line(L"Directory: ", &input, (char *)NULL,
+		if (il_read_line(L"Directory: ", &input, NULL,
 				 command->history))
 		{
 		    char *expanded_input;
@@ -2832,7 +2837,7 @@ main(argc, argv)
 	    case BUILTIN_select_files_matching_pattern:
 		if (il_read_line(
 		    L"Select files matching one of the patterns: ",
-		    &input, (char *)NULL, command->history))
+		    &input, NULL, command->history))
 		{
 		    if (input[0] == 0)
 			break;
@@ -2848,7 +2853,7 @@ main(argc, argv)
 	    case BUILTIN_unselect_files_matching_pattern:
 		if (il_read_line(
 		    L"Unselect files matching one of the patterns: ",
-		    &input, (char *)NULL, command->history))
+		    &input, NULL, command->history))
 		{
 		    if (input[0] == 0)
 			break;
@@ -2881,7 +2886,7 @@ main(argc, argv)
 		break;
 
 	    case BUILTIN_set_scroll_step:
-		if (il_read_line(L"Scroll step: ", &input, (char *)NULL,
+		if (il_read_line(L"Scroll step: ", &input, NULL,
 				 command->history))
 		{
 		    if (input[0] == 0)
@@ -2899,7 +2904,7 @@ main(argc, argv)
 	    case BUILTIN_isearch_backward:
 		previous_isearch_failed = 0;
 		resuming_previous_isearch = 0;
-		il_isearch(L"I-search backward: ", (char **)NULL,
+		il_isearch(L"I-search backward: ", NULL,
 			   IL_ISEARCH_BEGIN, (int *)NULL);
 		panel_action(src_panel, act_ISEARCH_BEGIN,
 			     dst_panel, NULL, 1);
@@ -2908,18 +2913,18 @@ main(argc, argv)
 		{
 		    isearch_aux_t iai;
 
-		    if (il_isearch((char *)NULL, &input, IL_ISEARCH_BACKWARD,
+		    if (il_isearch(NULL, &input, IL_ISEARCH_BACKWARD,
 				   &iai.action) == NULL)
 			break;
 
-		    /* If the strlen(input) == 0, we typed ^R twice,
+		    /* If the wcslen(input) == 0, we typed ^R twice,
 		       so we must search for the string we searched
 		       previously.  */
-		    if (strlen(input) == 0 &&
-			search_string && strlen(search_string))
+		    if (wcslen(input) == 0 &&
+			search_string && wcslen(search_string))
 		    {
 			xfree(input);
-			input = strdup(search_string);
+			input = wcsdup(search_string);
 			il_insert_text(input);
 			resuming_previous_isearch = 1;
 			previous_isearch_failed = 0;
@@ -2947,14 +2952,14 @@ main(argc, argv)
 			int update = 0;
 
 			if (resuming_previous_isearch)
-			    if (iai.length < strlen(search_string))
+			    if (iai.length < wcslen(search_string))
 			    {
 				il_kill_line(0);
 				resuming_previous_isearch = 0;
 				update = 1;
 			    }
 
-			if (iai.length < strlen(input))
+			if (iai.length < wcslen(input))
 			{
 			    il_backward_delete_char();
 			    update = 1;
@@ -2973,16 +2978,16 @@ main(argc, argv)
 		    xfree(search_string);
 		if (input == NULL)
 		    break;
-		search_string = strdup(input);
+		search_string = wcsdup(input);
 		panel_action(src_panel, act_ISEARCH_END, dst_panel, NULL, 1);
-		il_isearch((char *)NULL, (char **)NULL,
+		il_isearch(NULL, NULL,
 			   IL_ISEARCH_END, (int *)NULL);
 		break;
 
 	    case BUILTIN_isearch_forward:
 		previous_isearch_failed = 0;
 		resuming_previous_isearch = 0;
-		il_isearch(L"I-search: ", (char **)NULL,
+		il_isearch(L"I-search: ", NULL,
 			   IL_ISEARCH_BEGIN, (int *)NULL);
 		panel_action(src_panel, act_ISEARCH_BEGIN, dst_panel, NULL, 1);
 
@@ -2990,18 +2995,18 @@ main(argc, argv)
 		{
 		    isearch_aux_t iai;
 
-		    if (il_isearch((char *)NULL, &input, IL_ISEARCH_FORWARD,
+		    if (il_isearch(NULL, &input, IL_ISEARCH_FORWARD,
 				   &iai.action) == NULL)
 			break;
 
 		    /* If the strlen(input) == 0, we typed ^S twice,
 		       so we must search for the string we searched
 		       previously.  */
-		    if (strlen(input) == 0 &&
-			search_string && strlen(search_string))
+		    if (wcslen(input) == 0 &&
+			search_string && wcslen(search_string))
 		    {
 			xfree(input);
-			input = strdup(search_string);
+			input = wcsdup(search_string);
 			il_insert_text(input);
 			resuming_previous_isearch = 1;
 			previous_isearch_failed = 0;
@@ -3030,14 +3035,14 @@ main(argc, argv)
 			int update = 0;
 
 			if (resuming_previous_isearch)
-			    if (iai.length < strlen(search_string))
+			    if (iai.length < wcslen(search_string))
 			    {
 				il_kill_line(0);
 				resuming_previous_isearch = 0;
 				update = 1;
 			    }
 
-			if (iai.length < strlen(input))
+			if (iai.length < wcslen(input))
 			{
 			    il_backward_delete_char();
 			    update = 1;
@@ -3056,10 +3061,9 @@ main(argc, argv)
 		    xfree(search_string);
 		if (input == NULL)
 		    break;
-		search_string = strdup(input);
+		search_string = wcsdup(input);
 		panel_action(src_panel, act_ISEARCH_END, dst_panel, NULL, 1);
-		il_isearch((char *)NULL, (char **)NULL,
-			   IL_ISEARCH_END, (int *)NULL);
+		il_isearch(NULL, NULL, IL_ISEARCH_END, (int *)NULL);
 		break;
 
 	    case BUILTIN_reset_directory_history:
@@ -3138,7 +3142,7 @@ main(argc, argv)
 
 		lock_password = NULL;
 		il_read_line(L"Enter a password: ", &lock_password,
-			     (char *)NULL, (xstack_t *)NULL);
+			     NULL, (xstack_t *)NULL);
 
 		if (lock_password == NULL || *lock_password == '\0')
 		{
@@ -3149,12 +3153,12 @@ main(argc, argv)
 		for (unlock_password = NULL;;)
 		{
 		    il_read_line(L"Enter password to unlock: ",
-				 &unlock_password, (char *)NULL,
+				 &unlock_password, NULL,
 				 (xstack_t *)NULL);
 		    tty_update();
 
 		    if (unlock_password &&
-			strcmp(lock_password, unlock_password) == 0)
+			wcscmp(lock_password, unlock_password) == 0)
 			break;
 
 		    il_message(lock_bad);
@@ -3204,7 +3208,7 @@ main(argc, argv)
 		break;
 
 	    case BUILTIN_bin_packing:
-		if (il_read_line(L"Bin size (in Kb): ", &input, "0",
+		if (il_read_line(L"Bin size (in Kb): ", &input, L"0",
 				 command->history))
 		{
 		    if (input[0] == 0)
@@ -3241,11 +3245,11 @@ main(argc, argv)
 	    case BUILTIN_apropos:
 		aproposstr=NULL;
 		il_read_line(L"Apropos: ", &aproposstr,
-			     (char *)NULL, command->history);
+			     NULL, command->history);
 
 		if (aproposstr)
 		{
-		    if(*aproposstr != '\0')
+		    if(*aproposstr != L'\0')
 		    {
 			extern tty_key_t *key_list_head;
 			tty_key_t *key;
@@ -3267,11 +3271,13 @@ main(argc, argv)
 			for(key=key_list_head;key;key=key->next)
 			{
 			    command_t *command=(command_t *)key->aux_data;
-			    if(strcasestr(command->name, aproposstr))
+			    char *mbsapropos=wcsduptombs(aproposstr);
+			    if(strcasestr(command->name, mbsapropos))
 			    {
 				gotmatch=1;
-				fprintf(fp,"%s: %s\n",command->name, command->sequence);
+				fprintf(fp,"%s: %ls\n",command->name, command->sequence);
 			    }
+			    xfree(mbsapropos);
 			}
 			fclose(fp);
 			if(gotmatch)
