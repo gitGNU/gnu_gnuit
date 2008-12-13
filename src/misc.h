@@ -108,11 +108,11 @@ extern void truncate_long_name PROTO ((char *, char *, int));
 extern char *truncate_string PROTO ((char *, char *, int));
 extern off64_t get_file_length PROTO ((int));
 extern struct tm *get_local_time PROTO (());
-extern int is_a_bg_command PROTO ((char *));
-extern int is_an_empty_command PROTO ((char *));
+extern int is_a_bg_command PROTO ((wchar_t *));
+extern int is_an_empty_command PROTO ((wchar_t *));
 extern void get_file_type_info PROTO (());
 extern void toprintable PROTO ((wchar_t *, size_t));
-extern int needs_quotes PROTO ((char *, size_t));
+extern int needs_quotes PROTO ((wchar_t *, size_t));
 extern int xsetenv PROTO ((char *, char *));
 
 

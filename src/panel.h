@@ -261,6 +261,7 @@ extern window_t *panel_window PROTO ((panel_t *));
 extern char *panel_get_path PROTO ((panel_t *));
 extern wchar_t *panel_get_wpath PROTO ((panel_t *));
 extern char *panel_get_current_file_name PROTO ((panel_t *));
+extern wchar_t *panel_get_current_file_wname PROTO ((panel_t *));
 extern uid_t panel_get_current_file_uid PROTO ((panel_t *));
 extern gid_t panel_get_current_file_gid PROTO ((panel_t *));
 extern mode_t panel_get_current_file_mode PROTO ((panel_t *));

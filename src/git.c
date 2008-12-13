@@ -127,7 +127,7 @@ char monochrome_section[] = "[GITFM-Monochrome]";
 
 wchar_t lock_bad[]   = L"Bad password, try again...";
 
-char *exit_msg;
+wchar_t *exit_msg;
 
 char *screen;
 char PS1[4] = " $ ";
@@ -1836,9 +1836,10 @@ main(argc, argv)
     int action_status, i, retval, to_case, cmp_mode;
     int c, ansi_colors = -1, use_last_screen_character = ON;
     int entry, key, app_end = 0, first_time = 1, errors = 0;
-    char *left_panel_path, *right_panel_path, *output_string;
-    char *cmdln = NULL, *input = NULL, *ptr, *srcptr, *search_string = NULL;
-
+    char *left_panel_path, *right_panel_path;
+    char *scmdln=NULL, *soutput_string, *input = NULL, *ptr, *srcptr, *search_string = NULL;
+    wchar_t *cmdln = NULL, *output_string, *wptr, *wsrcptr;
+    int exit_msg_len, wptrlen;
 
     /* Make sure we don't get signals before we are ready to handle
        them.  */
@@ -1858,8 +1859,9 @@ main(argc, argv)
 
     get_login_name();
 
-    exit_msg = xmalloc(strlen(PRODUCT) + 16);
-    sprintf(exit_msg, "Exit %s? ", PRODUCT);
+    exit_msg_len=strlen(PRODUCT) + 16;
+    exit_msg = xmalloc(exit_msg_len * sizeof(wchar_t));
+    swprintf(exit_msg, exit_msg_len, L"Exit %s? ", PRODUCT);
 
     if (getenv("COLORTERM") != NULL)
 	ansi_colors = ON;
@@ -2198,13 +2200,11 @@ main(argc, argv)
 				    xfree(msg);
 				}
 
-				if (!is_a_bg_command(cmd))
-				{
-				    wchar_t *wcmd=mbsduptowcs(cmd);
+				wchar_t *wcmd=mbsduptowcs(cmd);
+				if (!is_a_bg_command(wcmd))
 				    tty_update_title(wcmd);
-				    xfree(wcmd);
-				}
 				child_exit_code = start(cmd, command->hide);
+				xfree(wcmd);
 				xfree(cmd);
 
 				if (command->hide)
@@ -2339,34 +2339,34 @@ main(argc, argv)
 		action_status = 0;
 		il_free(saved_il);
 		il_get_contents(&cmdln);
-
+		scmdln=wcsduptombs(cmdln);
 		/* Remove the trailing spaces.  */
-		for (i = strlen(cmdln) - 1; i >= 0; i--)
-		    if (cmdln[i] == ' ')
-			cmdln[i] = '\0';
+		for (i = strlen(scmdln) - 1; i >= 0; i--)
+		    if (scmdln[i] == ' ')
+			scmdln[i] = '\0';
 		    else
 			break;
 
-		switch (cmdln[0])
+		switch (scmdln[0])
 		{
 		    case '+':
-			if (cmdln[1] == '\0')
+			if (scmdln[1] == '\0')
 			    panel_action(src_panel, act_SELECT_ALL,
 					 dst_panel, NULL, 1);
 			else
 			    panel_action(src_panel, act_PATTERN_SELECT,
-					 dst_panel, cmdln + 1, 1);
+					 dst_panel, scmdln + 1, 1);
 
 			il_kill_line(IL_DONT_STORE);
 			break;
 
 		    case '-':
-			if (cmdln[1] == '\0')
+			if (scmdln[1] == '\0')
 			    panel_action(src_panel, act_UNSELECT_ALL,
 					 dst_panel, NULL, 1);
 			else
 			    panel_action(src_panel, act_PATTERN_UNSELECT,
-					 dst_panel, cmdln + 1, 1);
+					 dst_panel, scmdln + 1, 1);
 
 			il_kill_line(IL_DONT_STORE);
 			break;
@@ -2380,7 +2380,7 @@ main(argc, argv)
 			break;
 
 		    case '*':
-			if (cmdln[1] == '\0')
+			if (scmdln[1] == '\0')
 			{
 			    panel_action(src_panel, act_TOGGLE,
 					 dst_panel, NULL, 1);
@@ -2390,7 +2390,7 @@ main(argc, argv)
 			/* Fall through... */
 
 		    default:
-			if (history_expand(cmdln, &output_string) >= 0)
+			if (history_expand(scmdln, &output_string) >= 0)
 			{
 			    int bg_cmd;
 
@@ -2405,14 +2405,12 @@ main(argc, argv)
 
 			    bg_cmd = is_a_bg_command(output_string);
 			    if (!bg_cmd)
-			    {
-				wchar_t *wstr=mbsduptowcs(output_string);
-				tty_update_title(wstr);
-				xfree(wstr);
-			    }
+				tty_update_title(output_string);
 			    il_kill_line(IL_DONT_STORE);
 			    il_insert_text(output_string);
-			    start(output_string, bg_cmd);
+			    soutput_string=wcsduptombs(output_string);
+			    start(soutput_string, bg_cmd);
+			    xfree(soutput_string);
 			    il_history(IL_RECORD);
 			    il_kill_line(IL_DONT_STORE);
 			    /* HACK: Do not call tty_update(); here!  */
@@ -2435,6 +2433,7 @@ main(argc, argv)
 		}
 
 		saved_il = il_save();
+		xfree(scmdln);
 
 		if (action_status)
 		    goto restart;
@@ -2538,7 +2537,9 @@ main(argc, argv)
 				il_kill_line(IL_DONT_STORE);
 				il_insert_text(output_string);
 				tty_update_title(output_string);
-				start(output_string, 0);
+				soutput_string=wcsduptombs(output_string);
+				start(soutput_string, 0);
+				xfree(soutput_string);
 				tty_get_screen(screen);
 				il_history(IL_RECORD);
 				status(CommandLineModeHelp,
@@ -2689,15 +2690,17 @@ main(argc, argv)
 		break;
 
 	    case BUILTIN_entry_to_input_line:
-		srcptr = panel_get_current_file_name(src_panel);
-		ptr = xmalloc(1 + 1 + strlen(srcptr) + 1 + 1 + 1);
+		wsrcptr = panel_get_current_file_wname(src_panel);
+		wptrlen=1 + 1 + wcslen(wsrcptr) + 1 + 1 + 1;
+		wptr = xmalloc(wptrlen * sizeof(wchar_t));
 
 	      copy_to_cmdln:
-		len = strlen(cmdln);
+		len = wcslen(cmdln);
 		il_free(saved_il);
 		/* FIXME: I removed the quotes since git is not able to
 		   handle non-printable characters in the command line
 		   anyway.  We just convert them to question marks.  */
+		/* FIXME: put them back? see 4.3.16 */
 
 		/* If the character before the position where we want
 		   to insert the file name is ' ' or '/', we don't
@@ -2705,26 +2708,26 @@ main(argc, argv)
 		   redundant spaces and allow for easy path
 		   concatenation.  */
 		if ((len != 0) &&
-		    ((cmdln[il_point() - 1] == '/') ||
-		     (cmdln[il_point() - 1] == ' ')))
+		    ((cmdln[il_point() - 1] == L'/') ||
+		     (cmdln[il_point() - 1] == L' ')))
 		{
-		    if (needs_quotes(srcptr, strlen(srcptr)))
-			sprintf(ptr, "\"%s\" ", srcptr);
+		    if (needs_quotes(wsrcptr, wcslen(wsrcptr)))
+			swprintf(wptr, wptrlen, L"\"%ls\" ", wsrcptr);
 		    else
-			sprintf(ptr, "%s ", srcptr);
+			swprintf(wptr, wptrlen, L"%ls ", wsrcptr);
 		}
 		else
 		{
-		    if (needs_quotes(srcptr, strlen(srcptr)))
-			sprintf(ptr, " \"%s\" ", srcptr);
+		    if (needs_quotes(wsrcptr, wcslen(wsrcptr)))
+			swprintf(wptr, wptrlen, L" \"%ls\" ", wsrcptr);
 		    else
-			sprintf(ptr, " %s ", srcptr);
+			swprintf(wptr, wptrlen, L" %ls ", wsrcptr);
 		}
 
-		ptrlen = strlen(ptr);
-		toprintable(ptr, strlen(ptr));
-		il_insert_text(ptr);
-		xfree(ptr);
+		wptrlen = wcslen(wptr);
+		toprintable(wptr, wptrlen);
+		il_insert_text(wptr);
+		xfree(wptr);
 		saved_il = il_save();
 		break;
 
@@ -2734,26 +2737,28 @@ main(argc, argv)
 		goto copy_to_cmdln;
 
 	    case BUILTIN_selected_entries_to_input_line:
-		len = strlen(cmdln);
+		len = wcslen(cmdln);
 		il_free(saved_il);
 
 		panel_init_iterator(src_panel);
 
 		while ((entry = panel_get_next(src_panel)) != -1)
 		{
-		    srcptr = src_panel->dir_entry[entry].name;
-		    ptr = xmalloc(1 + 1 + strlen(srcptr) + 1 + 1 + 1);
+		    int wptrstrlen;
+		    wsrcptr = src_panel->dir_entry[entry].wname;
+		    wptrlen=1 + 1 + wcslen(wsrcptr) + 1 + 1 + 1;
+		    wptr = xmalloc(wptrlen * sizeof(wchar_t));
 
-		    if (needs_quotes(srcptr, strlen(srcptr)))
-			sprintf(ptr, " \"%s\"", srcptr);
+		    if (needs_quotes(wsrcptr, wcslen(wsrcptr)))
+			swprintf(wptr, wptrlen, L" \"%ls\"", wsrcptr);
 		    else
-			sprintf(ptr, " %s", srcptr);
+			swprintf(wptr, wptrlen, L" %ls", wsrcptr);
 
-		    ptrlen = strlen(ptr);
-		    len += ptrlen;
-		    toprintable(ptr, ptrlen);
-		    il_insert_text(ptr);
-		    xfree(ptr);
+		    wptrstrlen = wcslen(wptr);
+		    len += wptrstrlen;
+		    toprintable(wptr, wptrstrlen);
+		    il_insert_text(wptr);
+		    xfree(wptr);
 		}
 
 		il_insert_text(L" ");

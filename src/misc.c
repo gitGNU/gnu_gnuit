@@ -638,20 +638,20 @@ toprintable(string, length)
 
 int
 needs_quotes(string, length)
-    char *string;
+    wchar_t *string;
     size_t length;
 {
     size_t i;
 
     for (i = 0; i < length; i++)
-	if (!isalnum((int)string[i]) &&
-	    string[i] != '.' && string[i] != '-' &&
-	    string[i] != '+' && string[i] != '=' &&
-	    string[i] != '~' && string[i] != '^' &&
-	    string[i] != '%' && string[i] != '@' &&
-	    string[i] != '/' && string[i] != ':' &&
-	    string[i] != '{' && string[i] != '}' &&
-	    string[i] != ',' && string[i] != '_')
+	if (!iswalnum(string[i]) &&
+	    string[i] != L'.' && string[i] != L'-' &&
+	    string[i] != L'+' && string[i] != L'=' &&
+	    string[i] != L'~' && string[i] != L'^' &&
+	    string[i] != L'%' && string[i] != L'@' &&
+	    string[i] != L'/' && string[i] != L':' &&
+	    string[i] != L'{' && string[i] != L'}' &&
+	    string[i] != L',' && string[i] != L'_')
 	    return 1;
 
     return 0;
@@ -665,17 +665,17 @@ needs_quotes(string, length)
 
 int
 is_a_bg_command(cmd)
-    char *cmd;
+    wchar_t *cmd;
 {
     int i;
 
-    for (i = strlen(cmd) - 1; i >= 0; i--)
+    for (i = wcslen(cmd) - 1; i >= 0; i--)
     {
-	if (cmd[i] == '&')
+	if (cmd[i] == L'&')
 	    return 1;
 
 	/* Skip spaces and tabs.  */
-	if (cmd[i] != ' ' && cmd[i] != key_TAB)
+	if (cmd[i] != L' ' && cmd[i] != key_TAB)
 	    return 0;
     }
 
@@ -693,7 +693,7 @@ is_a_bg_command(cmd)
 
 int
 is_an_empty_command(cmd)
-    char *cmd;
+    wchar_t *cmd;
 {
     for (; *cmd; cmd++)
 	if (*cmd != ' ' && *cmd != ';')

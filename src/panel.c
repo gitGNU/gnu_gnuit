@@ -579,6 +579,13 @@ panel_get_current_file_name(this)
     return this->dir_entry[this->current_entry].name;
 }
 
+wchar_t *
+panel_get_current_file_wname(this)
+    panel_t *this;
+{
+    return this->dir_entry[this->current_entry].wname;
+}
+
 
 uid_t
 panel_get_current_file_uid(this)
