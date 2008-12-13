@@ -25,7 +25,6 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
-#include <mpatrol.h>
 #include <sys/types.h>
 
 #ifdef HAVE_STDDEF_H

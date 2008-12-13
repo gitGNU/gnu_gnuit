@@ -25,7 +25,6 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
-#include <mpatrol.h>
 #include <sys/types.h>
 
 #ifdef HAVE_STDDEF_H
@@ -45,6 +44,17 @@ xalloc_die(void)
     abort();
 }
 
+void
+xfree(pointer)
+    void *pointer;
+{
+    if (pointer)
+	free(pointer);
+    else
+	fatal("xfree: trying to free NULL");
+}
+
+#if 0
 void *xmalloc(size_t size)
 {
     void *ptr=malloc(size);
@@ -55,12 +65,4 @@ void *xmalloc(size_t size)
     abort();
 }
 
-void
-xfree(pointer)
-    void *pointer;
-{
-    if (pointer)
-	free(pointer);
-    else
-	fatal("xfree: trying to free NULL");
-}
+#endif

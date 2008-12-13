@@ -39,7 +39,6 @@
 #endif
 
 #include <assert.h>
-#include <mpatrol.h>
 #include "window.h"
 #include "xmalloc.h"
 #include "tty.h"

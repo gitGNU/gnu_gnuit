@@ -1841,7 +1841,7 @@ main(argc, argv)
     int c, ansi_colors = -1, use_last_screen_character = ON;
     int entry, key, app_end = 0, first_time = 1, errors = 0;
     char *left_panel_path, *right_panel_path;
-    char *scmdln=NULL, *soutput_string, *ptr, *srcptr;
+    char *scmdln=NULL, *soutput_string;
     wchar_t *cmdln = NULL, *output_string, *wptr, *wsrcptr, *input = NULL;
     wchar_t *search_string = NULL;
     int exit_msg_len, wptrlen;
@@ -2695,7 +2695,7 @@ main(argc, argv)
 		break;
 
 	    case BUILTIN_entry_to_input_line:
-		wsrcptr = panel_get_current_file_wname(src_panel);
+		wsrcptr = wcsdup(panel_get_current_file_wname(src_panel));
 		wptrlen=1 + 1 + wcslen(wsrcptr) + 1 + 1 + 1;
 		wptr = xmalloc(wptrlen * sizeof(wchar_t));
 
@@ -2733,12 +2733,15 @@ main(argc, argv)
 		toprintable(wptr, wptrlen);
 		il_insert_text(wptr);
 		xfree(wptr);
+		xfree(wsrcptr);
 		saved_il = il_save();
 		break;
 
 	    case BUILTIN_other_path_to_input_line:
-		srcptr = dst_panel->path;
-		ptr = xmalloc(1 + 1 + dst_panel->pathlen + 1 + 1 + 1);
+		wsrcptr = mbsduptowcs(dst_panel->path);
+		wptrlen = 1 + 1 + wcslen(wsrcptr) + 1 + 1 + 1;
+		wptr = xmalloc(wptrlen * sizeof(wchar_t));
+
 		goto copy_to_cmdln;
 
 	    case BUILTIN_selected_entries_to_input_line:

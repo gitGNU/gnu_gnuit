@@ -25,8 +25,6 @@ AC_SYS_LARGEFILE
 HOST=$host
 AM_MAINTAINER_MODE
 
-AM_WITH_MPATROL
-
 AH_TOP(
     [
 /* Include the header file containing the version of the package.  */
