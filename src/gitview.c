@@ -856,7 +856,7 @@ main(argc, argv)
 				   ScreenBackground);
 			window_goto(file_window, SEEK_LINE,
 				    strlen(seek_txt) + count);
-			window_putc(file_window, ' ');
+			window_putc(file_window, L' ');
 		    }
 		    else
 			window_goto(file_window,

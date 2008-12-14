@@ -124,9 +124,9 @@ static int mail_check PROTO (());
 static int
 calc_info_length()
 {
-    info_length = (sizeof(login_string)  - 1) + 1 + login_name_length + 1 +
+    info_length = (wcslen(login_string)  - 1) + 1 + login_name_length + 1 +
 	          (wcslen(mail_string)) + 1 +
-		  (sizeof(ttydev_string) - 1) + 1 + tty_device_length + 1 +
+		  (wcslen(ttydev_string) - 1) + 1 + tty_device_length + 1 +
 		  6 + 1;
     return(info_length);
 }
@@ -312,7 +312,7 @@ title_update()
     window_goto(title_window, 0, 0);
     window_puts(title_window, product_name, product_name_length);
 
-    buf = xmalloc(title_window->columns + 1);
+    buf = xmalloc((title_window->columns + 1) * sizeof(wchar_t));
 
     mail_check();
     if (product_name_length + 2 + info_length < title_window->columns)
@@ -325,36 +325,36 @@ title_update()
 	window_puts(title_window, buf, length);
 
 	window_goto(title_window, 0, product_name_length + length);
-	window_puts(title_window, login_string, sizeof(login_string) - 1);
-	window_putc(title_window, ' ');
+	window_puts(title_window, login_string, wcslen(login_string));
+	window_putc(title_window, L' ');
 
 	tty_foreground(UserName);
 	window_puts(title_window, login_name, login_name_length);
-	window_putc(title_window, ' ');
+	window_putc(title_window, L' ');
 
 	window_puts(title_window, mail_string, wcslen(mail_string));
 
-	window_putc(title_window, ' ');
+	window_putc(title_window, L' ');
 
 	tty_foreground(TitleForeground);
-	window_puts(title_window, ttydev_string, sizeof(ttydev_string) - 1);
-	window_putc(title_window, ' ');
+	window_puts(title_window, ttydev_string, wcslen(ttydev_string));
+	window_putc(title_window, L' ');
 
 	tty_foreground(TtyName);
 	window_puts(title_window, tty_device, tty_device_length);
 
 	tty_foreground(TitleForeground);
-	window_putc(title_window, ' ');
+	window_putc(title_window, L' ');
 
 	clock_refresh(0);
 
 	window_goto(title_window, 0, title_window->columns - 1);
-	window_putc(title_window, ' ');
+	window_putc(title_window, L' ');
     }
     else if (product_name_length < title_window->columns)
     {
 	length = title_window->columns - product_name_length;
-	memset(buf, ' ', length);
+	wmemset(buf, L' ', length);
 	window_puts(title_window, buf, length);
     }
 

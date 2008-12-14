@@ -172,9 +172,9 @@ static unsigned char *tty_prev_atr;
 
 
 /* The ANSI color sequences.  */
-static wchar_t ansi_foreground[] = { 0x1b, L'[', L'3', L'0', L'm' };
-static wchar_t ansi_background[] = { 0x1b, L'[', L'4', L'0', L'm' };
-static wchar_t ansi_defaults[]   = { 0x1b, L'[', L'0', L'm' };
+static wchar_t ansi_foreground[] = { 0x1b, L'[', L'3', L'0', L'm', 0 };
+static wchar_t ansi_background[] = { 0x1b, L'[', L'4', L'0', L'm', 0 };
+static wchar_t ansi_defaults[]   = { 0x1b, L'[', L'0', L'm', 0 };
 
 /* These variable tells us if we should use standard ANSI color sequences.
    Its value is taken from the configuration file.  */
@@ -1247,9 +1247,9 @@ tty_io_foreground(color)
 
     if (AnsiColors == ON)
     {
-	memcpy(str, ansi_foreground, sizeof(ansi_foreground));
+	memcpy(str, ansi_foreground, wcslen(ansi_foreground));
 	str[3] += color;
-	tty_writes(str, sizeof(ansi_foreground));
+	tty_writes(str, wcslen(ansi_foreground));
     }
     else
 	tty_io_reversevid(color != WHITE);
@@ -1275,9 +1275,9 @@ tty_io_background(color)
 
     if (AnsiColors == ON)
     {
-	memcpy(str, ansi_background, sizeof(ansi_background));
+	memcpy(str, ansi_background, wcslen(ansi_background));
 	str[3] += color;
-	tty_writes(str, sizeof(ansi_background));
+	tty_writes(str, wcslen(ansi_background));
     }
     else
 	tty_io_reversevid(color != BLACK);
@@ -1532,7 +1532,7 @@ void
 tty_defaults()
 {
     if (AnsiColors == ON)
-	tty_writes(ansi_defaults, sizeof(ansi_defaults));
+	tty_writes(ansi_defaults, wcslen(ansi_defaults));
 
     if (TTY_ATTRIBUTES_OFF)
 	tputs(TTY_ATTRIBUTES_OFF, 1, tty_writec);

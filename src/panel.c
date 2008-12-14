@@ -1651,7 +1651,7 @@ panel_update_info(this)
 	/* This is an ugly hack, I know, but it does what I want.  */
 	tty_colors(OFF, PanelFrame, PanelFrame);
 	window_goto(this->window, this->thumb + 1, this->columns - 1);
-	window_putc(this->window, ' ');
+	window_putc(this->window, L' ');
 
 	if (this->entries > this->lines-2)
 	{
@@ -1662,7 +1662,7 @@ panel_update_info(this)
 		       PanelThumbForeground,
 		       PanelThumbBackground);
 	    window_goto(this->window, this->thumb+1, this->columns-1);
-	    window_putc(this->window, '#');
+	    window_putc(this->window, L'#');
 	}
     }
 
