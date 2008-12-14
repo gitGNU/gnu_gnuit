@@ -362,3 +362,11 @@ wcsduptombs(src)
     wcstombs(dest,src,len+1);
     return dest;
 }
+
+/* FIXME: debug, remove */
+/* less typing in gdb */
+char *
+wp(wchar_t *str)
+{
+    return wcsduptombs(str);
+}

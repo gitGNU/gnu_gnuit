@@ -586,16 +586,16 @@ extern wchar_t *il_read_line PROTO ((wchar_t *, wchar_t **, wchar_t *, xstack_t 
 void
 il_history_add_entry(history, text)
     xstack_t *history;
-    char *text;
+    wchar_t *text;
 {
-    char *history_text;
+    wchar_t *history_text;
 
     /* Avoid duplicates.  */
     if (xstack_preview(history, &history_text, 1) &&
-	strcmp(history_text, text) == 0)
+	wcscmp(history_text, text) == 0)
 	return;
 
-    history_text = xstrdup(text);
+    history_text = wcsdup(text);
     xstack_push(history, &history_text);
 }
 
@@ -1191,7 +1191,7 @@ il_isearch(static_text, dest, status, action)
 		break;
 	    }
 
-	    if (isprint(key))
+	    if (iswprint(key))
 	    {
 		il_insert_char(key);
 		*action = IL_ISEARCH_ACTION_INCREASE;
@@ -2018,7 +2018,6 @@ main(argc, argv)
     NormalModeHelp      = mbsduptowcs(get_string_var("NormalModeHelp", ""));
     CommandLineModeHelp = mbsduptowcs(get_string_var("CommandLineModeHelp", ""));
 
-
     use_section(AnsiColors ? color_section : monochrome_section);
 
     get_colorset_var(TitleColors, TitleFields, TITLE_FIELDS);
@@ -2098,6 +2097,7 @@ main(argc, argv)
     tty_update_title(panel_get_wpath(src_panel));
 
   restart:
+    tty_update(); /* FIXME: debug, remove */
     if (wait_msg)
     {
 	alarm(0);
@@ -2108,6 +2108,7 @@ main(argc, argv)
     }
 
     tty_update_title(panel_get_wpath(src_panel));
+    tty_update(); /* FIXME: debug, remove */
     alarm(60 - get_local_time()->tm_sec);
 
     src_panel = panel_no ? right_panel : left_panel;
@@ -2122,7 +2123,9 @@ main(argc, argv)
     }
 
     title_update();
+    tty_update(); /* FIXME: debug, remove */
     status_default();
+    tty_update(); /* FIXME: debug, remove */
     il_restore(saved_il);
     tty_update();
 

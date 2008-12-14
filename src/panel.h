@@ -272,6 +272,6 @@ extern void panel_deactivate PROTO ((panel_t *));
 extern void panel_update PROTO ((panel_t *));
 extern void panel_set_wrapped_isearch_flag PROTO ((panel_t *, int));
 extern void panel_center_current_entry PROTO ((panel_t *));
-
+extern void panel_set_path PROTO ((panel_t *, char *));
 
 #endif  /* _GIT_PANEL_H */

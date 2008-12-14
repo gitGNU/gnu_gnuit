@@ -129,7 +129,6 @@ extern int TypeSensitivity;
 
 char rights[16] = "-rwxrwxrwx";
 
-
 #define FILE_DISPLAY_MODES      7
 
 char *FileDisplayMode[FILE_DISPLAY_MODES] =
@@ -300,12 +299,12 @@ static int InfoDisplay     = OFF;
 static int GroupDigits     = ON;
 static int MaxUnscaledDigits=9;
 
-static char nice_try[] = "Nice try, maybe later... :-)";
+static wchar_t nice_try[] = L"Nice try, maybe later... :-)";
 
 extern void fatal PROTO ((char *));
 extern void panel_update_entry PROTO ((panel_t *, int));
-extern char il_read_char PROTO ((char *, char *, int));
-extern char *il_read_line PROTO ((char *, char **, char *, xstack_t *));
+extern wchar_t il_read_char PROTO ((wchar_t *, wchar_t *, int));
+extern wchar_t *il_read_line PROTO ((wchar_t *, wchar_t **, wchar_t *, xstack_t *));
 
 
 static xstack_t *copy_history;
@@ -350,6 +349,7 @@ panel_init(path)
     this->temp		    = NULL;
     this->dir		    = NULL;
     this->isearch_stack	    = NULL;
+    this->wpath             = NULL;
     this->visible	    = 1;
     this->scroll_step       = 1;
     this->thumb		    = 0;
@@ -370,9 +370,7 @@ panel_init(path)
 	fatal("`getcwd' failed: permission denied");
 
     minimize_path(this->path);
-    this->pathlen = strlen(this->path);
-
-    this->wpath = mbsduptowcs(this->path);
+    panel_set_path(this,this->path);
 
     this->window = window_init();
 
@@ -406,7 +404,7 @@ panel_init(path)
     InfoDisplay     = get_flag_var("InfoDisplay",     ON);
     LeadingDotMatch = get_flag_var("LeadingDotMatch", ON);
     GroupDigits     = get_flag_var("GroupDigits", ON);
-    
+
 
     use_section(AnsiColors ? color_section : monochrome_section);
 
@@ -448,7 +446,11 @@ panel_end(this)
 
     xfree(this->dir_entry);
     xfree(this->temp);
-
+    if(this->wpath)
+    {
+	xfree(this->wpath);
+	this->wpath=NULL;
+    }
     window_end(this->window);
 
     xfree(this);
@@ -620,6 +622,17 @@ panel_get_current_file_type(this)
     return this->dir_entry[this->current_entry].type;
 }
 
+void
+panel_set_path(pan, path)
+    panel_t *pan;
+    char *path;
+{
+    strcpy(pan->path, path);
+    pan->pathlen = strlen(path);
+    if(pan->wpath)
+	xfree(pan->wpath);
+    pan->wpath=mbsduptowcs(path);
+}
 
 /*
  * Return an (unconditionally centered) first entry index.
@@ -779,35 +792,37 @@ panel_isearch_forward(this, string, len, start_entry)
 #define panel_1s_message il_read_char
 
 
-char
+wchar_t
 panel_2s_message(format, string, options, flags)
-    char *format;
-    char *string;
-    char *options;
+    wchar_t *format;
+    wchar_t *string;
+    wchar_t *options;
     int flags;
 {
-    char c;
-    char *message = xmalloc(strlen(format) + strlen(string) + 1);
+    wchar_t c;
+    int len=wcslen(format) + wcslen(string) + 1;
+    wchar_t *message = xmalloc(len * sizeof(wchar_t));
 
-    sprintf(message, format, string);
+    swprintf(message, len, format, string);
     c = panel_1s_message(message, options, flags);
     xfree(message);
     return c;
 }
 
 
-char
+wchar_t
 panel_3s_message(format, string1, string2, options, flags)
-    char *format;
-    char *string1;
-    char *string2;
-    char *options;
+    wchar_t *format;
+    wchar_t *string1;
+    wchar_t *string2;
+    wchar_t *options;
     int flags;
 {
-    char c;
-    char *message = xmalloc(strlen(format)+strlen(string1)+strlen(string2)+1);
+    wchar_t c;
+    int len=wcslen(format)+wcslen(string1)+wcslen(string2)+1;
+    wchar_t *message = xmalloc(len * sizeof(wchar_t));
 
-    sprintf(message, format, string1, string2);
+    swprintf(message, len, format, string1, string2);
     c = panel_1s_message(message, options, flags);
     xfree(message);
     return c;
@@ -820,16 +835,14 @@ panel_recover(this)
 {
     panel_set_current_entry(this, 0);
 
-    panel_2s_message("%s/: Permission denied.",
-		     this->path, (char *)NULL,
+    panel_2s_message(L"%ls/: Permission denied.",
+		     this->wpath, NULL,
 		     IL_MOVE | IL_BEEP | IL_SAVE | IL_ERROR);
 
     if (strcmp(this->path, "/") == 0)
 	fatal("/: Permission denied");
-
-    strcpy(this->path, "/");
-    this->pathlen = 1;
-    chdir(this->path);
+    panel_set_path(this, "/");
+    chdir("/");
     panel_action(this, act_REGET, (panel_t *)NULL, (void *)NULL, 1);
 }
 
@@ -1100,7 +1113,7 @@ panel_read_directory(this, directory, verify)
     strcpy(old_path, this->path);
 
     if (directory[0] == '/')
-	this->path = xstrdup(directory);
+	panel_set_path(this, xstrdup(directory));
     else
     {
 	/* There is definitely a reason why this code is here, but I
@@ -1115,7 +1128,7 @@ panel_read_directory(this, directory, verify)
 	if (path)
 	{
 	    xfree(this->path);
-	    this->path = path;
+	    panel_set_path(this,path);
 	}
 	else
 	{
@@ -1136,12 +1149,13 @@ panel_read_directory(this, directory, verify)
 				      strlen(directory));
 		strcat(this->path, "/");
 		strcat(this->path, directory);
+		panel_set_path(this,this->path);
 	     }
 	}
     }
 
     minimize_path(this->path);
-    this->pathlen = strlen(this->path);
+    panel_set_path(this,this->path);
 
     xstat(this->path, &s);
 
@@ -1622,6 +1636,7 @@ panel_update_info(this)
     size_t len, maxname;
     off64_t total_size = 0;
     char str[1024];
+    wchar_t *wstr;
     char temp_rights[16];
 
     assert(this->current_entry < this->entries);
@@ -1705,10 +1720,10 @@ panel_update_info(this)
 	tty_brightness(PanelFileInfoBrightness);
 	tty_foreground(PanelFileInfo);
     }
-
-    memcpy(this->temp, str, len = strlen(str));
+    wstr=mbsduptowcs(str);
+    wmemcpy(this->temp, wstr, len = wcslen(wstr));
     if( (len+2) < this->columns)
-	memset(this->temp + len, ' ', this->columns - 2 - len);
+	wmemset(this->temp + len, L' ', this->columns - 2 - len);
     toprintable(this->temp, len);
     tty_background(PanelFrame);
     window_goto(this->window, this->lines - 1, 2);
@@ -2122,7 +2137,7 @@ canceled()
 
 	user_heart_attack = 0;
 	saved_il = il_save();
-	key = panel_1s_message("Abort current operation? ", "yn",
+	key = panel_1s_message(L"Abort current operation? ", L"yn",
 			       IL_FREEZED | IL_BEEP);
 	il_restore(saved_il);
 	il_update();
@@ -2171,11 +2186,11 @@ panel_warning(this, file)
     char c;
 
     if (this->selected_entries)
-	c = panel_2s_message("%s: File exists. Overwrite/Skip/All/Cancel? ",
-			     file, "osac", IL_MOVE|IL_BEEP|IL_SAVE|IL_ERROR);
+	c = panel_2s_message(L"%ls: File exists. Overwrite/Skip/All/Cancel? ",
+			     file, L"osac", IL_MOVE|IL_BEEP|IL_SAVE|IL_ERROR);
     else
-	c = panel_2s_message("%s: File exists. Overwrite/Cancel? ",
-			     file, "oc", IL_MOVE|IL_BEEP|IL_SAVE|IL_ERROR);
+	c = panel_2s_message(L"%ls: File exists. Overwrite/Cancel? ",
+			     file, L"oc", IL_MOVE|IL_BEEP|IL_SAVE|IL_ERROR);
 
     switch (c)
     {
@@ -2234,20 +2249,20 @@ panel_unlink(name)
 #define SD_INVAL	11
 #define SD_INTERRUPTED  12
 
-char *copyerr[12] =
+wchar_t *copyerr[12] =
 {
-    "",
-    "",
-    "",
-    "cannot open source file",
-    "cannot read from source file",
-    "cannot create destination file",
-    "cannot write to destination file",
-    "not enough space on device",
-    "unknown error",
-    "cannot stat destination file",
-    "cannot copy a directory to a non-directory",
-    "cp was interrupted by a signal",
+    L"",
+    L"",
+    L"",
+    L"cannot open source file",
+    L"cannot read from source file",
+    L"cannot create destination file",
+    L"cannot write to destination file",
+    L"not enough space on device",
+    L"unknown error",
+    L"cannot stat destination file",
+    L"cannot copy a directory to a non-directory",
+    L"cp was interrupted by a signal",
 };
 
 
@@ -2547,20 +2562,20 @@ panel_copy(this, src, dest, mode, uid, gid)
 #define FT_INTERRUPTED  12
 
 
-char *moveerr[12] =
+wchar_t *moveerr[12] =
 {
-    "",
-    "",
-    "",
-    "cannot create destination file",
-    "cannot remove source file",
-    "cannot stat source file",
-    "cannot stat destination directory",
-    "unknown error",
-    "cannot copy a directory to a non-directory",
-    "not enough space on device",
-    "cannot copy file",
-    "mv was interrupted by a signal",
+    L"",
+    L"",
+    L"",
+    L"cannot create destination file",
+    L"cannot remove source file",
+    L"cannot stat source file",
+    L"cannot stat destination directory",
+    L"unknown error",
+    L"cannot copy a directory to a non-directory",
+    L"not enough space on device",
+    L"cannot copy file",
+    L"mv was interrupted by a signal",
 };
 
 
@@ -2742,9 +2757,9 @@ panel_move(this, from, to, mode)
 	    case SD_NOSPACE:	return FT_NOSPACE;
 
 	    default:
-		panel_3s_message("%s: Copy failed, %s.",
+		panel_3s_message(L"%ls: Copy failed, %ls.",
 				 from, copyerr[error - 1],
-				 (char *)NULL,
+				 NULL,
 				 IL_MOVE | IL_BEEP | IL_ERROR);
 		return FT_COPY;
 	}
@@ -2868,8 +2883,8 @@ panel_act_ENTER(this, other)
 		    panel_update(this);
 		}
 		else
-		    panel_2s_message("%s/: Permission denied.",
-				     name, (char *)NULL,
+		    panel_2s_message(L"%ls/: Permission denied.",
+				     name, NULL,
 				     IL_FREEZED | IL_BEEP |
 				     IL_SAVE    | IL_ERROR);
 		break;
@@ -2936,25 +2951,25 @@ panel_act_COPY(this, other)
 {
     size_t len;
     int error, entry;
-    char *file, *dir = NULL, *msg, *input = NULL, *tmp_input;
-
+    char *dir = NULL, *sinput, *tmp_input;
+    wchar_t *input = NULL, *msg, *file, *wdir=NULL;
 
     this->chkdest = ON;
 
     if (this->selected_entries == 0)
     {
 	char *name = this->dir_entry[this->current_entry].name;
-
 	if (this->current_entry == 0 && !rootdir())
 	    return;
 
-	msg = xmalloc(16 + strlen(name) + 1);
-	sprintf(msg, "Copy %s to: ", cutname(name, 0, 0));
+	len=16 + strlen(name) + 1;
+	msg = xmalloc(len * sizeof(wchar_t));
+	swprintf(msg, len, L"Copy %s to: ", cutname(name, 0, 0));
 
-	len  = 1 + strlen(name) + 1;
-	file = xmalloc(strlen(other->path) + len);
+	len  = 1 + strlen(name) + strlen(other->path) + 1;
+	file = xmalloc(len * sizeof(wchar_t));
 
-	sprintf(file, "%s/%s", other->path, name);
+	swprintf(file, len, L"%s/%s", other->path, name);
 
 	if (!il_read_line(msg, &input, file, copy_history))
 	{
@@ -2970,18 +2985,23 @@ panel_act_COPY(this, other)
 	    il_message(PANEL_COPY_FILE_MSG);
 
 	tty_update();
-	tmp_input = tilde_expand(input);
+	sinput=wcsduptombs(input);
+	tmp_input = tilde_expand(sinput);
+	xfree(sinput);
 	xfree(input);
-	input = tmp_input;
+	input = mbsduptowcs(tmp_input);
 
-	error = same_file(name, input);
+	error = same_file(name, tmp_input);
+	xfree(tmp_input);
 	xfree(file);
 
 	if (error)
 	{
-	    panel_3s_message("%s and %s point to the same file.",
-			     name, input, (char *)NULL,
+	    wchar_t *wname=mbsduptowcs(name);
+	    panel_3s_message(L"%ls and %ls point to the same file.",
+			     wname, input, NULL,
 			     IL_MOVE | IL_BEEP | IL_SAVE | IL_ERROR);
+	    xfree(wname);
 	    xfree(input);
 	    return;
 	}
@@ -2993,8 +3013,8 @@ panel_act_COPY(this, other)
 	xfree(input);
 
 	if (error != SD_OK && error != SD_CANCEL)
-	    panel_3s_message("%s: Copy failed, %s.", name,
-			     copyerr[error - 1], (char *)NULL,
+	    panel_3s_message(L"%ls: Copy failed, %ls.", name,
+			     copyerr[error - 1], NULL,
 			     IL_MOVE | IL_BEEP | IL_SAVE | IL_ERROR);
 
 	status_default();
@@ -3004,14 +3024,15 @@ panel_act_COPY(this, other)
     }
     else
     {
-	if (!il_read_line("Copy selected file(s) to: ", &dir,
-			  other->path, copy_history))
+	if (!il_read_line(L"Copy selected file(s) to: ", &wdir,
+			  other->wpath, copy_history))
 	    return;
-
+	dir=wcsduptombs(wdir);
 	if (same_file(this->path, dir))
 	{
-	    panel_1s_message(nice_try, (char *)NULL,
+	    panel_1s_message(nice_try, NULL,
 			     IL_FREEZED | IL_BEEP | IL_ERROR);
+	    xfree(dir);
 	    return;
 	}
 
@@ -3047,8 +3068,8 @@ panel_act_COPY(this, other)
 		if (error == SD_SKIP)
 		    continue;
 
-		if (panel_3s_message("%s: Copy failed, %s.",
-				     name, copyerr[error - 1], (char *)NULL,
+		if (panel_3s_message(L"%ls: Copy failed, %ls.",
+				     name, copyerr[error - 1], NULL,
 				     IL_MOVE | IL_BEEP | IL_ERROR) == 0)
 		    break;
 	    }
@@ -3094,7 +3115,7 @@ panel_act_DELETE(this, other)
 	(this->current_entry == 0 && !rootdir()))
 	return;
 
-    if (panel_1s_message("Delete selected entries? ","yn",IL_FREEZED) != 'y')
+    if (panel_1s_message(L"Delete selected entries? ",L"yn",IL_FREEZED) != L'y')
 	return;
 
     /* Remember the index of the first selected file.  */
@@ -3125,8 +3146,8 @@ panel_act_DELETE(this, other)
 	    break;
 
 	if (keep_asking)
-	    answer = panel_2s_message("Delete %s? (Yes/Skip/All/Cancel) ",
-				      name, "ysac", IL_MOVE);
+	    answer = panel_2s_message(L"Delete %ls? (Yes/Skip/All/Cancel) ",
+				      name, L"ysac", IL_MOVE);
 
 	il_message(PANEL_DELETE_FILES_MSG);
 	tty_update();
@@ -3149,8 +3170,8 @@ panel_act_DELETE(this, other)
 	    if (!result)
 	    {
 		if (panel_2s_message(
-			"%s/: directory might contain files.  Delete? ",
-			name, "yn", IL_MOVE | IL_SAVE) == 'y')
+			L"%ls/: directory might contain files.  Delete? ",
+			wname, L"yn", IL_MOVE | IL_SAVE) == 'y')
 		{
 		    command = xmalloc(32 + strlen(name) + 1);
 		    sprintf(command, "rm -r -f \"%s\"", name);
@@ -3186,15 +3207,15 @@ panel_act_DELETE(this, other)
 
 	if (interrupted)
 	{
-	    if (panel_2s_message("%s: Deletion interrupted.  Continue? ",
-				 name, "yn",
+	    if (panel_2s_message(L"%ls: Deletion interrupted.  Continue? ",
+				 wname, L"yn",
 				 IL_MOVE | IL_BEEP | IL_ERROR) != 'y')
 		break;
 	}
 	else if (!result)
 	{
-	    if (panel_2s_message("%s: Deletion failed.  Continue? ",
-				 name, "yn",
+	    if (panel_2s_message(L"%ls: Deletion failed.  Continue? ",
+				 wname, L"yn",
 				 IL_MOVE | IL_BEEP | IL_ERROR) != 'y')
 		break;
 	}
@@ -3272,9 +3293,10 @@ panel_act_MKDIR(this, other)
     panel_t *this, *other;
 {
     size_t len;
-    char *input = NULL, *tmp_input;
+    wchar_t *input = NULL;
+    char *sinput, *tmp_input;
 
-    if (!il_read_line("New directory name: ", &input, NULL, mkdir_history))
+    if (!il_read_line(L"New directory name: ", &input, NULL, mkdir_history))
 	return;
 
     if (input[0] == '\0')
@@ -3283,25 +3305,29 @@ panel_act_MKDIR(this, other)
 	return;
     }
 
-    tmp_input = tilde_expand(input);
+    sinput = wcsduptombs(input);
+    tmp_input = tilde_expand(sinput);
+    xfree(sinput);
     xfree(input);
-    input = tmp_input;
+    input = mbsduptowcs(tmp_input);
     /* Add a '/' at the end, otherwise panel_mkdirs() will think the
        last component is a regular file and will not create the
        directory.  */
-    len = strlen(input);
-    input = realloc(input, len + 1 + 1);
-    input[len] = '/';
-    input[len + 1] = '\0';
+    len = wcslen(input);
+    input = realloc(input, ((len + 1 + 1) * sizeof(wchar_t)));
+    input[len] = L'/';
+    input[len + 1] = L'\0';
+    sinput=wcsduptombs(input);
 
     /* I don't remember why I've put S_IFDIR here.  Is it really
        necessary?  */
-    if (panel_mkdirs(input, S_IFDIR | S_IRWXU | S_IRWXG | S_IRWXO) == -1)
+    if (panel_mkdirs(sinput, S_IFDIR | S_IRWXU | S_IRWXG | S_IRWXO) == -1)
     {
-	panel_2s_message("%s: Permission denied.", input,
-			 (char *)NULL,
+	panel_2s_message(L"%ls: Permission denied.", input,
+			 NULL,
 			 IL_FREEZED | IL_BEEP | IL_SAVE | IL_ERROR);
 	xfree(input);
+	xfree(sinput);
 	return;
     }
 
@@ -3311,7 +3337,7 @@ panel_act_MKDIR(this, other)
     {
 	/* If `input' is something like `a/b/c' we will default on the
 	   first entry.  */
-	this->current_entry = panel_find_index(this, input);
+	this->current_entry = panel_find_index(this, sinput);
 	this->first_on_screen = panel_get_centered_fos(this);
 	panel_update_entries(this);
 	panel_update_info(this);
@@ -3337,6 +3363,7 @@ panel_act_MKDIR(this, other)
 
     panel_update_size(other);
     xfree(input);
+    xfree(sinput);
 }
 
 
@@ -3351,26 +3378,30 @@ panel_act_MOVE(this, other)
     panel_t *other;
 {
     size_t len;
+    size_t msglen;
     int first_entry, entry, error;
-    char *file, *dir = NULL, *msg, *input = NULL, *tmp_input;
-
+    char *dir = NULL, *sinput,*tmp_input;
+    wchar_t *msg, *input = NULL, *file, *wdir;
 
     this->chkdest = ON;
 
     if (this->selected_entries == 0)
     {
 	char *name = this->dir_entry[this->current_entry].name;
+	wchar_t *wname = this->dir_entry[this->current_entry].wname;
 
 	if (this->current_entry == 0 && !rootdir())
 	    return;
 
-	msg = xmalloc(16 + strlen(name) + 1);
-	sprintf(msg, "Move %s to: ", cutname(name, 0, 0));
+	len=16 + strlen(name) + 1;
+	msg = xmalloc(len * sizeof(wchar_t));
+	swprintf(msg, len, L"Move %s to: ", cutname(name, 0, 0));
 
-	len  = 1 + strlen(name) + 1;
-	file = xmalloc(strlen(other->path) + len);
+	msglen = 1 + strlen(name) + 1;
+	len=msglen+strlen(other->path);
+	file = xmalloc(len * sizeof(wchar_t));
 
-	sprintf(file, "%s/%s", other->path, name);
+	swprintf(file, msglen, L"%s/%s", other->path, name);
 
 	if (!il_read_line(msg, &input, file, move_history))
 	{
@@ -3386,24 +3417,26 @@ panel_act_MOVE(this, other)
 	    il_message(PANEL_MOVE_FILE_MSG);
 
 	tty_update();
-	tmp_input = tilde_expand(input);
+	sinput=wcsduptombs(input);
+	tmp_input = tilde_expand(sinput);
 	xfree(input);
-	input = tmp_input;
+	input = mbsduptowcs(tmp_input);
 
-	error = same_file(name, input);
+	error = same_file(name, sinput);
 	xfree(file);
 
 	if (error)
 	{
-	    panel_3s_message("%s and %s point to the same file.",
-			     name, input, (char *)NULL,
+	    panel_3s_message(L"%ls and %ls point to the same file.",
+			     wname, input, NULL,
 			     IL_MOVE | IL_BEEP | IL_SAVE | IL_ERROR);
 	    xfree(input);
 	    return;
 	}
 
-	error = panel_move(this, name, input,
+	error = panel_move(this, name, sinput,
 			   this->dir_entry[this->current_entry].mode);
+	xfree(sinput);
 
 	if (error != FT_OK)
 	{
@@ -3415,8 +3448,8 @@ panel_act_MOVE(this, other)
 		return;
 	    }
 
-	    panel_3s_message("%s: Move failed, %s.", name, moveerr[error - 1],
-			     (char *)NULL, IL_MOVE | IL_BEEP | IL_ERROR);
+	    panel_3s_message(L"%ls: Move failed, %ls.", name, moveerr[error - 1],
+			     NULL, IL_MOVE | IL_BEEP | IL_ERROR);
 	}
 
 	xfree(input);
@@ -3427,14 +3460,17 @@ panel_act_MOVE(this, other)
     }
     else
     {
-	if (!il_read_line("Move selected file(s) to: ", &dir,
-			  other->path, move_history))
+	if (!il_read_line(L"Move selected file(s) to: ", &wdir,
+			  other->wpath, move_history))
 	    return;
+	dir=wcsduptombs(wdir);
+	xfree(wdir);
 
 	if (same_file(this->path, dir))
 	{
-	    panel_1s_message(nice_try, (char *)NULL,
+	    panel_1s_message(nice_try, NULL,
 			     IL_FREEZED | IL_BEEP | IL_ERROR);
+	    xfree(dir);
 	    return;
 	}
 
@@ -3474,8 +3510,8 @@ panel_act_MOVE(this, other)
 		if (error == FT_SKIP)
 		    continue;
 
-		if (panel_3s_message("%s: Move failed, %s.", name,
-				     moveerr[error - 1], (char *)NULL,
+		if (panel_3s_message(L"%ls: Move failed, %ls.", name,
+				     moveerr[error - 1], NULL,
 				     IL_MOVE | IL_BEEP | IL_ERROR) == 0)
 		    break;
 	    }
@@ -3522,6 +3558,7 @@ panel_act_CHDIR(this, other, new_dir)
 	this->pathlen = strlen(new_dir);
 	this->path = xrealloc(this->path, (this->pathlen + 1) * sizeof(char));
 	strcpy(this->path, new_dir);
+	panel_set_path(this,this->path);
     }
     else
     {
@@ -3530,6 +3567,7 @@ panel_act_CHDIR(this, other, new_dir)
 	strcat(this->path, "/");
 	strcat(this->path, new_dir);
 	minimize_path(this->path);
+	panel_set_path(this,this->path);
     }
 
     panel_set_current_entry(this, 0);
@@ -3805,8 +3843,8 @@ panel_act_COMPARE(this, other)
 	(strcmp(this->dir_entry[this_entry].name,
 		other->dir_entry[other_entry].name) == 0))
     {
-	panel_1s_message("There is no point in comparing a file with itself. ",
-			 (char *)NULL, IL_BEEP | IL_SAVE | IL_ERROR);
+	panel_1s_message(L"There is no point in comparing a file with itself. ",
+			 NULL, IL_BEEP | IL_SAVE | IL_ERROR);
 	return;
     }
 
@@ -3820,8 +3858,8 @@ panel_act_COMPARE(this, other)
 	{
 	    /* Ask for permission to continue if the files have
 	       different size.  */
-	    if (panel_1s_message("Files have different size.  Continue? ",
-				 "yn", IL_BEEP | IL_ERROR) != 'y')
+	    if (panel_1s_message(L"Files have different size.  Continue? ",
+				 L"yn", IL_BEEP | IL_ERROR) != 'y')
 		permission = 0;
 	}
 
@@ -3837,30 +3875,30 @@ panel_act_COMPARE(this, other)
 		    break;
 
 		case CF_OPEN1:
-		    panel_2s_message("Cannot open file %s. ",
+		    panel_2s_message(L"Cannot open file %ls. ",
 				     this->dir_entry[this_entry].name,
-				     (char *)NULL,
+				     NULL,
 				     IL_MOVE | IL_BEEP | IL_SAVE | IL_ERROR);
 		    break;
 
 		case CF_OPEN2:
-		    panel_2s_message("Cannot open file %s. ",
+		    panel_2s_message(L"Cannot open file %ls. ",
 				     other->dir_entry[other_entry].name,
-				     (char *)NULL,
+				     NULL,
 				     IL_MOVE | IL_BEEP | IL_SAVE | IL_ERROR);
 		    break;
 
 		case CF_READ1:
-		    panel_2s_message("I/O error reading from file %s. ",
+		    panel_2s_message(L"I/O error reading from file %ls. ",
 				     this->dir_entry[this_entry].name,
-				     (char *)NULL,
+				     NULL,
 				     IL_MOVE | IL_BEEP | IL_SAVE | IL_ERROR);
 		    break;
 
 		case CF_READ2:
-		    panel_2s_message("I/O error reading from file %s. ",
+		    panel_2s_message(L"I/O error reading from file %ls. ",
 				     other->dir_entry[other_entry].name,
-				     (char *)NULL,
+				     NULL,
 				     IL_MOVE | IL_BEEP | IL_SAVE | IL_ERROR);
 		    break;
 
@@ -3868,16 +3906,15 @@ panel_act_COMPARE(this, other)
 		    if ((result == this_size) && (this_size == other_size))
 		    {
 			/* files are identical */
-			panel_1s_message("Compare OK. ", (char *)NULL,
+			panel_1s_message(L"Compare OK. ", NULL,
 					 IL_BEEP | IL_SAVE);
 		    }
 		    else if (result == min(this_size, other_size))
 		    {
 			/* The files appear to be equal, if we ignore
 			   the difference in size.  */
-			panel_1s_message("Files are different sizes but are identical up to the size of the smallest.",
-					 (char *)NULL,
-					 IL_BEEP | IL_SAVE);
+			panel_1s_message(L"Files are different sizes but are identical up to the size of the smallest.",
+					 NULL, IL_BEEP | IL_SAVE);
 		    }
 		    else
 		    {
@@ -3891,8 +3928,8 @@ panel_act_COMPARE(this, other)
 			sprintf(msg, "%ld (0x%lx)",
 				(long)result, (long)result);
 #endif /* !HAVE_64BIT_IO */
-			panel_2s_message("Files differ at offset %s. ",
-					 msg, (char *)NULL, IL_BEEP | IL_SAVE);
+			panel_2s_message(L"Files differ at offset %ls. ",
+					 msg, NULL, IL_BEEP | IL_SAVE);
 			xfree(msg);
 		    }
 
@@ -3902,8 +3939,9 @@ panel_act_COMPARE(this, other)
     }
     else
     {
-	panel_2s_message("Only regular files can be compared. ",
-			 this->path, (char *)NULL,
+	/* FIXME: why [w]path? no %s  */
+	panel_2s_message(L"Only regular files can be compared. ",
+			 this->wpath, NULL,
 			 IL_MOVE | IL_BEEP | IL_SAVE | IL_ERROR);
 	/* At least one of the files is not a regular file, thus we
 	   will not go any further.  */
@@ -3932,8 +3970,8 @@ panel_act_CMPDIR(this, other, quick)
 
     if (strcmp(this->path, other->path) == 0)
     {
-	panel_1s_message("No point in comparing a directory with itself. ",
-			 (char *)NULL, IL_BEEP | IL_SAVE | IL_ERROR);
+	panel_1s_message(L"No point in comparing a directory with itself. ",
+			 NULL, IL_BEEP | IL_SAVE | IL_ERROR);
 
 	panel_unselect_all(this);
 	panel_unselect_all(other);
@@ -4026,15 +4064,15 @@ panel_act_CMPDIR(this, other, quick)
 #define ON_RENERR	6
 #define ON_INTERRUPTED  7
 
-char *renerr[7] =
+wchar_t *renerr[7] =
 {
-    "",
-    "",
-    "",
-    "cannot remove old entry",
-    "cannot remove existing entry",
-    "cannot rename entry",
-    "mv interrupted by a signal",
+    L"",
+    L"",
+    L"",
+    L"cannot remove old entry",
+    L"cannot remove existing entry",
+    L"cannot rename entry",
+    L"mv interrupted by a signal",
 };
 
 
@@ -4198,9 +4236,9 @@ panel_act_CASE(this, other, upcase)
 		continue;
 
 	    if (error != ON_OK && error != ON_CANCEL)
-		panel_3s_message("%s: Rename failed, %s.",
+		panel_3s_message(L"%ls: Rename failed, %ls.",
 				 this->dir_entry[entry].name,
-				 renerr[error - 1], (char *)NULL,
+				 renerr[error - 1], NULL,
 				 IL_MOVE | IL_BEEP | IL_SAVE | IL_ERROR);
 	}
 	else
@@ -4251,7 +4289,8 @@ panel_act_BIN_PACKING(this, other, bin_size)
     panel_t *other;
     off64_t bin_size;
 {
-    char msg[160];
+#define MSGLEN 160
+    wchar_t msg[MSGLEN];
     off64_t file_size;
     long free_blocks;
     off64_t *bins = NULL;
@@ -4365,27 +4404,26 @@ panel_act_BIN_PACKING(this, other, bin_size)
     {
 	if (big_files > 0)
 	{
-	    sprintf(msg,
-		    "%s %d file(s): %s %d bin(s).  %d file(s) are too big.",
+	    swprintf(msg, MSGLEN,
+		    L"%s %d file(s): %s %d bin(s).  %d file(s) are too big.",
 		    fn, candidates, "You need approximately",
 		    used_bins, big_files);
 	}
 	else
-	    sprintf(msg,
-		    "%s %d file(s): You need approximately %d bin(s).",
+	    swprintf(msg, MSGLEN,
+		    L"%s %d file(s): You need approximately %d bin(s).",
 		    fn, candidates, used_bins);
     }
     else
     {
 	if (big_files > 0)
-	    sprintf(msg, "%s: No suitable files found (smaller than %ldKb).",
+	    swprintf(msg, MSGLEN, L"%s: No suitable files found (smaller than %ldKb).",
 		    fn, (long)bin_size);
 	else
-	    sprintf(msg, "%s: No regular files found.", fn);
+	    swprintf(msg, MSGLEN, L"%s: No regular files found.", fn);
     }
 
-    panel_1s_message(msg, (char *)NULL,
-		     IL_FREEZED | IL_BEEP | IL_SAVE | IL_MOVE | IL_HOME);
+    panel_1s_message(msg, NULL, IL_FREEZED | IL_BEEP | IL_SAVE | IL_MOVE | IL_HOME);
 }
 
 
