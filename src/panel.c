@@ -433,6 +433,7 @@ panel_end(this)
 	closedir(this->dir);
 
     for (i = 0; i < this->entries; i++)
+    {
 	if (this->dir_entry[i].name)
 	{
 	    xfree(this->dir_entry[i].name);
@@ -443,7 +444,7 @@ panel_end(this)
 	    xfree(this->dir_entry[i].wname);
 	    this->dir_entry[i].wname = NULL;
 	}
-
+    }
     xfree(this->dir_entry);
     xfree(this->temp);
     if(this->wpath)
@@ -1281,6 +1282,9 @@ panel_read_directory(this, directory, verify)
 	this->dir_entry[this->entries].name = xmalloc(namelen + 1);
 
 	strcpy(this->dir_entry[this->entries].name, "..");
+	if(this->dir_entry[this->entries].wname)
+	    xfree(this->dir_entry[this->entries].wname);
+	this->dir_entry[this->entries].wname=mbsduptowcs(this->dir_entry[this->entries].name);
 	this->maxname = max(this->maxname, namelen);
 
 	panel_load_inode(this, this->entries);
@@ -1295,12 +1299,18 @@ panel_read_directory(this, directory, verify)
     if (verify)
     {
 	for (entry = 0; entry < old_entries; entry++)
+	{
 	    if (old_dir_entry[entry].name)
 	    {
 		xfree(old_dir_entry[entry].name);
 		old_dir_entry[entry].name = NULL;
 	    }
-
+	    if (old_dir_entry[entry].wname)
+	    {
+		xfree(old_dir_entry[entry].wname);
+		old_dir_entry[entry].wname = NULL;
+	    }
+	}
 	xfree(old_dir_entry);
     }
 
