@@ -1724,6 +1724,7 @@ tty_key_print(key_seq)
     wchar_t *typed = L"Keys typed so far: ";
     wchar_t *incomplete = L" ";
     wchar_t *spaces;
+    wchar_t *wkey;
 
     tty_save(&tty_status);
     tty_goto(tty_lines - 1, 0);
@@ -1740,7 +1741,9 @@ tty_key_print(key_seq)
     tty_key_machine2human(key_seq);
 
     tty_puts(typed, wcslen(typed));
-    tty_puts((wchar_t *)keystr, wcslen((wchar_t *)keystr));
+    wkey=mbsduptowcs((char *)keystr);
+    tty_puts(wkey, wcslen(wkey));
+    xfree(wkey);
     tty_puts(incomplete, wcslen(incomplete));
 
     tty_update();
