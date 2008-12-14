@@ -595,7 +595,7 @@ il_history_add_entry(history, text)
 	wcscmp(history_text, text) == 0)
 	return;
 
-    history_text = wcsdup(text);
+    history_text = xwcsdup(text);
     xstack_push(history, &history_text);
 }
 
@@ -2700,7 +2700,7 @@ main(argc, argv)
 		break;
 
 	    case BUILTIN_entry_to_input_line:
-		wsrcptr = wcsdup(panel_get_current_file_wname(src_panel));
+		wsrcptr = xwcsdup(panel_get_current_file_wname(src_panel));
 		wptrlen=1 + 1 + wcslen(wsrcptr) + 1 + 1 + 1;
 		wptr = xmalloc(wptrlen * sizeof(wchar_t));
 
@@ -2932,7 +2932,7 @@ main(argc, argv)
 			search_string && wcslen(search_string))
 		    {
 			xfree(input);
-			input = wcsdup(search_string);
+			input = xwcsdup(search_string);
 			il_insert_text(input);
 			resuming_previous_isearch = 1;
 			previous_isearch_failed = 0;
@@ -2986,7 +2986,7 @@ main(argc, argv)
 		    xfree(search_string);
 		if (input == NULL)
 		    break;
-		search_string = wcsdup(input);
+		search_string = xwcsdup(input);
 		panel_action(src_panel, act_ISEARCH_END, dst_panel, NULL, 1);
 		il_isearch(NULL, NULL,
 			   IL_ISEARCH_END, (int *)NULL);
@@ -3014,7 +3014,7 @@ main(argc, argv)
 			search_string && wcslen(search_string))
 		    {
 			xfree(input);
-			input = wcsdup(search_string);
+			input = xwcsdup(search_string);
 			il_insert_text(input);
 			resuming_previous_isearch = 1;
 			previous_isearch_failed = 0;
@@ -3069,7 +3069,7 @@ main(argc, argv)
 		    xfree(search_string);
 		if (input == NULL)
 		    break;
-		search_string = wcsdup(input);
+		search_string = xwcsdup(input);
 		panel_action(src_panel, act_ISEARCH_END, dst_panel, NULL, 1);
 		il_isearch(NULL, NULL, IL_ISEARCH_END, (int *)NULL);
 		break;

@@ -31,8 +31,9 @@
 #include <stddef.h>
 #endif
 
-#include "xmalloc.h"
+#include "wchar.h"
 
+#include "xmalloc.h"
 
 extern void fatal PROTO ((char *));
 

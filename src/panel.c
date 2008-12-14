@@ -1384,7 +1384,10 @@ panel_update_entries(this)
     for (i = this->first_on_screen;
 	 (i < this->entries) && (i - this->first_on_screen < this->lines - 2);
 	 i++)
+    {
 	panel_update_entry(this, i);
+	tty_flush();
+    }
 
     tty_colors(OFF, WHITE, PanelBackground);
 
@@ -1524,7 +1527,7 @@ panel_update_size(this)
 	get_fs_usage(this->path, NULL, &fsu) < 0 ||
 	fsu.fsu_blocks == (uintmax_t) -1)
     {
-	wsz=wcsdup(buf);
+	wsz=xwcsdup(buf);
 	tty_brightness(OFF);
 	tty_foreground(PanelFrame);
     }
@@ -1837,7 +1840,7 @@ panel_update_entry(this, entry)
     panel_t *this;
     int entry;
 {
-    char c = '\0';
+    wchar_t c = L'\0';
     int foreground, background, brightness;
     size_t len, reserved, entry_length, offset;
 
@@ -1846,7 +1849,7 @@ panel_update_entry(this, entry)
     if (!this->visible)
 	return;
 
-    memset(this->temp, ' ', this->columns);
+    wmemset(this->temp, L' ', this->columns);
     reserved = panel_get_reserved_characters(this);
 
     if ((entry > 0) || rootdir())
@@ -1854,16 +1857,16 @@ panel_update_entry(this, entry)
 	{
 	    case FILE_ENTRY:
 		if (this->dir_entry[entry].executable)
-		    c = '*';
+		    c = L'*';
 		break;
 
-	    case DIR_ENTRY:     c = '/'; break;
-	    case SYMLINK_ENTRY: c = '@'; break;
-	    case FIFO_ENTRY:    c = '|'; break;
-	    case SOCKET_ENTRY:  c = '='; break;
+	    case DIR_ENTRY:     c = L'/'; break;
+	    case SYMLINK_ENTRY: c = L'@'; break;
+	    case FIFO_ENTRY:    c = L'|'; break;
+	    case SOCKET_ENTRY:  c = L'='; break;
 	}
 
-    if (c != '\0')
+    if (c != L'\0')
 	reserved++;
 
     entry_length = wcslen(this->dir_entry[entry].wname);
@@ -1877,11 +1880,11 @@ panel_update_entry(this, entry)
 	    offset = this->horizontal_offset;
 
     len = min(entry_length - offset, this->columns - reserved);
-    memcpy(&this->temp[1], this->dir_entry[entry].wname + offset, len);
+    wmemcpy(&this->temp[1], this->dir_entry[entry].wname + offset, len);
 
     toprintable(&this->temp[1], len);
 
-    if (c != '\0')
+    if (c != L'\0')
 	this->temp[len + 1] = c;
 
     if (this->columns >= 40)
@@ -1927,7 +1930,7 @@ panel_update_entry(this, entry)
 	}
 
     if (this->dir_entry[entry].selected)
-	this->temp[this->columns - 3] = '*';
+	this->temp[this->columns - 3] = L'*';
 
     if (entry == this->current_entry)
 	this->temp[0] = this->focus ?

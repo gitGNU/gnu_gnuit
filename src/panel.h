@@ -154,8 +154,8 @@
 
 
 /* Current file marker types.  */
-#define ACTIVE_PANEL_MARKER	'>'
-#define INACTIVE_PANEL_MARKER	'*'
+#define ACTIVE_PANEL_MARKER	L'>'
+#define INACTIVE_PANEL_MARKER	L'*'
 
 
 /* Comparison types.  */
