@@ -1525,7 +1525,7 @@ panel_update_size(this)
     panel_t *this;
 {
     int buflen=LONGEST_HUMAN_READABLE+3;
-    wchar_t buf[buflen];
+    char buf[buflen];
     char *sz;
     wchar_t *wsz;
     tty_status_t status;
@@ -1539,13 +1539,15 @@ panel_update_size(this)
 
     fsu.fsu_blocks = (uintmax_t) -1;
 
-    wmemset(buf, L' ', buflen);
+    memset(buf, ' ', buflen);
+    buf[buflen-1]=0;
+
     /* get_fs_usage will fail on SVR2 (needs disk instead of NULL) */
     if (viewable < 6 ||
 	get_fs_usage(this->path, NULL, &fsu) < 0 ||
 	fsu.fsu_blocks == (uintmax_t) -1)
     {
-	wsz=xwcsdup(buf);
+	wsz=mbsduptowcs(buf);
 	tty_brightness(OFF);
 	tty_foreground(PanelFrame);
     }
@@ -2079,13 +2081,11 @@ panel_update_frame(this)
     tty_restore(&status);
 }
 
-
 void
 panel_update(this)
     panel_t *this;
 {
     assert(this->current_entry < this->entries);
-
     panel_update_frame(this);
     tty_update(); /* FIXME: DEBUG, REMOVE */
     panel_update_path(this);
