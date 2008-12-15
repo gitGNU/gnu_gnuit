@@ -1555,7 +1555,7 @@ command_expand(command, dest, p, l)
 		    sptr = (*++sptr) ? sptr : "/root";
 		    tmplen = 1 + strlen(sptr) + 1 + 1;
 		    tmp = xmalloc(tmplen * sizeof(wchar_t));
-		    swprintf(tmp, tmplen, L"\"%ls\"", sptr);
+		    swprintf(tmp, tmplen, L"\"%s\"", sptr);
 		    break;
 
 		case 'i':
@@ -2286,7 +2286,7 @@ main(argc, argv)
 			    wchar_t *msg=xmalloc(len * sizeof(wchar_t));
 			    /* FIXME: command->sequence? shouldnt it be ks->key_seq? */
 			    swprintf(msg, len,
-				    L"%s: invalid command on key sequence %s !",
+				    L"%s: invalid command on key sequence %ls !",
 				    command->name, command->sequence);
 			    il_read_char(msg, NULL,
 					 IL_FREEZED|IL_BEEP|IL_SAVE|IL_ERROR);
@@ -3301,7 +3301,7 @@ main(argc, argv)
 			{
 			    char *cmd, *pager;
 			    pager=getenv("GNUIT_PAGER");
-			    if(!pager) 
+			    if(!pager)
 				pager="more";
 			    cmd=xmalloc(strlen(pager)+strlen(tmpfn)+1+1);
 			    sprintf(cmd,"%s %s",pager,tmpfn);

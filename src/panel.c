@@ -1055,7 +1055,6 @@ panel_read_directory(this, directory, verify)
     DIR *tmpdir;
     struct stat s;
     int namelen;
-/* FIXME:     int wnamelen; */
     char *old_path;
     struct dirent *d;
     int dotdot_found = 0;
@@ -2167,7 +2166,7 @@ panel_get_wpath(this)
 int
 canceled()
 {
-    int key;
+    wchar_t key;
 
     if (user_heart_attack)
     {
@@ -2181,7 +2180,7 @@ canceled()
 	il_update();
 	il_update_point();
 	tty_update();
-	return (key == 'n' || key == 'N') ? 0 : 1;
+	return (key == L'n' || key == L'N') ? 0 : 1;
     }
 
     return 0;
@@ -2221,21 +2220,21 @@ panel_warning(this, file)
     panel_t *this;
     char *file;
 {
-    char c;
-
+    wchar_t c;
+    wchar_t *wfile=mbsduptowcs(file);
     if (this->selected_entries)
-	c = panel_2s_message(L"%s: File exists. Overwrite/Skip/All/Cancel? ",
-			     file, L"osac", IL_MOVE|IL_BEEP|IL_SAVE|IL_ERROR);
+	c = panel_2s_message(L"%ls: File exists. Overwrite/Skip/All/Cancel? ",
+			     wfile, L"osac", IL_MOVE|IL_BEEP|IL_SAVE|IL_ERROR);
     else
-	c = panel_2s_message(L"%s: File exists. Overwrite/Cancel? ",
-			     file, L"oc", IL_MOVE|IL_BEEP|IL_SAVE|IL_ERROR);
-
+	c = panel_2s_message(L"%ls: File exists. Overwrite/Cancel? ",
+			     wfile, L"oc", IL_MOVE|IL_BEEP|IL_SAVE|IL_ERROR);
+    xfree(wfile);
     switch (c)
     {
-	case 'o':
+	case L'o':
 	    return WARN_OVERWRITE;
 
-	case 'a':
+	case L'a':
 	    if (this->selected_entries)
 	    {
 		this->chkdest = OFF;
@@ -2244,7 +2243,7 @@ panel_warning(this, file)
 
 	    break;
 
-	case 's':
+	case L's':
 	    if (this->selected_entries)
 		return WARN_SKIP;
 
@@ -2782,6 +2781,7 @@ panel_move(this, from, to, mode)
 #endif /* HAVE_LINUX */
 	)
     {
+	wchar_t *wfrom;
 	error = panel_copy(this, from, to,
 			   from_statbuf.st_mode,
 			   from_statbuf.st_uid,
@@ -2795,10 +2795,12 @@ panel_move(this, from, to, mode)
 	    case SD_NOSPACE:	return FT_NOSPACE;
 
 	    default:
+		wfrom=mbsduptowcs(from);
 		panel_3s_message(L"%ls: Copy failed, %ls.",
-				 from, copyerr[error - 1],
+				 wfrom, copyerr[error - 1],
 				 NULL,
 				 IL_MOVE | IL_BEEP | IL_ERROR);
+		xfree(wfrom);
 		return FT_COPY;
 	}
 
@@ -2922,7 +2924,7 @@ panel_act_ENTER(this, other)
 		}
 		else
 		    panel_2s_message(L"%ls/: Permission denied.",
-				     name, NULL,
+				     wname, NULL,
 				     IL_FREEZED | IL_BEEP |
 				     IL_SAVE    | IL_ERROR);
 		break;
@@ -3051,10 +3053,13 @@ panel_act_COPY(this, other)
 	xfree(input);
 
 	if (error != SD_OK && error != SD_CANCEL)
-	    panel_3s_message(L"%ls: Copy failed, %ls.", name,
+	{
+	    wchar_t *wname=mbsduptowcs(name);
+	    panel_3s_message(L"%ls: Copy failed, %ls.", wname,
 			     copyerr[error - 1], NULL,
 			     IL_MOVE | IL_BEEP | IL_SAVE | IL_ERROR);
-
+	    xfree(wname);
+	}
 	status_default();
 	panel_update_size(this);
 	panel_update_size(other);
@@ -3100,6 +3105,7 @@ panel_act_COPY(this, other)
 
 	    if (error != SD_OK)
 	    {
+		wchar_t *wname=mbsduptowcs(name);
 		if (error == SD_CANCEL)
 		    break;
 
@@ -3107,9 +3113,13 @@ panel_act_COPY(this, other)
 		    continue;
 
 		if (panel_3s_message(L"%ls: Copy failed, %ls.",
-				     name, copyerr[error - 1], NULL,
+				     wname, copyerr[error - 1], NULL,
 				     IL_MOVE | IL_BEEP | IL_ERROR) == 0)
+		{
+		    xfree(wname);
 		    break;
+		}
+		xfree(wname);
 	    }
 	    else
 		this->dir_entry[entry].selected = 0;
@@ -3486,7 +3496,7 @@ panel_act_MOVE(this, other)
 		return;
 	    }
 
-	    panel_3s_message(L"%ls: Move failed, %ls.", name, moveerr[error - 1],
+	    panel_3s_message(L"%ls: Move failed, %ls.", wname, moveerr[error - 1],
 			     NULL, IL_MOVE | IL_BEEP | IL_ERROR);
 	}
 
@@ -3542,16 +3552,21 @@ panel_act_MOVE(this, other)
 
 	    if (error != FT_OK)
 	    {
+		wchar_t *wname;
 		if (error == FT_CANCEL)
 		    break;
 
 		if (error == FT_SKIP)
 		    continue;
-
-		if (panel_3s_message(L"%ls: Move failed, %ls.", name,
+		wname=mbsduptowcs(name);
+		if (panel_3s_message(L"%ls: Move failed, %ls.", wname,
 				     moveerr[error - 1], NULL,
 				     IL_MOVE | IL_BEEP | IL_ERROR) == 0)
+		{
+		    xfree(wname);
 		    break;
+		}
+		xfree(wname);
 	    }
 	    else
 		this->dir_entry[entry].selected = 0;
@@ -3914,28 +3929,28 @@ panel_act_COMPARE(this, other)
 
 		case CF_OPEN1:
 		    panel_2s_message(L"Cannot open file %ls. ",
-				     this->dir_entry[this_entry].name,
+				     this->dir_entry[this_entry].wname,
 				     NULL,
 				     IL_MOVE | IL_BEEP | IL_SAVE | IL_ERROR);
 		    break;
 
 		case CF_OPEN2:
 		    panel_2s_message(L"Cannot open file %ls. ",
-				     other->dir_entry[other_entry].name,
+				     other->dir_entry[other_entry].wname,
 				     NULL,
 				     IL_MOVE | IL_BEEP | IL_SAVE | IL_ERROR);
 		    break;
 
 		case CF_READ1:
 		    panel_2s_message(L"I/O error reading from file %ls. ",
-				     this->dir_entry[this_entry].name,
+				     this->dir_entry[this_entry].wname,
 				     NULL,
 				     IL_MOVE | IL_BEEP | IL_SAVE | IL_ERROR);
 		    break;
 
 		case CF_READ2:
 		    panel_2s_message(L"I/O error reading from file %ls. ",
-				     other->dir_entry[other_entry].name,
+				     other->dir_entry[other_entry].wname,
 				     NULL,
 				     IL_MOVE | IL_BEEP | IL_SAVE | IL_ERROR);
 		    break;
@@ -3977,9 +3992,7 @@ panel_act_COMPARE(this, other)
     }
     else
     {
-	/* FIXME: why [w]path? no %s  */
-	panel_2s_message(L"Only regular files can be compared. ",
-			 this->wpath, NULL,
+	panel_1s_message(L"Only regular files can be compared. ", NULL,
 			 IL_MOVE | IL_BEEP | IL_SAVE | IL_ERROR);
 	/* At least one of the files is not a regular file, thus we
 	   will not go any further.  */
@@ -4275,7 +4288,7 @@ panel_act_CASE(this, other, upcase)
 
 	    if (error != ON_OK && error != ON_CANCEL)
 		panel_3s_message(L"%ls: Rename failed, %ls.",
-				 this->dir_entry[entry].name,
+				 this->dir_entry[entry].wname,
 				 renerr[error - 1], NULL,
 				 IL_MOVE | IL_BEEP | IL_SAVE | IL_ERROR);
 	}
