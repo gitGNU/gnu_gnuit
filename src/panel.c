@@ -3170,7 +3170,7 @@ panel_act_DELETE(this, other)
 	service_pending_signals();
 
 	len=32 + wcslen(wname);
-	msg = xmalloc(len+1);
+	msg = xmalloc((len+1) * sizeof(wchar_t));
 	swprintf(msg, len, L"(DELETE) %ls", wname);
 	status(msg, STATUS_ERROR, STATUS_LEFT);
 	tty_update();
@@ -3181,18 +3181,18 @@ panel_act_DELETE(this, other)
 
 	if (keep_asking)
 	    answer = panel_2s_message(L"Delete %ls? (Yes/Skip/All/Cancel) ",
-				      name, L"ysac", IL_MOVE);
+				      wname, L"ysac", IL_MOVE);
 
 	il_message(PANEL_DELETE_FILES_MSG);
 	tty_update();
 
-	if (answer == 'a')
+	if (answer == L'a')
 	    keep_asking = 0;
-	else if (answer == 's')
+	else if (answer == L's')
 	    continue;
-	else if (answer == 'c')
+	else if (answer == L'c')
 	    break;
-	else if (answer != 'y')
+	else if (answer != L'y')
 	    break;
 
 	if (this->dir_entry[entry].type == DIR_ENTRY)
@@ -3205,7 +3205,7 @@ panel_act_DELETE(this, other)
 	    {
 		if (panel_2s_message(
 			L"%ls/: directory might contain files.  Delete? ",
-			wname, L"yn", IL_MOVE | IL_SAVE) == 'y')
+			wname, L"yn", IL_MOVE | IL_SAVE) == L'y')
 		{
 		    command = xmalloc(32 + strlen(name) + 1);
 		    sprintf(command, "rm -r -f \"%s\"", name);
@@ -3243,14 +3243,14 @@ panel_act_DELETE(this, other)
 	{
 	    if (panel_2s_message(L"%ls: Deletion interrupted.  Continue? ",
 				 wname, L"yn",
-				 IL_MOVE | IL_BEEP | IL_ERROR) != 'y')
+				 IL_MOVE | IL_BEEP | IL_ERROR) != L'y')
 		break;
 	}
 	else if (!result)
 	{
 	    if (panel_2s_message(L"%ls: Deletion failed.  Continue? ",
 				 wname, L"yn",
-				 IL_MOVE | IL_BEEP | IL_ERROR) != 'y')
+				 IL_MOVE | IL_BEEP | IL_ERROR) != L'y')
 		break;
 	}
 	else

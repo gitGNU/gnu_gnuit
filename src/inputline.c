@@ -745,7 +745,7 @@ il_just_one_space()
     if (il->buffer[il->point] == L' ')
     {
 	il_delete_horizontal_space();
-	il_insert_char(' ');
+	il_insert_char(L' ');
 	il->last_operation = IL_JUST_ONE_SPACE;
     }
 }

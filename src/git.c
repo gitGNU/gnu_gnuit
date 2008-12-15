@@ -2407,16 +2407,18 @@ main(argc, argv)
 			/* Fall through... */
 
 		    default:
-			if (history_expand(scmdln, &output_string) >= 0)
+			if (history_expand(scmdln, &soutput_string) >= 0)
 			{
 			    int bg_cmd;
 
+			    output_string=mbsduptowcs(soutput_string);
 			    if (is_an_empty_command(output_string))
 			    {
 				saved_il = il_save();
 				il_read_char(L"Void command.", NULL,
 					     IL_FREEZED | IL_BEEP |
 					     IL_SAVE    | IL_ERROR);
+				xfree(output_string);
 				break;
 			    }
 
@@ -2425,9 +2427,9 @@ main(argc, argv)
 				tty_update_title(output_string);
 			    il_kill_line(IL_DONT_STORE);
 			    il_insert_text(output_string);
-			    soutput_string=wcsduptombs(output_string);
 			    start(soutput_string, bg_cmd);
 			    xfree(soutput_string);
+			    xfree(output_string);
 			    il_history(IL_RECORD);
 			    il_kill_line(IL_DONT_STORE);
 			    /* HACK: Do not call tty_update(); here!  */
