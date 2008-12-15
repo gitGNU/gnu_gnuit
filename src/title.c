@@ -124,9 +124,9 @@ static int mail_check PROTO (());
 static int
 calc_info_length()
 {
-    info_length = (wcslen(login_string)  - 1) + 1 + login_name_length + 1 +
-	          (wcslen(mail_string)) + 1 +
-		  (wcslen(ttydev_string) - 1) + 1 + tty_device_length + 1 +
+    info_length = wcslen(login_string)  + 1 + login_name_length + 1 +
+	          wcslen(mail_string)   + 1 +
+		  wcslen(ttydev_string) + 1 + tty_device_length + 1 +
 		  6 + 1;
     return(info_length);
 }
