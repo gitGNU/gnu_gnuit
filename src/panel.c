@@ -628,8 +628,11 @@ panel_set_path(pan, path)
     panel_t *pan;
     char *path;
 {
-    strcpy(pan->path, path);
-    pan->pathlen = strlen(path);
+    char *newpath=xstrdup(path);
+    if(pan->path)
+	xfree(pan->path);
+    pan->path=newpath;
+    pan->pathlen = strlen(pan->path);
     if(pan->wpath)
 	xfree(pan->wpath);
     pan->wpath=mbsduptowcs(path);
@@ -1129,6 +1132,7 @@ panel_read_directory(this, directory, verify)
 	if (path)
 	{
 	    xfree(this->path);
+	    this->path=NULL;
 	    panel_set_path(this,path);
 	}
 	else
@@ -2220,10 +2224,10 @@ panel_warning(this, file)
     char c;
 
     if (this->selected_entries)
-	c = panel_2s_message(L"%ls: File exists. Overwrite/Skip/All/Cancel? ",
+	c = panel_2s_message(L"%s: File exists. Overwrite/Skip/All/Cancel? ",
 			     file, L"osac", IL_MOVE|IL_BEEP|IL_SAVE|IL_ERROR);
     else
-	c = panel_2s_message(L"%ls: File exists. Overwrite/Cancel? ",
+	c = panel_2s_message(L"%s: File exists. Overwrite/Cancel? ",
 			     file, L"oc", IL_MOVE|IL_BEEP|IL_SAVE|IL_ERROR);
 
     switch (c)
@@ -3749,7 +3753,7 @@ panel_compare(this, this_entry, this_size, other, other_entry, other_size)
     buf1 = xmalloc(CMP_BUFFER_SIZE);
     buf2 = xmalloc(CMP_BUFFER_SIZE);
 
-    msg = xmalloc(32 + strlen(file1) + 1);
+    msg = xmalloc((32 + strlen(file1) + 1) * sizeof(wchar_t));
 
     for(n=0 ; ; )
     {
@@ -3954,12 +3958,12 @@ panel_act_COMPARE(this, other)
 		    {
 			/* The files differ.  Report the offset of the
 			   first difference encountered.  */
-			char *msg = xmalloc(128);
+			wchar_t *msg = xmalloc(128 * sizeof(wchar_t));
 
 #ifdef HAVE_64BIT_IO
-			sprintf(msg, "%Ld (0x%Lx)", result, result);
+			swprintf(msg, 128, L"%Ld (0x%Lx)", result, result);
 #else /* !HAVE_64BIT_IO */
-			sprintf(msg, "%ld (0x%lx)",
+			swprintf(msg, 128, L"%ld (0x%lx)",
 				(long)result, (long)result);
 #endif /* !HAVE_64BIT_IO */
 			panel_2s_message(L"Files differ at offset %ls. ",
