@@ -197,7 +197,7 @@ typedef struct
     time_t mtime;
     char *owner;
     char *group;
-    char date[16];
+    wchar_t date[16];
     char type;
     char selected;
     char executable;

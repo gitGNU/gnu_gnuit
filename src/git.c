@@ -506,17 +506,23 @@ refresh(signum)
 	}
 
 	title_update();
+	tty_update(); /* FIXME: DEBUG, REMOVE */
 
 	panel_update(src_panel);
+	tty_update(); /* FIXME: DEBUG, REMOVE */
 
 	if (two_panel_mode)
 	    panel_update(dst_panel);
+	tty_update(); /* FIXME: DEBUG, REMOVE */
     }
     else
 	tty_put_screen(screen);
+    tty_update(); /* FIXME: DEBUG, REMOVE */
 
     status_update();
+    tty_update(); /* FIXME: DEBUG, REMOVE */
     il_update();
+    tty_update(); /* FIXME: DEBUG, REMOVE */
     il_update_point();
     tty_update();
 
@@ -575,7 +581,7 @@ extern int il_dispatch_commands PROTO ((int, int));
 extern wchar_t *il_fix_text PROTO ((wchar_t *));
 extern wchar_t *il_build_help_from_string PROTO ((wchar_t *));
 extern wchar_t *il_isearch PROTO ((wchar_t *, wchar_t **, int, int *));
-extern char il_read_char PROTO ((wchar_t *, wchar_t *, int));
+extern wchar_t il_read_char PROTO ((wchar_t *, wchar_t *, int));
 extern wchar_t *il_read_line PROTO ((wchar_t *, wchar_t **, wchar_t *, xstack_t *));
 
 
@@ -822,7 +828,7 @@ il_build_help_from_string(options)
  * answer.  The default char is the first char in the options string.
  * Returns 0 if it was interrupted, a valid character otherwise.
  */
-char
+wchar_t
 il_read_char(message, options, flags)
     wchar_t *message;
     wchar_t *options;

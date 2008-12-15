@@ -916,7 +916,7 @@ panel_load_inode(this, entry)
     struct tm *time;
     char *owner;
     char *group;
-    
+
     memset(&s, 0, sizeof(s));
 
     xlstat(this->dir_entry[entry].name, &s);
@@ -1033,7 +1033,7 @@ panel_load_inode(this, entry)
     if ((hour = time->tm_hour % 12) == 0)
 	hour = 12;
 
-    sprintf(this->dir_entry[entry].date,"%2d-%02d-%02d %2d:%02d%c",
+    swprintf(this->dir_entry[entry].date, 16, L"%2d-%02d-%02d %2d:%02d%c",
 	    time->tm_mon + 1, time->tm_mday, time->tm_year % 100,
 	    hour, time->tm_min, (time->tm_hour < 12) ? 'a' : 'p');
 }
@@ -1187,11 +1187,18 @@ panel_read_directory(this, directory, verify)
 	if (this->dir_entry)
 	{
 	    for (entry = 0; entry < this->entries; entry++)
+	    {
 		if (this->dir_entry[entry].name)
 		{
 		    xfree(this->dir_entry[entry].name);
 		    this->dir_entry[entry].name = NULL;
 		}
+		if (this->dir_entry[entry].wname)
+		{
+		    xfree(this->dir_entry[entry].wname);
+		    this->dir_entry[entry].wname = NULL;
+		}
+	    }
 
 	    xfree(this->dir_entry);
 	    this->dir_entry = NULL;
@@ -1396,6 +1403,7 @@ panel_update_entries(this)
 	 i++)
     {
 	panel_update_entry(this, i);
+	tty_update(); /* FIXME: debug, remove */
 	tty_flush();
     }
 
@@ -1753,19 +1761,24 @@ panel_build_entry_field(this, entry, display_mode, offset)
 {
     char temp_rights[16];
     char hbuf[LONGEST_HUMAN_READABLE+1];
+    wchar_t *wbuf;
 
     switch (display_mode)
     {
 	case ENABLE_OWNER_GROUP:
-	    memcpy(this->temp + this->columns - 2 - offset,
-		   this->dir_entry[entry].owner, 7);
-	    memcpy(this->temp + this->columns - 2 - offset + 8,
-		   this->dir_entry[entry].group, 7);
+	    wbuf=mbsduptowcs(this->dir_entry[entry].owner);
+	    wmemcpy(this->temp + this->columns - 2 - offset,
+		    wbuf, 7);
+	    xfree(wbuf);
+	    wbuf=mbsduptowcs(this->dir_entry[entry].group);
+	    wmemcpy(this->temp + this->columns - 2 - offset + 8,
+		    wbuf, 7);
+	    xfree(wbuf);
 	    break;
 
 	case ENABLE_DATE_TIME:
-	    memcpy(this->temp + this->columns - 2 - offset,
-		   this->dir_entry[entry].date, 15);
+	    wmemcpy(this->temp + this->columns - 2 - offset,
+		    this->dir_entry[entry].date, 15);
 	    break;
 
 	case ENABLE_SIZE:
@@ -1788,13 +1801,16 @@ panel_build_entry_field(this, entry, display_mode, offset)
 		wmemset(ptr,L' ',10-buflen);
 		ptr += (10-buflen);
 	    }
-	    swprintf(ptr, buflen, L"%s", hbuf);
+	    swprintf(ptr, buflen+1 , L"%s", hbuf);
+	    ptr[buflen]=L' ';
 	    break;
 	}
 
 	case ENABLE_MODE:
 	    panel_mode2string(this, entry, temp_rights);
-	    memcpy(this->temp + this->columns - 2 - offset, temp_rights, 10);
+	    wbuf=mbsduptowcs(temp_rights);
+	    wmemcpy(this->temp + this->columns - 2 - offset, wbuf, 10);
+	    xfree(wbuf);
 	    break;
 
 	case ENABLE_FULL_NAME:
@@ -2071,10 +2087,15 @@ panel_update(this)
     assert(this->current_entry < this->entries);
 
     panel_update_frame(this);
+    tty_update(); /* FIXME: DEBUG, REMOVE */
     panel_update_path(this);
+    tty_update(); /* FIXME: DEBUG, REMOVE */
     panel_update_info(this);
+    tty_update(); /* FIXME: DEBUG, REMOVE */
     panel_update_size(this);
+    tty_update(); /* FIXME: DEBUG, REMOVE */
     panel_update_entries(this);
+    tty_update(); /* FIXME: DEBUG, REMOVE */
 }
 
 

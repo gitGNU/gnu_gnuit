@@ -25,6 +25,7 @@
 #endif
 
 #include <stdio.h>
+#include <wchar.h>
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
@@ -63,7 +64,7 @@ extern int errno;
 extern char **environ;
 extern char *screen;
 
-extern char il_read_char PROTO ((char *, char *, int));
+extern wchar_t il_read_char PROTO ((wchar_t *, wchar_t *, int));
 
 char *stdout_log_template = NULL;
 char *stderr_log_template = NULL;
@@ -249,9 +250,9 @@ display_errors(command)
     if (stderr_log == NULL)
     {
 	size_t buf_len = strlen(command) + 32 + strlen(stderr_log_name);
-	char *buf = xmalloc(buf_len);
+	wchar_t *buf = xmalloc(buf_len * sizeof(wchar_t));
 
-	sprintf(buf, "%s: cannot open log file %s", command, stderr_log_name);
+	swprintf(buf, buf_len, L"%s: cannot open log file %s", command, stderr_log_name);
 
 	il_read_char(buf, NULL, IL_MOVE | IL_BEEP | IL_SAVE | IL_ERROR);
 	xfree(buf);
@@ -259,6 +260,7 @@ display_errors(command)
     else
     {
 	char *buf = xmalloc(2048 + 1);
+	wchar_t *wbuf;
 
 	while (fgets(buf, 2048 + 1, stderr_log))
 	{
@@ -266,9 +268,13 @@ display_errors(command)
 
 	    if (buf[len - 1] == '\n')
 		buf[len - 1] = '\0';
-
-	    if (il_read_char(buf, NULL, IL_MOVE | IL_ERROR) == 0)
+	    wbuf=mbsduptowcs(buf);
+	    if (il_read_char(wbuf, NULL, IL_MOVE | IL_ERROR) == 0)
+	    {
+		xfree(wbuf);
 		break;
+	    }
+	    xfree(wbuf);
 	}
 
 	xfree(buf);

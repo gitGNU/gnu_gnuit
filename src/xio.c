@@ -102,13 +102,13 @@ wxwrite(fd, buf, count)
     int ret;
     size_t len;
     char *convbuf;
-    wchar_t *bufptr=(wchar_t *)buf;
-    len=wcsnrtombs(NULL,(const wchar_t **)&bufptr,count,0,NULL);
+    const wchar_t *bufptr=buf;
+    len=wcsnrtombs(NULL,&bufptr,count,0,NULL);
     if(len < 0)
 	return(-1);
     convbuf=xmalloc((len+1)*sizeof(char));
-    bufptr=(wchar_t *)buf;
-    wcsnrtombs(convbuf,(const wchar_t **)&bufptr,count,len,NULL);
+    bufptr=buf;
+    wcsnrtombs(convbuf,&bufptr,count,len,NULL);
     ret=xwrite(fd, (const char *)convbuf, len);
     xfree(convbuf);
     return ret;

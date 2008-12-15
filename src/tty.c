@@ -1240,14 +1240,14 @@ static void
 tty_io_foreground(color)
     int color;
 {
-    char str[16];
+    wchar_t str[16];
 
     if (fg_cache == VALID_CACHE && color == TTY_IO_FOREGROUND)
 	return;
 
     if (AnsiColors == ON)
     {
-	memcpy(str, ansi_foreground, wcslen(ansi_foreground));
+	wmemcpy(str, ansi_foreground, wcslen(ansi_foreground));
 	str[3] += color;
 	tty_writes(str, wcslen(ansi_foreground));
     }
@@ -1268,14 +1268,14 @@ static void
 tty_io_background(color)
     int color;
 {
-    char str[16];
+    wchar_t str[16];
 
     if (bg_cache == VALID_CACHE && color == TTY_IO_BACKGROUND)
 	return;
 
     if (AnsiColors == ON)
     {
-	memcpy(str, ansi_background, wcslen(ansi_background));
+	wmemcpy(str, ansi_background, wcslen(ansi_background));
 	str[3] += color;
 	tty_writes(str, wcslen(ansi_background));
     }

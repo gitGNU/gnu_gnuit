@@ -215,7 +215,7 @@ build_message()
 			    time->tm_mday, time->tm_year + 1900);
 		    len = wcslen(date_str);
 		    temp_msg = xrealloc(temp_msg,  ((temp_msg_len += len) * sizeof(wchar_t)));
-		    memcpy(&temp_msg[j], date_str, len);
+		    wmemcpy(&temp_msg[j], date_str, len);
 		    j += len;
 		    i++;
 		    break;
