@@ -27,6 +27,7 @@
 #endif
 
 #include <stdio.h>
+#include <wchar.h>
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
@@ -201,23 +202,23 @@ char *filename;
 int count;
 off64_t g_size;
 char g_offset[16];
-char *header_text;
+wchar_t *header_text;
 int  UseLastScreenChar;
-char *global_buf;
+wchar_t *global_buf;
 char color_section[]  = "[GITVIEW-Color]";
 char monochrome_section[] = "[GITVIEW-Monochrome]";
 int fd, regular_file;
 long long g_current_line, g_lines;
 window_t *title_window, *header_window, *file_window, *status_window;
-static char *title_text;
-static char *g_help;
-static char info_txt[] =
-    "   Offset     00 01 02 03 04 05 06 07  08 09 0A 0B 0C 0D 0E 0F       \
+static wchar_t *title_text;
+static wchar_t *g_help;
+static wchar_t info_txt[] =
+    L"   Offset     00 01 02 03 04 05 06 07  08 09 0A 0B 0C 0D 0E 0F       \
 Ascii       ";
-static char line_txt[]    =
-    "---------------------------------------------------------------------\
+static wchar_t line_txt[]    =
+    L"---------------------------------------------------------------------\
 ----------- ";
-static char seek_txt[]    = " Seek at: ";
+static wchar_t seek_txt[]    = L" Seek at: ";
 
 
 off64_t
@@ -239,7 +240,7 @@ void
 cursor_update()
 {
     if (tty_lines >= 9)
-	window_goto(file_window, SEEK_LINE, strlen(seek_txt) + count);
+	window_goto(file_window, SEEK_LINE, wcslen(seek_txt) + count);
     else
 	window_goto(file_window, tty_lines - 1, tty_columns - 1);
 }
@@ -248,9 +249,9 @@ cursor_update()
 void
 set_title()
 {
-    memset(global_buf, ' ', tty_columns);
-    memcpy(global_buf, title_text,
-	   min(tty_columns, (int)strlen(title_text)));
+    wmemset(global_buf, ' ', tty_columns);
+    wmemcpy(global_buf, title_text,
+	    min(tty_columns, (int)wcslen(title_text)));
 
     tty_colors(TitleBrightness, TitleForeground, TitleBackground);
 
@@ -262,9 +263,9 @@ set_title()
 void
 set_header()
 {
-    memset(global_buf, ' ', tty_columns);
-    memcpy(global_buf, header_text,
-	   min(tty_columns, (int)strlen(header_text)));
+    wmemset(global_buf, L' ', tty_columns);
+    wmemcpy(global_buf, header_text,
+	   min(tty_columns, (int)wcslen(header_text)));
 
     tty_colors(HeaderBrightness, HeaderForeground, HeaderBackground);
 
@@ -276,8 +277,8 @@ set_header()
 void
 set_status()
 {
-    memset(global_buf, ' ', tty_columns);
-    memcpy(global_buf, g_help, min(tty_columns, (int)strlen(g_help)));
+    wmemset(global_buf, L' ', tty_columns);
+    wmemcpy(global_buf, g_help, min(tty_columns, (int)wcslen(g_help)));
 
     tty_colors(StatusBrightness, StatusForeground, StatusBackground);
 
@@ -295,10 +296,11 @@ report_undefined_key()
     if (length && (prev[length - 1] != key_INTERRUPT))
     {
 	char *str = (char *)tty_key_machine2human(tty_get_previous_key_seq());
-	char *buf = xmalloc(128 + strlen(str));
-	sprintf(buf, "%s: not defined.", str);
-	memset(global_buf, ' ', tty_columns);
-	memcpy(global_buf, buf, min(tty_columns, (int)strlen(buf)));
+	int buflen=128 + strlen(str);
+	wchar_t *buf = xmalloc(buflen * sizeof(wchar_t));
+	swprintf(buf, buflen, L"%s: not defined.", str);
+	wmemset(global_buf, L' ', tty_columns);
+	wmemcpy(global_buf, buf, min(tty_columns, (int)wcslen(buf)));
 	xfree(buf);
 
 	tty_colors(ON, WHITE, RED);
@@ -336,15 +338,16 @@ update_line(line)
 {
     ssize_t r;
     unsigned char buf[16];
-    char *line_string = xmalloc(max(tty_columns, 80 + 1));
+    int line_len=max(tty_columns, 80) + 1;
+    wchar_t *line_string = xmalloc(line_len * sizeof(wchar_t));
 
-    memset(line_string, ' ', tty_columns);
+    wmemset(line_string, L' ', tty_columns);
     memset(buf, '\0', sizeof(buf));
     lseek64(fd, (off64_t)line * sizeof(buf), SEEK_SET);
 
     if ((r = read(fd, buf, sizeof(buf))))
     {
-	sprintf(line_string, "%011X0  %02X %02X %02X %02X %02X %02X %02X\
+	swprintf(line_string, line_len, L"%011X0  %02X %02X %02X %02X %02X %02X %02X\
  %02X  %02X %02X %02X %02X %02X %02X %02X %02X  \
 %c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c ",
 		(unsigned int)(line & 0xFFFFFFFF),
@@ -364,15 +367,15 @@ update_line(line)
     else
     {
 	r = 0;
-	*line_string = '\0';
+	*line_string = L'\0';
     }
 
     if (r < 8)
-	memset(line_string + 12 + r * 3, ' ', (16 - r) * 3 + 1);
+	wmemset(line_string + 12 + r * 3, L' ', (16 - r) * 3 + 1);
     else if (r >= 8 && r < 16)
-	memset(line_string + 12 + r * 3 + 1, ' ', (16 - r) * 3);
+	wmemset(line_string + 12 + r * 3 + 1, L' ', (16 - r) * 3);
 
-    line_string[strlen(line_string)] = ' ';
+    line_string[wcslen(line_string)] = L' ';
     window_puts(file_window, line_string, tty_columns);
     xfree(line_string);
 }
@@ -513,8 +516,8 @@ resize(resize_required)
      * FIXME: we need to handle the tty_columns case.
      */
 
-    global_buf  = xrealloc(global_buf, tty_columns + 1);
-    header_text = xrealloc(header_text, strlen(filename) + 10);
+    global_buf  = xrealloc(global_buf, ((tty_columns + 1) * sizeof(wchar_t)));
+    header_text = xrealloc(header_text, ((strlen(filename) + 10) * sizeof(wchar_t)));
 
     window_resize(title_window, 0, 0, 1, tty_columns);
 
@@ -562,38 +565,49 @@ refresh(signum)
     if (tty_lines >= 5)
     {
 	window_goto(file_window, 1, 0);
-	window_puts(file_window, info_txt, sizeof(info_txt) - 1);
-    }
+	window_puts(file_window, info_txt, wcslen(info_txt));
+	tty_update(); /* FIXME: debug, remove */ 
+   }
 
     if (tty_lines >= 6)
     {
 	window_goto(file_window, 2, 0);
-	window_puts(file_window, line_txt, sizeof(line_txt) - 1);
+	window_puts(file_window, line_txt, wcslen(line_txt));
+	tty_update(); /* FIXME: debug, remove */
     }
 
     if (tty_lines >= 9)
     {
+	wchar_t *woff;
 	if (VIEW_LINES == 0)
 	    g_current_line = 0;
 	else
 	    g_current_line = min(g_current_line, (g_lines / VIEW_LINES) * VIEW_LINES);
 
 	window_goto(file_window, SEEK_LINE, 0);
-	window_puts(file_window, seek_txt, sizeof(seek_txt) - 1);
-	window_goto(file_window, SEEK_LINE, sizeof(seek_txt) - 1);
-	window_puts(file_window, g_offset, count);
+	window_puts(file_window, seek_txt, wcslen(seek_txt));
+	tty_update(); /* FIXME: debug, remove */
+	window_goto(file_window, SEEK_LINE, wcslen(seek_txt));
+	woff=mbsduptowcs(g_offset);
+	window_puts(file_window, woff, count);
+	xfree(woff);
+	tty_update(); /* FIXME: debug, remove */
     }
     else
 	g_current_line = 0;
 
     set_title();
+    tty_update(); /* FIXME: debug, remove */
     set_status();
+    tty_update(); /* FIXME: debug, remove */
     set_header();
+    tty_update(); /* FIXME: debug, remove */
 
     update_all();
+    tty_update(); /* FIXME: debug, remove */
 
     if (tty_lines >= 9)
-	window_goto(file_window, SEEK_LINE, sizeof(seek_txt) - 1 + count);
+	window_goto(file_window, SEEK_LINE, wcslen(seek_txt) + count);
     else
 	window_goto(file_window, tty_lines - 1, tty_columns - 1);
 
@@ -601,6 +615,7 @@ refresh(signum)
 
     if (signum == SIGCONT)
 	tty_update_title(header_text);
+    tty_update(); /* FIXME: debug, remove */
 }
 
 
@@ -641,6 +656,8 @@ main(argc, argv)
     tty_key_t *ks;
     int keys, repeat_count, need_update;
     int c, ansi_colors = -1, use_last_screen_character = ON;
+    int title_text_len;
+    char * s_help;
 
 #ifdef HAVE_SETLOCALE
     setlocale(LC_ALL,"");
@@ -663,13 +680,18 @@ main(argc, argv)
 	ansi_colors = ON;
 
     /* Parse the command line.  */
-    while ((c = getopt(argc, argv, "hvcblp")) != -1)
+    while ((c = getopt(argc, argv, "hvcblpd")) != -1)
 	switch (c)
 	{
 	    case 'h':
 		/* Help request.  */
 		usage();
 		return 0;
+
+	    case 'd':
+		printf("%d\n", getpid());
+		sleep(10);
+		break;
 
 	    case 'v':
 		/* Version number request.  */
@@ -712,8 +734,9 @@ main(argc, argv)
 	fprintf(stderr, "%s: warning: invalid extra options ignored\n",
 		g_program);
 
-    title_text = xmalloc(strlen(PRODUCT) + strlen(VERSION) + 64);
-    sprintf(title_text, " %s %s - Hex/Ascii File Viewer", PRODUCT, VERSION);
+    title_text_len=strlen(PRODUCT) + strlen(VERSION) + 64;
+    title_text = xmalloc(title_text_len * sizeof(wchar_t));
+    swprintf(title_text, title_text_len, L" %s %s - Hex/Ascii File Viewer", PRODUCT, VERSION);
 
     tty_init(TTY_RESTRICTED_INPUT);
 
@@ -758,7 +781,8 @@ main(argc, argv)
     tty_set_last_char_flag(UseLastScreenChar);
 
     use_section("[GITVIEW-Setup]");
-    g_help = get_string_var("Help", "");
+    s_help = get_string_var("Help", "");
+    g_help = mbsduptowcs(s_help);
 
     use_section(AnsiColors ? color_section : monochrome_section);
     get_colorset_var(ViewerColors, ViewerFields, VIEWER_FIELDS);
@@ -790,7 +814,7 @@ main(argc, argv)
     g_offset[count]  = 0;
     g_current_line = 0;
 
-    sprintf(header_text, " File: %s", filename);
+    swprintf(header_text, (10 + strlen(filename)), L" File: %s", filename);
     tty_update_title(header_text);
 
   restart:
@@ -855,7 +879,7 @@ main(argc, argv)
 				   ScreenForeground,
 				   ScreenBackground);
 			window_goto(file_window, SEEK_LINE,
-				    strlen(seek_txt) + count);
+				    wcslen(seek_txt) + count);
 			window_putc(file_window, L' ');
 		    }
 		    else
@@ -916,7 +940,7 @@ main(argc, argv)
 				   ScreenForeground,
 				   ScreenBackground);
 			window_goto(file_window, SEEK_LINE,
-				    strlen(seek_txt) + count);
+				    wcslen(seek_txt) + count);
 			tmp = (char)key;
 			window_putc(file_window, tmp);
 			g_offset[count++] = tmp;
@@ -939,8 +963,8 @@ main(argc, argv)
 			tty_colors(ScreenBrightness,
 				   ScreenForeground,
 				   ScreenBackground);
-			window_goto(file_window, SEEK_LINE, strlen(seek_txt));
-			window_puts(file_window, "        ", 8);
+			window_goto(file_window, SEEK_LINE, wcslen(seek_txt));
+			window_puts(file_window, L"        ", 8);
 
 			if (count < 0)
 			    count = 0;

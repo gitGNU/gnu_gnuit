@@ -1892,6 +1892,7 @@ main(argc, argv)
 	    case 'd':
 		printf("%d\n", getpid());
 		sleep(10);
+		break;
 
 	    case 'c':
 		/* Force git to use ANSI color sequences.  */
@@ -2896,7 +2897,7 @@ main(argc, argv)
 		panel_action(dst_panel, act_CHDIR, src_panel,
 			     src_panel->path, 1);
 
-		dir_history_add(panel_get_wpath(dst_panel));
+		dir_history_add(panel_get_path(dst_panel));
 		break;
 
 	    case BUILTIN_set_scroll_step:

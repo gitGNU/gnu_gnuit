@@ -897,11 +897,11 @@ il_insert_text(text)
     if (il->length + len + 1 > il->size)
 	IL_RESIZE(il->size + len + 1 + 32);
 
-    memmove(il->buffer + il->point + len,
-	    il->buffer + il->point,
-	    il->length - il->point + 1);
+    wmemmove(il->buffer + il->point + len,
+	     il->buffer + il->point,
+	     il->length - il->point + 1);
 
-    memcpy(il->buffer + il->point, text, len);
+    wmemcpy(il->buffer + il->point, text, len);
 
     toprintable(il->buffer + il->point, len);
 
@@ -1011,11 +1011,11 @@ il_update()
     wmemset(temp, L' ', il->columns);
 
     if (il->echo)
-	memcpy(temp, il->buffer + il->static_length + len,
-	       min(il->length   - il->static_length - len,
-		   il->columns  - il->static_length));
+	wmemcpy(temp, il->buffer + il->static_length + len,
+		min(il->length   - il->static_length - len,
+		    il->columns  - il->static_length));
     else
-	memset(temp, '*',
+	wmemset(temp, L'*',
 	       min(il->length   - il->static_length - len,
 		   il->columns  - il->static_length));
 
