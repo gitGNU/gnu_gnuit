@@ -2187,7 +2187,8 @@ main(argc, argv)
 
 		    if (command->body)
 		    {
-			char *cmd = NULL;
+			wchar_t *cmd = NULL;
+			char *scmd;
 
 			retval = command_expand(command, &cmd,
 						src_panel, dst_panel);
@@ -2197,10 +2198,10 @@ main(argc, argv)
 			    if (retval > 0)
 			    {
 				size_t msglen = 32 + strlen(command->name) +
-				    strlen(cmd) + 1;
+				    wcslen(cmd) + 1;
 				wchar_t *msg = xmalloc(msglen * sizeof(wchar_t));
 
-				swprintf(msg,msglen, L"%s: %s", command->name, cmd);
+				swprintf(msg,msglen, L"%s: %ls", command->name, cmd);
 				status(msg, STATUS_WARNING, STATUS_LEFT);
 				tty_update();
 				xfree(msg);
@@ -2217,11 +2218,11 @@ main(argc, argv)
 				    xfree(msg);
 				}
 
-				wchar_t *wcmd=mbsduptowcs(cmd);
-				if (!is_a_bg_command(wcmd))
-				    tty_update_title(wcmd);
-				child_exit_code = start(cmd, command->hide);
-				xfree(wcmd);
+				if (!is_a_bg_command(cmd))
+				    tty_update_title(cmd);
+				scmd=wcsduptombs(cmd);
+				child_exit_code = start(scmd, command->hide);
+				xfree(scmd);
 				xfree(cmd);
 
 				if (command->hide)
