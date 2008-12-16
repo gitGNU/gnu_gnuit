@@ -3430,7 +3430,7 @@ panel_act_MOVE(this, other)
     size_t len;
     int first_entry, entry, error;
     char *dir = NULL, *sinput,*tmp_input;
-    wchar_t *msg, *input = NULL, *file, *wdir;
+    wchar_t *msg, *input = NULL, *file, *wdir=NULL;
 
     this->chkdest = ON;
 
