@@ -635,7 +635,7 @@ panel_set_path(pan, path)
     pan->pathlen = strlen(pan->path);
     if(pan->wpath)
 	xfree(pan->wpath);
-    pan->wpath=mbsduptowcs(path);
+    pan->wpath=mbsduptowcs(newpath);
 }
 
 /*
@@ -1661,8 +1661,7 @@ panel_update_info(this)
     tty_status_t status;
     size_t len, maxname;
     off64_t total_size = 0;
-    char str[1024];
-    wchar_t *wstr;
+    wchar_t str[1024];
     char temp_rights[16];
 
     assert(this->current_entry < this->entries);
@@ -1695,11 +1694,11 @@ panel_update_info(this)
     if (this->columns < 40)
     {
 	if (this->columns < (1 + 1 + 10 + 1 + 1))
-	    *str = '\0';
+	    *str = L'\0';
 	else
 	{
 	    panel_mode2string(this, this->current_entry, temp_rights);
-	    sprintf(str, "%10s", temp_rights);
+	    swprintf(str, this->columns, L"%10s", temp_rights);
 	}
 
 	goto skip_info_display;
@@ -1708,11 +1707,13 @@ panel_update_info(this)
     if (this->selected_entries)
     {
 	int entry;
+	char stmp[this->columns];
 	for (entry = 0; entry < this->entries; entry++)
 	    if  (this->dir_entry[entry].selected &&
 		 this->dir_entry[entry].type == FILE_ENTRY)
 		total_size += this->dir_entry[entry].size;
-	panel_beautify_info_number(str, total_size, this->columns, this->selected_entries);
+	panel_beautify_info_number(stmp, total_size, this->columns, this->selected_entries);
+	swprintf(str, this->columns, L"%s", stmp);
 	tty_brightness(PanelFilesInfoBrightness);
 	tty_foreground(PanelFilesInfo);
     }
@@ -1726,12 +1727,12 @@ panel_update_info(this)
 
 	panel_mode2string(this, this->current_entry, temp_rights);
 	maxname = this->columns - 26;  /* FIXME: Huh?  */
-	len = min(strlen(this->dir_entry[this->current_entry].name), maxname);
-	memcpy(str, this->dir_entry[this->current_entry].name, len);
-	memset(str + len, ' ', maxname - len);
+	len = min(wcslen(this->dir_entry[this->current_entry].wname), maxname);
+	wmemcpy(str, this->dir_entry[this->current_entry].wname, len);
+	wmemset(str + len, L' ', maxname - len);
 
 	if (this->dir_entry[this->current_entry].type == DIR_ENTRY)
-	    sprintf(str + maxname, " %10s %10s",
+	    swprintf(str + maxname, 25, L" %10s %10s",
 		    (strcmp(this->dir_entry[this->current_entry].name, "..") ==
 		     0) ?
 		    " UP-DIR" : "SUB-DIR", temp_rights);
@@ -1739,15 +1740,14 @@ panel_update_info(this)
 	{
 	    char size[LONGEST_HUMAN_READABLE+1];
 	    panel_fit_number(size,this->dir_entry[this->current_entry].size,0,10);
-	    sprintf(str + maxname, " %10s %10s",size,temp_rights);
+	    swprintf(str + maxname, 25, L" %10s %10s",size,temp_rights);
 	}
 
       skip_info_display:
 	tty_brightness(PanelFileInfoBrightness);
 	tty_foreground(PanelFileInfo);
     }
-    wstr=mbsduptowcs(str);
-    wmemcpy(this->temp, wstr, len = wcslen(wstr));
+    wmemcpy(this->temp, str, len = wcslen(str));
     if( (len+2) < this->columns)
 	wmemset(this->temp + len, L' ', this->columns - 2 - len);
     toprintable(this->temp, len);
@@ -3014,6 +3014,7 @@ panel_act_COPY(this, other)
 	if (!il_read_line(msg, &input, file, copy_history))
 	{
 	    xfree(msg);
+	    xfree(file);
 	    return;
 	}
 
@@ -3032,7 +3033,6 @@ panel_act_COPY(this, other)
 	input = mbsduptowcs(tmp_input);
 
 	error = same_file(name, tmp_input);
-	xfree(tmp_input);
 	xfree(file);
 
 	if (error)
@@ -3042,15 +3042,17 @@ panel_act_COPY(this, other)
 			     wname, input, NULL,
 			     IL_MOVE | IL_BEEP | IL_SAVE | IL_ERROR);
 	    xfree(wname);
+	    xfree(tmp_input);
 	    xfree(input);
 	    return;
 	}
 
-	error = panel_copy(this, name, input,
+	error = panel_copy(this, name, tmp_input,
 			   this->dir_entry[this->current_entry].mode,
 			   getuid(), getgid());
 
 	xfree(input);
+	xfree(tmp_input);
 
 	if (error != SD_OK && error != SD_CANCEL)
 	{
@@ -3426,7 +3428,6 @@ panel_act_MOVE(this, other)
     panel_t *other;
 {
     size_t len;
-    size_t msglen;
     int first_entry, entry, error;
     char *dir = NULL, *sinput,*tmp_input;
     wchar_t *msg, *input = NULL, *file, *wdir;
@@ -3445,19 +3446,20 @@ panel_act_MOVE(this, other)
 	msg = xmalloc(len * sizeof(wchar_t));
 	swprintf(msg, len, L"Move %s to: ", cutname(name, 0, 0));
 
-	msglen = 1 + strlen(name) + 1;
-	len=msglen+strlen(other->path);
+	len = 1 + strlen(name) + strlen(other->path)  + 1;
 	file = xmalloc(len * sizeof(wchar_t));
 
-	swprintf(file, msglen, L"%s/%s", other->path, name);
+	swprintf(file, len, L"%s/%s", other->path, name);
 
 	if (!il_read_line(msg, &input, file, move_history))
 	{
 	    xfree(msg);
+	    xfree(file);
 	    return;
 	}
 
 	xfree(msg);
+	xfree(file);
 
 	if (S_ISDIR(this->dir_entry[this->current_entry].mode))
 	    il_message(PANEL_MOVE_DIR_MSG);
@@ -3470,8 +3472,7 @@ panel_act_MOVE(this, other)
 	xfree(input);
 	input = mbsduptowcs(tmp_input);
 
-	error = same_file(name, sinput);
-	xfree(file);
+	error = same_file(name, tmp_input);
 
 	if (error)
 	{
@@ -3479,12 +3480,15 @@ panel_act_MOVE(this, other)
 			     wname, input, NULL,
 			     IL_MOVE | IL_BEEP | IL_SAVE | IL_ERROR);
 	    xfree(input);
+	    xfree(sinput);
+	    xfree(tmp_input);
 	    return;
 	}
 
-	error = panel_move(this, name, sinput,
+	error = panel_move(this, name, tmp_input,
 			   this->dir_entry[this->current_entry].mode);
 	xfree(sinput);
+	xfree(tmp_input);
 
 	if (error != FT_OK)
 	{
