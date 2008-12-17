@@ -1551,7 +1551,7 @@ command_expand(command, dest, p, l)
 
 		case 'b':
 		case 'B':
-		    sptr = strrchr(t->path, L'/');
+		    sptr = strrchr(t->path, '/');
 		    sptr = (*++sptr) ? sptr : "/root";
 		    tmplen = 1 + strlen(sptr) + 1 + 1;
 		    tmp = xmalloc(tmplen * sizeof(wchar_t));
@@ -1578,8 +1578,8 @@ command_expand(command, dest, p, l)
 		    while ((entry = panel_get_next(t)) != -1)
 		    {
 			oldtmplen = tmplen;
-			tmplen += 1 + wcslen(t->dir_entry[entry].wname) + 1 + 1  + 1;
-			tmp = xrealloc(tmp, (tmplen * sizeof(wchar_t)));
+			tmplen += 1 + wcslen(t->dir_entry[entry].wname) + 1 + 1;
+			tmp = xrealloc(tmp, ((tmplen + 1) * sizeof(wchar_t)));
 			tmp[oldtmplen] = L'"';
 			wcscpy(tmp + oldtmplen + 1, t->dir_entry[entry].wname);
 			tmp[tmplen - 2] = L'"';
