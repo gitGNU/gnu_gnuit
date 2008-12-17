@@ -2543,23 +2543,28 @@ main(argc, argv)
 			    if (cmdln[0])
 			    {
 				il_free(saved_il);
-
-				if (history_expand(cmdln, &output_string) < 0)
+				scmdln=wcsduptombs(cmdln);
+				if (history_expand(scmdln, &soutput_string) < 0)
 				{
+				    output_string=mbsduptowcs(soutput_string);
 				    il_read_char(output_string, NULL,
 						 IL_FREEZED | IL_BEEP |
 						 IL_SAVE    | IL_ERROR);
 				    saved_il = il_save();
+				    xfree(scmdln);
+				    xfree(soutput_string);
+				    xfree(output_string);
 				    break;
 				}
-
+				xfree(scmdln);
+				output_string=mbsduptowcs(soutput_string);
 				tty_put_screen(screen);
 				il_kill_line(IL_DONT_STORE);
 				il_insert_text(output_string);
 				tty_update_title(output_string);
-				soutput_string=wcsduptombs(output_string);
 				start(soutput_string, 0);
 				xfree(soutput_string);
+				xfree(output_string);
 				tty_get_screen(screen);
 				il_history(IL_RECORD);
 				status(CommandLineModeHelp,
