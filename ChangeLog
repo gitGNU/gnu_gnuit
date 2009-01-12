@@ -1,3 +1,7 @@
+2009-01-12  Ian Beckwith  <ianb@erislabs.net>
+
+	* src/git.transition: remove bashisms (Thanks to Gerald Pfeifer).
+
 2008-10-24  Ian Beckwith  <ianb@erislabs.net>
 
 	* panel_fit_number(): If number with commas is too big,
