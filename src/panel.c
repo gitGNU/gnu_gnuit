@@ -1760,9 +1760,9 @@ panel_update_info(this)
 
 
 void
-panel_build_entry_field(this, entry, display_mode, offset)
+panel_build_entry_field(this, entry, display_mode, columns, offset)
     panel_t *this;
-    int entry, display_mode, offset;
+    int entry, display_mode, columns, offset;
 {
     char temp_rights[16];
     char hbuf[LONGEST_HUMAN_READABLE+1];
@@ -1772,17 +1772,17 @@ panel_build_entry_field(this, entry, display_mode, offset)
     {
 	case ENABLE_OWNER_GROUP:
 	    wbuf=mbsduptowcs(this->dir_entry[entry].owner);
-	    wmemcpy(this->temp + this->columns - 2 - offset,
+	    wmemcpy(this->temp + columns - 2 - offset,
 		    wbuf, 7);
 	    xfree(wbuf);
 	    wbuf=mbsduptowcs(this->dir_entry[entry].group);
-	    wmemcpy(this->temp + this->columns - 2 - offset + 8,
+	    wmemcpy(this->temp + columns - 2 - offset + 8,
 		    wbuf, 7);
 	    xfree(wbuf);
 	    break;
 
 	case ENABLE_DATE_TIME:
-	    wmemcpy(this->temp + this->columns - 2 - offset,
+	    wmemcpy(this->temp + columns - 2 - offset,
 		    this->dir_entry[entry].date, 15);
 	    break;
 
@@ -1800,7 +1800,7 @@ panel_build_entry_field(this, entry, display_mode, offset)
 	    }
 	    panel_fit_number(hbuf, this->dir_entry[entry].size, flags, 10);
 	    buflen=min(strlen(hbuf),10);
-	    ptr=this->temp + this->columns - 2 - offset;
+	    ptr=this->temp + columns - 2 - offset;
 	    if(buflen < 10)
 	    {
 		wmemset(ptr,L' ',10-buflen);
@@ -1814,7 +1814,7 @@ panel_build_entry_field(this, entry, display_mode, offset)
 	case ENABLE_MODE:
 	    panel_mode2string(this, entry, temp_rights);
 	    wbuf=mbsduptowcs(temp_rights);
-	    wmemcpy(this->temp + this->columns - 2 - offset, wbuf, 10);
+	    wmemcpy(this->temp + columns - 2 - offset, wbuf, 10);
 	    xfree(wbuf);
 	    break;
 
@@ -1827,7 +1827,7 @@ panel_build_entry_field(this, entry, display_mode, offset)
 	       date  + time  -> 16 characters
 	       size          -> 11 characters
 	       mode          -> 11 characters */
-	    if (this->columns < 20 + 16 + 16 + 11 + 11)
+	    if (columns < 20 + 16 + 16 + 11 + 11)
 		break;
 #endif
 	    break;
@@ -1873,7 +1873,9 @@ panel_update_entry(this, entry)
 {
     wchar_t c = L'\0';
     int foreground, background, brightness;
-    size_t len, reserved, entry_length, offset;
+    size_t reserved, offset;
+    wchar_t *fitted, *name;
+    int maxnamewidth, namewidth, namelen, width_adjust, effective_columns;
 
     assert(this->current_entry < this->entries);
 
@@ -1900,36 +1902,49 @@ panel_update_entry(this, entry)
     if (c != L'\0')
 	reserved++;
 
-    entry_length = wcslen(this->dir_entry[entry].wname);
+    name=xwcsdup(this->dir_entry[entry].wname);
+    namelen=wcslen(name);
+    maxnamewidth=this->columns - reserved;
+    toprintable(name,namelen);
+    namewidth=wcswidth(name,namelen);
 
-    if (this->columns - reserved >= entry_length)
+    if (maxnamewidth >= namewidth)
 	offset = 0;
     else
-	if (this->columns - reserved + this->horizontal_offset > entry_length)
-	    offset = entry_length - (this->columns - reserved);
+	if (maxnamewidth + this->horizontal_offset > namewidth)
+	    offset = namewidth - maxnamewidth;
 	else
 	    offset = this->horizontal_offset;
 
-    len = min(entry_length - offset, this->columns - reserved);
-    wmemcpy(&this->temp[1], this->dir_entry[entry].wname + offset, len);
+    fitted=widefit(name,offset,maxnamewidth,0);
+    namelen=wcslen(fitted);
+    namewidth=wcswidth(fitted,namelen);
+    width_adjust=namewidth - namelen;
+    effective_columns=this->columns - width_adjust;
+    fprintf(stderr,"COLUMNS: %2d EFFECTIVE: %2d(%3d) LEN(%2d) WIDTH(%2d/%2d)\n",
+	    this->columns, effective_columns, width_adjust, namelen, namewidth, maxnamewidth);
+    fprintf(stderr,".........1.........2.........3..._.....4.........5.........6.........7.:.......8\n");
+    fprintf(stderr,"%ls\n",fitted);
 
-    toprintable(&this->temp[1], len);
+    wmemcpy(&this->temp[1], fitted, namelen);
 
     if (c != L'\0')
-	this->temp[len + 1] = c;
+	this->temp[namelen + 1] = c;
+
+    xfree(fitted);
 
     if (this->columns >= 40)
 	switch (this->display_mode)
 	{
 	    case ENABLE_OWNER_GROUP:
 	    case ENABLE_DATE_TIME:
-		panel_build_entry_field(this, entry, this->display_mode, 16);
+		panel_build_entry_field(this, entry, this->display_mode, effective_columns, 16);
 		break;
 
 	    case ENABLE_SIZE:
 	    case ENABLE_ABBREVSIZE:
 	    case ENABLE_MODE:
-		panel_build_entry_field(this, entry, this->display_mode, 11);
+		panel_build_entry_field(this, entry, this->display_mode, effective_columns, 11);
 		break;
 
 	    case ENABLE_FULL_NAME:
@@ -1946,13 +1961,13 @@ panel_update_entry(this, entry)
 		if (this->columns < 20 + 16 + 16 + 11 + 11)
 		    break;
 
-		panel_build_entry_field(this, entry, ENABLE_OWNER_GROUP,
+		panel_build_entry_field(this, entry, ENABLE_OWNER_GROUP, effective_columns,
 					16 + 16 + 11 + 11);
-		panel_build_entry_field(this, entry, ENABLE_DATE_TIME,
+		panel_build_entry_field(this, entry, ENABLE_DATE_TIME, effective_columns,
 					16 + 11 + 11);
-		panel_build_entry_field(this, entry, ENABLE_SIZE,
+		panel_build_entry_field(this, entry, ENABLE_SIZE, effective_columns,
 					11 + 11);
-		panel_build_entry_field(this, entry, ENABLE_MODE,
+		panel_build_entry_field(this, entry, ENABLE_MODE, effective_columns,
 					11);
 		break;
 
@@ -1961,7 +1976,7 @@ panel_update_entry(this, entry)
 	}
 
     if (this->dir_entry[entry].selected)
-	this->temp[this->columns - 3] = L'*';
+	this->temp[effective_columns - 3] = L'*';
 
     if (entry == this->current_entry)
 	this->temp[0] = this->focus ?
@@ -2009,12 +2024,12 @@ panel_update_entry(this, entry)
 			   this->dir_entry[entry].background);
 	}
 
-	window_puts(this->window, this->temp + 1, len + 1);
+	window_puts(this->window, this->temp + 1, namelen + 1);
 
 	/* Display the end of the entry (the part after the file name).  */
 	window_puts(this->window,
-		    this->temp + 1 + len + 1,
-		    this->columns - len - 2 - 2);
+		    this->temp + 1 + namelen + 1,
+		    effective_columns - namelen - 2 - 2);
 
 	tty_colors(brightness, foreground, background);
     }
@@ -2042,7 +2057,7 @@ panel_update_entry(this, entry)
 	tty_colors(brightness, foreground, background);
 
 	window_goto(this->window, entry - this->first_on_screen + 1, 1);
-	window_puts(this->window, this->temp, this->columns - 2);
+	window_puts(this->window, this->temp, effective_columns - 2);
     }
 }
 

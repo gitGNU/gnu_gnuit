@@ -114,6 +114,6 @@ extern void get_file_type_info PROTO (());
 extern void toprintable PROTO ((wchar_t *, size_t));
 extern int needs_quotes PROTO ((wchar_t *, size_t));
 extern int xsetenv PROTO ((char *, char *));
-
+extern wchar_t * widefit PROTO ((wchar_t *, int, int, wchar_t));
 
 #endif  /* _GIT_MISC_H */

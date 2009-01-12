@@ -27,6 +27,10 @@
 #endif
 #include <sys/types.h>
 
+/* FIXME: Remove, only needed for wpe (debugging) */
+#include <stdio.h>
+
+
 #ifdef HAVE_STDDEF_H
 #include <stddef.h>
 #endif
@@ -346,6 +350,11 @@ mbsduptowcs(src)
     size_t len;
     wchar_t *dest;
     len=mbstowcs(NULL,src,0);
+    if(len < 0)
+    {
+	fprintf(stderr,"%s: mbstowcs failed\n",src);
+	exit(1);
+    }
     dest=xmalloc((len+1) * sizeof(wchar_t));
     mbstowcs(dest,src,len+1);
     return dest;
@@ -369,4 +378,20 @@ char *
 wp(wchar_t *str)
 {
     return wcsduptombs(str);
+}
+
+void
+wpe(wchar_t *str)
+{
+    fprintf(stderr,"<%ls>\n",str);
+}
+
+void
+wpen(wchar_t *str, int n)
+{
+    wchar_t *tmp=xmalloc((n+1) * sizeof(wchar_t));
+    wcsncpy(tmp,str,n);
+    tmp[n]=0;
+    fprintf(stderr,"<%ls>\n",tmp);
+    xfree(tmp);
 }

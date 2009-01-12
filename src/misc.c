@@ -634,7 +634,7 @@ toprintable(string, length)
     size_t i;
     for (i = 0; i < length; i++)
 	if (!iswprint(string[i]))
-	    string[i] = '?';
+	    string[i] = L'?';
 }
 
 
@@ -764,4 +764,51 @@ get_file_type_info()
 	else
 	    fti_head = fti_head1;
     }
+}
+
+wchar_t *
+wideoffset(str,cols)
+    wchar_t *str;
+    int cols;
+{
+    int width;
+    wchar_t *ptr=str;
+    for(;;)
+    {
+	width+=wcwidth(*ptr);
+	if(width > cols)
+	    break;
+	else
+	    ptr++;
+    }
+    return ptr;
+}
+
+wchar_t *
+widefit(instr, startoffset, maxlen, pad)
+    wchar_t *instr;
+    int startoffset, maxlen;
+    wchar_t pad;
+{
+    int cols=0, offset=0;
+    wchar_t *str=wideoffset(instr, startoffset);
+    int slen=min(wcslen(str), maxlen);
+    wchar_t *tmp=xmalloc((max(maxlen,slen)+1)*sizeof(wchar_t)); /* upper bound */
+    int next=wcwidth(str[offset]);
+    while((offset < slen) &&  ((cols+next) < maxlen))
+    {
+	tmp[offset]=str[offset];
+	offset++;
+	cols+=next;
+	next=wcwidth(str[offset]);
+    }
+    if(pad == 0)
+	tmp[offset]=0; /* only one null will do */
+    else
+    {
+	while(offset < maxlen)
+	    tmp[offset++]=L' ';
+	tmp[offset]=0;
+    }
+    return tmp;
 }
