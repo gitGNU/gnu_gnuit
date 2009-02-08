@@ -1,3 +1,8 @@
+2009-02-08  Ian Beckwith  <ianb@erislabs.net>
+
+	* Added filetype info for many more file extensions.
+	  Thanks to Tudor Hulubei (and Wikipedia).
+
 2009-01-12  Ian Beckwith  <ianb@erislabs.net>
 
 	* src/git.transition: remove bashisms (Thanks to Gerald Pfeifer).
