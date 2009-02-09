@@ -1,3 +1,9 @@
+2009-02-09  Ian Beckwith  <ianb@erislabs.net>
+
+	* Bumped version of Free Documentation License to 1.3 or later,
+	  still with no Invariant Sections, no Front-Cover Texts, no
+	  Back-Cover Texts.
+
 2009-02-08  Ian Beckwith  <ianb@erislabs.net>
 
 	* Added filetype info for many more file extensions.
