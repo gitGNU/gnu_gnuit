@@ -1,8 +1,10 @@
-2009-02-09  Ian Beckwith  <ianb@erislabs.net>
+2009-02-10  Ian Beckwith  <ianb@erislabs.net>
 
 	* Bumped version of Free Documentation License to 1.3 or later,
 	  still with no Invariant Sections, no Front-Cover Texts, no
 	  Back-Cover Texts.
+	* Updated gnulib to commit 69aecd33.
+	* prepare: stop importing memmove module: obsolete.
 
 2009-02-08  Ian Beckwith  <ianb@erislabs.net>
 
