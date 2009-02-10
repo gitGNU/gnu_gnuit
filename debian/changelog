@@ -5,8 +5,12 @@ gnuit (4.9.5-1) unstable; urgency=low
     Front-Cover Texts, no Back-Cover Texts). debian/copyright updated
     to match.
   * Suggests: xdg-utils (for xdg-open(1)).
+  * Remove git transitional package:
+    + debian/control: Remove git stanza + Provides/Replaces/Conflicts.
+    + Remove debian/presubj and debian/git.install.
+    + This makes #507014 obsolete (Closes: #507014).
 
- -- Ian Beckwith <ianb@erislabs.net>  Mon, 09 Feb 2009 22:02:04 +0000
+ -- Ian Beckwith <ianb@erislabs.net>  Tue, 10 Feb 2009 00:58:15 +0000
 
 gnuit (4.9.4-1) unstable; urgency=low
 

@@ -1,8 +1,0 @@
-git is a transitional package that installs gnuit, the new name for
-GNU Interactive Tools.
-
-If you want to report a bug against GNU Interactive tools, please file
-it against gnuit.
-
-If your bug concerns the version control system called git, please file
-it against git-core.

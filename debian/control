@@ -32,11 +32,3 @@ Description: GNU Interactive Tools, a file browser/viewer and process viewer/kil
  limited to a given set of commands.  The configuration file can be
  easily enhanced, allowing the user to add new commands or file
  operations, depending on its needs or preferences.
-
-Package: git
-Architecture: all
-Depends: gnuit
-Description: transitional dummy package which can be safely removed
- This is a transitional dummy package to pull in the renamed
- gnuit package. It can be safely removed.
-
