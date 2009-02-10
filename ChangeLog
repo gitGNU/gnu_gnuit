@@ -5,6 +5,8 @@
 	  Back-Cover Texts.
 	* Updated gnulib to commit 69aecd33.
 	* prepare: stop importing memmove module: obsolete.
+	* Makefile.am: add m4/sockpfaf.m4 to EXTRA_DIST.
+	* .gitignore: add lib/fcntl.h and lib/signal.h.
 
 2009-02-08  Ian Beckwith  <ianb@erislabs.net>
 
