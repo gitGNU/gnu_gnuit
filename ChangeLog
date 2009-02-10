@@ -7,6 +7,7 @@
 	* prepare: stop importing memmove module: obsolete.
 	* Makefile.am: add m4/sockpfaf.m4 to EXTRA_DIST.
 	* .gitignore: add lib/fcntl.h and lib/signal.h.
+	* Update NEWS.
 
 2009-02-08  Ian Beckwith  <ianb@erislabs.net>
 
