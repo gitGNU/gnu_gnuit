@@ -1,3 +1,8 @@
+2009-02-26  Ian Beckwith  <ianb@erislabs.net>
+
+	* gnuitrc.common.IN: show video files in grey (bright black)
+	  and encrypted files in green.
+
 2009-02-10  Ian Beckwith  <ianb@erislabs.net>
 
 	* Bumped version of Free Documentation License to 1.3 or later,
