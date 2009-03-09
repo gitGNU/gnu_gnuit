@@ -108,7 +108,7 @@ wxwrite(fd, buf, count)
     char *convbuf;
     const wchar_t *bufptr=buf;
     len=wcsnrtombs(NULL,&bufptr,count,0,NULL);
-    if(len < 0)
+    if(len == (size_t) -1)
 	return(-1);
     convbuf=xmalloc((len+1)*sizeof(char));
     bufptr=buf;
@@ -350,7 +350,7 @@ mbsduptowcs(src)
     size_t len;
     wchar_t *dest;
     len=mbstowcs(NULL,src,0);
-    if(len < 0)
+    if(len == (size_t) -1)
     {
 	fprintf(stderr,"%s: mbstowcs failed\n",src);
 	exit(1);
