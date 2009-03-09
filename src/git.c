@@ -2838,16 +2838,18 @@ main(argc, argv)
 				 command->history))
 		{
 		    char *expanded_input;
+		    char *sinput;
 
 		    if (input[0] == 0)
 			break;
-
+		    sinput=wcsduptombs(input);
 		    panel_action(src_panel, act_CHDIR, dst_panel,
-				 expanded_input = tilde_expand(input), 1);
+				 expanded_input = tilde_expand(sinput), 1);
 
 		    dir_history_add(panel_get_path(src_panel));
 
 		    xfree(expanded_input);
+		    xfree(sinput);
 		    xfree(input);
 		    input = NULL;
 
