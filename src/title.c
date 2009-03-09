@@ -55,7 +55,8 @@
 #include "tty.h"
 #include "title.h"
 #include "misc.h"
-
+#include "git.h"
+#include "common.h"
 
 char *TitleFields[TITLE_FIELDS] =
 {
@@ -115,10 +116,8 @@ static time_t mail_mtime=0;
 
 static window_t *title_window;
 
-extern int in_terminal_mode PROTO (());
-
-static int calc_info_length PROTO (());
-static int mail_check PROTO (());
+static int calc_info_length PROTO ((void));
+static int mail_check PROTO ((void));
 
 
 static int

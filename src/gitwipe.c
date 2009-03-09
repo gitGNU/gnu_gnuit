@@ -58,7 +58,7 @@
 char *g_program;
 
 
-void
+static void
 usage()
 {
     fprintf(stderr, "%s file1 [file2 [...]]\n", g_program);
@@ -66,7 +66,7 @@ usage()
 }
 
 
-off64_t
+static off64_t
 file_length(fd)
     int fd;
 {
@@ -79,7 +79,7 @@ file_length(fd)
 }
 
 
-int
+static int
 wipe(file)
     char *file;
 {

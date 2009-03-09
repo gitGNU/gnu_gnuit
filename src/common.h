@@ -1,6 +1,6 @@
-/* signal.h -- Function prototypes for those stupid functions in signal.c.  */
+/* common.h -- Function prototypes implemented by multiple git* tools.  */
 
-/* Copyright (C) 1993-1999, 2006-2007 Free Software Foundation, Inc.
+/* Copyright (C) 1997-1999, 2006-2009 Free Software Foundation, Inc.
 
  This file is part of gnuit.
 
@@ -18,28 +18,15 @@
  License along with this program. If not, see
  http://www.gnu.org/licenses/. */
 
-/* Written by Tudor Hulubei and Andrei Pitis.  */
+/* Written by Tudor Hulubei, Andrei Pitis and Ian Beckwith.  */
 
-#ifndef _GIT_SIGNAL_H
-#define _GIT_SIGNAL_H
-
-
-#include <signal.h>
-
-#ifdef HAVE_STDDEF_H
-#include <stddef.h>
-#endif
+#ifndef _GIT_COMMON_H
+#define _GIT_COMMON_H
 
 #include "stdc.h"
+extern void clean_up PROTO ((void));
+extern void fatal PROTO ((char *));
+extern void clock_refresh(int signum);
+extern void hide PROTO ((void));
 
-
-extern int user_heart_attack;
-
-
-extern void signals_init PROTO ((void));
-extern void signal_handlers PROTO ((int));
-extern void signals PROTO ((int));
-extern void service_pending_signals PROTO ((void));
-
-
-#endif  /* _GIT_SIGNAL_H */
+#endif  /* _GIT_COMMON_H */

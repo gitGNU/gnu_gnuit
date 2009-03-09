@@ -842,7 +842,7 @@ tty_flush()
 /*
  * Wide char equivalent of tty_writec
  */
-int
+static int
 tty_writewc(c)
     wchar_t c;
 {
@@ -858,7 +858,7 @@ tty_writewc(c)
  * characters.  Actually we are only storing them in a buffer
  * (tty_cache[]) and flush them later (in tty_flush()).
  */
-int
+static int
 tty_writec(c)
     char c;
 {
@@ -1140,7 +1140,7 @@ tty_putc(c)
 /*
  * Read data from the terminal.
  */
-int
+static int
 tty_read(buf, length)
     char *buf;
     int length;
@@ -1450,7 +1450,7 @@ tty_brightness(status)
  * Set the reverse video status. This is only used internally by the
  * code in this file therefore it is declared 'static'.
  */
-void
+static void
 tty_reversevid(status)
     int status;
 {
@@ -1603,7 +1603,7 @@ tty_getc()
 /*
  * Insert a key sequence into the list.
  */
-void
+static void
 tty_key_list_insert_sequence(key, key_seq, aux_data)
     tty_key_t **key;
     unsigned char *key_seq;
@@ -2022,7 +2022,7 @@ tty_resize()
  * easier (using /de/vcsa0 when debugging dumps the screen on the
  * debugger's console; not funny).
  */
-int
+static int
 vcs_io(buf, op)
     char *buf;
     int op;
@@ -2217,7 +2217,7 @@ tty_get_symbol_key_seq(symbol)
  * Get the entire set of required termcap/terminfo capabilities. It performs
  * consistency checkings trying to recover as well as possible.
  */
-void
+static void
 tty_get_capabilities()
 {
 #ifdef HAVE_LINUX

@@ -44,7 +44,7 @@ typedef struct
 } window_t;
 
 
-extern window_t *window_init PROTO (());
+extern window_t *window_init PROTO ((void));
 extern void window_end PROTO ((window_t *));
 extern void window_resize PROTO ((window_t *, int, int, int, int));
 extern int window_puts PROTO ((window_t *, wchar_t *, int));

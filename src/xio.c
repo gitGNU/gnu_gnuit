@@ -59,7 +59,10 @@
 extern int errno;
 #endif /* !errno */
 
+#ifndef _GNU_SOURCE
 #define _GNU_SOURCE
+#endif
+
 #ifndef __USE_GNU
 #define __USE_GNU
 #endif
@@ -146,7 +149,7 @@ xwrite(fd, buf, count)
 
 
 
-int
+static int
 __xreadlink(path, buf, size)
     const char *path;
     char *buf;
@@ -374,6 +377,10 @@ wcsduptombs(src)
 
 /* FIXME: debug, remove */
 /* less typing in gdb */
+extern char *wp(wchar_t *str);
+extern void wpe(wchar_t *str);
+extern void wpen(wchar_t *str, int n);
+
 char *
 wp(wchar_t *str)
 {

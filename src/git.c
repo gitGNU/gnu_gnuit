@@ -63,6 +63,8 @@
 #include <wctype.h>
 
 #include "stdc.h"
+#include "common.h"
+#include "git.h"
 #include "xstring.h"
 #include "xmalloc.h"
 #include "getopt.h"
@@ -355,7 +357,7 @@ typedef struct
 /*
  * Return ON if there is enough space on the screen to display the panels.
  */
-int
+static int
 panels_can_be_displayed()
 {
     if (tty_lines >= 7)
@@ -531,7 +533,7 @@ refresh(signum)
 }
 
 
-void
+static void
 report_undefined_key(status_message)
     char *status_message;
 {
@@ -589,7 +591,7 @@ extern wchar_t *il_read_line PROTO ((wchar_t *, wchar_t **, wchar_t *, xstack_t 
  * Add a string to the history.
  */
 
-void
+static void
 il_history_add_entry(history, text)
     xstack_t *history;
     wchar_t *text;
@@ -609,7 +611,7 @@ il_history_add_entry(history, text)
 /*
  * Preview a history string.
  */
-wchar_t *
+static wchar_t *
 il_history_view_entry(history, offset)
     xstack_t *history;
     int offset;
@@ -1226,7 +1228,7 @@ il_isearch(static_text, dest, status, action)
 /* The directory history function set.  */
 /****************************************/
 
-void
+static void
 dir_history_reset()
 {
     if (dir_history)
@@ -1245,7 +1247,7 @@ dir_history_reset()
 }
 
 
-void
+static void
 dir_history_add(directory)
     char *directory;
 {
@@ -1256,7 +1258,7 @@ dir_history_add(directory)
 }
 
 
-void
+static void
 dir_history_next(this, link)
     panel_t *this;
     panel_t *link;
@@ -1269,7 +1271,7 @@ dir_history_next(this, link)
 }
 
 
-void
+static void
 dir_history_prev(this, link)
     panel_t *this;
     panel_t *link;
@@ -1320,7 +1322,7 @@ fatal(postmsg)
  * if everything is ok, 2 if the command was correctly expanded and it
  * contains a '%i' and 3 if it contains a '%I'.  Easy, isn't it?
  */
-int
+static int
 command_expand(command, dest, p, l)
     command_t *command;
     wchar_t **dest;
@@ -1630,7 +1632,7 @@ command_expand(command, dest, p, l)
 }
 
 
-void
+static void
 add_to_environment(variable, alternate_variable, value)
     char *variable;
     char *alternate_variable;
@@ -1652,7 +1654,7 @@ add_to_environment(variable, alternate_variable, value)
  * Read keys from the current section ([GITFM-Keys] is supposed to be in
  * use when read_keys() is called).  Return the number of keys read.
  */
-int
+static int
 read_keys(keys, errors)
     int keys;
     int *errors;
@@ -1789,7 +1791,7 @@ hide()
 /*
  * Set the git prompt.
  */
-void
+static void
 set_prompt()
 {
     wchar_t temp[MAX_STATIC_SIZE + 1];
@@ -1799,7 +1801,7 @@ set_prompt()
 }
 
 
-void
+static void
 reread()
 {
     /* Note that the order is important.  `src_panel' should be
@@ -1810,7 +1812,7 @@ reread()
 }
 
 
-void
+static void
 usage()
 {
     printf("usage: %s [-hvcblp] [path1] [path2]\n", g_program);

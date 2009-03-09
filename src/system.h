@@ -45,7 +45,7 @@ extern char *stdout_log_template;
 extern char *stderr_log_template;
 
 extern int start PROTO ((char *, int));
-extern void remove_log PROTO (());
+extern void remove_log PROTO ((void));
 extern void display_errors PROTO ((char *));
 
 #endif  /* _GIT_SYSTEM_H */

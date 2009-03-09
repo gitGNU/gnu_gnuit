@@ -67,7 +67,7 @@
 #include "tty.h"
 #include "misc.h"
 #include "tilde.h"
-
+#include "common.h"
 
 #define MAX_KEYS                        2048
 
@@ -221,7 +221,7 @@ static wchar_t line_txt[]    =
 static wchar_t seek_txt[]    = L" Seek at: ";
 
 
-off64_t
+static off64_t
 file_length()
 {
     off64_t current, length;
@@ -236,7 +236,7 @@ file_length()
 }
 
 
-void
+static void
 cursor_update()
 {
     if (tty_lines >= 9)
@@ -246,7 +246,7 @@ cursor_update()
 }
 
 
-void
+static void
 set_title()
 {
     wmemset(global_buf, ' ', tty_columns);
@@ -260,7 +260,7 @@ set_title()
 }
 
 
-void
+static void
 set_header()
 {
     wmemset(global_buf, L' ', tty_columns);
@@ -274,7 +274,7 @@ set_header()
 }
 
 
-void
+static void
 set_status()
 {
     wmemset(global_buf, L' ', tty_columns);
@@ -287,7 +287,7 @@ set_status()
 }
 
 
-void
+static void
 report_undefined_key()
 {
     char *prev = tty_get_previous_key_seq();
@@ -320,7 +320,7 @@ report_undefined_key()
 }
 
 
-char
+static char
 char_to_print(c, index, total)
     char c;
     int index;
@@ -332,7 +332,7 @@ char_to_print(c, index, total)
 }
 
 
-void
+static void
 update_line(line)
     long long line;
 {
@@ -381,7 +381,7 @@ update_line(line)
 }
 
 
-void
+static void
 update_all()
 {
     long long i;
@@ -413,7 +413,7 @@ fatal(postmsg)
 }
 
 
-int
+static int
 read_keys(keys)
     int keys;
 {
@@ -479,7 +479,7 @@ read_keys(keys)
 }
 
 
-void
+static void
 resize(resize_required)
     int resize_required;
 {
@@ -543,7 +543,7 @@ resize(resize_required)
  * Resize (if necessary) and then refresh all gitview's components.
  */
 
-void
+static void
 refresh(signum)
     int signum;
 {
@@ -629,12 +629,17 @@ hide()
 
 
 void
-clock_refresh()
+clock_refresh(signum)
+    int
+#ifdef __GNUC__
+    __attribute__ ((unused))
+#endif
+    signum;
 {
 }
 
 
-void
+static void
 usage()
 {
     printf("usage: %s [-hvicbl] file\n", g_program);

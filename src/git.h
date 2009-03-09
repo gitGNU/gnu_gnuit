@@ -1,6 +1,6 @@
-/* status.h -- The #defines and function prototypes used in status.c.  */
+/* git.h -- Function prototypes for git.c.  */
 
-/* Copyright (C) 1993-1999, 2006-2007 Free Software Foundation, Inc.
+/* Copyright (C) 1997-1999, 2006-2009 Free Software Foundation, Inc.
 
  This file is part of gnuit.
 
@@ -18,29 +18,15 @@
  License along with this program. If not, see
  http://www.gnu.org/licenses/. */
 
-/* Written by Tudor Hulubei and Andrei Pitis.  */
+/* Written by Tudor Hulubei, Andrei Pitis and Ian Beckwith.  */
 
-#ifndef _GIT_STATUS_H
-#define _GIT_STATUS_H
-
+#ifndef _GIT_GIT_H
+#define _GIT_GIT_H
 
 #include "stdc.h"
 
+extern int in_terminal_mode PROTO ((void));
+extern void resize PROTO ((int));
+extern void refresh PROTO ((int));
 
-#define STATUS_OK		0
-#define STATUS_WARNING		1
-#define STATUS_ERROR		2
-
-#define STATUS_CENTERED		0
-#define STATUS_LEFT		1
-
-
-extern void status_init PROTO ((wchar_t *));
-extern void status_end PROTO ((void));
-extern void status_resize PROTO ((size_t, size_t));
-extern void status_update PROTO ((void));
-extern void status PROTO ((wchar_t *, int, int));
-extern void status_default PROTO ((void));
-
-
-#endif  /* _GIT_STATUS_H */
+#endif  /* _GIT_GIT_H */

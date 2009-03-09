@@ -39,9 +39,10 @@
 #include <assert.h>
 
 #include "signals.h"
+#include "git.h"
 #include "tty.h"
 #include "misc.h"
-
+#include "common.h"
 
 /* Set on SIGINT.  Should be reset when detected.  */
 int user_heart_attack;
@@ -56,12 +57,6 @@ static int signals_allowed = OFF;
 static int job_control = ON;
 
 static void install_handler PROTO ((int));
-
-
-extern void hide PROTO (());
-extern void refresh PROTO ((int));
-extern void clock_refresh PROTO ((int));
-
 
 /*
  * Service pending signals (signals that can modify git at specific

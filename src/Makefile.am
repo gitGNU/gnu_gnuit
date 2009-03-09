@@ -14,7 +14,7 @@ gitfm_SOURCES = git.c tty.c tty.h window.c window.h inputline.c inputline.h\
 	      configure.c configure.h misc.c misc.h signals.c signals.h\
 	      xmalloc.c xmalloc.h xstring.h xio.c xio.h\
 	      xstack.c xstack.h system.c system.h \
-	      tilde.c tilde.h history.c history.h
+	      tilde.c tilde.h history.c history.h git.h common.h
 gitps_SOURCES = gitps.c tty.c tty.h window.c window.h misc.c misc.h\
 		configure.c configure.h signals.c signals.h xio.c xio.h\
 		xmalloc.c xmalloc.h xstring.h

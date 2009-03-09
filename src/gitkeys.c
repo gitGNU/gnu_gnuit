@@ -118,7 +118,7 @@ Written by Tudor Hulubei and Andrei Pitis, students at PUB, Romania\n\
 extern RETSIGTYPE do_exit PROTO ((int));
 
 
-void
+static void
 tty_init()
 {
     /* This simply doesn't fit into the current scheme.  Maybe the tt
@@ -330,7 +330,7 @@ tty_init()
 }
 
 
-void
+static void
 tty_end()
 {
 #ifdef HAVE_POSIX_TTY

@@ -75,7 +75,7 @@ char *stderr_log_name = NULL;
  * A modified (and incompatible) version of system().
  */
 
-int
+static int
 my_system(command, hide)
     const char *command;
     int hide;

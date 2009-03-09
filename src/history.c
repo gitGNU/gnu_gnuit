@@ -98,7 +98,7 @@ static char *subst_rhs;
 static int subst_lhs_len = 0;
 static int subst_rhs_len = 0;
 
-static char *get_history_word_specifier ();
+static char *get_history_word_specifier PROTO ((char *, char *, int *));
 
 #if defined (SHELL)
 extern char *single_quote ();
@@ -871,7 +871,7 @@ static char *search_string = (char *)NULL;
    characters `:', ` ', `\t', `\n', and sometimes `?'.
    So you might call this function like:
    line = get_history_event ("!echo:p", &index, 0);  */
-char *
+static char *
 get_history_event (string, caller_index, delimiting_quote)
      char *string;
      int *caller_index;

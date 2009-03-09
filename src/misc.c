@@ -136,7 +136,7 @@ display_exit_message(signame)
 }
 
 
-extern void clean_up PROTO (());
+extern void clean_up PROTO ((void));
 
 
 RETSIGTYPE
@@ -174,7 +174,7 @@ fatal_signal(signum)
 }
 
 
-void
+static void
 configuration_fatal_error(configfile)
     char *configfile;
 {
@@ -184,7 +184,7 @@ configuration_fatal_error(configfile)
 }
 
 
-void
+static void
 configuration_warning(configfile)
     char *configfile;
 {
@@ -766,7 +766,7 @@ get_file_type_info()
     }
 }
 
-wchar_t *
+static wchar_t *
 wideoffset(str,cols)
     wchar_t *str;
     int cols;

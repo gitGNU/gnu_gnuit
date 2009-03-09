@@ -54,7 +54,7 @@ extern int xfstat PROTO ((int, struct stat *));
 extern int xstat PROTO ((const char *, struct stat *));
 extern int xlstat PROTO ((const char *, struct stat *));
 
-extern char *xgetcwd PROTO (());
+extern char *xgetcwd PROTO ((void));
 extern char *xdirname PROTO ((char *));
 extern char *xbasename PROTO ((char *));
 

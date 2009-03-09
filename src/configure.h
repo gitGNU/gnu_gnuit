@@ -40,7 +40,7 @@
 
 
 extern int configuration_init PROTO ((char *));
-extern void configuration_end PROTO (());
+extern void configuration_end PROTO ((void));
 extern int configuration_section PROTO ((char *));
 extern void configuration_getvarinfo PROTO ((char *, char **, int, int));
 

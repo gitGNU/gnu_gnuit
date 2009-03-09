@@ -82,8 +82,8 @@
 #define TTY_FULL_INPUT          1
 
 
-extern void (* tty_enter_idle_hook) PROTO (());
-extern void (* tty_exit_idle_hook) PROTO (());
+extern void (* tty_enter_idle_hook) PROTO ((void));
+extern void (* tty_exit_idle_hook) PROTO ((void));
 
 
 typedef struct tag_tty_key_t
@@ -105,15 +105,15 @@ extern wchar_t *tty_device;
 extern void tty_init PROTO ((int));
 extern void tty_end PROTO ((char *));
 
-extern void tty_resize PROTO (());
+extern void tty_resize PROTO ((void));
 
 extern void tty_set_mode PROTO ((int));
-extern int tty_get_mode PROTO (());
+extern int tty_get_mode PROTO ((void));
 extern void tty_set_interrupt_char PROTO ((int));
 
-extern void tty_clear PROTO (());
-extern void tty_fill PROTO (());
-extern void tty_touch PROTO (());
+extern void tty_clear PROTO ((void));
+extern void tty_fill PROTO ((void));
+extern void tty_touch PROTO ((void));
 extern void tty_goto PROTO ((int, int));
 extern void tty_get_cursor PROTO ((int *, int *));
 extern void tty_brightness PROTO ((int));
@@ -121,41 +121,41 @@ extern void tty_foreground PROTO ((int));
 extern void tty_background PROTO ((int));
 extern void tty_colors PROTO ((int, int, int));
 extern void tty_cursor PROTO ((int));
-extern void tty_beep PROTO (());
-extern void tty_defaults PROTO (());
+extern void tty_beep PROTO ((void));
+extern void tty_defaults PROTO ((void));
 extern void tty_save PROTO ((tty_status_t *));
 extern void tty_restore PROTO ((tty_status_t *));
 extern int tty_putc PROTO ((int));
 extern int tty_puts PROTO ((wchar_t *, int));
-extern int tty_getc PROTO (());
-extern void tty_flush PROTO (());
-extern void tty_update PROTO (());
+extern int tty_getc PROTO ((void));
+extern void tty_flush PROTO ((void));
+extern void tty_update PROTO ((void));
 extern void tty_get_screen PROTO ((char *));
 extern void tty_put_screen PROTO ((char *));
 extern int tty_get_color_index PROTO ((char *));
 extern void tty_key_list_insert PROTO ((unsigned char *, void *));
-extern void tty_key_search_restart PROTO (());
+extern void tty_key_search_restart PROTO ((void));
 extern char *tty_key_human2machine PROTO ((unsigned char *));
 extern unsigned char *tty_key_machine2human PROTO ((char *));
 extern void tty_key_print PROTO ((char *));
-extern void tty_key_print_async PROTO (());
+extern void tty_key_print_async PROTO ((void));
 extern char *tty_get_symbol_key_seq PROTO ((char *));
 extern void tty_set_last_char_flag PROTO ((int));
 extern int tty_set_optimization_level PROTO ((int));
 extern void tty_update_title PROTO ((wchar_t *));
 
-extern void tty_start_cursorapp PROTO (());
-extern void tty_end_cursorapp PROTO (());
+extern void tty_start_cursorapp PROTO ((void));
+extern void tty_end_cursorapp PROTO ((void));
 
-extern void tty_io_clear PROTO (());
+extern void tty_io_clear PROTO ((void));
 
 /*
-extern void tty_key_list_delete PROTO (());
+extern void tty_key_list_delete PROTO ((void));
 */
 
 extern tty_key_t *tty_key_search PROTO ((char *));
 extern tty_key_t *tty_get_key PROTO ((int *));
-extern char *tty_get_previous_key_seq PROTO(());
+extern char *tty_get_previous_key_seq PROTO((void));
 
 
 #endif  /* _GIT_TTY_H */

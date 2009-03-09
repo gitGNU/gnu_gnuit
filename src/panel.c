@@ -749,7 +749,7 @@ panel_set_wrapped_isearch_flag(this, value)
 }
 
 
-int
+static int
 panel_isearch_backward(this, string, len, start_entry)
     panel_t *this;
     char *string;
@@ -772,7 +772,7 @@ panel_isearch_backward(this, string, len, start_entry)
 }
 
 
-int
+static int
 panel_isearch_forward(this, string, len, start_entry)
     panel_t *this;
     char *string;
@@ -796,7 +796,7 @@ panel_isearch_forward(this, string, len, start_entry)
 #define panel_1s_message il_read_char
 
 
-wchar_t
+static wchar_t
 panel_2s_message(format, string, options, flags)
     wchar_t *format;
     wchar_t *string;
@@ -814,7 +814,7 @@ panel_2s_message(format, string, options, flags)
 }
 
 
-wchar_t
+static wchar_t
 panel_3s_message(format, string1, string2, options, flags)
     wchar_t *format;
     wchar_t *string1;
@@ -833,7 +833,7 @@ panel_3s_message(format, string1, string2, options, flags)
 }
 
 
-void
+static void
 panel_recover(this)
     panel_t *this;
 {
@@ -1042,7 +1042,7 @@ panel_load_inode(this, entry)
 }
 
 
-int
+static int
 panel_read_directory(this, directory, verify)
     panel_t *this;
     char *directory;
@@ -1387,7 +1387,7 @@ panel_get_next(this)
 }
 
 
-void
+static void
 panel_update_entries(this)
     panel_t *this;
 {
@@ -1426,7 +1426,7 @@ panel_update_entries(this)
 }
 
 
-void
+static void
 panel_update_path(this)
     panel_t *this;
 {
@@ -1521,9 +1521,7 @@ panel_beautify_info_number(buf, number, width, numfiles)
     return buf;
 }
 
-
-
-void
+static void
 panel_update_size(this)
     panel_t *this;
 {
@@ -1654,7 +1652,7 @@ panel_mode2string(this, entry, string)
 }
 
 
-void
+static void
 panel_update_info(this)
     panel_t *this;
 {
@@ -1759,7 +1757,7 @@ panel_update_info(this)
 }
 
 
-void
+static void
 panel_build_entry_field(this, entry, display_mode, columns, offset)
     panel_t *this;
     int entry, display_mode, columns, offset;
@@ -2062,7 +2060,7 @@ panel_update_entry(this, entry)
 }
 
 
-void
+static void
 panel_update_frame(this)
     panel_t *this;
 {
@@ -2178,7 +2176,7 @@ panel_get_wpath(this)
 }
 
 
-int
+static int
 canceled()
 {
     wchar_t key;
@@ -2206,7 +2204,7 @@ canceled()
  * Check if two file names point to the same file.  It works by
  * checking the devices and inodes.
  */
-int
+static int
 same_file(file1, file2)
     char *file1;
     char *file2;
@@ -2230,7 +2228,7 @@ same_file(file1, file2)
 #define WARN_SKIP	3
 
 
-int
+static int
 panel_warning(this, file)
     panel_t *this;
     char *file;
@@ -2273,7 +2271,7 @@ panel_warning(this, file)
 /*
  * Remove a directory entry only if it is not a special file.
  */
-void
+static void
 panel_unlink(name)
     char *name;
 {
@@ -2331,7 +2329,7 @@ panel_percent(x, total)
 }
 
 
-int
+static int
 panel_copy(this, src, dest, mode, uid, gid)
     panel_t *this;
     char *src;
@@ -2631,7 +2629,7 @@ wchar_t *moveerr[12] =
 };
 
 
-int
+static int
 panel_move(this, from, to, mode)
     panel_t *this;
     char *from, *to;
@@ -2845,7 +2843,7 @@ panel_move(this, from, to, mode)
  * if no such entry is found.  Note that 0 is still a valid entry number,
  * but it is also used as the default entry in case of failure.
  */
-int
+static int
 panel_find_index(this, str)
     panel_t *this;
     char *str;
@@ -2910,7 +2908,7 @@ extern char *screen;
  * the cursor.  If that directory is ".." then go up to the parent
  * directory.
  */
-int
+static int
 panel_act_ENTER(this, other)
     panel_t *this, *other;
 {
@@ -3000,7 +2998,7 @@ panel_act_ENTER(this, other)
  * Copy the selected files in the active panel into some other place,
  * usually the current directory of the other panel.
  */
-void
+static void
 panel_act_COPY(this, other)
     panel_t *this, *other;
 {
@@ -3167,7 +3165,7 @@ panel_act_COPY(this, other)
 /*
  * Delete the selected files and directories in the active panel.
  */
-void
+static void
 panel_act_DELETE(this, other)
     panel_t *this, *other;
 {
@@ -3311,7 +3309,7 @@ panel_act_DELETE(this, other)
 }
 
 
-int
+static int
 panel_isdir(path)
     const char *path;
 {
@@ -3324,7 +3322,7 @@ panel_isdir(path)
 }
 
 
-int
+static int
 panel_mkdirs(path, mode)
     const char *path;
     int mode;
@@ -3353,7 +3351,7 @@ panel_mkdirs(path, mode)
 /*
  * Create a new directory into the current panel's directory.
  */
-void
+static void
 panel_act_MKDIR(this, other)
     panel_t *this, *other;
 {
@@ -3437,7 +3435,7 @@ panel_act_MKDIR(this, other)
  * some other place in the current file system (usually in the other
  * panel's directory.  Files can also be moved across file systems.
  */
-void
+static void
 panel_act_MOVE(this, other)
     panel_t *this;
     panel_t *other;
@@ -3617,7 +3615,7 @@ panel_act_MOVE(this, other)
  * Change the directory of the current panel.  Refresh the other panel as
  * well if it turns out that both point to the same directory.
  */
-void
+static void
 panel_act_CHDIR(this, other, new_dir)
     panel_t *this;
     panel_t *other;
@@ -3657,7 +3655,7 @@ panel_act_CHDIR(this, other, new_dir)
 /*
  * Refresh a panel by re-reading the directory from the disk.
  */
-void
+static void
 panel_act_REGET(this, aux_info)
     panel_t *this;
     void *aux_info;
@@ -3713,7 +3711,7 @@ panel_act_REGET(this, aux_info)
  * or return the offset of the first difference encountered.
  *
  */
-off64_t
+static off64_t
 panel_compare(this, this_entry, this_size, other, other_entry, other_size)
     panel_t *this;
     int this_entry;
@@ -3899,7 +3897,7 @@ panel_compare(this, this_entry, this_size, other, other_entry, other_size)
  * Compare the current file in the active panel with the current
  * file in the other one.
  */
-void
+static void
 panel_act_COMPARE(this, other)
     panel_t *this;
     panel_t *other;
@@ -4027,7 +4025,7 @@ panel_act_COMPARE(this, other)
  * a "quick" comparison, i.e. just look at the name, size and date of
  * the files.  Otherwise, do a thorough comparison.
  */
-void
+static void
 panel_act_CMPDIR(this, other, quick)
     panel_t *this;
     panel_t *other;
@@ -4146,7 +4144,7 @@ wchar_t *renerr[7] =
 };
 
 
-int
+static int
 panel_case_rename(this, entry, upcase)
     panel_t *this;
     int entry;
@@ -4276,7 +4274,7 @@ panel_case_rename(this, entry, upcase)
 }
 
 
-void
+static void
 panel_act_CASE(this, other, upcase)
     panel_t *this;
     panel_t *other;
@@ -4353,7 +4351,7 @@ pack_compare_fn(first, second)
  * if we should round up file sizes to 512 bytes, 1Kb, 2Kb, 4Kb, etc.
  * We will assume 1Kb, but it might not necessary be true...
  */
-void
+static void
 panel_act_BIN_PACKING(this, other, bin_size)
     panel_t *this;
     panel_t *other;
@@ -4503,7 +4501,7 @@ panel_act_BIN_PACKING(this, other, bin_size)
  * Spaces can be inserted into patterns by quoting them with a \.  The
  * \ itself can be used if inserted twice.
  */
-char **
+static char **
 panel_parse_patterns(string)
     char *string;
 {
@@ -4560,7 +4558,7 @@ panel_parse_patterns(string)
 }
 
 
-void
+static void
 panel_deallocate_patterns(patterns)
     char **patterns;
 {

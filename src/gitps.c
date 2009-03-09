@@ -81,6 +81,7 @@ extern int errno;
 #include "signals.h"
 #include "misc.h"
 #include "xio.h"
+#include "common.h"
 
 #define MAX_KEYS        2048
 #define MAX_LINE	2048
@@ -389,7 +390,7 @@ update_title(str)
 }
 
 
-void
+static void
 remove_log()
 {
     if (stdout_log_name)
@@ -400,7 +401,7 @@ remove_log()
 }
 
 
-void
+static void
 set_title()
 {
     int len=min(tty_columns, wcslen(title_text));
@@ -413,7 +414,7 @@ set_title()
 }
 
 
-void
+static void
 set_header()
 {
     wmemset(global_buf, L' ', tty_columns);
@@ -426,7 +427,7 @@ set_header()
 }
 
 
-void
+static void
 set_status(what)
     wchar_t *what;
 {
@@ -452,7 +453,7 @@ set_status(what)
 }
 
 
-void
+static void
 set_signal(index)
     int index;
 {
@@ -478,7 +479,7 @@ set_signal(index)
 }
 
 
-void
+static void
 report_undefined_key()
 {
     char *prev = tty_get_previous_key_seq();
@@ -512,7 +513,7 @@ report_undefined_key()
 }
 
 
-void
+static void
 free_ps_list()
 {
     int i;
@@ -525,7 +526,7 @@ free_ps_list()
 }
 
 
-wchar_t *
+static wchar_t *
 read_ps_line(ps_output, line)
     FILE *ps_output;
     char *line;
@@ -549,7 +550,7 @@ read_ps_line(ps_output, line)
 }
 
 
-int
+static int
 get_PID_index(ps_output)
     FILE *ps_output;
 {
@@ -577,7 +578,7 @@ get_PID_index(ps_output)
 }
 
 
-int
+static int
 kill_process(process_index)
     int process_index;
 {
@@ -621,7 +622,7 @@ kill_process(process_index)
 }
 
 
-void
+static void
 build_ps_list(ps_output)
     FILE *ps_output;
 {
@@ -638,7 +639,7 @@ build_ps_list(ps_output)
 }
 
 
-void
+static void
 update_process(process, update_color)
     int process, update_color;
 {
@@ -679,7 +680,7 @@ update_process(process, update_color)
 }
 
 
-void
+static void
 update_all()
 {
     int i;
@@ -733,7 +734,7 @@ fatal(postmsg)
 }
 
 
-int
+static int
 ps(args)
     char **args;
 {
@@ -833,7 +834,7 @@ ps(args)
 }
 
 
-int
+static int
 read_keys(keys)
     int keys;
 {
@@ -899,7 +900,7 @@ read_keys(keys)
 }
 
 
-void
+static void
 resize(resize_required)
     int resize_required;
 {
@@ -968,7 +969,7 @@ resize(resize_required)
 /*
  * Resize (if necessary) and then refresh all gitps' components.
  */
-void
+static void
 refresh(signum)
     int signum;
 {
@@ -1011,14 +1012,19 @@ hide()
     tty_put_screen(screen);
 }
 
-
+/*    int __attribute__ ((unused)) signum;*/
 void
-clock_refresh()
+clock_refresh(signum)
+    int
+#ifdef __GNUC__
+    __attribute__ ((unused))
+#endif
+    signum;
 {
 }
 
 
-void
+static void
 usage()
 {
     printf("usage: %s [-hvilcbp]\n", g_program);

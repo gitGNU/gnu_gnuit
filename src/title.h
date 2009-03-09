@@ -37,10 +37,9 @@
 extern char *TitleFields[TITLE_FIELDS];
 extern int TitleColors[TITLE_FIELDS];
 
-extern void title_init PROTO (());
-extern void title_end PROTO (());
+extern void title_init PROTO ((void));
+extern void title_end PROTO ((void));
 extern void title_resize PROTO ((size_t, size_t));
-extern void title_update PROTO (());
-
+extern void title_update PROTO ((void));
 
 #endif  /* _GIT_TITLE_H */

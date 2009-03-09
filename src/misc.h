@@ -89,13 +89,13 @@ typedef struct file_type_info_tag
 extern file_type_info_t * fti_head;
 
 
-extern void compute_directories PROTO (());
-extern void update_path PROTO (());
+extern void compute_directories PROTO ((void));
+extern void update_path PROTO ((void));
 extern RETSIGTYPE fatal_signal PROTO ((int));
 extern void display_exit_message PROTO ((char *));
 extern void configuration_help PROTO ((char *));
-extern void common_configuration_init PROTO (());
-extern int specific_configuration_init PROTO (());
+extern void common_configuration_init PROTO ((void));
+extern int specific_configuration_init PROTO ((void));
 extern void use_section PROTO ((char *));
 extern int get_int_var PROTO ((char *, int));
 extern int get_const_var PROTO ((char *, char *[], int, int));
@@ -103,14 +103,14 @@ extern int get_flag_var PROTO ((char *, int));
 extern char *get_string_var PROTO ((char *, char *));
 extern void get_colorset_var PROTO ((int *, char *[], int));
 extern char *minimize_path PROTO ((char *));
-extern void get_login_name PROTO (());
+extern void get_login_name PROTO ((void));
 extern void truncate_long_name PROTO ((wchar_t *, wchar_t *, int));
 extern wchar_t *truncate_string PROTO ((wchar_t *, wchar_t *, int));
 extern off64_t get_file_length PROTO ((int));
-extern struct tm *get_local_time PROTO (());
+extern struct tm *get_local_time PROTO ((void));
 extern int is_a_bg_command PROTO ((wchar_t *));
 extern int is_an_empty_command PROTO ((wchar_t *));
-extern void get_file_type_info PROTO (());
+extern void get_file_type_info PROTO ((void));
 extern void toprintable PROTO ((wchar_t *, size_t));
 extern int needs_quotes PROTO ((wchar_t *, size_t));
 extern int xsetenv PROTO ((char *, char *));

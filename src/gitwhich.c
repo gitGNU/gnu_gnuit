@@ -39,6 +39,7 @@
 
 #include "xmalloc.h"
 #include "xstring.h"
+#include "common.h"
 
 /* for gnulib lib/error.c */
 char *program_name;
@@ -55,7 +56,7 @@ fatal(postmsg)
 /*
  * Return 1 if the executable exists, 0 otherwise.
  */
-int
+static int
 find(name, path)
     char *name;
     char *path;
