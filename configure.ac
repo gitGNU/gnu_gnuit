@@ -120,7 +120,7 @@ if test "$CC" = "gcc"; then
     if test "$GCC_WARNINGS" = "yes"; then
         CFLAGS="$CFLAGS -W -Wall \
 -Waggregate-return -Wbad-function-cast -fstrict-aliasing \
--Winline -Wpointer-arith -Wcast-qual"
+-Winline -Wpointer-arith -Wcast-qual -Wmissing-prototypes"
     else
         AC_DEFINE(
 	    [NDEBUG], 1,
