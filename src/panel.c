@@ -1769,7 +1769,9 @@ panel_build_entry_field(this, entry, display_mode, columns, offset)
     char hbuf[LONGEST_HUMAN_READABLE+1];
     wchar_t *wbuf;
 
+#ifdef DEBUG
 /*    fprintf(stderr,"%d: COLS: %d OFFSET: %d\n",entry, columns, offset);*/
+#endif
     fflush(stderr);
     switch (display_mode)
     {
@@ -1817,8 +1819,10 @@ panel_build_entry_field(this, entry, display_mode, columns, offset)
 	case ENABLE_MODE:
 	    panel_mode2string(this, entry, temp_rights);
 	    wbuf=mbsduptowcs(temp_rights);
+#ifdef DEBUG
 	    fprintf(stderr,"res: %d col: %d offset: %d temp:<%ls> wbuf:<%ls>\n",
 		    (columns-2-offset), columns, offset, this->temp, wbuf);
+#endif
 	    wmemcpy(this->temp + columns - 2 - offset, wbuf, 10);
 	    xfree(wbuf);
 	    break;
@@ -1920,17 +1924,21 @@ panel_update_entry(this, entry)
 	else
 	    offset = this->horizontal_offset;
 
+#ifdef DEBUG
 /*    fprintf(stderr,"%d: NAMELEN: %3d NAMEWIDTH: %3d MAXNAMEWIDTH: %2d OFFSET: %2d\n",
       entry, namelen, namewidth, maxnamewidth, offset);*/
+#endif
     fitted=widefit(name,offset,maxnamewidth,0);
     namelen=wcslen(fitted);
     namewidth=wcswidth(fitted,namelen);
     width_adjust=namewidth - namelen;
     effective_columns=this->columns - width_adjust;
+#ifdef DEBUG
     fprintf(stderr,"%d: COLUMNS: %2d EFFECTIVE: %2d(%3d) LEN(%2d) WIDTH(%2d/%2d)\n",
 	    entry, this->columns, effective_columns, width_adjust, namelen, namewidth, maxnamewidth);
 /*	    fprintf(stderr,".........1.........2.........3..._.....4.........5.........6.........7.:.......8\n");
 	    fprintf(stderr,"%ls\n",fitted);*/
+#endif
 
     wmemcpy(&this->temp[1], fitted, namelen);
 
