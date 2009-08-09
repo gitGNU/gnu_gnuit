@@ -1419,6 +1419,9 @@ panel_update_entries(this)
     {
 	window_goto(this->window, i - this->first_on_screen + 1, 1);
 	window_puts(this->window, this->temp, this->columns - 2);
+	/* FIXME: debug, remove */
+	tty_update();
+	tty_flush();
     }
 
     this->on_screen = this->entries;
@@ -1766,6 +1769,8 @@ panel_build_entry_field(this, entry, display_mode, columns, offset)
     char hbuf[LONGEST_HUMAN_READABLE+1];
     wchar_t *wbuf;
 
+/*    fprintf(stderr,"%d: COLS: %d OFFSET: %d\n",entry, columns, offset);*/
+    fflush(stderr);
     switch (display_mode)
     {
 	case ENABLE_OWNER_GROUP:
@@ -1812,6 +1817,8 @@ panel_build_entry_field(this, entry, display_mode, columns, offset)
 	case ENABLE_MODE:
 	    panel_mode2string(this, entry, temp_rights);
 	    wbuf=mbsduptowcs(temp_rights);
+	    fprintf(stderr,"res: %d col: %d offset: %d temp:<%ls> wbuf:<%ls>\n",
+		    (columns-2-offset), columns, offset, this->temp, wbuf);
 	    wmemcpy(this->temp + columns - 2 - offset, wbuf, 10);
 	    xfree(wbuf);
 	    break;
@@ -1882,7 +1889,6 @@ panel_update_entry(this, entry)
 
     wmemset(this->temp, L' ', this->columns);
     reserved = panel_get_reserved_characters(this);
-
     if ((entry > 0) || rootdir())
 	switch (this->dir_entry[entry].type)
 	{
@@ -1914,15 +1920,17 @@ panel_update_entry(this, entry)
 	else
 	    offset = this->horizontal_offset;
 
+/*    fprintf(stderr,"%d: NAMELEN: %3d NAMEWIDTH: %3d MAXNAMEWIDTH: %2d OFFSET: %2d\n",
+      entry, namelen, namewidth, maxnamewidth, offset);*/
     fitted=widefit(name,offset,maxnamewidth,0);
     namelen=wcslen(fitted);
     namewidth=wcswidth(fitted,namelen);
     width_adjust=namewidth - namelen;
     effective_columns=this->columns - width_adjust;
-    fprintf(stderr,"COLUMNS: %2d EFFECTIVE: %2d(%3d) LEN(%2d) WIDTH(%2d/%2d)\n",
-	    this->columns, effective_columns, width_adjust, namelen, namewidth, maxnamewidth);
-    fprintf(stderr,".........1.........2.........3..._.....4.........5.........6.........7.:.......8\n");
-    fprintf(stderr,"%ls\n",fitted);
+    fprintf(stderr,"%d: COLUMNS: %2d EFFECTIVE: %2d(%3d) LEN(%2d) WIDTH(%2d/%2d)\n",
+	    entry, this->columns, effective_columns, width_adjust, namelen, namewidth, maxnamewidth);
+/*	    fprintf(stderr,".........1.........2.........3..._.....4.........5.........6.........7.:.......8\n");
+	    fprintf(stderr,"%ls\n",fitted);*/
 
     wmemcpy(&this->temp[1], fitted, namelen);
 

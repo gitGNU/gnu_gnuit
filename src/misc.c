@@ -771,7 +771,7 @@ wideoffset(str,cols)
     wchar_t *str;
     int cols;
 {
-    int width;
+    int width=0;
     wchar_t *ptr=str;
     for(;;)
     {
@@ -795,13 +795,17 @@ widefit(instr, startoffset, maxlen, pad)
     int slen=min(wcslen(str), maxlen);
     wchar_t *tmp=xmalloc((max(maxlen,slen)+1)*sizeof(wchar_t)); /* upper bound */
     int next=wcwidth(str[offset]);
+/*    fprintf(stderr, "%d",next);*/
     while((offset < slen) &&  ((cols+next) < maxlen))
     {
 	tmp[offset]=str[offset];
 	offset++;
 	cols+=next;
 	next=wcwidth(str[offset]);
+/*	fprintf(stderr," + %d",next);*/
     }
+    /* am i passing width to this or len (wrong)? */
+/*    fprintf(stderr," = %d width (%d length)\n", cols, offset);*/
     if(pad == 0)
 	tmp[offset]=0; /* only one null will do */
     else
@@ -810,5 +814,6 @@ widefit(instr, startoffset, maxlen, pad)
 	    tmp[offset++]=L' ';
 	tmp[offset]=0;
     }
+/*    fprintf(stderr,"len: %2d width: %2d maxlen: %2d\n", maxlen, wcslen(tmp), wcswidth(tmp,1000));*/
     return tmp;
 }
