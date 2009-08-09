@@ -30,6 +30,7 @@
 /* FIXME: Remove, only needed for wpe (debugging) */
 #include <stdio.h>
 
+#include <limits.h>
 
 #ifdef HAVE_STDDEF_H
 #include <stddef.h>
@@ -350,16 +351,44 @@ wchar_t *
 mbsduptowcs(src)
     char *src;
 {
-    size_t len;
+    size_t len=1024; /* default, expanded as needed */
     wchar_t *dest;
-    len=mbstowcs(NULL,src,0);
-    if(len == (size_t) -1)
-    {
-	fprintf(stderr,"%s: mbstowcs failed\n",src);
-	exit(1);
-    }
+    wchar_t wtmp;
+    int nextcharlen;
+    size_t srcoff=0;
+    size_t destoff=0;
+
     dest=xmalloc((len+1) * sizeof(wchar_t));
-    mbstowcs(dest,src,len+1);
+    /* reset shift state */
+    mbtowc(NULL,NULL,0);
+    for(; src[srcoff]; destoff++)
+    {
+	if(destoff > (len-MB_LEN_MAX))
+	{
+	    len *= 2;
+	    xrealloc(dest, (len * sizeof(wchar_t)));
+	}
+	nextcharlen=mbtowc(&wtmp, &src[srcoff], (len-srcoff));
+	if(nextcharlen == -1)
+	{
+	    /* error */
+	    dest[destoff]=L'?';
+	    srcoff++;
+	}
+	else if(nextcharlen == 0)
+	{
+	    /* end of str */
+	    dest[destoff]=0;
+	    break;
+	}
+	else
+	{
+	    dest[destoff]=wtmp;
+	    srcoff+=nextcharlen;
+	}
+    }
+    /* just in case */
+    dest[destoff]=0;
     return dest;
 }
 
