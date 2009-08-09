@@ -1,5 +1,5 @@
 # DO NOT EDIT! GENERATED AUTOMATICALLY!
-# Copyright (C) 2002-2008 Free Software Foundation, Inc.
+# Copyright (C) 2002-2009 Free Software Foundation, Inc.
 #
 # This file is free software, distributed under the terms of the GNU
 # General Public License.  As a special exception to the GNU General
@@ -52,15 +52,17 @@ AC_DEFUN([gl_INIT],
   gl_HEADER_ERRNO_H
   gl_ERROR
   m4_ifdef([AM_XGETTEXT_OPTION],
-    [AM_XGETTEXT_OPTION([--flag=error:3:c-format])
-     AM_XGETTEXT_OPTION([--flag=error_at_line:5:c-format])])
+    [AM_][XGETTEXT_OPTION([--flag=error:3:c-format])
+     AM_][XGETTEXT_OPTION([--flag=error_at_line:5:c-format])])
   gl_EXITFAIL
   gl_FCNTL_H
   AC_C_FLEXIBLE_ARRAY_MEMBER
-  # No macro. You should also use one of fnmatch-posix or fnmatch-gnu.
+  gl_FUNC_FNMATCH_POSIX
   gl_FUNC_FNMATCH_GNU
   gl_FSUSAGE
   gl_GETOPT
+  gl_FUNC_GETPAGESIZE
+  gl_UNISTD_MODULE_INDICATOR([getpagesize])
   AC_SUBST([LIBINTL])
   AC_SUBST([LTLIBINTL])
   gl_GETTIME
@@ -72,19 +74,27 @@ AC_DEFUN([gl_INIT],
   gl_LOCALCHARSET
   LOCALCHARSET_TESTS_ENVIRONMENT="CHARSETALIASDIR=\"\$(top_builddir)/$gl_source_base\""
   AC_SUBST([LOCALCHARSET_TESTS_ENVIRONMENT])
+  gl_FUNC_LSTAT
+  gl_SYS_STAT_MODULE_INDICATOR([lstat])
   gl_FUNC_MALLOC_POSIX
   gl_STDLIB_MODULE_INDICATOR([malloc-posix])
   gl_MALLOCA
   gl_MBCHAR
-  gl_FUNC_MBSLEN
+  gl_FUNC_MBRTOWC
+  gl_WCHAR_MODULE_INDICATOR([mbrtowc])
+  gl_FUNC_MBSINIT
+  gl_WCHAR_MODULE_INDICATOR([mbsinit])
   gl_STRING_MODULE_INDICATOR([mbslen])
-  gl_FUNC_MBSSTR
+  gl_FUNC_MBSRTOWCS
+  gl_WCHAR_MODULE_INDICATOR([mbsrtowcs])
   gl_STRING_MODULE_INDICATOR([mbsstr])
   gl_MBITER
   gl_FUNC_MEMCHR
+  gl_STRING_MODULE_INDICATOR([memchr])
   gl_FUNC_MEMMOVE
   gl_FUNC_MKSTEMP
   gl_STDLIB_MODULE_INDICATOR([mkstemp])
+  gl_MULTIARCH
   gl_FUNC_NANOSLEEP
   gl_FUNC_OPEN
   gl_MODULE_INDICATOR([open])
@@ -93,12 +103,13 @@ AC_DEFUN([gl_INIT],
   gl_STDLIB_MODULE_INDICATOR([putenv])
   gl_QUOTE
   gl_QUOTEARG
-  AC_REPLACE_FUNCS(raise)
   gl_FUNC_READLINK
   gl_UNISTD_MODULE_INDICATOR([readlink])
   gl_FUNC_RENAME
   gl_SAFE_READ
   gl_SAFE_WRITE
+  gl_FUNC_SELECT
+  gl_SYS_SELECT_MODULE_INDICATOR([select])
   gl_SIGACTION
   gl_SIGNAL_MODULE_INDICATOR([sigaction])
   gl_SIGNAL_H
@@ -124,8 +135,10 @@ AC_DEFUN([gl_INIT],
   gl_INTTYPES_MODULE_INDICATOR([strtoimax])
   gl_FUNC_STRTOL
   gl_FUNC_STRTOLL
+  gl_STDLIB_MODULE_INDICATOR([strtoll])
   gl_FUNC_STRTOUL
   gl_FUNC_STRTOULL
+  gl_STDLIB_MODULE_INDICATOR([strtoull])
   gl_FUNC_STRTOUMAX
   gl_INTTYPES_MODULE_INDICATOR([strtoumax])
   gl_HEADER_SYS_SELECT
@@ -145,6 +158,8 @@ AC_DEFUN([gl_INIT],
   gl_WCTYPE_H
   gl_FUNC_WCWIDTH
   gl_WCHAR_MODULE_INDICATOR([wcwidth])
+  gl_FUNC_WRITE
+  gl_UNISTD_MODULE_INDICATOR([write])
   gl_XALLOC
   gl_XSTRNDUP
   gl_XSTRTOL
@@ -281,6 +296,7 @@ AC_DEFUN([gltests_LIBSOURCES], [
 # gnulib-tool and may be removed by future gnulib-tool invocations.
 AC_DEFUN([gl_FILE_LIST], [
   build-aux/link-warning.h
+  lib/alignof.h
   lib/alloca.c
   lib/alloca.in.h
   lib/argmatch.c
@@ -308,6 +324,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/getopt.in.h
   lib/getopt1.c
   lib/getopt_int.h
+  lib/getpagesize.c
   lib/gettext.h
   lib/gettime.c
   lib/gettimeofday.c
@@ -319,16 +336,22 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/inttypes.in.h
   lib/localcharset.c
   lib/localcharset.h
+  lib/lstat.c
   lib/malloc.c
   lib/malloca.c
   lib/malloca.h
   lib/malloca.valgrind
   lib/mbchar.c
   lib/mbchar.h
+  lib/mbrtowc.c
+  lib/mbsinit.c
   lib/mbslen.c
+  lib/mbsrtowcs-state.c
+  lib/mbsrtowcs.c
   lib/mbsstr.c
   lib/mbuiter.h
   lib/memchr.c
+  lib/memchr.valgrind
   lib/memmove.c
   lib/mkstemp.c
   lib/nanosleep.c
@@ -338,7 +361,6 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/quote.h
   lib/quotearg.c
   lib/quotearg.h
-  lib/raise.c
   lib/readlink.c
   lib/ref-add.sin
   lib/ref-del.sin
@@ -347,6 +369,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/safe-read.h
   lib/safe-write.c
   lib/safe-write.h
+  lib/select.c
   lib/sig-handler.h
   lib/sigaction.c
   lib/signal.in.h
@@ -392,6 +415,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/wchar.in.h
   lib/wctype.in.h
   lib/wcwidth.c
+  lib/write.c
   lib/xalloc-die.c
   lib/xalloc.h
   lib/xmalloc.c
@@ -402,6 +426,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/xstrtol.h
   lib/xstrtoul.c
   lib/xstrtoumax.c
+  m4/00gnulib.m4
   m4/alloca.m4
   m4/argmatch.m4
   m4/clock_time.m4
@@ -419,6 +444,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/fnmatch.m4
   m4/fsusage.m4
   m4/getopt.m4
+  m4/getpagesize.m4
   m4/gettime.m4
   m4/gettimeofday.m4
   m4/glibc21.m4
@@ -430,18 +456,25 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/inttypes-pri.m4
   m4/inttypes.m4
   m4/localcharset.m4
+  m4/locale-fr.m4
+  m4/locale-ja.m4
+  m4/locale-zh.m4
   m4/longlong.m4
+  m4/lstat.m4
   m4/malloc.m4
   m4/malloca.m4
   m4/mbchar.m4
   m4/mbiter.m4
   m4/mbrtowc.m4
-  m4/mbslen.m4
-  m4/mbsstr.m4
+  m4/mbsinit.m4
+  m4/mbsrtowcs.m4
   m4/mbstate_t.m4
   m4/memchr.m4
   m4/memmove.m4
   m4/mkstemp.m4
+  m4/mmap-anon.m4
+  m4/mode_t.m4
+  m4/multiarch.m4
   m4/nanosleep.m4
   m4/onceonly.m4
   m4/open.m4
@@ -452,6 +485,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/rename.m4
   m4/safe-read.m4
   m4/safe-write.m4
+  m4/select.m4
   m4/sigaction.m4
   m4/signal_h.m4
   m4/signalblocking.m4
@@ -490,6 +524,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/wctype.m4
   m4/wcwidth.m4
   m4/wint_t.m4
+  m4/write.m4
   m4/xalloc.m4
   m4/xstrndup.m4
   m4/xstrtol.m4

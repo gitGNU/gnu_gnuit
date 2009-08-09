@@ -1,6 +1,6 @@
-/* Provide a non-threads replacement for the POSIX raise function.
+/* getpagesize emulation for systems where it cannot be done in a C macro.
 
-   Copyright (C) 2002, 2003, 2005, 2006 Free Software Foundation, Inc.
+   Copyright (C) 2007 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -15,16 +15,25 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
-/* written by Jim Meyering */
+/* Written by Bruno Haible and Martin Lambers.  */
 
 #include <config.h>
 
-#include <sys/types.h>
-#include <signal.h>
+/* Specification. */
 #include <unistd.h>
 
+/* This implementation is only for native Win32 systems.  */
+#if (defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__
+
+# define WIN32_LEAN_AND_MEAN
+# include <windows.h>
+
 int
-raise (int sig)
+getpagesize (void)
 {
-  return kill (getpid (), sig);
+  SYSTEM_INFO system_info;
+  GetSystemInfo (&system_info);
+  return system_info.dwPageSize;
 }
+
+#endif

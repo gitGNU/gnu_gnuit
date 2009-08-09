@@ -1,5 +1,5 @@
 /* Open a descriptor to a file.
-   Copyright (C) 2007-2008 Free Software Foundation, Inc.
+   Copyright (C) 2007-2009 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -18,23 +18,32 @@
 
 #include <config.h>
 
+/* Get the original definition of open.  It might be defined as a macro.  */
+#define __need_system_fcntl_h
+#include <fcntl.h>
+#undef __need_system_fcntl_h
+#include <sys/types.h>
+
+static inline int
+orig_open (const char *filename, int flags, mode_t mode)
+{
+  return open (filename, flags, mode);
+}
+
 /* Specification.  */
 #include <fcntl.h>
 
-/* If the fchdir replacement is used, open() is defined in fchdir.c.  */
-#ifndef FCHDIR_REPLACEMENT
-
-# include <errno.h>
-# include <stdarg.h>
-# include <string.h>
-# include <sys/types.h>
-# include <sys/stat.h>
+#include <errno.h>
+#include <stdarg.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 int
 open (const char *filename, int flags, ...)
-# undef open
 {
   mode_t mode;
+  int fd;
 
   mode = 0;
   if (flags & O_CREAT)
@@ -42,17 +51,19 @@ open (const char *filename, int flags, ...)
       va_list arg;
       va_start (arg, flags);
 
-      /* If mode_t is narrower than int, use the promoted type (int),
-	 not mode_t.  Use sizeof to guess whether mode_t is narrower;
-	 we don't know of any practical counterexamples.  */
-      mode = (sizeof (mode_t) < sizeof (int)
-	      ? va_arg (arg, int)
-	      : va_arg (arg, mode_t));
+      /* We have to use PROMOTED_MODE_T instead of mode_t, otherwise GCC 4
+	 creates crashing code when 'mode_t' is smaller than 'int'.  */
+      mode = va_arg (arg, PROMOTED_MODE_T);
 
       va_end (arg);
     }
 
-# if OPEN_TRAILING_SLASH_BUG
+#if (defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__
+  if (strcmp (filename, "/dev/null") == 0)
+    filename = "NUL";
+#endif
+
+#if OPEN_TRAILING_SLASH_BUG
   /* If the filename ends in a slash and one of O_CREAT, O_WRONLY, O_RDWR
      is specified, then fail.
      Rationale: POSIX <http://www.opengroup.org/susv3/basedefs/xbd_chap04.html>
@@ -83,13 +94,44 @@ open (const char *filename, int flags, ...)
 	  return -1;
 	}
     }
-# endif
-
-# if (defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__
-  if (strcmp (filename, "/dev/null") == 0)
-    filename = "NUL";
-# endif
-
-  return open (filename, flags, mode);
-}
 #endif
+
+  fd = orig_open (filename, flags, mode);
+
+#if OPEN_TRAILING_SLASH_BUG
+  /* If the filename ends in a slash and fd does not refer to a directory,
+     then fail.
+     Rationale: POSIX <http://www.opengroup.org/susv3/basedefs/xbd_chap04.html>
+     says that
+       "A pathname that contains at least one non-slash character and that
+        ends with one or more trailing slashes shall be resolved as if a
+        single dot character ( '.' ) were appended to the pathname."
+     and
+       "The special filename dot shall refer to the directory specified by
+        its predecessor."
+     If the named file without the slash is not a directory, open() must fail
+     with ENOTDIR.  */
+  if (fd >= 0)
+    {
+      size_t len = strlen (filename);
+      if (len > 0 && filename[len - 1] == '/')
+	{
+	  struct stat statbuf;
+
+	  if (fstat (fd, &statbuf) >= 0 && !S_ISDIR (statbuf.st_mode))
+	    {
+	      close (fd);
+	      errno = ENOTDIR;
+	      return -1;
+	    }
+	}
+    }
+#endif
+
+#ifdef FCHDIR_REPLACEMENT
+  if (fd >= 0)
+    _gl_register_fd (fd, filename);
+#endif
+
+  return fd;
+}
