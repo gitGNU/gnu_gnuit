@@ -82,7 +82,7 @@ service_pending_signals()
     {
 	tty_defaults();
 	tty_io_clear();
-	refresh(SIGWINCH);
+	screen_refresh(SIGWINCH);
 	refresh_requested = 0;
 	alarm_requested = 0;
 	return;
@@ -150,7 +150,7 @@ window_change(signum)
     {
 	tty_defaults();
 	tty_io_clear();
-	refresh(signum);
+	screen_refresh(signum);
 	refresh_requested = 0;
     }
     else
@@ -171,7 +171,7 @@ resume(signum)
 {
     if (refresh_at_SIGCONT)
     {
-	refresh(signum);
+	screen_refresh(signum);
 	refresh_requested = 0;
     }
 

@@ -544,7 +544,7 @@ resize(resize_required)
  */
 
 static void
-refresh(signum)
+screen_refresh(signum)
     int signum;
 {
     resize(0);
@@ -823,7 +823,7 @@ main(argc, argv)
     tty_update_title(header_text);
 
   restart:
-    refresh(0);
+    screen_refresh(0);
 
     while (1)
     {

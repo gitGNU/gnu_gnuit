@@ -477,7 +477,7 @@ resize(resize_required)
  * desired.
  */
 void
-refresh(signum)
+screen_refresh(signum)
     int signum;
 {
     resize(0);
@@ -896,7 +896,7 @@ il_read_char(message, options, flags)
 	switch (key)
 	{
 	    case BUILTIN_refresh:
-		refresh(0);
+		screen_refresh(0);
 		break;
 
 	    case BUILTIN_action:
@@ -1049,7 +1049,7 @@ il_read_line(static_text, dest, default_string, history)
 		break;
 
 	    case BUILTIN_refresh:
-		refresh(0);
+		screen_refresh(0);
 		break;
 
 	    case BUILTIN_action:
@@ -1167,7 +1167,7 @@ il_isearch(static_text, dest, status, action)
 	    break;
 
 	case BUILTIN_refresh:
-	    refresh(0);
+	    screen_refresh(0);
 	    goto restart;
 
 	case BUILTIN_backward_delete_char:
@@ -2142,7 +2142,7 @@ main(argc, argv)
     saved_il = il_save();
 
     reread();
-    refresh(0);
+    screen_refresh(0);
 
     /* Restore the input line contents.  */
     il_restore(saved_il);
@@ -2488,7 +2488,7 @@ main(argc, argv)
 	    case BUILTIN_refresh:
 		reread();
 		tty_update_title(panel_get_wpath(src_panel));
-		refresh(0);
+		screen_refresh(0);
 		break;
 
 	    case BUILTIN_tty_mode:
@@ -2606,7 +2606,7 @@ main(argc, argv)
 			    break;
 
 			case BUILTIN_refresh:
-			    refresh(0);
+			    screen_refresh(0);
 			    tty_put_screen(screen);
 			    status(CommandLineModeHelp,
 				   STATUS_OK, STATUS_CENTERED);
@@ -3155,7 +3155,7 @@ main(argc, argv)
 		resize(1);
 
 		if (tty_columns < 6 * 2)
-		    refresh(1);
+		    screen_refresh(1);
 
 		panel_action(src_panel, act_ENABLE_SIZE, NULL, NULL, 1);
 		panel_action(dst_panel, act_ENABLE_SIZE, NULL, NULL, 1);

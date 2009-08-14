@@ -146,6 +146,8 @@ char monochrome_section[] = "[GITPS-Monochrome]";
 int  processes;
 int  PID_index;
 
+WINDOW *top_window;
+
 char *g_home;
 char *g_program;
 /* for gnulib lib/error.c */
@@ -166,6 +168,8 @@ wchar_t *global_buf;
 int first_on_screen, current_process, scroll_step;
 static int horizontal_offset=0;
 window_t *title_window, *header_window, *processes_window, *status_window;
+window_t *il_window; /* Not used but needed by tty.c */
+
 static wchar_t *title_text;
 static int title_len;
 static wchar_t *help;
@@ -379,6 +383,7 @@ char built_in[BUILTIN_OPERATIONS][MAX_BUILTIN_NAME] =
     "horizontal-scroll-left",
     "horizontal-scroll-right",
 };
+
 
 static void
 update_title(str)
@@ -969,8 +974,8 @@ resize(resize_required)
 /*
  * Resize (if necessary) and then refresh all gitps' components.
  */
-static void
-refresh(signum)
+void
+screen_refresh(signum)
     int signum;
 {
     current_process = min(current_process, processes - 1);
@@ -1051,6 +1056,7 @@ main(argc, argv)
     int i, no_of_arguments, exit_code = 0;
     int need_update, need_update_all, old_current_process;
     int c, ansi_colors = -1, use_last_screen_character = ON;
+    int begy, begx, maxy, maxx;
 
 #ifdef HAVE_SETLOCALE
     setlocale(LC_ALL,"");
@@ -1059,6 +1065,8 @@ main(argc, argv)
        them.  */
     signals_init();
 
+    sleep(10);
+    
     program_name = g_program = argv[0];
 
     g_home = getenv("HOME");
@@ -1200,10 +1208,12 @@ main(argc, argv)
 
     tty_start_cursorapp();
 
-    title_window  = window_init();
-    header_window = window_init();
-    processes_window = window_init();
-    status_window = window_init();
+    getbegyx(top_window, begy, begx);
+    getmaxyx(top_window, maxy, maxx);
+    title_window  = window_init(1, 1, begy,   begx);
+    header_window = window_init(1, 1, begy+1, begx);
+    processes_window = window_init((maxy - (begy+4)), (maxx-begx), begy+2, begx);
+    status_window = window_init(1, 1, maxy, begx);
 
     resize(0);
 
@@ -1232,7 +1242,7 @@ main(argc, argv)
     build_ps_list(stdout_log);
     fclose(stdout_log);
 
-    refresh(0);
+    screen_refresh(0);
 
     while (1)
     {

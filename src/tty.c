@@ -72,7 +72,17 @@
 #define MAX_TTY_COLUMNS         1024
 #define MAX_TTY_LINES           1024
 
+#ifdef HAVE_CURSES_H
+#include <curses.h>
+#endif
 
+extern WINDOW *top_window;
+extern WINDOW *title_window;
+extern WINDOW *header_window;
+extern WINDOW *status_window;
+extern WINDOW *il_window;
+
+/* FIXME: remove? */
 /* I want to avoid including curses.h or any other header file that
    defines these.  I think it's safer because I couldn't find 2
    similar curses.h files in the entire world...  */
@@ -83,7 +93,6 @@ extern char *tgetstr PROTO ((const char *__name, char **__area));
 extern int tgetnum PROTO ((const char *__name));
 extern int tgetflag PROTO ((const char *__name));
 extern char *tgoto PROTO ((const char *__cstring, int __hpos, int __vpos));
-
 
 #define TTY_INPUT       0
 #define TTY_OUTPUT      1
@@ -910,8 +919,11 @@ tty_io_clear()
 void
 tty_start_cursorapp()
 {
+    /* FIXME */
+#if 0
     tputs(TTY_START_CURSORAPP,tty_lines-1,tty_writec);
     tty_flush();
+#endif
 }
 
 void
@@ -1120,15 +1132,13 @@ tty_writes(s, len)
  * wrap around).  Return the number of characters written.
  */
 int
-tty_puts(buf, length)
+tty_puts(window, buf, length)
+    WINDOW *window;
     wchar_t *buf;
     int length;
 {
     int tty_offset;
     int x = tty_cursor_x;
-#ifdef DEBUG
-    FILE *fp;
-#endif
 
     tty_cursor_x += length;
 
@@ -1146,20 +1156,6 @@ tty_puts(buf, length)
 
     wmemcpy(tty_scr + tty_offset, buf, length);
     memset(tty_atr + tty_offset, tty_current_attribute, length);
-#ifdef DEBUG
-    fp=fopen("/home/ianb/DEBUG","a");
-    if(fp)
-    {
-	wchar_t *tmp;
-	tmp=xmalloc((length + 3) * sizeof(wchar_t));
-	wmemcpy(tmp,buf,length);
-	tmp[length+1]='\n';
-	tmp[length+2]=0;
-	fprintf(fp, "%ls\n",buf);
-	fclose(fp);
-	xfree(tmp);
-    }
-#endif
     return length;
 }
 
@@ -1168,11 +1164,12 @@ tty_puts(buf, length)
  * Write a character to the screen.
  */
 int
-tty_putc(c)
+tty_putc(window, c)
+    WINDOW *window;
     wchar_t c;
 {
     wchar_t character = c;
-    int ret=tty_puts(&character, 1);
+    int ret=tty_puts(window, &character, 1);
     return ret;
 }
 
@@ -1433,11 +1430,11 @@ tty_io_colors(attributes)
  * Move the cursor.
  */
 void
-tty_goto(y, x)
+tty_goto(window, y, x)
+    WINDOW *window;
     int y, x;
 {
-    tty_cursor_y = y;
-    tty_cursor_x = x;
+    wmove(window, y, x);
 }
 
 
@@ -1767,24 +1764,24 @@ tty_key_print(key_seq)
     wchar_t *wkey;
 
     tty_save(&tty_status);
-    tty_goto(tty_lines - 1, 0);
+    tty_goto(title_window, tty_lines - 1, 0);
     tty_background(WHITE);
     tty_foreground(BLACK);
 
     spaces = xmalloc( (tty_columns+1) * sizeof(wchar_t));
     wmemset(spaces, L' ', tty_columns);
     spaces[tty_columns] = '\0';
-    tty_puts(spaces, tty_columns);
+    tty_puts(il_window, spaces, tty_columns);
     xfree(spaces);
-    tty_goto(tty_lines - 1, 0);
+    tty_goto(title_window, tty_lines - 1, 0);
 
     tty_key_machine2human(key_seq);
 
-    tty_puts(typed, wcslen(typed));
+    tty_puts(il_window, typed, wcslen(typed));
     wkey=mbsduptowcs((char *)keystr);
-    tty_puts(wkey, wcslen(wkey));
+    tty_puts(il_window, wkey, wcslen(wkey));
     xfree(wkey);
-    tty_puts(incomplete, wcslen(incomplete));
+    tty_puts(il_window, incomplete, wcslen(incomplete));
 
     tty_update();
     tty_restore(&tty_status);
@@ -2449,9 +2446,10 @@ tty_init(kbd_mode)
 	exit(1);
     }
     tty_device=mbsduptowcs(tty_device_str);
-    
+
     /* Store the terminal settings in old_term. it will be used to restore
        them later.  */
+    /* FIXME: are they still used? */
 #ifdef HAVE_POSIX_TTY
     tcgetattr(TTY_OUTPUT, &old_term);
 #else
@@ -2471,6 +2469,14 @@ tty_init(kbd_mode)
 
     tty_device_length = wcslen(tty_device);
     tty_get_capabilities();
+
+    /* init curses */
+    initscr();
+    keypad(stdscr, TRUE);
+    nonl();
+    cbreak();
+    echo();
+    top_window=newwin(0,0,0,0);
 }
 
 

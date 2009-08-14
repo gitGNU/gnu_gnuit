@@ -32,9 +32,13 @@
 
 #include "stdc.h"
 
+#ifdef HAVE_CURSES_H
+#include <curses.h>
+#endif
 
 typedef struct
 {
+    WINDOW *window;	/* corresponding curses window */
     int x;		/* window's x origin in the tty screen.  */
     int y;		/* window's y origin in the tty screen.  */
     int lines;		/* window's number of lines.  */
@@ -44,7 +48,7 @@ typedef struct
 } window_t;
 
 
-extern window_t *window_init PROTO ((void));
+extern window_t *window_init PROTO ((int, int, int, int));
 extern void window_end PROTO ((window_t *));
 extern void window_resize PROTO ((window_t *, int, int, int, int));
 extern int window_puts PROTO ((window_t *, wchar_t *, int));

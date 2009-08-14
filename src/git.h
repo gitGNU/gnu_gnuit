@@ -27,6 +27,6 @@
 
 extern int in_terminal_mode PROTO ((void));
 extern void resize PROTO ((int));
-extern void refresh PROTO ((int));
+extern void screen_refresh PROTO ((int));
 
 #endif  /* _GIT_GIT_H */
