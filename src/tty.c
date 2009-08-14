@@ -824,12 +824,26 @@ void
 tty_flush()
 {
     int bytes_transferred = 0;
+#ifdef DEBUG
+    int fd;
+#endif
 
     while (bytes_transferred < tty_index)
     {
 	int count = wxwrite(TTY_OUTPUT,
 			   tty_cache + bytes_transferred,
 			   tty_index - bytes_transferred);
+#ifdef DEBUG
+	fd=open("/home/ianb/FLUSHDEBUG",O_APPEND|O_WRONLY|O_CREAT,S_IRWXU);
+	if(fd != -1)
+	{
+	    char delim[]="\n============================================================\n";
+	    wxwrite(fd, tty_cache + bytes_transferred,
+		        tty_index - bytes_transferred);
+	    write(fd,delim, strlen(delim));
+	    close(fd);
+	}
+#endif
 	if (count < 0)
 	    break;
 
@@ -846,6 +860,15 @@ static int
 tty_writewc(c)
     wchar_t c;
 {
+#ifdef DEBUG
+    FILE *fp;
+    fp=fopen("/home/ianb/WRITEWCDEBUG","a");
+    if(fp)
+    {
+	fprintf(fp,"%lc ",c);
+	fclose(fp);
+    }
+#endif
     if (tty_index == TTY_CACHE_SIZE)
 	tty_flush();
 
@@ -1103,6 +1126,9 @@ tty_puts(buf, length)
 {
     int tty_offset;
     int x = tty_cursor_x;
+#ifdef DEBUG
+    FILE *fp;
+#endif
 
     tty_cursor_x += length;
 
@@ -1120,6 +1146,20 @@ tty_puts(buf, length)
 
     wmemcpy(tty_scr + tty_offset, buf, length);
     memset(tty_atr + tty_offset, tty_current_attribute, length);
+#ifdef DEBUG
+    fp=fopen("/home/ianb/DEBUG","a");
+    if(fp)
+    {
+	wchar_t *tmp;
+	tmp=xmalloc((length + 3) * sizeof(wchar_t));
+	wmemcpy(tmp,buf,length);
+	tmp[length+1]='\n';
+	tmp[length+2]=0;
+	fprintf(fp, "%ls\n",buf);
+	fclose(fp);
+	xfree(tmp);
+    }
+#endif
     return length;
 }
 

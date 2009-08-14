@@ -1936,8 +1936,8 @@ panel_update_entry(this, entry)
 #ifdef DEBUG
     fprintf(stderr,"%d: COLUMNS: %2d EFFECTIVE: %2d(%3d) LEN(%2d) WIDTH(%2d/%2d)\n",
 	    entry, this->columns, effective_columns, width_adjust, namelen, namewidth, maxnamewidth);
-/*	    fprintf(stderr,".........1.........2.........3..._.....4.........5.........6.........7.:.......8\n");
-	    fprintf(stderr,"%ls\n",fitted);*/
+	    fprintf(stderr,".........1.........2.........3..._.....4.........5.........6.........7.:.......8\n");
+	    fprintf(stderr,"%ls\n",fitted);
 #endif
 
     wmemcpy(&this->temp[1], fitted, namelen);
