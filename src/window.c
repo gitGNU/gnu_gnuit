@@ -50,7 +50,7 @@ window_init(lines, cols, y, x)
     int lines, cols, y, x;
 {
     window_t *window = (window_t *)xmalloc(sizeof(window_t));
-    window->window=subwin(top_window, lines, cols, y, x);
+    window->window=subwin(stdscr, lines, cols, y, x);
     return window;
 }
 
@@ -72,7 +72,7 @@ window_resize(window, x, y, lines, columns)
     window_t *window;
     int x, y, lines, columns;
 {
-/*    wresize(window->window, lines, columns);*/
+    wresize(window->window, lines, columns);
     window->x       = x;
     window->y       = y;
     window->lines   = lines;
@@ -126,7 +126,7 @@ window_goto(window, y, x)
 {
     window->cursor_x = x;
     window->cursor_y = y;
-    tty_goto(window->window, y + window->y, x + window->x);
+    tty_goto(window->window, y, x);
 }
 
 

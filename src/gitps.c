@@ -1208,18 +1208,22 @@ main(argc, argv)
 
     tty_start_cursorapp();
 
-    getbegyx(top_window, begy, begx);
-    getmaxyx(top_window, maxy, maxx);
-    title_window  = window_init(1, 1, begy,   begx);
-    header_window = window_init(1, 1, begy+1, begx);
+    getbegyx(stdscr, begy, begx);
+    getmaxyx(stdscr, maxy, maxx);
+    title_window  = window_init(1, maxx, begy,   begx);
+    header_window = window_init(1, maxx, begy+1, begx);
     processes_window = window_init((maxy - (begy+4)), (maxx-begx), begy+2, begx);
-    status_window = window_init(1, 1, maxy, begx);
+    status_window = window_init(1, maxx, maxy, begx);
 
     resize(0);
 
     tty_get_screen(screen);
     tty_set_mode(TTY_NONCANONIC);
     tty_defaults();
+
+    set_title();
+    wrefresh(title_window->window);
+    sleep(10);
 
     signal_handlers(ON);
 

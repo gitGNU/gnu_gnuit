@@ -6387,10 +6387,11 @@ fi
 
 
 
+
 for ac_header in unistd.h stdlib.h string.h memory.h values.h\
     sys/param.h sys/vfs.h sys/filsys.h fcntl.h sys/statfs.h\
     sys/dustat.h sys/statvfs.h sys/sioctl.h stddef.h \
-    locale.h curses.h
+    locale.h ncursesw/curses.h curses.h
 do
 as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`
 if { as_var=$as_ac_Header; eval "test \"\${$as_var+set}\" = set"; }; then

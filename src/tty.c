@@ -27,6 +27,11 @@
 #include <stdio.h>
 #include <wchar.h>
 
+#ifndef _XOPEN_SOURCE_EXTENDED
+#define _XOPEN_SOURCE_EXTENDED
+#endif
+#include <ncursesw/curses.h>
+
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
 #else /* !HAVE_STDLIB_H */
@@ -72,8 +77,14 @@
 #define MAX_TTY_COLUMNS         1024
 #define MAX_TTY_LINES           1024
 
+#if 0
+#ifdef HAVE_NCURSESW_CURSES_H
+#include <ncursesw/curses.h>
+#else
 #ifdef HAVE_CURSES_H
 #include <curses.h>
+#endif	/* HAVE_CURSES_H */
+#endif	/* HAVE_NCURSESW_CURSES_H */
 #endif
 
 extern WINDOW *top_window;
@@ -832,34 +843,7 @@ tty_set_interrupt_char(c)
 void
 tty_flush()
 {
-    int bytes_transferred = 0;
-#ifdef DEBUG
-    int fd;
-#endif
-
-    while (bytes_transferred < tty_index)
-    {
-	int count = wxwrite(TTY_OUTPUT,
-			   tty_cache + bytes_transferred,
-			   tty_index - bytes_transferred);
-#ifdef DEBUG
-	fd=open("/home/ianb/FLUSHDEBUG",O_APPEND|O_WRONLY|O_CREAT,S_IRWXU);
-	if(fd != -1)
-	{
-	    char delim[]="\n============================================================\n";
-	    wxwrite(fd, tty_cache + bytes_transferred,
-		        tty_index - bytes_transferred);
-	    write(fd,delim, strlen(delim));
-	    close(fd);
-	}
-#endif
-	if (count < 0)
-	    break;
-
-	bytes_transferred += count;
-    }
-
-    tty_index = 0;
+    refresh();
 }
 
 /*
@@ -910,6 +894,8 @@ tty_writec(c)
 void
 tty_io_clear()
 {
+    /* FIXME */
+    return;
     tputs(TTY_CLEAR_SCREEN, tty_lines, tty_writec);
     tty_flush();
 }
@@ -929,6 +915,8 @@ tty_start_cursorapp()
 void
 tty_end_cursorapp()
 {
+    /* FIXME */
+    return;
     tty_io_clear();
     tputs(TTY_END_CURSORAPP,tty_lines-1,tty_writec);
     tty_flush();
@@ -1054,55 +1042,8 @@ tty_key_machine2human(key_seq)
 void
 tty_update()
 {
-    int pos, x, y;
-    int tty_io_cursor_x = -1;
-    int tty_io_cursor_y = -1;
-    int last_pos = tty_columns * tty_lines;
-    /* Check if we should display the last character on the screen.  */
-    if (tty_last_char_flag == OFF)
-	last_pos--;
-
-    /* Make the cursor invisible.  */
-    tty_cursor(OFF);
-
-    for (pos = 0; pos < last_pos; pos++)
-	if (tty_scr[pos] != tty_prev_scr[pos] ||
-	    tty_atr[pos] != tty_prev_atr[pos])
-	{
-	    /* Move the cursor to the appropriate position, if
-	       necessary.  */
-	    y = pos / tty_columns;
-	    x = pos % tty_columns;
-
-	    if (x != tty_io_cursor_x || y != tty_io_cursor_y)
-		tty_io_goto(tty_io_cursor_y = y, tty_io_cursor_x = x);
-
-	    /* Output the color sequence, if necessary, then the
-	       character.  */
-	    tty_io_colors(tty_atr[pos]);
-	    tty_writewc(tty_scr[pos]);
-
-	    if (++tty_io_cursor_x == tty_columns)
-	    {
-		/* Force a call to tty_io_goto() at the next iteration.
-		   We don't trust the tty to do it the right way.  */
-		tty_io_cursor_x = 0;
-		tty_io_cursor_y = -1;
-	    }
-	}
-
-    /* Update the latest cursor position.  */
-    tty_io_goto(tty_cursor_y, tty_cursor_x);
-
-    /* Make the cursor visible again.  */
-    tty_cursor(ON);
-
-    if (tty_index)
-	tty_flush();
-
-    /* Synchronize the screen copies.  */
-    wmemcpy(tty_prev_scr, tty_scr, tty_columns * tty_lines);
-    memcpy(tty_prev_atr, tty_atr, tty_columns * tty_lines);
+    touchwin(stdscr);
+    refresh();
 }
 
 
@@ -1154,8 +1095,12 @@ tty_puts(window, buf, length)
 
     tty_offset = (tty_cursor_y * tty_columns) + x;
 
+    mvwaddnwstr(window, tty_cursor_y, x, buf, length);
+    wrefresh(window);
+/*
     wmemcpy(tty_scr + tty_offset, buf, length);
     memset(tty_atr + tty_offset, tty_current_attribute, length);
+*/
     return length;
 }
 
@@ -1255,6 +1200,8 @@ static void
 tty_io_goto(y, x)
     int y, x;
 {
+    return;
+    /* FIXME */
     /* If the 'ms' flag is present, reset all the attributes before moving
        the cursor.  */
     if (TTY_MS_FLAG == 0)
@@ -1332,6 +1279,8 @@ static void
 tty_io_brightness(status)
     int status;
 {
+    return;
+    /* FIXME */
     if (br_cache == VALID_CACHE && status == TTY_IO_BRIGHTNESS)
 	return;
 
@@ -1381,6 +1330,8 @@ static void
 tty_io_reversevid(status)
     int status;
 {
+    return;
+    /* FIXME */
     if (rv_cache == VALID_CACHE && status == TTY_IO_REVERSEVID)
 	return;
 
@@ -1527,6 +1478,8 @@ void
 tty_cursor(status)
     int status;
 {
+    return;
+    /* FIXME */
     if (status)
     {
 	if (TTY_CURSOR_ON)
@@ -1568,6 +1521,8 @@ tty_restore(status)
 void
 tty_defaults()
 {
+    return;
+    /* FIXME */
     if (AnsiColors == ON)
 	tty_writes(ansi_defaults, wcslen(ansi_defaults));
 
@@ -1940,6 +1895,9 @@ tty_get_previous_key_seq()
 void
 tty_resize()
 {
+    getmaxyx(stdscr, tty_lines, tty_columns);
+    return;
+#if REMOVEME
     char *env;
     char buf[32];
     int shell_lines = 0, shell_columns = 0;
@@ -2047,6 +2005,7 @@ tty_resize()
        into it...  */
     /*kill(getppid(), SIGWINCH);*/
 #endif
+#endif  /* REMOVEME */
 }
 
 
@@ -2476,7 +2435,7 @@ tty_init(kbd_mode)
     nonl();
     cbreak();
     echo();
-    top_window=newwin(0,0,0,0);
+/*    top_window=newwin(0,0,0,0);*/
 }
 
 

@@ -151,7 +151,7 @@ AC_CHECK_HEADERS(
     unistd.h stdlib.h string.h memory.h values.h\
     sys/param.h sys/vfs.h sys/filsys.h fcntl.h sys/statfs.h\
     sys/dustat.h sys/statvfs.h sys/sioctl.h stddef.h \
-    locale.h curses.h)
+    locale.h ncursesw/curses.h curses.h)
 
 dnl freebsd needs sys/param.h included before sys/mount.h
 AC_CHECK_HEADERS([sys/mount.h],[],[],

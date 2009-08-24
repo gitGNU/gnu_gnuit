@@ -36,6 +36,10 @@
 #include <curses.h>
 #endif
 
+#ifdef HAVE_NCURSESW_CURSES_H
+#include <ncursesw/curses.h>
+#endif
+
 typedef struct
 {
     WINDOW *window;	/* corresponding curses window */
