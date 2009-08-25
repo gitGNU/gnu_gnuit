@@ -87,11 +87,10 @@
 #endif	/* HAVE_NCURSESW_CURSES_H */
 #endif
 
-extern WINDOW *top_window;
-extern WINDOW *title_window;
-extern WINDOW *header_window;
-extern WINDOW *status_window;
-extern WINDOW *il_window;
+extern window_t *title_window;
+extern window_t *header_window;
+extern window_t *status_window;
+extern window_t *il_window;
 
 /* FIXME: remove? */
 /* I want to avoid including curses.h or any other header file that
@@ -155,8 +154,10 @@ static unsigned char *tty_key_seq;
 
 static int tty_device_length;
 static int tty_last_char_flag;
+#ifdef REMOVEME
 static int tty_cursor_x;
 static int tty_cursor_y;
+#endif
 
 /*
  * tty_*_current_attribute:
@@ -188,7 +189,6 @@ static unsigned char *tty_atr;
 /* tty_prev_scr will always contain the copy of the previous screen,
    while tty_atr will contain the copy of the previous attributes.  */
 static wchar_t *tty_prev_scr;
-static unsigned char *tty_prev_atr;
 
 
 /* The ANSI color sequences.  */
@@ -945,6 +945,7 @@ tty_end(screen)
     tty_end_cursorapp();
     tty_io_goto(tty_lines, 0);
     tty_flush();
+    endwin();
     printf("\n");
 }
 
@@ -1042,7 +1043,10 @@ tty_key_machine2human(key_seq)
 void
 tty_update()
 {
-    touchwin(stdscr);
+    wnoutrefresh(title_window->window);
+    wnoutrefresh(header_window->window);
+    wnoutrefresh(status_window->window);
+    doupdate();
     refresh();
 }
 
@@ -1078,11 +1082,8 @@ tty_puts(window, buf, length)
     wchar_t *buf;
     int length;
 {
-    int tty_offset;
-    int x = tty_cursor_x;
-
-    tty_cursor_x += length;
-
+#ifdef REMOVEME
+    /* FIXME: what about bounds checking? */
     if (x >= tty_columns)
 	return 0;
 
@@ -1094,8 +1095,9 @@ tty_puts(window, buf, length)
 	length = tty_columns - x;
 
     tty_offset = (tty_cursor_y * tty_columns) + x;
-
-    mvwaddnwstr(window, tty_cursor_y, x, buf, length);
+#endif
+    waddnwstr(window, buf, length);
+    /* FIXME: DEBUG, remove */
     wrefresh(window);
 /*
     wmemcpy(tty_scr + tty_offset, buf, length);
@@ -1155,7 +1157,7 @@ void
 tty_clear()
 {
     tty_io_clear();
-
+#ifdef REMOVEME
     wmemset(tty_scr,      L'\0', tty_lines*tty_columns);
     memset(tty_atr,        '\0', tty_lines*tty_columns);
     wmemset(tty_prev_scr, L'\0', tty_lines*tty_columns);
@@ -1163,6 +1165,7 @@ tty_clear()
 
     tty_cursor_x = 0;
     tty_cursor_y = 0;
+#endif
 }
 
 
@@ -1396,8 +1399,11 @@ void
 tty_get_cursor(y, x)
     int *y, *x;
 {
+    /* FIXME */
+#if 0
     *y = tty_cursor_y;
     *x = tty_cursor_x;
+#endif
 }
 
 
@@ -1719,24 +1725,24 @@ tty_key_print(key_seq)
     wchar_t *wkey;
 
     tty_save(&tty_status);
-    tty_goto(title_window, tty_lines - 1, 0);
+    tty_goto(title_window->window, tty_lines - 1, 0);
     tty_background(WHITE);
     tty_foreground(BLACK);
 
     spaces = xmalloc( (tty_columns+1) * sizeof(wchar_t));
     wmemset(spaces, L' ', tty_columns);
     spaces[tty_columns] = '\0';
-    tty_puts(il_window, spaces, tty_columns);
+    tty_puts(il_window->window, spaces, tty_columns);
     xfree(spaces);
-    tty_goto(title_window, tty_lines - 1, 0);
+    tty_goto(title_window->window, tty_lines - 1, 0);
 
     tty_key_machine2human(key_seq);
 
-    tty_puts(il_window, typed, wcslen(typed));
+    tty_puts(il_window->window, typed, wcslen(typed));
     wkey=mbsduptowcs((char *)keystr);
-    tty_puts(il_window, wkey, wcslen(wkey));
+    tty_puts(il_window->window, wkey, wcslen(wkey));
     xfree(wkey);
-    tty_puts(il_window, incomplete, wcslen(incomplete));
+    tty_puts(il_window->window, incomplete, wcslen(incomplete));
 
     tty_update();
     tty_restore(&tty_status);
@@ -2435,7 +2441,6 @@ tty_init(kbd_mode)
     nonl();
     cbreak();
     echo();
-/*    top_window=newwin(0,0,0,0);*/
 }
 
 

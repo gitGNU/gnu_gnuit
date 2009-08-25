@@ -1065,8 +1065,6 @@ main(argc, argv)
        them.  */
     signals_init();
 
-    sleep(10);
-    
     program_name = g_program = argv[0];
 
     g_home = getenv("HOME");
@@ -1213,17 +1211,13 @@ main(argc, argv)
     title_window  = window_init(1, maxx, begy,   begx);
     header_window = window_init(1, maxx, begy+1, begx);
     processes_window = window_init((maxy - (begy+4)), (maxx-begx), begy+2, begx);
-    status_window = window_init(1, maxx, maxy, begx);
-
+    status_window = window_init(1, maxx, maxy-1, begx);
+    curs_set(0);
     resize(0);
 
     tty_get_screen(screen);
     tty_set_mode(TTY_NONCANONIC);
     tty_defaults();
-
-    set_title();
-    wrefresh(title_window->window);
-    sleep(10);
 
     signal_handlers(ON);
 
@@ -1241,6 +1235,12 @@ main(argc, argv)
 	exit_code = 1;
 	goto end;
     }
+    set_header();
+    wrefresh(header_window->window);
+    set_title();
+    wrefresh(title_window->window);
+    set_status(NULL);
+    wrefresh(status_window->window);
 
     free_ps_list();
     build_ps_list(stdout_log);
