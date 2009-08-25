@@ -220,6 +220,8 @@ static wchar_t line_txt[]    =
 ----------- ";
 static wchar_t seek_txt[]    = L" Seek at: ";
 
+window_t *title_window, *header_window, *processes_window, *status_window;
+window_t *il_window; /* Not used but needed by tty.c */
 
 static off64_t
 file_length()
@@ -543,7 +545,7 @@ resize(resize_required)
  * Resize (if necessary) and then refresh all gitview's components.
  */
 
-static void
+void
 screen_refresh(signum)
     int signum;
 {
@@ -663,6 +665,7 @@ main(argc, argv)
     int c, ansi_colors = -1, use_last_screen_character = ON;
     int title_text_len;
     char * s_help;
+    int begy, begx, maxy, maxx;
 
 #ifdef HAVE_SETLOCALE
     setlocale(LC_ALL,"");
@@ -803,11 +806,14 @@ main(argc, argv)
 
     tty_start_cursorapp();
 
-    title_window  = window_init();
-    header_window = window_init();
-    file_window = window_init();
-    status_window = window_init();
+    getbegyx(stdscr, begy, begx);
+    getmaxyx(stdscr, maxy, maxx);
+    title_window  = window_init(1, maxx, begy,   begx);
+    header_window = window_init(1, maxx, begy+1, begx);
+    file_window = window_init((maxy - (begy+4)), (maxx-begx), begy+2, begx);
+    status_window = window_init(1, maxx, maxy-1, begx);
 
+    curs_set(0);
     resize(0);
 
     tty_get_screen(screen);

@@ -1175,11 +1175,13 @@ tty_clear()
 void
 tty_fill()
 {
+    /* FIXME */
+#ifdef REMOVEME
     wmemset(tty_scr, L' ',
 	    tty_lines * tty_columns);
     memset(tty_atr, tty_current_attribute,
 	    tty_lines * tty_columns * sizeof(unsigned char));
-
+#endif
     tty_touch();
 }
 
@@ -1192,7 +1194,10 @@ tty_fill()
 void
 tty_touch()
 {
+    /* FIXME */
+#ifdef REMOVEME
     wmemset(tty_prev_scr, L'\0', tty_lines*tty_columns);
+#endif
 }
 
 
