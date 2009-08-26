@@ -134,6 +134,7 @@ calc_info_length()
 void
 title_init()
 {
+    int begy, begx, maxy, maxx;
     wchar_t *product=mbsduptowcs(PRODUCT);
     wchar_t *version=mbsduptowcs(VERSION);
     int namelen= 1 + wcslen(product) + 1 + wcslen(version) + 1; 
@@ -155,7 +156,9 @@ title_init()
     }
     mail_check();
     info_length = calc_info_length();
-    title_window = window_init();
+    getbegyx(stdscr, begy, begx);
+    getmaxyx(stdscr, maxy, maxx);
+    title_window  = window_init(1, maxx, begy,   begx);
 }
 
 
@@ -218,7 +221,7 @@ clock_refresh(signum)
     tty_colors(ClockBrightness, ClockForeground, ClockBackground);
     window_puts(title_window, buf, wcslen(buf));
 
-    tty_goto(line, column);
+    tty_goto(title_window->window, line, column);
     tty_restore(&status);
 
     if (signum)

@@ -144,6 +144,9 @@ char **dir_history;
 int dir_history_count;
 int dir_history_point;
 
+window_t *title_window, *header_window, *processes_window, *status_window;
+window_t *il_window;
+
 #define BUILTIN_OPERATIONS                       89
 
 #define BUILTIN_copy				 -1
@@ -2111,7 +2114,10 @@ main(argc, argv)
     {
 	alarm(0);
 	fprintf(stdout, "Press almost any key to continue\n");
+#ifdef REMOVEME
+	/* FIXME */
 	tty_goto(tty_lines - 1, 0);
+#endif
 	tty_get_key(NULL);
 	wait_msg = 0;
     }

@@ -372,7 +372,7 @@ panel_init(path)
     minimize_path(this->path);
     panel_set_path(this,this->path);
 
-    this->window = window_init();
+    this->window = window_init(0,0,0,0);
 
     if (configured)
     {

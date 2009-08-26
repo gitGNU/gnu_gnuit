@@ -247,6 +247,7 @@ void
 il_init()
 {
     char *data;
+    int begy, begx, maxy, maxx;
 
     il = (input_line_t *)xmalloc(sizeof(input_line_t));
 
@@ -257,8 +258,9 @@ il_init()
     il->columns = 0;
     il->line = 0;
     il_reset_line();
-    il->window = window_init();
-
+    getbegyx(stdscr, begy, begx);
+    getmaxyx(stdscr, maxy, maxx);
+    il->window = window_init(1, maxx, maxy-2, begx);
 
     use_section("[GITFM-Setup]");
 

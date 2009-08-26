@@ -1043,10 +1043,13 @@ tty_key_machine2human(key_seq)
 void
 tty_update()
 {
+#if 0
+    /* FIXME */
     wnoutrefresh(title_window->window);
     wnoutrefresh(header_window->window);
     wnoutrefresh(status_window->window);
     doupdate();
+#endif
     refresh();
 }
 
