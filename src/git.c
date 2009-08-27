@@ -2081,7 +2081,7 @@ main(argc, argv)
     right_panel_columns = ((maxx-begx) >> 1);
     left_panel_columns = right_panel_columns + ((maxx-begx) & 1);
 
-    left_panel = panel_init(panel_path, ((maxy-begy)-4), left_panel_columns, begy+3, begx);
+    left_panel = panel_init(panel_path, ((maxy-begy)-4), left_panel_columns, begy+1, begx);
     xfree(panel_path);
 
     if (right_panel_path[0] == '/')
@@ -2094,7 +2094,7 @@ main(argc, argv)
     }
 
     right_panel = panel_init(panel_path, ((maxy-begy)-4), right_panel_columns,
-			     begy+3, left_panel_columns);
+			     begy+1, left_panel_columns);
 
     xfree(panel_path);
     xfree(current_path);
