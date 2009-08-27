@@ -181,6 +181,7 @@ static int bg_cache = INVALID_CACHE;
 static int br_cache = INVALID_CACHE;
 static int rv_cache = INVALID_CACHE;
 
+#ifdef REMOVEME
 /* tty_scr the current status of the screen, while tty_atr is used to
    keep the current status of the attributes.  */
 static wchar_t *tty_scr;
@@ -189,7 +190,7 @@ static unsigned char *tty_atr;
 /* tty_prev_scr will always contain the copy of the previous screen,
    while tty_atr will contain the copy of the previous attributes.  */
 static wchar_t *tty_prev_scr;
-
+#endif
 
 /* The ANSI color sequences.  */
 static wchar_t ansi_foreground[] = { 0x1b, L'[', L'3', L'0', L'm', 0 };
@@ -2159,7 +2160,9 @@ tty_put_screen(buf)
     char *buf;
 {
     tty_defaults();
-
+    /* FIXME */
+    return;
+#ifdef REMOVEME
 #ifdef HAVE_LINUX
     if (LinuxConsole)
     {
@@ -2185,6 +2188,7 @@ tty_put_screen(buf)
     tty_clear();
     buf = NULL;
 #endif  /* !HAVE_LINUX */
+#endif
 }
 
 
