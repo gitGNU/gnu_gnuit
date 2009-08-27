@@ -146,8 +146,6 @@ char monochrome_section[] = "[GITPS-Monochrome]";
 int  processes;
 int  PID_index;
 
-WINDOW *top_window;
-
 char *g_home;
 char *g_program;
 /* for gnulib lib/error.c */
@@ -1208,6 +1206,7 @@ main(argc, argv)
 
     getbegyx(stdscr, begy, begx);
     getmaxyx(stdscr, maxy, maxx);
+
     title_window  = window_init(1, maxx, begy,   begx);
     header_window = window_init(1, maxx, begy+1, begx);
     processes_window = window_init((maxy - (begy+4)), (maxx-begx), begy+2, begx);

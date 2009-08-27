@@ -43,8 +43,6 @@
 #include "xmalloc.h"
 #include "tty.h"
 
-extern WINDOW *top_window;
-
 window_t *
 window_init(lines, cols, y, x)
     int lines, cols, y, x;

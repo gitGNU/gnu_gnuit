@@ -327,8 +327,9 @@ xchg(a, b)
  * the configuration files, if needed.
  */
 panel_t *
-panel_init(path)
+panel_init(path, lines, cols, y, x)
     char *path;
+    int lines, cols, y, x;
 {
     static int configured;
 
@@ -372,7 +373,7 @@ panel_init(path)
     minimize_path(this->path);
     panel_set_path(this,this->path);
 
-    this->window = window_init(0,0,0,0);
+    this->window = window_init(lines, cols, y, x);
 
     if (configured)
     {

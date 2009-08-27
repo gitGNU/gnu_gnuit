@@ -248,7 +248,7 @@ typedef struct
 } panel_t;
 
 
-extern panel_t *panel_init PROTO ((char *));
+extern panel_t *panel_init PROTO ((char *, int, int, int, int));
 extern void panel_end PROTO ((panel_t *));
 extern void panel_init_iterator PROTO ((panel_t *));
 extern void panel_select_all PROTO ((panel_t *));
