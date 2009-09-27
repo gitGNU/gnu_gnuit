@@ -114,7 +114,7 @@ static char *mail_file=NULL;
 static off64_t mail_size=0;
 static time_t mail_mtime=0;
 
-static window_t *title_window;
+extern window_t *title_window;
 
 static int calc_info_length PROTO ((void));
 static int mail_check PROTO ((void));

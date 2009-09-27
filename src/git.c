@@ -144,8 +144,7 @@ char **dir_history;
 int dir_history_count;
 int dir_history_point;
 
-window_t *title_window, *header_window, *processes_window, *status_window;
-window_t *il_window;
+window_t *title_window, *status_window, *il_window;
 
 #define BUILTIN_OPERATIONS                       89
 
@@ -511,23 +510,16 @@ screen_refresh(signum)
 	}
 
 	title_update();
-	tty_update(); /* FIXME: DEBUG, REMOVE */
-
 	panel_update(src_panel);
-	tty_update(); /* FIXME: DEBUG, REMOVE */
 
 	if (two_panel_mode)
 	    panel_update(dst_panel);
-	tty_update(); /* FIXME: DEBUG, REMOVE */
     }
     else
 	tty_put_screen(screen);
-    tty_update(); /* FIXME: DEBUG, REMOVE */
 
     status_update();
-    tty_update(); /* FIXME: DEBUG, REMOVE */
     il_update();
-    tty_update(); /* FIXME: DEBUG, REMOVE */
     il_update_point();
     tty_update();
 
@@ -2133,7 +2125,6 @@ main(argc, argv)
     }
 
     tty_update_title(panel_get_wpath(src_panel));
-    tty_update(); /* FIXME: debug, remove */
     alarm(60 - get_local_time()->tm_sec);
 
     src_panel = panel_no ? right_panel : left_panel;
@@ -2148,9 +2139,7 @@ main(argc, argv)
     }
 
     title_update();
-    tty_update(); /* FIXME: debug, remove */
     status_default();
-    tty_update(); /* FIXME: debug, remove */
     il_restore(saved_il);
     tty_update();
 

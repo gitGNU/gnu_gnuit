@@ -60,7 +60,7 @@
 extern int AnsiColors;
 
 
-static window_t *status_window;
+extern window_t *status_window;
 static wchar_t *status_message;
 static char status_type;
 static char status_alignment;

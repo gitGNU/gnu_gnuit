@@ -209,7 +209,6 @@ char color_section[]  = "[GITVIEW-Color]";
 char monochrome_section[] = "[GITVIEW-Monochrome]";
 int fd, regular_file;
 long long g_current_line, g_lines;
-window_t *title_window, *header_window, *file_window, *status_window;
 static wchar_t *title_text;
 static wchar_t *g_help;
 static wchar_t info_txt[] =
@@ -220,7 +219,7 @@ static wchar_t line_txt[]    =
 ----------- ";
 static wchar_t seek_txt[]    = L" Seek at: ";
 
-window_t *title_window, *header_window, *processes_window, *status_window;
+window_t *title_window, *header_window, *status_window, *file_window;
 window_t *il_window; /* Not used but needed by tty.c */
 
 static off64_t

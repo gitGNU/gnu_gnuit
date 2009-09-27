@@ -60,7 +60,7 @@
 #include "tty.h"
 #include "signals.h"
 #include "misc.h"
-
+#include "panel.h"
 
 /* Stolen from GNU Emacs.  */
 #ifdef _POSIX_VDISABLE
@@ -88,8 +88,6 @@
 #endif
 
 extern window_t *title_window;
-extern window_t *header_window;
-extern window_t *status_window;
 extern window_t *il_window;
 
 /* FIXME: remove? */
@@ -1037,6 +1035,8 @@ tty_key_machine2human(key_seq)
     return (unsigned char *)keystr;
 }
 
+extern WINDOW *windows[];
+extern int num_windows;
 
 /*
  * Update the tty screen.
@@ -1044,14 +1044,10 @@ tty_key_machine2human(key_seq)
 void
 tty_update()
 {
-#if 0
-    /* FIXME */
-    wnoutrefresh(title_window->window);
-    wnoutrefresh(header_window->window);
-    wnoutrefresh(status_window->window);
+    int i;
+    for(i=0; i<num_windows; i++)
+	wnoutrefresh(windows[i]);
     doupdate();
-#endif
-    refresh();
 }
 
 
@@ -1102,8 +1098,10 @@ tty_puts(window, buf, length)
 #endif
     waddnwstr(window, buf, length);
     /* FIXME: DEBUG, remove */
-    wrefresh(window);
 /*
+
+    wrefresh(window);
+
     wmemcpy(tty_scr + tty_offset, buf, length);
     memset(tty_atr + tty_offset, tty_current_attribute, length);
 */

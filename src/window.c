@@ -43,12 +43,17 @@
 #include "xmalloc.h"
 #include "tty.h"
 
+#define MAX_WINDOWS 10
+WINDOW *windows[MAX_WINDOWS];
+int num_windows;
+
 window_t *
 window_init(lines, cols, y, x)
     int lines, cols, y, x;
 {
     window_t *window = (window_t *)xmalloc(sizeof(window_t));
     window->window=subwin(stdscr, lines, cols, y, x);
+    windows[num_windows++]=window->window;
     return window;
 }
 

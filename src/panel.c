@@ -466,6 +466,11 @@ panel_window(this)
     return this->window;
 }
 
+int panel_visible(this)
+    panel_t *this;
+{
+    return this->visible;
+}
 
 /*
  * We might need to call this twice in the same expression, so this is
@@ -1407,8 +1412,6 @@ panel_update_entries(this)
 	 i++)
     {
 	panel_update_entry(this, i);
-	tty_update(); /* FIXME: debug, remove */
-	tty_flush();
     }
 
     tty_colors(OFF, WHITE, PanelBackground);
@@ -1420,9 +1423,6 @@ panel_update_entries(this)
     {
 	window_goto(this->window, i - this->first_on_screen + 1, 1);
 	window_puts(this->window, this->temp, this->columns - 2);
-	/* FIXME: debug, remove */
-	tty_update();
-	tty_flush();
     }
 
     this->on_screen = this->entries;
@@ -2120,15 +2120,10 @@ panel_update(this)
 {
     assert(this->current_entry < this->entries);
     panel_update_frame(this);
-    tty_update(); /* FIXME: DEBUG, REMOVE */
     panel_update_path(this);
-    tty_update(); /* FIXME: DEBUG, REMOVE */
     panel_update_info(this);
-    tty_update(); /* FIXME: DEBUG, REMOVE */
     panel_update_size(this);
-    tty_update(); /* FIXME: DEBUG, REMOVE */
     panel_update_entries(this);
-    tty_update(); /* FIXME: DEBUG, REMOVE */
 }
 
 
