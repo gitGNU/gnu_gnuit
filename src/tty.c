@@ -31,6 +31,7 @@
 #define _XOPEN_SOURCE_EXTENDED
 #endif
 #include <ncursesw/curses.h>
+#include <term.h>
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>
@@ -94,13 +95,14 @@ extern window_t *il_window;
 /* I want to avoid including curses.h or any other header file that
    defines these.  I think it's safer because I couldn't find 2
    similar curses.h files in the entire world...  */
-
+#if 0
 extern int tputs PROTO ((const char *__string, int __nlines, int (*outfun)()));
 extern int tgetent PROTO ((void *__buffer, const char *__termtype));
 extern char *tgetstr PROTO ((const char *__name, char **__area));
 extern int tgetnum PROTO ((const char *__name));
 extern int tgetflag PROTO ((const char *__name));
 extern char *tgoto PROTO ((const char *__cstring, int __hpos, int __vpos));
+#endif
 
 #define TTY_INPUT       0
 #define TTY_OUTPUT      1

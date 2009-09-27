@@ -196,7 +196,7 @@ clock_refresh(signum)
     if (in_terminal_mode())
 	return;
 
-    if (product_name_length + 2 + info_length >= title_window->columns)
+    if (product_name_length + 2 + info_length >= title_window->wcolumns)
 	return;
 
     /* signum means we weren't called from title_update */
@@ -217,7 +217,7 @@ clock_refresh(signum)
 
     swprintf(buf, 16, L"%2d:%02d%c", hour, time->tm_min,
 	     (time->tm_hour < 12) ? 'a' : 'p');
-    window_goto(title_window, 0, title_window->columns - 7);
+    window_goto(title_window, 0, title_window->wcolumns - 7);
     tty_colors(ClockBrightness, ClockForeground, ClockBackground);
     window_puts(title_window, buf, wcslen(buf));
 
@@ -314,12 +314,12 @@ title_update()
     window_goto(title_window, 0, 0);
     window_puts(title_window, product_name, product_name_length);
 
-    buf = xmalloc((title_window->columns + 1) * sizeof(wchar_t));
+    buf = xmalloc((title_window->wcolumns + 1) * sizeof(wchar_t));
 
     mail_check();
-    if (product_name_length + 2 + info_length < title_window->columns)
+    if (product_name_length + 2 + info_length < title_window->wcolumns)
     {
-	length = title_window->columns - product_name_length - info_length;
+	length = title_window->wcolumns - product_name_length - info_length;
 
 	assert(length > 0);
 
@@ -350,12 +350,12 @@ title_update()
 
 	clock_refresh(0);
 
-	window_goto(title_window, 0, title_window->columns - 1);
+	window_goto(title_window, 0, title_window->wcolumns - 1);
 	window_putc(title_window, L' ');
     }
-    else if (product_name_length < title_window->columns)
+    else if (product_name_length < title_window->wcolumns)
     {
-	length = title_window->columns - product_name_length;
+	length = title_window->wcolumns - product_name_length;
 	wmemset(buf, L' ', length);
 	window_puts(title_window, buf, length);
     }

@@ -164,7 +164,7 @@ build_message()
 
     assert(status_message);
 
-    wmemset(status_buffer, L' ', status_window->columns);
+    wmemset(status_buffer, L' ', status_window->wcolumns);
     temp_msg_len = wcslen(status_message);
     temp_msg = xmalloc((temp_msg_len+1) * sizeof(wchar_t));
 
@@ -255,15 +255,15 @@ build_message()
     len = wcslen(temp_msg);
 
     if (status_alignment == STATUS_CENTERED &&
-	(int)len < status_window->columns)
-	wmemcpy(status_buffer + ((status_window->columns - len) >> 1),
+	(int)len < status_window->wcolumns)
+	wmemcpy(status_buffer + ((status_window->wcolumns - len) >> 1),
 		temp_msg, len);
     else
-	wmemcpy(status_buffer, temp_msg, min((int)len, status_window->columns));
+	wmemcpy(status_buffer, temp_msg, min((int)len, status_window->wcolumns));
 
     xfree(temp_msg);
 
-    for (i = 0; i < status_window->columns; i++)
+    for (i = 0; i < status_window->wcolumns; i++)
 	if (status_buffer[i] == L'\r' || status_buffer[i] == L'\n')
 	    status_buffer[i] = L' ';
 }
@@ -299,7 +299,7 @@ status_update()
     }
 
     window_goto(status_window, 0, 0);
-    window_puts(status_window, status_buffer, status_window->columns);
+    window_puts(status_window, status_buffer, status_window->wcolumns);
 
     tty_restore(&status);
 }

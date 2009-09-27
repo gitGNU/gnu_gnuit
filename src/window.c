@@ -78,8 +78,8 @@ window_resize(window, x, y, lines, columns)
     wresize(window->window, lines, columns);
     window->x       = x;
     window->y       = y;
-    window->lines   = lines;
-    window->columns = columns;
+    window->wlines   = lines;
+    window->wcolumns = columns;
 }
 
 
@@ -93,17 +93,17 @@ window_puts(window, str, length)
 
     window->cursor_x += length;
 
-    if (x >= window->columns)
+    if (x >= window->wcolumns)
 	return 0;
 
-    if (window->cursor_y >= window->lines)
+    if (window->cursor_y >= window->wlines)
 	return 0;
 
-    if (x + length <= window->columns)
+    if (x + length <= window->wcolumns)
 	return tty_puts(window->window, str, length);
 
     /* Write the visible part of the string.  */
-    return tty_puts(window->window, str, window->columns - x);
+    return tty_puts(window->window, str, window->wcolumns - x);
 }
 
 
@@ -112,10 +112,10 @@ window_putc(window, c)
     window_t *window;
     wchar_t c;
 {
-    if (++window->cursor_x > window->columns)
+    if (++window->cursor_x > window->wcolumns)
 	return 0;
 
-    if (window->cursor_y >= window->lines)
+    if (window->cursor_y >= window->wlines)
 	return 0;
 
     return tty_putc(window->window, c);
@@ -153,7 +153,7 @@ int
 window_lines(window)
     window_t *window;
 {
-    return window->lines;
+    return window->wlines;
 }
 
 
@@ -161,5 +161,5 @@ int
 window_columns(window)
     window_t *window;
 {
-    return window->columns;
+    return window->wcolumns;
 }

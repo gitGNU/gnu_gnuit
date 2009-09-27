@@ -232,7 +232,7 @@ typedef struct
     int last_index;		/* Used in the iterator.  */
     int multiple_files;		/* A flag used in the iterator.  */
     int x, y;			/* The panel's position.  */
-    int lines, columns;		/* The panel is that big.  */
+    int plines, pcolumns;	/* The panel is that big.  */
     int entries;		/* The # of files/directories.  */
     char focus;			/* The panel's focus flag.  */
     char visible;		/* The panel's visible flag.  */

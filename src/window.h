@@ -45,8 +45,8 @@ typedef struct
     WINDOW *window;	/* corresponding curses window */
     int x;		/* window's x origin in the tty screen.  */
     int y;		/* window's y origin in the tty screen.  */
-    int lines;		/* window's number of lines.  */
-    int columns;	/* window's number of columns.  */
+    int wlines;		/* window's number of lines.  */
+    int wcolumns;	/* window's number of columns.  */
     int cursor_x;	/* window's cursor current x position.  */
     int cursor_y;	/* window's cursor current y position.  */
 } window_t;

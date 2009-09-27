@@ -337,8 +337,8 @@ panel_init(path, lines, cols, y, x)
 
     this->x		    = 0;
     this->y		    = 0;
-    this->lines		    = 1;
-    this->columns	    = 1;
+    this->plines	    = 1;
+    this->pcolumns	    = 1;
     this->focus		    = OFF;
     this->entries	    = 0;
     this->selected_entries  = 0;
@@ -652,7 +652,7 @@ static int
 panel_get_centered_fos(this)
     panel_t *this;
 {
-    int lines = (this->lines - 2);
+    int lines = (this->plines - 2);
     int tmp = this->current_entry - (lines / 2);
 
     if (tmp + lines >= this->entries)
@@ -673,8 +673,8 @@ panel_get_fos(this)
     assert(this->first_on_screen >= 0);
 
     if ((this->first_on_screen <= this->current_entry) &&
-	(this->first_on_screen + this->lines - 2 > this->current_entry) &&
-	(this->first_on_screen + this->lines - 2 <= this->entries))
+	(this->first_on_screen + this->plines - 2 > this->current_entry) &&
+	(this->first_on_screen + this->plines - 2 <= this->entries))
 	return this->first_on_screen;
 
     return panel_get_centered_fos(this);
@@ -729,17 +729,17 @@ panel_resize(this, x, y, lines, columns)
     this->x = x;
     this->y = y;
 
-    this->lines   = lines;
-    this->columns = columns;
+    this->plines   = lines;
+    this->pcolumns = columns;
 
     this->thumb = 0;
 
-    if (StartupScrollStep <= 0 || StartupScrollStep >= (this->lines - 1))
-	this->scroll_step = this->lines / 2;
+    if (StartupScrollStep <= 0 || StartupScrollStep >= (this->plines - 1))
+	this->scroll_step = this->plines / 2;
     else
 	this->scroll_step = StartupScrollStep;
 
-    this->temp = xrealloc(this->temp, (this->columns * sizeof(wchar_t)));
+    this->temp = xrealloc(this->temp, (this->pcolumns * sizeof(wchar_t)));
     window_resize(this->window, x, y, lines, columns);
     panel_center_current_entry(this);
     this->horizontal_offset = 0;
@@ -1408,7 +1408,7 @@ panel_update_entries(this)
     tty_save(&status);
 
     for (i = this->first_on_screen;
-	 (i < this->entries) && (i - this->first_on_screen < this->lines - 2);
+	 (i < this->entries) && (i - this->first_on_screen < this->plines - 2);
 	 i++)
     {
 	panel_update_entry(this, i);
@@ -1416,13 +1416,13 @@ panel_update_entries(this)
 
     tty_colors(OFF, WHITE, PanelBackground);
 
-    wmemset(this->temp, L' ', this->columns);
-    limit = min(this->lines - 2, this->on_screen);
+    wmemset(this->temp, L' ', this->pcolumns);
+    limit = min(this->plines - 2, this->on_screen);
 
     for (; i < limit; i++)
     {
 	window_goto(this->window, i - this->first_on_screen + 1, 1);
-	window_puts(this->window, this->temp, this->columns - 2);
+	window_puts(this->window, this->temp, this->pcolumns - 2);
     }
 
     this->on_screen = this->entries;
@@ -1437,7 +1437,7 @@ panel_update_path(this)
     size_t len;
     tty_status_t status;
 
-    if (this->columns < (1 + 1 + 1 + 1 + 14 + 1 + 1))
+    if (this->pcolumns < (1 + 1 + 1 + 1 + 14 + 1 + 1))
 	return;
 
     if (!this->visible)
@@ -1445,8 +1445,8 @@ panel_update_path(this)
 
     tty_save(&status);
 
-    len = this->columns - (1 + 1 + 1 + 14 + 1 + 1);
-    wmemset(this->temp, L' ', this->columns);
+    len = this->pcolumns - (1 + 1 + 1 + 14 + 1 + 1);
+    wmemset(this->temp, L' ', this->pcolumns);
     truncate_long_name(this->wpath, this->temp, len);
     toprintable(this->temp, len);
 
@@ -1535,7 +1535,7 @@ panel_update_size(this)
     wchar_t *wsz;
     tty_status_t status;
     struct fs_usage fsu;
-    int viewable = this->columns - (1 + 1 + 1 + 1);
+    int viewable = this->pcolumns - (1 + 1 + 1 + 1);
 
     if (!this->visible)
 	return;
@@ -1576,7 +1576,7 @@ panel_update_size(this)
 
     tty_background(PanelFrame);
 
-    window_goto(this->window, 0, this->columns - 2 - min(wcslen(wsz), viewable));
+    window_goto(this->window, 0, this->pcolumns - 2 - min(wcslen(wsz), viewable));
     window_puts(this->window, wsz, min(wcslen(wsz), viewable));
 
     tty_restore(&status);
@@ -1673,34 +1673,34 @@ panel_update_info(this)
 
     tty_save(&status);
 
-    if (this->lines >= 3)
+    if (this->plines >= 3)
     {
 	/* This is an ugly hack, I know, but it does what I want.  */
 	tty_colors(OFF, PanelFrame, PanelFrame);
-	window_goto(this->window, this->thumb + 1, this->columns - 1);
+	window_goto(this->window, this->thumb + 1, this->pcolumns - 1);
 	window_putc(this->window, L' ');
 
-	if (this->entries > this->lines-2)
+	if (this->entries > this->plines-2)
 	{
-	    this->thumb = ((this->current_entry * (this->lines-2)) /
+	    this->thumb = ((this->current_entry * (this->plines-2)) /
 			   this->entries);
 
 	    tty_colors(PanelThumbBrightness,
 		       PanelThumbForeground,
 		       PanelThumbBackground);
-	    window_goto(this->window, this->thumb+1, this->columns-1);
+	    window_goto(this->window, this->thumb+1, this->pcolumns-1);
 	    window_putc(this->window, L'#');
 	}
     }
 
-    if (this->columns < 40)
+    if (this->pcolumns < 40)
     {
-	if (this->columns < (1 + 1 + 10 + 1 + 1))
+	if (this->pcolumns < (1 + 1 + 10 + 1 + 1))
 	    *str = L'\0';
 	else
 	{
 	    panel_mode2string(this, this->current_entry, temp_rights);
-	    swprintf(str, this->columns, L"%10s", temp_rights);
+	    swprintf(str, this->pcolumns, L"%10s", temp_rights);
 	}
 
 	goto skip_info_display;
@@ -1709,13 +1709,13 @@ panel_update_info(this)
     if (this->selected_entries)
     {
 	int entry;
-	char stmp[this->columns];
+	char stmp[this->pcolumns];
 	for (entry = 0; entry < this->entries; entry++)
 	    if  (this->dir_entry[entry].selected &&
 		 this->dir_entry[entry].type == FILE_ENTRY)
 		total_size += this->dir_entry[entry].size;
-	panel_beautify_info_number(stmp, total_size, this->columns, this->selected_entries);
-	swprintf(str, this->columns, L"%s", stmp);
+	panel_beautify_info_number(stmp, total_size, this->pcolumns, this->selected_entries);
+	swprintf(str, this->pcolumns, L"%s", stmp);
 	tty_brightness(PanelFilesInfoBrightness);
 	tty_foreground(PanelFilesInfo);
     }
@@ -1728,7 +1728,7 @@ panel_update_info(this)
 	}
 
 	panel_mode2string(this, this->current_entry, temp_rights);
-	maxname = this->columns - 26;  /* FIXME: Huh?  */
+	maxname = this->pcolumns - 26;  /* FIXME: Huh?  */
 	len = min(wcslen(this->dir_entry[this->current_entry].wname), maxname);
 	wmemcpy(str, this->dir_entry[this->current_entry].wname, len);
 	wmemset(str + len, L' ', maxname - len);
@@ -1750,12 +1750,12 @@ panel_update_info(this)
 	tty_foreground(PanelFileInfo);
     }
     wmemcpy(this->temp, str, len = wcslen(str));
-    if( (len+2) < this->columns)
-	wmemset(this->temp + len, L' ', this->columns - 2 - len);
+    if( (len+2) < this->pcolumns)
+	wmemset(this->temp + len, L' ', this->pcolumns - 2 - len);
     toprintable(this->temp, len);
     tty_background(PanelFrame);
-    window_goto(this->window, this->lines - 1, 2);
-    window_puts(this->window, this->temp, this->columns - 4);
+    window_goto(this->window, this->plines - 1, 2);
+    window_puts(this->window, this->temp, this->pcolumns - 4);
 
     tty_restore(&status);
 }
@@ -1867,8 +1867,8 @@ static int
 panel_get_reserved_characters(this)
     panel_t *this;
 {
-    if ((this->columns < 40) ||
-	((this->columns < 20 + 16 + 16 + 11 + 11) &&
+    if ((this->pcolumns < 40) ||
+	((this->pcolumns < 20 + 16 + 16 + 11 + 11) &&
 	 (this->display_mode == ENABLE_ALL)))
 	return 1 + 1 + 1 + 1;
     else
@@ -1892,7 +1892,7 @@ panel_update_entry(this, entry)
     if (!this->visible)
 	return;
 
-    wmemset(this->temp, L' ', this->columns);
+    wmemset(this->temp, L' ', this->pcolumns);
     reserved = panel_get_reserved_characters(this);
     if ((entry > 0) || rootdir())
 	switch (this->dir_entry[entry].type)
@@ -1913,7 +1913,7 @@ panel_update_entry(this, entry)
 
     name=xwcsdup(this->dir_entry[entry].wname);
     namelen=wcslen(name);
-    maxnamewidth=this->columns - reserved;
+    maxnamewidth=this->pcolumns - reserved;
     toprintable(name,namelen);
     namewidth=wcswidth(name,namelen);
 
@@ -1933,10 +1933,10 @@ panel_update_entry(this, entry)
     namelen=wcslen(fitted);
     namewidth=wcswidth(fitted,namelen);
     width_adjust=namewidth - namelen;
-    effective_columns=this->columns - width_adjust;
+    effective_columns=this->pcolumns - width_adjust;
 #ifdef DEBUG
     fprintf(stderr,"%d: COLUMNS: %2d EFFECTIVE: %2d(%3d) LEN(%2d) WIDTH(%2d/%2d)\n",
-	    entry, this->columns, effective_columns, width_adjust, namelen, namewidth, maxnamewidth);
+	    entry, this->pcolumns, effective_columns, width_adjust, namelen, namewidth, maxnamewidth);
 	    fprintf(stderr,".........1.........2.........3..._.....4.........5.........6.........7.:.......8\n");
 	    fprintf(stderr,"%ls\n",fitted);
 #endif
@@ -1948,7 +1948,7 @@ panel_update_entry(this, entry)
 
     xfree(fitted);
 
-    if (this->columns >= 40)
+    if (this->pcolumns >= 40)
 	switch (this->display_mode)
 	{
 	    case ENABLE_OWNER_GROUP:
@@ -1973,7 +1973,7 @@ panel_update_entry(this, entry)
 		   size          -> 11 characters
 		   mode          -> 11 characters */
 
-		if (this->columns < 20 + 16 + 16 + 11 + 11)
+		if (this->pcolumns < 20 + 16 + 16 + 11 + 11)
 		    break;
 
 		panel_build_entry_field(this, entry, ENABLE_OWNER_GROUP, effective_columns,
@@ -2083,7 +2083,7 @@ panel_update_frame(this)
 {
     int line;
     tty_status_t status;
-    wchar_t *buf = xmalloc(this->columns * sizeof(wchar_t));
+    wchar_t *buf = xmalloc(this->pcolumns * sizeof(wchar_t));
 
     if (!this->visible)
 	return;
@@ -2092,23 +2092,23 @@ panel_update_frame(this)
 
     tty_colors(OFF, PanelFrame, PanelFrame);
 
-    for (line = 1; line < this->lines - 1; line++)
+    for (line = 1; line < this->plines - 1; line++)
     {
 	window_goto(this->window, line, 0);
 	window_putc(this->window, L' ');
     }
 
-    for (line = 1; line < this->lines - 1; line++)
+    for (line = 1; line < this->plines - 1; line++)
     {
-	window_goto(this->window, line, this->columns - 1);
+	window_goto(this->window, line, this->pcolumns - 1);
 	window_putc(this->window, L' ');
     }
 
-    wmemset(buf, L' ', this->columns);
+    wmemset(buf, L' ', this->pcolumns);
     window_goto(this->window, 0, 0);
-    window_puts(this->window, buf, this->columns);
-    window_goto(this->window, this->lines - 1, 0);
-    window_puts(this->window, buf, this->columns);
+    window_puts(this->window, buf, this->pcolumns);
+    window_goto(this->window, this->plines - 1, 0);
+    window_puts(this->window, buf, this->pcolumns);
     xfree(buf);
 
     tty_restore(&status);
@@ -4710,12 +4710,12 @@ panel_action(this, action, other, aux_info, repeat_count)
 		    break;
 
 		if (this->current_entry - this->first_on_screen >=
-		    this->lines - 2)
+		    this->plines - 2)
 		{
 		    this->first_on_screen = min(this->first_on_screen +
 						this->scroll_step,
 						this->entries - 1 -
-						(this->lines - 2) + 1);
+						(this->plines - 2) + 1);
 		    need_update_all = 1;
 		    continue;
 		}
@@ -4741,13 +4741,13 @@ panel_action(this, action, other, aux_info, repeat_count)
 
 	    old_current_entry = this->current_entry;
 
-	    if (this->current_entry < this->lines - 2)
+	    if (this->current_entry < this->plines - 2)
 		panel_set_current_entry(this, 0);
 	    else
 		panel_set_current_entry(this,
-					this->current_entry-(this->lines-2));
+					this->current_entry-(this->plines-2));
 
-	    if (this->entries > this->lines - 2)
+	    if (this->entries > this->plines - 2)
 		panel_update_entries(this);
 	    else
 	    {
@@ -4764,16 +4764,16 @@ panel_action(this, action, other, aux_info, repeat_count)
 
 	    old_current_entry = this->current_entry;
 
-	    if (this->entries - 1 - this->first_on_screen < this->lines - 2)
+	    if (this->entries - 1 - this->first_on_screen < this->plines - 2)
 		panel_set_current_entry(this, this->entries - 1);
 	    else
-		if (this->entries - 1 - this->current_entry < this->lines - 2)
+		if (this->entries - 1 - this->current_entry < this->plines - 2)
 		    panel_set_current_entry(this, this->entries - 1);
 		else
 		    panel_set_current_entry(this,
-					    this->current_entry+this->lines-2);
+					    this->current_entry+this->plines-2);
 
-	    if (this->entries > this->lines - 2)
+	    if (this->entries > this->plines - 2)
 		panel_update_entries(this);
 	    else
 	    {
@@ -4833,7 +4833,7 @@ panel_action(this, action, other, aux_info, repeat_count)
 	  all_display_modes:
 	    /* Avoid displaying the ENABLE_ALL mode when the number of
 	       columns is not big enough (we are in two panel mode).  */
-	    if (this->columns < 80 && this->display_mode == ENABLE_ALL)
+	    if (this->pcolumns < 80 && this->display_mode == ENABLE_ALL)
 		this->display_mode = ENABLE_OWNER_GROUP;
 
 	    panel_update_entries(this);
@@ -4876,15 +4876,15 @@ panel_action(this, action, other, aux_info, repeat_count)
 	    break;
 
 	case act_SWITCH:
-	    xchg(&this->lines,   &other->lines);
-	    xchg(&this->columns, &other->columns);
+	    xchg(&this->plines,   &other->plines);
+	    xchg(&this->pcolumns, &other->pcolumns);
 	    xchg(&this->x,       &other->x);
 	    xchg(&this->y,       &other->y);
 
 	    panel_resize(this, this->x, this->y,
-			 this->lines, this->columns);
+			 this->plines, this->pcolumns);
 	    panel_resize(other, other->x, other->y,
-			 other->lines, other->columns);
+			 other->plines, other->pcolumns);
 	    break;
 
 	case act_PATTERN_SELECT:
@@ -4937,7 +4937,7 @@ panel_action(this, action, other, aux_info, repeat_count)
 	case act_SET_SCROLL_STEP:
 	    new_scroll_step = atoi((char *)aux_info);
 
-	    if (new_scroll_step > 0 && new_scroll_step < this->lines - 1)
+	    if (new_scroll_step > 0 && new_scroll_step < this->plines - 1)
 		this->scroll_step = other->scroll_step = new_scroll_step;
 
 	    break;
@@ -5124,7 +5124,7 @@ panel_action(this, action, other, aux_info, repeat_count)
 
 	    /* The +1 accounts for the type character (/, *, |, @, etc).  */
 	    max_offset = (this->maxname + 1) -
-		(this->columns - panel_get_reserved_characters(this));
+		(this->pcolumns - panel_get_reserved_characters(this));
 	    if (max_offset < 0)
 		max_offset = 0;
 
