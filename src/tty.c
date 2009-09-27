@@ -844,6 +844,7 @@ tty_set_interrupt_char(c)
 void
 tty_flush()
 {
+    /* FIXME: do_update? */
     refresh();
 }
 
@@ -895,6 +896,7 @@ tty_writec(c)
 void
 tty_io_clear()
 {
+    clear();
     /* FIXME */
     return;
     tputs(TTY_CLEAR_SCREEN, tty_lines, tty_writec);
@@ -906,21 +908,13 @@ tty_io_clear()
 void
 tty_start_cursorapp()
 {
-    /* FIXME */
-#if 0
-    tputs(TTY_START_CURSORAPP,tty_lines-1,tty_writec);
-    tty_flush();
-#endif
+    tty_update();
 }
 
 void
 tty_end_cursorapp()
 {
-    /* FIXME */
-    return;
-    tty_io_clear();
-    tputs(TTY_END_CURSORAPP,tty_lines-1,tty_writec);
-    tty_flush();
+    endwin();
 }
 
 
@@ -1099,14 +1093,6 @@ tty_puts(window, buf, length)
     tty_offset = (tty_cursor_y * tty_columns) + x;
 #endif
     waddnwstr(window, buf, length);
-    /* FIXME: DEBUG, remove */
-/*
-
-    wrefresh(window);
-
-    wmemcpy(tty_scr + tty_offset, buf, length);
-    memset(tty_atr + tty_offset, tty_current_attribute, length);
-*/
     return length;
 }
 
@@ -1198,10 +1184,9 @@ tty_fill()
 void
 tty_touch()
 {
-    /* FIXME */
-#ifdef REMOVEME
-    wmemset(tty_prev_scr, L'\0', tty_lines*tty_columns);
-#endif
+    int i;
+    for(i=0; i<num_windows; i++)
+	redrawwin(windows[i]);
 }
 
 
@@ -1493,18 +1478,10 @@ void
 tty_cursor(status)
     int status;
 {
-    return;
-    /* FIXME */
     if (status)
-    {
-	if (TTY_CURSOR_ON)
-	    tputs(TTY_CURSOR_ON, 1, tty_writec);
-    }
+	curs_set(1);
     else
-    {
-	if (TTY_CURSOR_OFF)
-	    tputs(TTY_CURSOR_OFF, 1, tty_writec);
-    }
+	curs_set(0);
 }
 
 
@@ -2160,6 +2137,8 @@ tty_put_screen(buf)
     char *buf;
 {
     tty_defaults();
+    tty_clear();
+    buf = NULL;
     /* FIXME */
     return;
 #ifdef REMOVEME

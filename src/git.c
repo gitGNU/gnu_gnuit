@@ -2502,7 +2502,7 @@ main(argc, argv)
 
 		alarm(0);
 		tty_put_screen(screen);
-#if 0
+#if 1
 		/* we used this to save the screen but under xterm it
 		   leaves the prompt bold when we quit */
 		tty_end_cursorapp();
@@ -2649,7 +2649,7 @@ main(argc, argv)
 		}
 
 	      end_tty_mode:
-#if 0
+#if 1
 		/* leaves prompt bold when we quit under xterm */
 		tty_start_cursorapp();
 #endif
