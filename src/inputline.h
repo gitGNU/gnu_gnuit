@@ -71,8 +71,8 @@ typedef struct
     int last_operation;		/* The last basic edit operation performed.  */
     size_t point;		/* The point position.  */
     size_t mark;		/* The mark position.  */
-    size_t columns;		/* The number of columns.  */
-    size_t line;		/* The input line's location.  */
+    size_t ilcolumns;		/* The number of columns.  */
+    size_t illine;		/* The input line's location.  */
     size_t length;		/* The total length of the input line.  */
     size_t static_length;	/* The static text length.  */
     size_t dynamic_length;	/* The dynamic text length.  */
@@ -127,6 +127,5 @@ extern int il_get_contents PROTO ((wchar_t **));
 extern void il_message PROTO ((wchar_t *));
 extern void il_set_error_flag PROTO ((int));
 extern void il_history PROTO ((int));
-
 
 #endif  /* _GIT_INPUTLINE_H */

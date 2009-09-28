@@ -236,10 +236,10 @@ il_free(some_il)
 static size_t
 il_compute_scroll()
 {
-    return max((il->columns - il->static_length) / 4,  1);
+    return max((il->ilcolumns - il->static_length) / 4,  1);
 }
 
-
+extern window_t *il_window;
 /*
  * The input_line constructor.
  */
@@ -255,13 +255,13 @@ il_init()
     il->error = 0;
     il->buffer = NULL;
     il->kill_ring = NULL;
-    il->columns = 0;
-    il->line = 0;
+    il->ilcolumns = 0;
+    il->illine = 0;
     il_reset_line();
     getbegyx(stdscr, begy, begx);
     getmaxyx(stdscr, maxy, maxx);
     il->window = window_init(1, maxx, maxy-2, begx);
-
+    il_window=il->window; /* hack: so tty.c can see it  */
     use_section("[GITFM-Setup]");
 
     configuration_getvarinfo("HistoryFile", &data, 1, DO_SEEK);
@@ -301,8 +301,8 @@ void
 il_resize(_columns, _line)
     int _columns, _line;
 {
-    il->columns = _columns;
-    il->line = _line;
+    il->ilcolumns = _columns;
+    il->illine = _line;
     window_resize(il->window, 0, _line, 1, _columns);
 }
 
@@ -338,8 +338,8 @@ void
 il_restore(saved_il)
     input_line_t *saved_il;
 {
-    size_t columns = il->columns;
-    size_t line = il->line;
+    size_t columns = il->ilcolumns;
+    size_t line = il->illine;
 
     if (saved_il == NULL)
 	return;
@@ -959,7 +959,7 @@ il_update_point()
     int scroll;
     size_t len;
     size_t normal_static_length = 0;
-    int il_too_small = il->columns < il->static_length + 3;
+    int il_too_small = il->ilcolumns < il->static_length + 3;
 
     tty_colors(il->error ? InputLineErrorBrightness : InputLineBrightness,
 	       il->error ? InputLineErrorForeground : InputLineForeground,
@@ -970,9 +970,9 @@ il_update_point()
 
     scroll = il_compute_scroll();
 
-    len = ((il->point >= il->columns) ?
-	   il->point - il->columns + 1 +
-	   (scroll - 1) - ((il->point - il->columns) % scroll) : 0);
+    len = ((il->point >= il->ilcolumns) ?
+	   il->point - il->ilcolumns + 1 +
+	   (scroll - 1) - ((il->point - il->ilcolumns) % scroll) : 0);
 
     window_goto(il->window, 0, il->point - len);
 
@@ -992,7 +992,7 @@ il_update()
     unsigned len;
     tty_status_t status;
     size_t normal_static_length = 0;
-    int il_too_small = il->columns < il->static_length + 3;
+    int il_too_small = il->ilcolumns < il->static_length + 3;
 
     tty_save(&status);
 
@@ -1005,28 +1005,28 @@ il_update()
 
     scroll = il_compute_scroll();
 
-    len = ((il->point >= il->columns) ?
-	   il->point - il->columns + 1 +
-	   (scroll - 1) - ((il->point - il->columns) % scroll) : 0);
+    len = ((il->point >= il->ilcolumns) ?
+	   il->point - il->ilcolumns + 1 +
+	   (scroll - 1) - ((il->point - il->ilcolumns) % scroll) : 0);
 
-    temp = xmalloc(il->columns * sizeof(wchar_t));
-    wmemset(temp, L' ', il->columns);
+    temp = xmalloc(il->ilcolumns * sizeof(wchar_t));
+    wmemset(temp, L' ', il->ilcolumns);
 
     if (il->echo)
 	wmemcpy(temp, il->buffer + il->static_length + len,
 		min(il->length   - il->static_length - len,
-		    il->columns  - il->static_length));
+		    il->ilcolumns  - il->static_length));
     else
 	wmemset(temp, L'*',
 	       min(il->length   - il->static_length - len,
-		   il->columns  - il->static_length));
+		   il->ilcolumns  - il->static_length));
 
     window_goto(il->window, 0, 0);
 
     if (!il_too_small)
 	window_puts(il->window, il->buffer, il->static_length);
 
-    window_puts(il->window, temp, il->columns - il->static_length);
+    window_puts(il->window, temp, il->ilcolumns - il->static_length);
 
     /* If we don't do this, the screen cursor will annoyingly jump to
        the left margin of the command line.  */
@@ -1075,7 +1075,6 @@ il_set_error_flag(flag)
 {
     il->error = flag;
 }
-
 
 /*
  * inputline's interface to the history library.

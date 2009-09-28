@@ -61,7 +61,6 @@
 #include "tty.h"
 #include "signals.h"
 #include "misc.h"
-#include "panel.h"
 
 /* Stolen from GNU Emacs.  */
 #ifdef _POSIX_VDISABLE
@@ -88,8 +87,7 @@
 #endif	/* HAVE_NCURSESW_CURSES_H */
 #endif
 
-extern window_t *title_window;
-extern window_t *il_window;
+extern window_t *title_window, *status_window;
 
 /* FIXME: remove? */
 /* I want to avoid including curses.h or any other header file that
@@ -1711,24 +1709,25 @@ tty_key_print(key_seq)
     wchar_t *wkey;
 
     tty_save(&tty_status);
-    tty_goto(title_window->window, tty_lines - 1, 0);
+    tty_goto(status_window->window, 0, 0);
     tty_background(WHITE);
     tty_foreground(BLACK);
 
     spaces = xmalloc( (tty_columns+1) * sizeof(wchar_t));
     wmemset(spaces, L' ', tty_columns);
     spaces[tty_columns] = '\0';
-    tty_puts(il_window->window, spaces, tty_columns);
+    tty_goto(status_window->window, 0, 0);
+    tty_puts(status_window->window, spaces, tty_columns);
     xfree(spaces);
-    tty_goto(title_window->window, tty_lines - 1, 0);
+    tty_goto(status_window->window, 0, 0);
 
     tty_key_machine2human(key_seq);
 
-    tty_puts(il_window->window, typed, wcslen(typed));
+    tty_puts(status_window->window, typed, wcslen(typed));
     wkey=mbsduptowcs((char *)keystr);
-    tty_puts(il_window->window, wkey, wcslen(wkey));
+    tty_puts(status_window->window, wkey, wcslen(wkey));
     xfree(wkey);
-    tty_puts(il_window->window, incomplete, wcslen(incomplete));
+    tty_puts(status_window->window, incomplete, wcslen(incomplete));
 
     tty_update();
     tty_restore(&tty_status);
