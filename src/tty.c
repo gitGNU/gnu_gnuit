@@ -936,7 +936,9 @@ tty_end(screen)
 	tty_put_screen(screen);
 #endif
     tty_end_cursorapp();
+#ifdef REMOVEME
     tty_io_goto(tty_lines, 0);
+#endif
     tty_flush();
     endwin();
     printf("\n");
@@ -1187,7 +1189,7 @@ tty_touch()
 	redrawwin(windows[i]);
 }
 
-
+#ifdef REMOVEME
 /*
  * Move the cursor.
  */
@@ -1209,7 +1211,7 @@ tty_io_goto(y, x)
     else
 	tputs(tgoto(TTY_CURSOR_MOVE, x, y), 1, tty_writec);
 }
-
+#endif
 
 /*
  * Set the foreground color. Use the ANSI color sequence where possible or
@@ -2048,13 +2050,13 @@ vcs_io(buf, op)
       vcsa_label:
 	(*fn)(vcsfd, buf, 4 + tty_lines * tty_columns * 2);
 	close(vcsfd);
-
+#ifdef REMOVEME
 	if (op == VCS_WRITE)
 	{
 	    tty_io_goto(buf[3], buf[2]);
 	    tty_flush();
 	}
-
+#endif
 	return 1;
     }
 
@@ -2090,8 +2092,10 @@ vcs_io(buf, op)
 
 	if (op == VCS_WRITE)
 	{
+#ifdef REMOVEME
 	    tty_io_goto(tty_lines - 1, 0);
 	    tty_flush();
+#endif
 	}
 	return 1;
     }
