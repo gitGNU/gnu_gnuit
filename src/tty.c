@@ -1116,6 +1116,9 @@ tty_clear()
 void
 tty_fill()
 {
+    clear();
+    tty_touch();
+    tty_update();
     /* FIXME */
 #ifdef REMOVEME
     wmemset(tty_scr, L' ',
@@ -1123,7 +1126,6 @@ tty_fill()
     memset(tty_atr, tty_current_attribute,
 	    tty_lines * tty_columns * sizeof(unsigned char));
 #endif
-    tty_touch();
 }
 
 
@@ -1333,7 +1335,10 @@ void
 tty_foreground(color)
     int color;
 {
-    
+    short curfg, curbg;
+    pair_content(tty_current_color_pair, &curfg, &curbg);
+    tty_current_color_pair = tty_get_color_pair(color, curbg);
+    tty_update_attributes();
 #ifdef REMOVEME
     TTY_SET_FOREGROUND(color);
 #endif
@@ -1347,6 +1352,10 @@ void
 tty_background(color)
     int color;
 {
+    short curfg, curbg;
+    pair_content(tty_current_color_pair, &curfg, &curbg);
+    tty_current_color_pair = tty_get_color_pair(curfg, color);
+    tty_update_attributes();
     TTY_SET_BACKGROUND(color);
 }
 
@@ -1358,7 +1367,11 @@ void
 tty_brightness(status)
     int status;
 {
-    TTY_SET_BRIGHTNESS(status);
+    if(status)
+	tty_current_attribute=A_STANDOUT;
+    else
+	tty_current_attribute=A_NORMAL;
+    tty_update_attributes();
 }
 
 
@@ -1391,8 +1404,11 @@ tty_colors(brightness, foreground, background)
 static void
 tty_update_attributes()
 {
+    short curfg, curbg;
+    pair_content(tty_current_color_pair, &curfg, &curbg);
     attrset(tty_current_attribute);
     color_set(tty_current_color_pair, NULL);
+    bkgdset(curbg);
 }
 
 static int
