@@ -190,7 +190,8 @@ clock_refresh(signum)
     int hour;
     wchar_t buf[16];
     struct tm *time;
-    int line, column;
+    /* FIXME: REMOVE */
+/*    int line, column;*/
     tty_status_t status;
 
     if (in_terminal_mode())
@@ -208,7 +209,9 @@ clock_refresh(signum)
     time = get_local_time();
 
     tty_save(&status);
-    tty_get_cursor(&line, &column);
+#ifdef REMOVEME
+/*    tty_get_cursor(&line, &column);*/
+#endif
 
     tty_cursor(OFF);
 
@@ -221,7 +224,7 @@ clock_refresh(signum)
     tty_colors(ClockBrightness, ClockForeground, ClockBackground);
     window_puts(title_window, buf, wcslen(buf));
 
-    tty_goto(title_window->window, line, column);
+    tty_goto(title_window->window, 1, title_window->wcolumns - 6);
     tty_restore(&status);
 
     if (signum)

@@ -2173,7 +2173,6 @@ main(argc, argv)
 	il_get_contents(&cmdln);
 
 	user_heart_attack = 0;
-
 	while ((ks = tty_get_key(&repeat_count)) == NULL)
 	    report_undefined_key(NULL);
 	status_update();

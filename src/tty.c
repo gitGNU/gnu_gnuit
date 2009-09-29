@@ -179,17 +179,6 @@ static int bg_cache = INVALID_CACHE;
 static int br_cache = INVALID_CACHE;
 static int rv_cache = INVALID_CACHE;
 
-#ifdef REMOVEME
-/* tty_scr the current status of the screen, while tty_atr is used to
-   keep the current status of the attributes.  */
-static wchar_t *tty_scr;
-static unsigned char *tty_atr;
-
-/* tty_prev_scr will always contain the copy of the previous screen,
-   while tty_atr will contain the copy of the previous attributes.  */
-static wchar_t *tty_prev_scr;
-#endif
-
 /* The ANSI color sequences.  */
 static wchar_t ansi_foreground[] = { 0x1b, L'[', L'3', L'0', L'm', 0 };
 static wchar_t ansi_background[] = { 0x1b, L'[', L'4', L'0', L'm', 0 };
@@ -406,8 +395,6 @@ static char term_env[]      = "TERMINFO";
 
 #endif  /* !HAVE_LIBTERMCAP */
 
-
-static void tty_io_goto PROTO ((int, int));
 static void tty_io_foreground PROTO ((int));
 static void tty_io_background PROTO ((int));
 static void tty_io_brightness PROTO ((int));
@@ -895,10 +882,6 @@ void
 tty_io_clear()
 {
     clear();
-    /* FIXME */
-    return;
-    tputs(TTY_CLEAR_SCREEN, tty_lines, tty_writec);
-    tty_flush();
 }
 
 /* uses the ti/te capability to signal we are entering/exiting a cursor */
@@ -1093,6 +1076,9 @@ tty_puts(window, buf, length)
     tty_offset = (tty_cursor_y * tty_columns) + x;
 #endif
     waddnwstr(window, buf, length);
+#ifdef REMOVEME
+    wrefresh(window);		/* FIXME: DEBUG */
+#endif
     return length;
 }
 
@@ -1147,15 +1133,6 @@ void
 tty_clear()
 {
     tty_io_clear();
-#ifdef REMOVEME
-    wmemset(tty_scr,      L'\0', tty_lines*tty_columns);
-    memset(tty_atr,        '\0', tty_lines*tty_columns);
-    wmemset(tty_prev_scr, L'\0', tty_lines*tty_columns);
-    memset(tty_prev_atr,   '\0', tty_lines*tty_columns);
-
-    tty_cursor_x = 0;
-    tty_cursor_y = 0;
-#endif
 }
 
 
@@ -1188,30 +1165,6 @@ tty_touch()
     for(i=0; i<num_windows; i++)
 	redrawwin(windows[i]);
 }
-
-#ifdef REMOVEME
-/*
- * Move the cursor.
- */
-static void
-tty_io_goto(y, x)
-    int y, x;
-{
-    return;
-    /* FIXME */
-    /* If the 'ms' flag is present, reset all the attributes before moving
-       the cursor.  */
-    if (TTY_MS_FLAG == 0)
-	tty_defaults();
-    /* Sanity checking.  */
-    if (x < 0 || x >= tty_columns ||
-	y < 0 || y >= tty_lines)
-	tputs(tgoto(TTY_CURSOR_MOVE, tty_columns - 1, tty_lines - 1),
-	      1, tty_writec);
-    else
-	tputs(tgoto(TTY_CURSOR_MOVE, x, y), 1, tty_writec);
-}
-#endif
 
 /*
  * Set the foreground color. Use the ANSI color sequence where possible or
@@ -1386,6 +1339,7 @@ tty_goto(window, y, x)
 }
 
 
+#ifdef REMOVEME
 /*
  * Return the current coordinates of the cursor (line/column).
  */
@@ -1399,7 +1353,7 @@ tty_get_cursor(y, x)
     *x = tty_cursor_x;
 #endif
 }
-
+#endif
 
 /*
  * Set the foreground color.
