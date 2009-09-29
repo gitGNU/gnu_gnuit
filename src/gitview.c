@@ -806,7 +806,6 @@ main(argc, argv)
     curs_set(0);
     resize(0);
 
-    tty_get_screen(screen);
     tty_set_mode(TTY_NONCANONIC);
     tty_defaults();
 

@@ -2087,7 +2087,6 @@ main(argc, argv)
 
     resize(0);
 
-    tty_get_screen(screen);
     tty_set_mode(TTY_NONCANONIC);
     tty_defaults();
 
@@ -2237,9 +2236,6 @@ main(argc, argv)
 				}
 				else
 				{
-				    if (command->save_screen)
-					tty_get_screen(screen);
-
 				    tty_touch();
 
 				    if (command->pause)
@@ -2435,7 +2431,6 @@ main(argc, argv)
 				panel_no_optimizations(src_panel);
 				panel_no_optimizations(dst_panel);
 				tty_touch();
-				tty_get_screen(screen);
 				action_status = 1;
 				wait_msg = 1;
 			    }
@@ -2560,7 +2555,6 @@ main(argc, argv)
 				start(soutput_string, 0);
 				xfree(soutput_string);
 				xfree(output_string);
-				tty_get_screen(screen);
 				il_history(IL_RECORD);
 				status(CommandLineModeHelp,
 				       STATUS_OK, STATUS_CENTERED);

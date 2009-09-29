@@ -1946,19 +1946,7 @@ tty_put_screen(buf)
 {
     tty_defaults();
     tty_clear();
-    buf = NULL;
     return;
-}
-
-/*
- * Dump the screen. Only used in Linux if the terminal is a virtual
- * console.
- */
-void
-tty_get_screen(buf)
-    char *buf;
-{
-    buf = NULL;
 }
 
 /*

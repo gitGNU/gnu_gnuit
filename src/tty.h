@@ -130,7 +130,6 @@ extern int tty_puts PROTO ((WINDOW *, wchar_t *, int));
 extern int tty_getc PROTO ((void));
 extern void tty_flush PROTO ((void));
 extern void tty_update PROTO ((void));
-extern void tty_get_screen PROTO ((char *));
 extern void tty_put_screen PROTO ((char *));
 extern int tty_get_color_index PROTO ((char *));
 extern void tty_key_list_insert PROTO ((unsigned char *, void *));

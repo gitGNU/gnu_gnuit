@@ -2991,7 +2991,6 @@ panel_act_ENTER(this, other)
 		xfree(cmd);
 
 		tty_touch();
-		tty_get_screen(screen);
 		panel_no_optimizations(this);
 		panel_no_optimizations(other);
 		il_insert_text(wname);
