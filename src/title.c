@@ -224,7 +224,6 @@ clock_refresh(signum)
     tty_colors(ClockBrightness, ClockForeground, ClockBackground);
     window_puts(title_window, buf, wcslen(buf));
 
-    tty_goto(title_window->window, 1, title_window->wcolumns - 6);
     tty_restore(&status);
 
     if (signum)

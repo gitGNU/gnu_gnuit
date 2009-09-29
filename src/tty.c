@@ -996,19 +996,13 @@ tty_key_machine2human(key_seq)
     return (unsigned char *)keystr;
 }
 
-extern WINDOW *windows[];
-extern int num_windows;
-
 /*
  * Update the tty screen.
  */
 void
 tty_update()
 {
-    int i;
-    for(i=0; i<num_windows; i++)
-	wnoutrefresh(windows[i]);
-    doupdate();
+    refresh();
 }
 
 
@@ -1038,8 +1032,7 @@ tty_writes(s, len)
  * wrap around).  Return the number of characters written.
  */
 int
-tty_puts(window, buf, length)
-    WINDOW *window;
+tty_puts(buf, length)
     wchar_t *buf;
     int length;
 {
@@ -1057,9 +1050,9 @@ tty_puts(window, buf, length)
 
     tty_offset = (tty_cursor_y * tty_columns) + x;
 #endif
-    waddnwstr(window, buf, length);
+    addnwstr(buf, length);
 #ifdef REMOVEME
-    wrefresh(window);		/* FIXME: DEBUG */
+    refresh();		/* FIXME: DEBUG */
 #endif
     return length;
 }
@@ -1069,12 +1062,11 @@ tty_puts(window, buf, length)
  * Write a character to the screen.
  */
 int
-tty_putc(window, c)
-    WINDOW *window;
+tty_putc(c)
     wchar_t c;
 {
     wchar_t character = c;
-    int ret=tty_puts(window, &character, 1);
+    int ret=tty_puts(&character, 1);
     return ret;
 }
 
@@ -1143,9 +1135,7 @@ tty_fill()
 void
 tty_touch()
 {
-    int i;
-    for(i=0; i<num_windows; i++)
-	redrawwin(windows[i]);
+    touchwin(stdscr);
 }
 
 /*
@@ -1313,11 +1303,10 @@ tty_io_colors(attributes)
  * Move the cursor.
  */
 void
-tty_goto(window, y, x)
-    WINDOW *window;
+tty_goto(y, x)
     int y, x;
 {
-    wmove(window, y, x);
+    move(y, x);
 }
 
 
@@ -1402,8 +1391,8 @@ tty_colors(brightness, foreground, background)
 static void
 tty_update_attributes()
 {
-    wattrset(title_window->window,tty_current_attribute);
-    wcolor_set(title_window->window,tty_current_color_pair, NULL);
+    attrset(tty_current_attribute);
+    color_set(tty_current_color_pair, NULL);
 }
 
 static int
@@ -1684,25 +1673,24 @@ tty_key_print(key_seq)
     wchar_t *wkey;
 
     tty_save(&tty_status);
-    tty_goto(status_window->window, 0, 0);
+    tty_goto(tty_lines - 1, 0);
     tty_background(WHITE);
     tty_foreground(BLACK);
 
     spaces = xmalloc( (tty_columns+1) * sizeof(wchar_t));
     wmemset(spaces, L' ', tty_columns);
     spaces[tty_columns] = '\0';
-    tty_goto(status_window->window, 0, 0);
-    tty_puts(status_window->window, spaces, tty_columns);
+    tty_puts(spaces, tty_columns);
     xfree(spaces);
-    tty_goto(status_window->window, 0, 0);
+    tty_goto(tty_lines - 1, 0);
 
     tty_key_machine2human(key_seq);
 
-    tty_puts(status_window->window, typed, wcslen(typed));
+    tty_puts(typed, wcslen(typed));
     wkey=mbsduptowcs((char *)keystr);
-    tty_puts(status_window->window, wkey, wcslen(wkey));
+    tty_puts(wkey, wcslen(wkey));
     xfree(wkey);
-    tty_puts(status_window->window, incomplete, wcslen(incomplete));
+    tty_puts(incomplete, wcslen(incomplete));
 
     tty_update();
     tty_restore(&tty_status);

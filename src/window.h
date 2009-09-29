@@ -42,7 +42,6 @@
 
 typedef struct
 {
-    WINDOW *window;	/* corresponding curses window */
     int x;		/* window's x origin in the tty screen.  */
     int y;		/* window's y origin in the tty screen.  */
     int wlines;		/* window's number of lines.  */

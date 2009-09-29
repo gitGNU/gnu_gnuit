@@ -43,17 +43,12 @@
 #include "xmalloc.h"
 #include "tty.h"
 
-#define MAX_WINDOWS 10
-WINDOW *windows[MAX_WINDOWS];
-int num_windows;
-
 window_t *
 window_init(lines, cols, y, x)
     int lines, cols, y, x;
 {
     window_t *window = (window_t *)xmalloc(sizeof(window_t));
-    window->window=subwin(stdscr, lines, cols, y, x);
-    windows[num_windows++]=window->window;
+    window_resize(window, lines, cols, x, y);
     return window;
 }
 
@@ -63,10 +58,7 @@ window_end(window)
     window_t *window;
 {
     if (window)
-    {
-	delwin(window->window);
 	xfree(window);
-    }
 }
 
 
@@ -75,7 +67,6 @@ window_resize(window, x, y, lines, columns)
     window_t *window;
     int x, y, lines, columns;
 {
-    wresize(window->window, lines, columns);
     window->x       = x;
     window->y       = y;
     window->wlines   = lines;
@@ -100,10 +91,10 @@ window_puts(window, str, length)
 	return 0;
 
     if (x + length <= window->wcolumns)
-	return tty_puts(window->window, str, length);
+	return tty_puts(str, length);
 
     /* Write the visible part of the string.  */
-    return tty_puts(window->window, str, window->wcolumns - x);
+    return tty_puts(str, window->wcolumns - x);
 }
 
 
@@ -118,7 +109,7 @@ window_putc(window, c)
     if (window->cursor_y >= window->wlines)
 	return 0;
 
-    return tty_putc(window->window, c);
+    return tty_putc(c);
 }
 
 
@@ -129,7 +120,7 @@ window_goto(window, y, x)
 {
     window->cursor_x = x;
     window->cursor_y = y;
-    tty_goto(window->window, y, x);
+    tty_goto(y + window->y, x + window->x);
 }
 
 

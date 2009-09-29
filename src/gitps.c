@@ -1225,11 +1225,9 @@ main(argc, argv)
 	goto end;
     }
     set_header();
-    wrefresh(header_window->window);
     set_title();
-    wrefresh(title_window->window);
     set_status(NULL);
-    wrefresh(status_window->window);
+    tty_update();
 
     free_ps_list();
     build_ps_list(stdout_log);
