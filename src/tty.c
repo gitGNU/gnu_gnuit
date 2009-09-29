@@ -105,12 +105,12 @@ extern char *tgoto PROTO ((const char *__cstring, int __hpos, int __vpos));
 #define TTY_INPUT       0
 #define TTY_OUTPUT      1
 
-#ifdef HAVE_LINUX
+#ifdef HAVE_LINUX_REMOVEME
 #define VCS_READ	1
 #define VCS_WRITE	2
 #endif
 
-#ifdef HAVE_LINUX
+#ifdef HAVE_LINUX_REMOVEME
 static int vcs_read_ok;
 static int vcs_is_monochrome;
 #endif
@@ -237,10 +237,10 @@ extern int AnsiColors;
     _TTY_SET_REVERSEVID(tty_current_attribute, (status))
 
 
-#ifdef HAVE_LINUX
+#ifdef HAVE_LINUX_REMOVEME
 /* These variable tells us if we are using a Linux console.  */
 int LinuxConsole;
-#endif /* HAVE_LINUX */
+#endif /* HAVE_LINUX_REMOVEME */
 
 
 /* Structures for keys management.  */
@@ -914,7 +914,7 @@ tty_end(screen)
 
     tty_defaults();
 
-#ifdef HAVE_LINUX
+#ifdef HAVE_LINUX_REMOVEME
     if(screen && LinuxConsole)
 	tty_put_screen(screen);
 #endif
@@ -1956,7 +1956,7 @@ tty_resize()
 }
 
 
-#ifdef HAVE_LINUX
+#ifdef HAVE_LINUX_REMOVEME
 /*
  * Read and write the screen contents via a Linux virtual console.
  * Returns 0 on failure, non-zero otherwise.  Handle both /dev/vcsaX
@@ -2075,12 +2075,12 @@ void
 tty_get_screen(buf)
     char *buf;
 {
-#ifdef HAVE_LINUX
+#ifdef HAVE_LINUX_REMOVEME
     if (LinuxConsole)
 	vcs_read_ok = vcs_io(buf, VCS_READ);
 #else
     buf = NULL;
-#endif  /* HAVE_LINUX */
+#endif  /* HAVE_LINUX_REMOVEME */
 }
 
 
@@ -2099,7 +2099,7 @@ tty_put_screen(buf)
     /* FIXME */
     return;
 #ifdef REMOVEME
-#ifdef HAVE_LINUX
+#ifdef HAVE_LINUX_REMOVEME
     if (LinuxConsole)
     {
 	/* If we were unable to read from /dev/vcs*, then we should not
@@ -2120,10 +2120,10 @@ tty_put_screen(buf)
     }
     else
 	tty_clear();
-#else   /* !HAVE_LINUX */
+#else   /* !HAVE_LINUX_REMOVEME */
     tty_clear();
     buf = NULL;
-#endif  /* !HAVE_LINUX */
+#endif  /* !HAVE_LINUX_REMOVEME */
 #endif
 }
 
@@ -2177,14 +2177,14 @@ tty_get_capabilities()
     int err, i, term_errors = 0;
     char *termtype = getenv("TERM");
 
-#ifdef HAVE_LINUX
+#ifdef HAVE_LINUX_REMOVEME
     fstat(TTY_OUTPUT, &statbuf);
     /* dropped test for minor <= 8 - linux now has unlimited VCs */
     if ((statbuf.st_rdev >> 8) == LINUX_VC_MAJOR)
 	LinuxConsole = 1;
     else
 	LinuxConsole = 0;
-#endif /* HAVE_LINUX */
+#endif /* HAVE_LINUX_REMOVEME */
 
     if (termtype == NULL)
     {

@@ -92,10 +92,9 @@ Written by Tudor Hulubei and Andrei Pitis, Bucharest, Romania\n\n";
 
 #define MAX_STATIC_SIZE 50
 
-
-#ifdef HAVE_LINUX
+#ifdef HAVE_LINUX_REMOVEME
 extern int LinuxConsole;
-#endif /* HAVE_LINUX */
+#endif /* HAVE_LINUX_REMOVEME */
 
 
 #ifdef HAVE_LINUX
@@ -407,10 +406,10 @@ resize(resize_required)
 	if (tty_lines == old_tty_lines && tty_columns == old_tty_columns)
 	    return;
 
-#ifdef HAVE_LINUX
+#ifdef HAVE_LINUX_REMOVEME
     if (LinuxConsole)
 	screen = xrealloc(screen, 4 + tty_columns * tty_lines * 2);
-#endif  /* HAVE_LINUX */
+#endif  /* HAVE_LINUX_REMOVEME */
 
     /* Watch out for special cases (tty_lines < 7) because some
      * components will no longer fit.
