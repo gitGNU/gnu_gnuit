@@ -1935,116 +1935,6 @@ tty_resize()
 }
 
 
-#ifdef HAVE_LINUX_REMOVEME
-/*
- * Read and write the screen contents via a Linux virtual console.
- * Returns 0 on failure, non-zero otherwise.  Handle both /dev/vcsaX
- * and /dev/vcsX.  op specifies the operation to be performed: VCS_READ
- * or VCS_WRITE.  We check first for /dev/vcs?X since it makes debugging
- * easier (using /de/vcsa0 when debugging dumps the screen on the
- * debugger's console; not funny).
- */
-static int
-vcs_io(buf, op)
-    char *buf;
-    int op;
-{
-    ssize_t (*fn)();
-    int vcsfd, flag;
-    char vcs_name[16];
-    char vcsa_name[16];
-
-    strcpy(vcs_name, "/dev/vcsXX");
-    strcpy(vcsa_name, "/dev/vcsaXX");
-
-    if (op == VCS_READ)
-    {
-	flag = O_RDONLY;
-	fn = read;
-    }
-    else
-    {
-	flag = O_WRONLY;
-	fn = write;
-
-	if (vcs_is_monochrome)
-	    goto monochrome;
-    }
-
-    vcs_is_monochrome = 0;
-
-    /* First attempt: /dev/vcsaX.  */
-    vcsa_name[9] = tty_device_str[8];
-    vcsa_name[10] = tty_device_str[9];
-    vcsfd = open(vcsa_name, flag);
-
-    if (vcsfd != -1)
-    {
-      vcsa_label:
-	(*fn)(vcsfd, buf, 4 + tty_lines * tty_columns * 2);
-	close(vcsfd);
-#ifdef REMOVEME
-	if (op == VCS_WRITE)
-	{
-	    tty_io_goto(buf[3], buf[2]);
-	    tty_flush();
-	}
-#endif
-	return 1;
-    }
-
-    /* Second attempt: /dev/vcsa0.  */
-    vcsa_name[9] = '0';
-    vcsa_name[10] = '\0';
-    vcsfd = open(vcsa_name, flag);
-
-    if (vcsfd != -1)
-	goto vcsa_label;
-
-  monochrome:
-    /* We failed to access a /dev/vcsa* device.  */
-    vcs_is_monochrome = 1;
-
-    /* This is important in order to clear the screen attributes.  */
-    if (op == VCS_WRITE)
-	tty_clear();
-
-    /* Third attempt: /dev/vcsX (B/W).  */
-    vcs_name[8] = tty_device_str[8];
-    vcs_name[9] = tty_device_str[9];
-    vcsfd = open(vcs_name, flag);
-
-    if (vcsfd != -1)
-    {
-      vcs_label:
-	(*fn)(vcsfd, buf, 4 + tty_lines * tty_columns);
-	close(vcsfd);
-
-	/* Unfortunately, the b/w devices do not provide the 4 bytes header
-	   with screen size & cursor position information.  */
-
-	if (op == VCS_WRITE)
-	{
-#ifdef REMOVEME
-	    tty_io_goto(tty_lines - 1, 0);
-	    tty_flush();
-#endif
-	}
-	return 1;
-    }
-
-    /* Fourth attempt: /dev/vcs0 (B/W).  */
-    vcs_name[8] = '0';
-    vcs_name[9] = '\0';
-    vcsfd = open(vcs_name, flag);
-
-    if (vcsfd != -1)
-	goto vcs_label;
-
-    return 0;
-}
-#endif
-
 /*
  * Restore the screen. If the terminal is not a Linux virtual console, just
  * restore it to the default state.
@@ -2070,7 +1960,6 @@ tty_get_screen(buf)
 {
     buf = NULL;
 }
-
 
 /*
  * Get the color index from the colors[] index table.
