@@ -155,7 +155,9 @@ static int tty_cursor_y;
  *   bits 2,1,0:	foreground color
  */
 static int tty_current_attribute;
+#ifdef REMOVEME
 static unsigned char tty_io_current_attribute;
+#endif
 static int tty_current_color_pair;
 static int tty_next_free_color_pair;
 
@@ -163,6 +165,7 @@ static int tty_next_free_color_pair;
    after a suspend.  */
 static int tty_interrupt_char = key_INTERRUPT;
 
+#ifdef REMOVEME
 #define INVALID_CACHE 0
 #define VALID_CACHE   1
 
@@ -175,11 +178,13 @@ static int rv_cache = INVALID_CACHE;
 static wchar_t ansi_foreground[] = { 0x1b, L'[', L'3', L'0', L'm', 0 };
 static wchar_t ansi_background[] = { 0x1b, L'[', L'4', L'0', L'm', 0 };
 static wchar_t ansi_defaults[]   = { 0x1b, L'[', L'0', L'm', 0 };
+#endif
 
 /* These variable tells us if we should use standard ANSI color sequences.
    Its value is taken from the configuration file.  */
 extern int AnsiColors;
 
+#ifdef REMOVEME
 #define FOREGROUND_MASK 0x07
 #define BACKGROUND_MASK 0x38
 #define BRIGHTNESS_MASK 0x40
@@ -227,7 +232,7 @@ extern int AnsiColors;
     _TTY_SET_BRIGHTNESS(tty_current_attribute, (status))
 #define TTY_SET_REVERSEVID(status)\
     _TTY_SET_REVERSEVID(tty_current_attribute, (status))
-
+#endif
 
 /* Structures for keys management.  */
 tty_key_t *key_list_head;
@@ -381,11 +386,13 @@ static char term_env[]      = "TERMINFO";
 
 #endif  /* !HAVE_LIBTERMCAP */
 
+#ifdef REMOVEME
 static void tty_io_foreground PROTO ((int));
 static void tty_io_background PROTO ((int));
 static void tty_io_brightness PROTO ((int));
 static void tty_io_reversevid PROTO ((int));
 static void tty_io_colors PROTO ((int));
+#endif
 static int  tty_is_xterm PROTO ((char *));
 static int tty_get_color_pair PROTO ((short, short));
 static void tty_update_attributes PROTO ((void));
@@ -1005,7 +1012,7 @@ tty_update()
     refresh();
 }
 
-
+#ifdef REMOVEME
 /*
  * Add a string to the tty cache.  We implicitly assume that there will
  * be no attempt to write more than TTY_CACHE_SIZE character in a single
@@ -1024,7 +1031,7 @@ tty_writes(s, len)
     return len;
 }
 
-
+#endif
 /*
  * Write a string to the screen, at the current cursor position.
  * If the string is too long to fit between the current cursor
@@ -1140,6 +1147,7 @@ tty_touch()
     touchwin(stdscr);
 }
 
+#ifdef REMOVEME
 /*
  * Set the foreground color. Use the ANSI color sequence where possible or
  * tty_reverse() for monochrome terminals.
@@ -1299,7 +1307,7 @@ tty_io_colors(attributes)
     tty_io_foreground(_TTY_FOREGROUND(attributes));
     tty_io_background(_TTY_BACKGROUND(attributes));
 }
-
+#endif
 
 /*
  * Move the cursor.
@@ -1356,7 +1364,9 @@ tty_background(color)
     pair_content(tty_current_color_pair, &curfg, &curbg);
     tty_current_color_pair = tty_get_color_pair(curfg, color);
     tty_update_attributes();
+#ifdef REMOVEME
     TTY_SET_BACKGROUND(color);
+#endif
 }
 
 
@@ -1374,7 +1384,7 @@ tty_brightness(status)
     tty_update_attributes();
 }
 
-
+#ifdef REMOVEME
 /*
  * Set the reverse video status. This is only used internally by the
  * code in this file therefore it is declared 'static'.
@@ -1386,6 +1396,7 @@ tty_reversevid(status)
     TTY_SET_REVERSEVID(status);
 }
 
+#endif
 
 /*
  * Set the brightness, foreground and background all together.
@@ -1492,6 +1503,7 @@ void
 tty_defaults()
 {
     return;
+#ifdef REMOVEME
     /* FIXME */
     if (AnsiColors == ON)
 	tty_writes(ansi_defaults, wcslen(ansi_defaults));
@@ -1503,6 +1515,7 @@ tty_defaults()
     bg_cache = INVALID_CACHE;
     br_cache = INVALID_CACHE;
     rv_cache = INVALID_CACHE;
+#endif
 }
 
 
