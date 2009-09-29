@@ -94,8 +94,11 @@ typedef struct tag_tty_key_t
 } tty_key_t;
 
 
-typedef unsigned char tty_status_t;
-
+typedef struct tag_tty_status_t
+{
+    int attribute;
+    int color_pair;
+} tty_status_t;
 
 extern int tty_lines;
 extern int tty_columns;

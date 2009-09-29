@@ -154,8 +154,10 @@ static int tty_cursor_y;
  *   bits 5,4,3:	background color
  *   bits 2,1,0:	foreground color
  */
-static unsigned char tty_current_attribute;
+static int tty_current_attribute;
 static unsigned char tty_io_current_attribute;
+static int tty_current_color_pair;
+static int tty_next_free_color_pair;
 
 /* The current interrupt character.  We need to restore when resuming
    after a suspend.  */
@@ -385,7 +387,8 @@ static void tty_io_brightness PROTO ((int));
 static void tty_io_reversevid PROTO ((int));
 static void tty_io_colors PROTO ((int));
 static int  tty_is_xterm PROTO ((char *));
-
+static int tty_get_color_pair PROTO ((short, short));
+static void tty_update_attributes PROTO ((void));
 
 extern void fatal PROTO ((char *));
 
@@ -1341,7 +1344,10 @@ void
 tty_foreground(color)
     int color;
 {
+    
+#ifdef REMOVEME
     TTY_SET_FOREGROUND(color);
+#endif
 }
 
 
@@ -1386,11 +1392,42 @@ void
 tty_colors(brightness, foreground, background)
     int brightness, foreground, background;
 {
-    tty_brightness(brightness);
-    tty_foreground(foreground);
-    tty_background(background);
+    tty_current_attribute=A_NORMAL;
+    if(brightness)
+	    tty_current_attribute=A_STANDOUT;
+    tty_current_color_pair = tty_get_color_pair(foreground, background);
+    tty_update_attributes();
 }
 
+static void
+tty_update_attributes()
+{
+    wattrset(title_window->window,tty_current_attribute);
+    wcolor_set(title_window->window,tty_current_color_pair, NULL);
+}
+
+static int
+tty_get_color_pair(short fg, short bg)
+{
+    int i;
+    int pairnum=-1;
+    short thisfg, thisbg;
+    for(i=0; i < tty_next_free_color_pair; i++)
+    {
+	pair_content(i, &thisfg, &thisbg);
+	if((fg == thisfg) && (bg == thisbg))
+	{
+	    pairnum=i;
+	    break;
+	}
+    }
+    if(pairnum == -1)
+    {
+	pairnum=tty_next_free_color_pair++;
+	init_pair(pairnum, fg, bg);
+    }
+    return pairnum;
+}
 
 /*
  * Beep :-)
@@ -1425,7 +1462,8 @@ void
 tty_save(status)
     tty_status_t *status;
 {
-    *status = tty_current_attribute;
+    status->attribute = tty_current_attribute;
+    status->color_pair = tty_current_color_pair;
 }
 
 
@@ -1436,7 +1474,9 @@ void
 tty_restore(status)
     tty_status_t *status;
 {
-    tty_current_attribute = *status;
+    tty_current_attribute = status->attribute;
+    tty_current_color_pair = status->color_pair;
+    tty_update_attributes();
 }
 
 
@@ -2198,6 +2238,18 @@ tty_init(kbd_mode)
     nonl();
     cbreak();
     echo();
+    tty_next_free_color_pair=1;
+    if(has_colors())
+    {
+	start_color();
+	short f,b;
+	short i;
+	for(i=0; i < COLOR_PAIRS; i++)
+	{
+	    pair_content(i,&f,&b);
+	    fprintf(stderr, "%4d: %3d  %3d\n", i, f, b);
+	}
+    }
 }
 
 
