@@ -167,6 +167,7 @@ tty_key_t *key_list_head;
 tty_key_t *current_key;
 tty_key_t default_key;
 
+#ifdef REMOVEME
 /* 1Kb of cache memory for terminal optimizations.  Don't make this
    bigger, some terminal/OS combinations fail to transmit chunks of
    data that are too big.  I'm not sure I fully understand the problem,
@@ -178,6 +179,7 @@ tty_key_t default_key;
 
 static wchar_t tty_cache[TTY_CACHE_SIZE];
 static int tty_index;
+#endif
 
 #ifndef HAVE_LINUX
 static char term_buf[2048];
@@ -443,10 +445,6 @@ unsigned char key_ctrl_table[0x5f] =
 #define YES     1
 
 #define MAX_KEY_LENGTH	15
-
-/* Major number for Linux virtual console devices (/dev/tty*).  */
-#define LINUX_VC_MAJOR  4
-
 
 static int  keyno    = 0;
 static int  keyindex = 0;
@@ -747,6 +745,7 @@ tty_flush()
     refresh();
 }
 
+#ifdef REMOVEME
 /*
  * Wide char equivalent of tty_writec
  */
@@ -754,15 +753,6 @@ static int
 tty_writewc(c)
     wchar_t c;
 {
-#ifdef DEBUG
-    FILE *fp;
-    fp=fopen("/home/ianb/WRITEWCDEBUG","a");
-    if(fp)
-    {
-	fprintf(fp,"%lc ",c);
-	fclose(fp);
-    }
-#endif
     if (tty_index == TTY_CACHE_SIZE)
 	tty_flush();
 
@@ -788,6 +778,7 @@ tty_writec(c)
 	wc=L'?'; /* "should" never happen */
     return tty_writewc(wc);
 }
+#endif
 
 /* uses the ti/te capability to signal we are entering/exiting a cursor */
 /* addressable app (which saves/restores the screen, at least on xterm) */
@@ -819,9 +810,6 @@ tty_end(screen)
 
     tty_defaults();
     tty_end_cursorapp();
-#ifdef REMOVEME
-    tty_io_goto(tty_lines, 0);
-#endif
     tty_flush();
     endwin();
     printf("\n");
@@ -994,12 +982,7 @@ tty_read(buf, length)
 
 
 /*
- * Clear the screen using the current color attributes.  When the
- * Linux console receives the 'cl' (clear screen) escape sequence, it
- * clears the screen using the current color attributes, while all the
- * xterms I've seen seem not to do so.  Therefore, we won't rely on
- * this feature under Linux, to avoid potential problems, because I
- * don't know which approach is correct.
+ * Clear the screen using the current color attributes.
  */
 void
 tty_clear()
@@ -1143,8 +1126,7 @@ tty_get_color_pair(short fg, short bg)
 void
 tty_beep()
 {
-    tty_writec(7);
-    tty_flush();
+    beep();
 }
 
 
