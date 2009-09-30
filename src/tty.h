@@ -149,8 +149,6 @@ extern void tty_update_title PROTO ((wchar_t *));
 extern void tty_start_cursorapp PROTO ((void));
 extern void tty_end_cursorapp PROTO ((void));
 
-extern void tty_io_clear PROTO ((void));
-
 /*
 extern void tty_key_list_delete PROTO ((void));
 */

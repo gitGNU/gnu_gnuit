@@ -789,15 +789,6 @@ tty_writec(c)
     return tty_writewc(wc);
 }
 
-/*
- * Send the `cl' sequence to the terminal.
- */
-void
-tty_io_clear()
-{
-    clear();
-}
-
 /* uses the ti/te capability to signal we are entering/exiting a cursor */
 /* addressable app (which saves/restores the screen, at least on xterm) */
 void
@@ -1013,7 +1004,7 @@ tty_read(buf, length)
 void
 tty_clear()
 {
-    tty_io_clear();
+    clear();
 }
 
 
@@ -1958,16 +1949,7 @@ tty_init(kbd_mode)
     echo();
     tty_next_free_color_pair=1;
     if(has_colors())
-    {
 	start_color();
-	short f,b;
-	short i;
-	for(i=0; i < COLOR_PAIRS; i++)
-	{
-	    pair_content(i,&f,&b);
-	    fprintf(stderr, "%4d: %3d  %3d\n", i, f, b);
-	}
-    }
 }
 
 

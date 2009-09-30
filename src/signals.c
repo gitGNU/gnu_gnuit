@@ -81,7 +81,7 @@ service_pending_signals()
     if (refresh_requested)
     {
 	tty_defaults();
-	tty_io_clear();
+	tty_clear();
 	screen_refresh(SIGWINCH);
 	refresh_requested = 0;
 	alarm_requested = 0;
@@ -149,7 +149,7 @@ window_change(signum)
     if (signals_allowed)
     {
 	tty_defaults();
-	tty_io_clear();
+	tty_clear();
 	screen_refresh(signum);
 	refresh_requested = 0;
     }
