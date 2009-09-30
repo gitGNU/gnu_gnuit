@@ -997,7 +997,7 @@ tty_clear()
 void
 tty_fill()
 {
-    clear();
+    tty_clear();
     tty_touch();
     tty_update();
 }
@@ -1925,7 +1925,7 @@ tty_init(kbd_mode)
 
     /* init curses */
     initscr();
-    keypad(stdscr, TRUE);
+    keypad(stdscr, FALSE);
     nonl();
     cbreak();
     echo();
