@@ -167,20 +167,6 @@ tty_key_t *key_list_head;
 tty_key_t *current_key;
 tty_key_t default_key;
 
-#ifdef REMOVEME
-/* 1Kb of cache memory for terminal optimizations.  Don't make this
-   bigger, some terminal/OS combinations fail to transmit chunks of
-   data that are too big.  I'm not sure I fully understand the problem,
-   but 10Kb didn't work and 1Kb did.  xwrite() reported success,
-   but the screen was not correctly updated.  xterm bug!?  */
-/* Now tty_cache is wchar_t, it is 4 times the size, but
-   hopefully the above bug no longer applies */
-#define TTY_CACHE_SIZE 1024
-
-static wchar_t tty_cache[TTY_CACHE_SIZE];
-static int tty_index;
-#endif
-
 #ifndef HAVE_LINUX
 static char term_buf[2048];
 #endif
@@ -191,16 +177,14 @@ int tty_mode = TTY_CANONIC;
 
 char *tty_type;
 
-char PC;        /* For tputs.  */
-char *BC;       /* For tgoto/tparm.  */
-char *UP;
-
 #ifdef HAVE_LINUX
 speed_t ospeed;
 #else /* !HAVE_LINUX */
 short ospeed;
 #endif /* !HAVE_LINUX */
 
+
+static int TTY_COLUMNS, TTY_LINES;
 
 /* A structure describing some attributes we need to know about each
    capability. See below for greater detail.  */
@@ -219,28 +203,11 @@ typedef struct
 } tty_capability_t;
 
 
-#define TTY_CAPABILITIES_USED   38
-#define TTY_FIRST_SYMBOL_KEY    17
+#define TTY_CAPABILITIES_USED   21
+#define TTY_FIRST_SYMBOL_KEY    0
 
 static tty_capability_t tty_capability[TTY_CAPABILITIES_USED] =
 {
-    { "me", NULL, 0, 0, NULL },		/* Turn off all attributes.  */
-    { "mr", NULL, 0, 0, NULL },		/* Turn on reverse video mode.  */
-    { "md", NULL, 0, 0, NULL },		/* Turn on bold.  */
-    { "vi", NULL, 0, 0, NULL },		/* Make the cursor invisible.  */
-    { "ve", NULL, 0, 0, NULL },		/* Make the cursor appear normal.  */
-    { "cl", NULL, 0, 1, NULL },		/* Clear screen & home the cursor.  */
-    { "cm", NULL, 0, 1, NULL },		/* Move the cursor.  */
-    { "pc", NULL, 0, 0, NULL },		/* Padding character.  */
-    { "up", NULL, 0, 0, NULL },		/* Up one line.  */
-    { "le", NULL, 0, 0, NULL },		/* Move left one space.  */
-    { "so", NULL, 0, 0, NULL },		/* Enter standout mode.  */
-    { "sg", NULL, 0, 0, NULL },		/* This is a magic-cookie terminal.  */
-    { "ms", NULL, 0, 0, NULL },		/* Safe to move in standout mode.  */
-    { "co", NULL, 0, 0, NULL },		/* The number of columns.  */
-    { "li", NULL, 0, 0, NULL },		/* The number of lines.  */
-    { "ti", NULL, 0, 0, NULL },		/* Begin program that uses cursor motion.  */
-    { "te", NULL, 0, 0, NULL },		/* End program that uses cursor motion.  */
     { "ku", NULL, 0, 0, "UP" },		/* (UP) */
     { "kd", NULL, 0, 0, "DOWN" },	/* (DOWN) */
     { "kr", NULL, 0, 0, "RIGHT" },	/* (RIGHT) */
@@ -263,46 +230,6 @@ static tty_capability_t tty_capability[TTY_CAPABILITIES_USED] =
     { "k9", NULL, 0, 0, "F9" },		/* (F9) */
     { "k;", NULL, 0, 0, "F10" },	/* (F10) */
 };
-
-
-/* Some nice aliases...  */
-#define TTY_ATTRIBUTES_OFF      (tty_capability[0].string)
-#define TTY_REVERSE_ON          (tty_capability[1].string)
-#define TTY_BRIGHT_ON           (tty_capability[2].string)
-#define TTY_CURSOR_OFF          (tty_capability[3].string)
-#define TTY_CURSOR_ON           (tty_capability[4].string)
-#define TTY_CLEAR_SCREEN        (tty_capability[5].string)
-#define TTY_CURSOR_MOVE         (tty_capability[6].string)
-#define TTY_PAD_CHAR            (tty_capability[7].string)
-#define TTY_UP_ONE_LINE         (tty_capability[8].string)
-#define TTY_LEFT_ONE_SPACE      (tty_capability[9].string)
-#define TTY_STANDOUT_ON		(tty_capability[10].string)
-#define TTY_MAGIC_COOKIE	(tty_capability[11].integer)
-#define TTY_MS_FLAG		(tty_capability[12].integer)
-#define TTY_COLUMNS		(tty_capability[13].integer)
-#define TTY_LINES		(tty_capability[14].integer)
-#define TTY_START_CURSORAPP	(tty_capability[15].string)
-#define TTY_END_CURSORAPP	(tty_capability[16].string)
-
-/* Some more nice aliases...  */
-#define TTY_ATTRIBUTES_OFF_NAME 	(tty_capability[0].name)
-#define TTY_REVERSE_ON_NAME     	(tty_capability[1].name)
-#define TTY_BRIGHT_ON_NAME      	(tty_capability[2].name)
-#define TTY_CURSOR_OFF_NAME     	(tty_capability[3].name)
-#define TTY_CURSOR_ON_NAME      	(tty_capability[4].name)
-#define TTY_CLEAR_SCREEN_NAME   	(tty_capability[5].name)
-#define TTY_CURSOR_MOVE_NAME    	(tty_capability[6].name)
-#define TTY_PAD_CHAR_NAME       	(tty_capability[7].name)
-#define TTY_UP_ONE_LINE_NAME    	(tty_capability[8].name)
-#define TTY_LEFT_ONE_SPACE_NAME 	(tty_capability[9].name)
-#define TTY_STANDOUT_ON_NAME		(tty_capability[10].name)
-#define TTY_MAGIC_COOKIE_NAME		(tty_capability[11].name)
-#define TTY_MS_FLAG_NAME		(tty_capability[12].name)
-#define TTY_COLUMNS_NAME		(tty_capability[13].name)
-#define TTY_LINES_NAME			(tty_capability[14].name)
-#define TTY_START_CURSORAPP_NAME	(tty_capability[15].name)
-#define TTY_END_CURSORAPP_NAME		(tty_capability[16].name)
-
 
 #ifdef HAVE_LIBTERMCAP
 
@@ -1722,8 +1649,9 @@ tty_get_symbol_key_seq(symbol)
 static void
 tty_get_capabilities()
 {
-    char *capability_buf, *tmp;
+    char *capability_buf;
     int err, i, term_errors = 0;
+    int begy, begx, maxy, maxx;
     char *termtype = getenv("TERM");
 
     if (termtype == NULL)
@@ -1770,7 +1698,7 @@ tty_get_capabilities()
 	    termtype = "ansi";
 	    goto retry;
 	}
-	
+
 	if (tty_is_xterm(termtype))
 	{
 	    fprintf(stderr, "%s: trying xterm...\n", g_program);
@@ -1793,60 +1721,13 @@ tty_get_capabilities()
 
     capability_buf = xmalloc(2048);
 
-    tmp = tgetstr(TTY_PAD_CHAR_NAME, &capability_buf);
-    PC = tmp ? *tmp : 0;
-
-    BC = tgetstr(TTY_LEFT_ONE_SPACE_NAME, &capability_buf);
-    UP = tgetstr(TTY_UP_ONE_LINE_NAME,    &capability_buf);
-
-    if (BC == NULL || UP == NULL)
-	BC = UP = NULL;
-
-    TTY_ATTRIBUTES_OFF = tgetstr(TTY_ATTRIBUTES_OFF_NAME, &capability_buf);
-    TTY_BRIGHT_ON      = tgetstr(TTY_BRIGHT_ON_NAME,      &capability_buf);
-    TTY_REVERSE_ON     = tgetstr(TTY_REVERSE_ON_NAME,     &capability_buf);
-
-    if (TTY_ATTRIBUTES_OFF == NULL)
-	TTY_REVERSE_ON = TTY_BRIGHT_ON = NULL;
-
-    TTY_STANDOUT_ON  = tgetstr(TTY_STANDOUT_ON_NAME,  &capability_buf);
-
-    if (TTY_STANDOUT_ON == NULL)
-    {
-	TTY_STANDOUT_ON = NULL;
-	TTY_MS_FLAG = 0;
-    }
-    else
-    {
-	/* Use standout instead of reverse video whenever possible.  */
-	TTY_REVERSE_ON = TTY_STANDOUT_ON;
-	TTY_MS_FLAG = tgetflag(TTY_MS_FLAG_NAME);
-    }
-
-    /* Check for magic-cookie terminals.  Not supported yet.  */
-    TTY_MAGIC_COOKIE = tgetnum(TTY_MAGIC_COOKIE_NAME);
-
-    if (TTY_MAGIC_COOKIE >= 0)
-	TTY_ATTRIBUTES_OFF = TTY_REVERSE_ON = TTY_BRIGHT_ON = NULL;
-
-
     /* Try to figure out the number of lines and columns as specified
        in the termcap description.  */
-    TTY_COLUMNS = tgetnum(TTY_COLUMNS_NAME);
-    TTY_LINES   = tgetnum(TTY_LINES_NAME);
+    getbegyx(stdscr, begy, begx);
+    getmaxyx(stdscr, maxy, maxx);
 
-
-    TTY_CURSOR_OFF = tgetstr(TTY_CURSOR_OFF_NAME, &capability_buf);
-    TTY_CURSOR_ON  = tgetstr(TTY_CURSOR_ON_NAME,  &capability_buf);
-
-    if (TTY_CURSOR_OFF == NULL || TTY_CURSOR_ON == NULL)
-	TTY_CURSOR_ON = TTY_CURSOR_OFF = NULL;
-
-    TTY_CLEAR_SCREEN = tgetstr(TTY_CLEAR_SCREEN_NAME, &capability_buf);
-    TTY_CURSOR_MOVE  = tgetstr(TTY_CURSOR_MOVE_NAME,  &capability_buf);
-
-    TTY_START_CURSORAPP = tgetstr(TTY_START_CURSORAPP_NAME, &capability_buf);
-    TTY_END_CURSORAPP = tgetstr(TTY_END_CURSORAPP_NAME, &capability_buf);
+    TTY_COLUMNS = maxx-begx;
+    TTY_LINES   = maxy-begy;
 
     for (i = TTY_FIRST_SYMBOL_KEY; i < TTY_CAPABILITIES_USED; i++)
 	tty_capability[i].string = tgetstr(tty_capability[i].name,
