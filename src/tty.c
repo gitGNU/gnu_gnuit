@@ -1072,20 +1072,9 @@ tty_restore(status)
 void
 tty_defaults()
 {
-    return;
-#ifdef REMOVEME
-    /* FIXME */
-    if (AnsiColors == ON)
-	tty_writes(ansi_defaults, wcslen(ansi_defaults));
-
-    if (TTY_ATTRIBUTES_OFF)
-	tputs(TTY_ATTRIBUTES_OFF, 1, tty_writec);
-
-    fg_cache = INVALID_CACHE;
-    bg_cache = INVALID_CACHE;
-    br_cache = INVALID_CACHE;
-    rv_cache = INVALID_CACHE;
-#endif
+    tty_current_attribute=A_NORMAL;
+    tty_current_color_pair=0;	/* 0=terminal default, at least under ncurses */
+    tty_update_attributes();
 }
 
 
