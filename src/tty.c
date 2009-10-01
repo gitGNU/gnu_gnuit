@@ -402,6 +402,8 @@ void
 tty_set_mode(mode)
     int mode;
 {
+    /* Leave this code for now, we still need: */
+    /* ^G ^Z and ixoff */
     if (mode == TTY_NONCANONIC)
     {
 #ifdef HAVE_POSIX_TTY
@@ -671,41 +673,6 @@ tty_flush()
 {
     refresh();
 }
-
-#ifdef REMOVEME
-/*
- * Wide char equivalent of tty_writec
- */
-static int
-tty_writewc(c)
-    wchar_t c;
-{
-    if (tty_index == TTY_CACHE_SIZE)
-	tty_flush();
-
-    tty_cache[tty_index++] = c;
-    return 1;
-}
-
-/*
- * Write a character to the screen.  Used by tputs() to output
- * characters.  Actually we are only storing them in a buffer
- * (tty_cache[]) and flush them later (in tty_flush()).
- */
-static int
-tty_writec(c)
-    char c;
-{
-    wchar_t wc;
-    int ret;
-    /* tty_writec is only called for terminal escape sequences */
-    /* which will always be single-byte characters */
-    ret=mbtowc(&wc,&c,1);
-    if(ret != 1)
-	wc=L'?'; /* "should" never happen */
-    return tty_writewc(wc);
-}
-#endif
 
 /* uses the ti/te capability to signal we are entering/exiting a cursor */
 /* addressable app (which saves/restores the screen, at least on xterm) */
