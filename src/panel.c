@@ -2074,6 +2074,7 @@ panel_update_entry(this, entry)
 	window_goto(this->window, entry - this->first_on_screen + 1, 1);
 	window_puts(this->window, this->temp, effective_columns - 2);
     }
+    tty_update();
 }
 
 

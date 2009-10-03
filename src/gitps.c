@@ -392,10 +392,10 @@ update_title(str)
 static void
 remove_log()
 {
-    if (stdout_log_name)
+    if (stdout_log_name && *stdout_log_name)
 	unlink(stdout_log_name);
 
-    if (stderr_log_name)
+    if (stderr_log_name && *stderr_log_name)
 	unlink(stderr_log_name);
 }
 
@@ -1189,6 +1189,8 @@ main(argc, argv)
     stderr_log_name     = xmalloc(32 + strlen(temporary_directory) + 1);
     sprintf(stdout_log_template, "%s/gitps.1.XXXXXX", temporary_directory);
     sprintf(stderr_log_template, "%s/gitps.2.XXXXXX", temporary_directory);
+    *stdout_log_name    = 0;
+    *stderr_log_name    = 0;
 
     if (ps(arguments) == 0)
 	return 1;

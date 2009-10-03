@@ -20,6 +20,9 @@
 
 /* Written by Tudor Hulubei and Andrei Pitis.  */
 
+/* REMOVEME: debug */
+void dlog(char *str);
+
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
@@ -818,6 +821,13 @@ tty_puts(buf, length)
     wchar_t *buf;
     int length;
 {
+    char debugbuf[500];
+    wchar_t strbuf[500];
+    wcsncpy(strbuf, buf, length);
+    strbuf[length]=0;
+    sprintf(debugbuf, "TTY_PUTS(%d): %ls\n", length, strbuf);
+    dlog(debugbuf);
+
 #ifdef REMOVEME
     /* FIXME: what about bounds checking? */
     if (x >= tty_columns)
@@ -907,7 +917,7 @@ tty_fill()
 void
 tty_touch()
 {
-    touchwin(stdscr);
+    clearok(curscr,1);
 }
 
 /*
@@ -917,6 +927,9 @@ void
 tty_goto(y, x)
     int y, x;
 {
+    char buf[100];
+    sprintf(buf, "TTY_GOTO: x: %d y: %d", x, y);
+    dlog(buf);
     move(y, x);
 }
 
@@ -1820,4 +1833,15 @@ tty_is_xterm(term)
 	return 1;
     }
     return 0;
+}
+
+void dlog(char *str)
+{
+    FILE *fp;
+    fp=fopen("LOG","a");
+    if(fp)
+    {
+	fprintf(fp, "%s\n", str);
+	fclose(fp);
+    }
 }

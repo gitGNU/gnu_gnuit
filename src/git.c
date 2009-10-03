@@ -471,6 +471,7 @@ void
 screen_refresh(signum)
     int signum;
 {
+    tty_touch();
     resize(0);
 
     if (signum == SIGCONT)
@@ -1987,7 +1988,8 @@ main(argc, argv)
     stderr_log_name     = xmalloc(32 + strlen(temporary_directory) + 1);
     sprintf(stdout_log_template, "%s/gnuit.1.XXXXXX", temporary_directory);
     sprintf(stderr_log_template, "%s/gnuit.2.XXXXXX", temporary_directory);
-
+    *stdout_log_name    = 0;
+    *stderr_log_name    = 0;
     use_section("[Setup]");
 
     if (ansi_colors == -1)

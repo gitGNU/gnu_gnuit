@@ -234,10 +234,10 @@ start(command, hide)
 void
 remove_log()
 {
-    if (stdout_log_name)
+    if (stdout_log_name && *stdout_log_name)
 	unlink(stdout_log_name);
 
-    if (stderr_log_name)
+    if (stderr_log_name && *stderr_log_name)
 	unlink(stderr_log_name);
 }
 
