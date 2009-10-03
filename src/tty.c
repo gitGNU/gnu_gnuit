@@ -1837,6 +1837,7 @@ tty_is_xterm(term)
 
 void dlog(char *str)
 {
+#ifdef REMOVEME
     FILE *fp;
     fp=fopen("LOG","a");
     if(fp)
@@ -1844,4 +1845,5 @@ void dlog(char *str)
 	fprintf(fp, "%s\n", str);
 	fclose(fp);
     }
+#endif
 }
