@@ -539,6 +539,9 @@ void
 screen_refresh(signum)
     int signum;
 {
+    int i;
+    wchar_t *spaces;
+
     resize(0);
 
     if (signum == SIGCONT)
@@ -549,11 +552,17 @@ screen_refresh(signum)
     }
 
     tty_colors(ScreenBrightness, ScreenForeground, ScreenBackground);
-    tty_fill();
 
     g_size = file_length();
     g_lines = g_size / 16 + (g_size % 16 ? 1 : 0);
 
+    spaces=xmalloc(tty_columns * sizeof(wchar_t));
+    wmemset(spaces, L' ', tty_columns);
+    for(i=0; i < file_window->wcolumns; i++)
+    {
+	window_goto(file_window, i, 0);
+	window_puts(file_window, spaces, tty_columns);
+    }
     if (tty_lines >= 5)
     {
 	window_goto(file_window, 1, 0);
