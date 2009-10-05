@@ -739,7 +739,8 @@ panel_resize(this, x, y, lines, columns)
     else
 	this->scroll_step = StartupScrollStep;
 
-    this->temp = xrealloc(this->temp, (this->pcolumns * sizeof(wchar_t)));
+    /* x 4 to allow for combining-char unicode shenanigans  */
+    this->temp = xrealloc(this->temp, (4 * this->pcolumns * sizeof(wchar_t)));
     window_resize(this->window, x, y, lines, columns);
     panel_center_current_entry(this);
     this->horizontal_offset = 0;
@@ -1769,9 +1770,8 @@ panel_build_entry_field(this, entry, display_mode, columns, offset)
     char temp_rights[16];
     char hbuf[LONGEST_HUMAN_READABLE+1];
     wchar_t *wbuf;
-
-#ifdef DEBUG
-/*    fprintf(stderr,"%d: COLS: %d OFFSET: %d\n",entry, columns, offset);*/
+#ifdef REMOVEME
+    fprintf(stderr,"%d: COLS: %d OFFSET: %d\n",entry, columns, offset);
 #endif
     fflush(stderr);
     switch (display_mode)
