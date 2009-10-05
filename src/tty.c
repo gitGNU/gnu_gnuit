@@ -1452,7 +1452,6 @@ tty_resize()
 {
     getmaxyx(stdscr, tty_lines, tty_columns);
     return;
-#if REMOVEME
     char *env;
     char buf[32];
     int shell_lines = 0, shell_columns = 0;
@@ -1530,29 +1529,6 @@ tty_resize()
     sprintf(buf, "%d", tty_columns);
     xsetenv("COLUMNS", buf);
 
-    /* Resize the tty buffers.  */
-    if (tty_scr)
-	xfree(tty_scr);
-
-    if (tty_atr)
-	xfree(tty_atr);
-
-    if (tty_prev_scr)
-	xfree(tty_prev_scr);
-
-    if (tty_prev_atr)
-	xfree(tty_prev_atr);
-
-    tty_scr = (wchar_t *)xcalloc(
-	tty_columns * tty_lines, sizeof(wchar_t));
-    tty_atr = (unsigned char *)xcalloc(
-	tty_columns * tty_lines, sizeof(unsigned char));
-
-    tty_prev_scr = (wchar_t *)xcalloc(
-	tty_columns * tty_lines, sizeof(wchar_t));
-    tty_prev_atr = (unsigned char *)xcalloc(
-	tty_columns * tty_lines, sizeof(unsigned char));
-
 #ifdef SIGWINCH
     /* We need to pass the resize command to the parent process
        (usually the shell).  */
@@ -1560,7 +1536,6 @@ tty_resize()
        into it...  */
     /*kill(getppid(), SIGWINCH);*/
 #endif
-#endif  /* REMOVEME */
 }
 
 
