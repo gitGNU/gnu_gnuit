@@ -1492,9 +1492,8 @@ main(argc, argv)
 	    case BUILTIN_SIGSTKFLT: set_signal(SIGSTKFLT); break;
 #endif
 	    case BUILTIN_hard_refresh:
-		tty_touch();
-
 	    case BUILTIN_refresh:
+		tty_touch();
 		ps(arguments);
 		goto restart;
 

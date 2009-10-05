@@ -607,7 +607,6 @@ screen_refresh(signum)
 
     if (signum == SIGCONT)
 	tty_update_title(header_text);
-    tty_update(); /* FIXME: debug, remove */
 }
 
 
