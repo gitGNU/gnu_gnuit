@@ -97,7 +97,8 @@ typedef struct tag_tty_key_t
 typedef struct tag_tty_status_t
 {
     int attribute;
-    int color_pair;
+    int fg;
+    int bg;
 } tty_status_t;
 
 extern int tty_lines;

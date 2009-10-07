@@ -154,7 +154,8 @@ static int tty_last_char_flag;
  *   bits 2,1,0:	foreground color
  */
 static int tty_current_attribute;
-static int tty_current_color_pair;
+static int tty_current_fg;
+static int tty_current_bg;
 static int tty_next_free_color_pair;
 
 /* The current interrupt character.  We need to restore when resuming
@@ -940,9 +941,7 @@ void
 tty_foreground(color)
     int color;
 {
-    short curfg, curbg;
-    pair_content(tty_current_color_pair, &curfg, &curbg);
-    tty_current_color_pair = tty_get_color_pair(color, curbg);
+    tty_current_fg=color;
     tty_update_attributes();
 }
 
@@ -954,9 +953,7 @@ void
 tty_background(color)
     int color;
 {
-    short curfg, curbg;
-    pair_content(tty_current_color_pair, &curfg, &curbg);
-    tty_current_color_pair = tty_get_color_pair(curfg, color);
+    tty_current_bg = color;
     tty_update_attributes();
 }
 
@@ -985,25 +982,27 @@ tty_colors(brightness, foreground, background)
     tty_current_attribute=A_NORMAL;
     if(brightness)
 	    tty_current_attribute |= A_STANDOUT;
-    tty_current_color_pair = tty_get_color_pair(foreground, background);
+    tty_current_fg=foreground;
+    tty_current_bg=background;
     tty_update_attributes();
 }
 
 static void
 tty_update_attributes()
 {
-    short curfg, curbg;
-    pair_content(tty_current_color_pair, &curfg, &curbg);
-#if 0
-    if(!AnsiColors)
+    int cp;
+    if(AnsiColors == ON)
     {
-	if(curfg == BLACK || curbg == WHITE)
-	    tty_current_attribute |= A_REVERSE;
+	cp=tty_get_color_pair(tty_current_fg, tty_current_bg);
+	attrset(tty_current_attribute);
+	color_set(cp, NULL);
     }
-#endif
-    attrset(tty_current_attribute);
-    color_set(tty_current_color_pair, NULL);
-    bkgdset(curbg);
+    else
+    {
+	if(tty_current_fg != WHITE || tty_current_bg != BLACK)
+	    tty_current_attribute |= A_REVERSE;
+	attrset(tty_current_attribute);
+    }
 }
 
 static int
@@ -1012,6 +1011,7 @@ tty_get_color_pair(short fg, short bg)
     int i;
     int pairnum=-1;
     short thisfg, thisbg;
+    /* yuk. can we use PAIR_NUMBER instead? */
     for(i=0; i < tty_next_free_color_pair; i++)
     {
 	pair_content(i, &thisfg, &thisbg);
@@ -1062,7 +1062,8 @@ tty_save(status)
     tty_status_t *status;
 {
     status->attribute = tty_current_attribute;
-    status->color_pair = tty_current_color_pair;
+    status->fg = tty_current_fg;
+    status->bg = tty_current_bg;
 }
 
 
@@ -1074,7 +1075,8 @@ tty_restore(status)
     tty_status_t *status;
 {
     tty_current_attribute = status->attribute;
-    tty_current_color_pair = status->color_pair;
+    tty_current_fg = status->fg;
+    tty_current_bg = status->bg;
     tty_update_attributes();
 }
 
@@ -1085,8 +1087,20 @@ tty_restore(status)
 void
 tty_defaults()
 {
+    short fg, bg;
     tty_current_attribute=A_NORMAL;
-    tty_current_color_pair=0;	/* 0=terminal default, at least under ncurses */
+    if(AnsiColors == ON)
+    {
+	/* pair 0 == terminal default, at least under ncurses */
+	pair_content(0, &fg, &bg);
+	tty_current_fg=fg;
+	tty_current_bg=bg;
+    }
+    else
+    {
+	tty_current_fg=WHITE;
+	tty_current_bg=BLACK;
+    }
     tty_update_attributes();
 }
 
