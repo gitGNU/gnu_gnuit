@@ -32,13 +32,17 @@
 
 #include "stdc.h"
 
-#ifdef HAVE_CURSES_H
-#include <curses.h>
+#ifndef _XOPEN_SOURCE_EXTENDED
+#define _XOPEN_SOURCE_EXTENDED
 #endif
 
 #ifdef HAVE_NCURSESW_CURSES_H
 #include <ncursesw/curses.h>
-#endif
+#else
+#ifdef HAVE_CURSES_H
+#include <curses.h>
+#endif	/* HAVE_CURSES_H */
+#endif	/* HAVE_NCURSESW_CURSES_H */
 
 typedef struct
 {

@@ -33,7 +33,16 @@ void dlog(char *str);
 #ifndef _XOPEN_SOURCE_EXTENDED
 #define _XOPEN_SOURCE_EXTENDED
 #endif
+
+#ifdef HAVE_NCURSESW_CURSES_H
 #include <ncursesw/curses.h>
+#else
+#ifdef HAVE_CURSES_H
+#include <curses.h>
+#endif	/* HAVE_CURSES_H */
+#endif	/* HAVE_NCURSESW_CURSES_H */
+
+/* FIXME: ditch or check for in configure */
 #include <term.h>
 
 #ifdef HAVE_STDLIB_H
@@ -1464,8 +1473,6 @@ tty_get_previous_key_seq()
 void
 tty_resize()
 {
-    getmaxyx(stdscr, tty_lines, tty_columns);
-    return;
     char *env;
     char buf[32];
     int shell_lines = 0, shell_columns = 0;
