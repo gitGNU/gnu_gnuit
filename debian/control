@@ -3,7 +3,7 @@ Section: utils
 Priority: optional
 Maintainer: Ian Beckwith <ianb@debian.org>
 Uploaders: MJ Ray (Debian) <mjr@debian.org>
-Build-Depends: libncurses-dev, libreadline5-dev, texinfo, debhelper (>= 6), autotools-dev
+Build-Depends: libncurses-dev, libreadline-dev, texinfo, debhelper (>= 6), autotools-dev
 Standards-Version: 3.8.3
 Vcs-Browser: http://git.savannah.gnu.org/gitweb/?p=gnuit.git
 Vcs-Git: git://git.savannah.gnu.org/gnuit.git
