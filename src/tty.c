@@ -1482,6 +1482,11 @@ tty_resize()
     struct winsize winsz;
     int winsz_lines = 0, winsz_columns = 0;
 #endif /* HAVE_WINSZ */
+    endwin();
+    refresh();
+    tty_columns=COLS;
+    tty_lines=LINES;
+    return;
 
 #ifdef HAVE_WINSZ
 #if defined TIOCGSIZE && !defined TIOCGWINSZ
