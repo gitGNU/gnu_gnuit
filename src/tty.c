@@ -1477,19 +1477,6 @@ tty_resize()
     refresh();
     tty_columns=COLS;
     tty_lines=LINES;
-    return;
-#ifdef REMOVEME
-    /* Update the LINES & COLUMNS environment variables to reflect the
-       change in the window size.  This is important in order to avoid
-       passing children incorrect environment values.  We only do this
-       when we trust the values we've got (i.e. when we got them
-       through TIOCGWINSZ).  Thanks to xax@roedu.net for the
-       suggestion.  */
-    sprintf(buf, "%d", tty_lines);
-    xsetenv("LINES", buf);
-    sprintf(buf, "%d", tty_columns);
-    xsetenv("COLUMNS", buf);
-#endif
 }
 
 
@@ -1504,7 +1491,6 @@ tty_put_screen(buf)
 {
     tty_defaults();
     tty_clear();
-    return;
 }
 
 /*

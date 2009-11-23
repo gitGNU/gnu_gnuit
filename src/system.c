@@ -145,8 +145,21 @@ my_system(command, hide)
     else if (pid == 0)
     {
 	/* This is the child code.  */
+	char buf[32];
+
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
+
+	/* Update the LINES & COLUMNS environment variables to reflect the
+	   change in the window size.  This is important in order to avoid
+	   passing children incorrect environment values.
+	   Thanks to xax@roedu.net for the suggestion.
+	   Moved here from tty_resize as LINES and COLUMNS override curses
+	*/
+	sprintf(buf, "%d", tty_lines);
+	xsetenv("LINES", buf);
+	sprintf(buf, "%d", tty_columns);
+	xsetenv("COLUMNS", buf);
 
 	if (hide)
 	{
