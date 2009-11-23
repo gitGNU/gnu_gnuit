@@ -1,6 +1,6 @@
 dnl #####################################################################
 dnl #          Autoconf input file for GNU Interactive Tools            #
-dnl # Copyright (C) 1993-2003, 2006-2007 Free Software Foundation, Inc. #
+dnl # Copyright (C) 1993-2003, 2006-2009 Free Software Foundation, Inc. #
 dnl #####################################################################
 
 
@@ -493,41 +493,6 @@ if test "$git_cv_sys_bsd_tty" = "yes"; then
     AC_DEFINE(
 	[HAVE_BSD_TTY], 1,
         [Define if you have BSD compatible terminal interface.])
-fi
-
-dnl Check if ioctl(1, TIOCGWINSZ, &winsz) works.
-AC_CACHE_CHECK(
-    [for struct winsz],
-    [git_cv_struct_winsz],
-    [AC_TRY_LINK(
-	[
-#include <sys/types.h>
-#include <sys/ioctl.h>
-#ifdef HAVE_POSIX_TTY
-#include <termios.h>
-#else
-#ifdef HAVE_SYSTEMV_TTY
-#include <termio.h>
-#else
-#include <sgtty.h>
-#endif /* HAVE_SYSTEMV_TTY */
-#endif /* HAVE_POSIX_TTY */
-#if defined TIOCGSIZE && !defined TIOCGWINSZ
-#define TIOCGWINSZ TIOCGSIZE
-#endif
-	],
-        [{
-            struct winsize winsz;
-            ioctl(1, TIOCGWINSZ, &winsz);
-            winsz.ws_col = winsz.ws_row;
-        }],
-        git_cv_struct_winsz=yes,
-        git_cv_struct_winsz=no)]
-)
-if test "$git_cv_struct_winsz" = "yes"; then
-    AC_DEFINE(
-	[HAVE_WINSZ], 1,
-        [Define if you have the TIOCGWINSZ ioctl system call.])
 fi
 
 dnl Check the terminal capabilities library to use.

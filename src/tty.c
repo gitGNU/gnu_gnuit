@@ -1,6 +1,6 @@
 /* tty.c -- The tty management file.  */
 
-/* Copyright (C) 1993-2000, 2006-2007 Free Software Foundation, Inc.
+/* Copyright (C) 1993-2000, 2006-2009 Free Software Foundation, Inc.
 
  This file is part of gnuit.
 
@@ -1473,77 +1473,12 @@ tty_get_previous_key_seq()
 void
 tty_resize()
 {
-    char *env;
-    char buf[32];
-    int shell_lines = 0, shell_columns = 0;
-    int termcap_lines = 0, termcap_columns = 0;
-
-#ifdef HAVE_WINSZ
-    struct winsize winsz;
-    int winsz_lines = 0, winsz_columns = 0;
-#endif /* HAVE_WINSZ */
     endwin();
     refresh();
     tty_columns=COLS;
     tty_lines=LINES;
     return;
-
-#ifdef HAVE_WINSZ
-#if defined TIOCGSIZE && !defined TIOCGWINSZ
-#define TIOCGWINSZ TIOCGSIZE
-#endif
-    if (ioctl(TTY_OUTPUT, TIOCGWINSZ, &winsz) == 0)
-	if (winsz.ws_col && winsz.ws_row)
-	{
-	    winsz_columns = winsz.ws_col;
-	    winsz_lines   = winsz.ws_row;
-	}
-#endif /* HAVE_WINSZ */
-
-    if ((env = getenv("COLUMNS")))
-	sscanf(env, "%d", &shell_columns);
-
-    if ((env = getenv("LINES")))
-	sscanf(env, "%d", &shell_lines);
-
-    termcap_columns = TTY_COLUMNS;
-    termcap_lines   = TTY_LINES;
-
-#ifdef HAVE_WINSZ
-    if (columns_ok(winsz_columns))
-	tty_columns = winsz_columns;
-    else
-    {
-#endif
-	if (columns_ok(shell_columns))
-	    tty_columns = shell_columns;
-	else if (columns_ok(termcap_columns))
-	    tty_columns = termcap_columns;
-	else
-	    tty_columns = 80;
-#ifdef HAVE_WINSZ
-    }
-#endif
-
-#ifdef HAVE_WINSZ
-    if (lines_ok(winsz_lines))
-	tty_lines = winsz_lines;
-    else
-    {
-#endif
-	if (lines_ok(shell_lines))
-	    tty_lines = shell_lines;
-	else if (lines_ok(termcap_lines))
-	    tty_lines = termcap_lines;
-	else
-	    tty_lines = 24;
-#ifdef HAVE_WINSZ
-    }
-#endif
-
-    assert(tty_lines != 0);
-    assert(tty_columns != 0);
-
+#ifdef REMOVEME
     /* Update the LINES & COLUMNS environment variables to reflect the
        change in the window size.  This is important in order to avoid
        passing children incorrect environment values.  We only do this
@@ -1554,13 +1489,6 @@ tty_resize()
     xsetenv("LINES", buf);
     sprintf(buf, "%d", tty_columns);
     xsetenv("COLUMNS", buf);
-
-#ifdef SIGWINCH
-    /* We need to pass the resize command to the parent process
-       (usually the shell).  */
-    /* FIXME: This doesn't work and I haven't got the time to look
-       into it...  */
-    /*kill(getppid(), SIGWINCH);*/
 #endif
 }
 
