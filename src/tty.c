@@ -196,9 +196,6 @@ speed_t ospeed;
 short ospeed;
 #endif /* !HAVE_LINUX */
 
-
-static int TTY_COLUMNS, TTY_LINES;
-
 /* A structure describing some attributes we need to know about each
    capability. See below for greater detail.  */
 typedef struct
@@ -1605,11 +1602,6 @@ tty_get_capabilities()
     tty_type = xstrdup(termtype);
 
     capability_buf = xmalloc(2048);
-
-    /* Try to figure out the number of lines and columns as specified
-       in the termcap description.  */
-    TTY_COLUMNS = COLS;
-    TTY_LINES   = LINES;
 
     for (i = TTY_FIRST_SYMBOL_KEY; i < TTY_CAPABILITIES_USED; i++)
 	tty_capability[i].string = tgetstr(tty_capability[i].name,
