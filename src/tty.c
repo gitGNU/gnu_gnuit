@@ -1537,7 +1537,6 @@ tty_get_capabilities()
 {
     char *capability_buf;
     int err, i, term_errors = 0;
-    int begy, begx, maxy, maxx;
     char *termtype = getenv("TERM");
 
     if (termtype == NULL)
@@ -1609,11 +1608,8 @@ tty_get_capabilities()
 
     /* Try to figure out the number of lines and columns as specified
        in the termcap description.  */
-    getbegyx(stdscr, begy, begx);
-    getmaxyx(stdscr, maxy, maxx);
-
-    TTY_COLUMNS = maxx-begx;
-    TTY_LINES   = maxy-begy;
+    TTY_COLUMNS = COLS;
+    TTY_LINES   = LINES;
 
     for (i = TTY_FIRST_SYMBOL_KEY; i < TTY_CAPABILITIES_USED; i++)
 	tty_capability[i].string = tgetstr(tty_capability[i].name,

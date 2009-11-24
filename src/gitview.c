@@ -663,7 +663,6 @@ main(argc, argv)
     int c, ansi_colors = -1, use_last_screen_character = ON;
     int title_text_len;
     char * s_help;
-    int begy, begx, maxy, maxx;
 
 #ifdef HAVE_SETLOCALE
     setlocale(LC_ALL,"");
@@ -804,12 +803,10 @@ main(argc, argv)
 
     tty_start_cursorapp();
 
-    getbegyx(stdscr, begy, begx);
-    getmaxyx(stdscr, maxy, maxx);
-    title_window  = window_init(1, maxx, begy,   begx);
-    header_window = window_init(1, maxx, begy+1, begx);
-    file_window = window_init((maxy - (begy+4)), (maxx-begx), begy+2, begx);
-    status_window = window_init(1, maxx, maxy-1, begx);
+    title_window  = window_init(1, COLS, 0, 0);
+    header_window = window_init(1, COLS, 1, 0);
+    file_window = window_init(LINES-4, COLS, 2, 0);
+    status_window = window_init(1, COLS, LINES-1, 0);
 
     curs_set(0);
     resize(0);

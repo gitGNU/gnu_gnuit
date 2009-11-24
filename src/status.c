@@ -114,17 +114,13 @@ void
 status_init(default_message)
     wchar_t *default_message;
 {
-    int begy, begx, maxy, maxx;
-
     use_section(AnsiColors ? color_section : monochrome_section);
 
     get_colorset_var(StatusBarColors, StatusBarFields, STATUSBAR_FIELDS);
 
     status_default_message = default_message;
     toprintable(status_default_message, wcslen(status_default_message));
-    getbegyx(stdscr, begy, begx);
-    getmaxyx(stdscr, maxy, maxx);
-    status_window = window_init(1, maxx, maxy-1, begx);
+    status_window = window_init(1, COLS, LINES-1, 0);
 
 #ifdef HAVE_UTSNAME
     uname(&u);

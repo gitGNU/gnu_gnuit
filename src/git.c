@@ -1836,7 +1836,6 @@ main(argc, argv)
     wchar_t *cmdln = NULL, *output_string, *wptr, *wsrcptr, *input = NULL;
     wchar_t *search_string = NULL;
     int exit_msg_len, wptrlen;
-    int begy, begx, maxy, maxx;
     int left_panel_columns, right_panel_columns;
 
     /* Make sure we don't get signals before we are ready to handle
@@ -2044,9 +2043,6 @@ main(argc, argv)
     if (current_path == NULL)
 	fatal("`getcwd' failed: permission denied");
 
-    getbegyx(stdscr, begy, begx);
-    getmaxyx(stdscr, maxy, maxx);
-
     tty_start_cursorapp();
     title_init();
     il_init();
@@ -2061,10 +2057,10 @@ main(argc, argv)
 	sprintf(panel_path, "%s/%s", current_path, left_panel_path);
     }
 
-    right_panel_columns = ((maxx-begx) >> 1);
-    left_panel_columns = right_panel_columns + ((maxx-begx) & 1);
+    right_panel_columns = (COLS >> 1);
+    left_panel_columns = right_panel_columns + (COLS & 1);
 
-    left_panel = panel_init(panel_path, ((maxy-begy)-4), left_panel_columns, begy+1, begx);
+    left_panel = panel_init(panel_path, (LINES-4), left_panel_columns, 1, 0);
     xfree(panel_path);
 
     if (right_panel_path[0] == '/')
@@ -2076,8 +2072,8 @@ main(argc, argv)
 	sprintf(panel_path, "%s/%s", current_path, right_panel_path);
     }
 
-    right_panel = panel_init(panel_path, ((maxy-begy)-4), right_panel_columns,
-			     begy+1, left_panel_columns);
+    right_panel = panel_init(panel_path, (LINES-4), right_panel_columns,
+			     1, left_panel_columns);
 
     xfree(panel_path);
     xfree(current_path);

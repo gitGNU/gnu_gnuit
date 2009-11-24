@@ -134,7 +134,6 @@ calc_info_length()
 void
 title_init()
 {
-    int begy, begx, maxy, maxx;
     wchar_t *product=mbsduptowcs(PRODUCT);
     wchar_t *version=mbsduptowcs(VERSION);
     int namelen= 1 + wcslen(product) + 1 + wcslen(version) + 1; 
@@ -156,9 +155,7 @@ title_init()
     }
     mail_check();
     info_length = calc_info_length();
-    getbegyx(stdscr, begy, begx);
-    getmaxyx(stdscr, maxy, maxx);
-    title_window  = window_init(1, maxx, begy,   begx);
+    title_window  = window_init(1, COLS, 0, 0);
 }
 
 
