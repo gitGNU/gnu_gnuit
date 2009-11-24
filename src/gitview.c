@@ -338,7 +338,8 @@ update_line(line)
     int line_len=max(tty_columns, 80) + 1;
     wchar_t *line_string = xmalloc(line_len * sizeof(wchar_t));
 
-    wmemset(line_string, L' ', tty_columns);
+    wmemset(line_string, L' ', line_len-1);
+    line_string[line_len-1]='\0';
     memset(buf, '\0', sizeof(buf));
     lseek64(fd, (off64_t)line * sizeof(buf), SEEK_SET);
 
@@ -558,7 +559,7 @@ screen_refresh(signum)
 
     spaces=xmalloc(tty_columns * sizeof(wchar_t));
     wmemset(spaces, L' ', tty_columns);
-    for(i=0; i < file_window->wcolumns; i++)
+    for(i=0; i < file_window->wlines; i++)
     {
 	window_goto(file_window, i, 0);
 	window_puts(file_window, spaces, tty_columns);
