@@ -772,6 +772,9 @@ ps(args)
 
 	close(old_stdout);
 	close(old_stderr);
+
+	endwin();
+
 	fprintf(stderr, "%s: cannot write temp file: %s.\n",
 		g_program, ((stdout_log==NULL) ? stdout_log_name : stderr_log_name));
 	return 0;
@@ -812,6 +815,8 @@ ps(args)
 
 	close(old_stdout);
 	close(old_stderr);
+
+	endwin();
 
 	fprintf(stderr, "%s: invalid command line for ps(1).\n", g_program);
 	fprintf(stderr, "%s: the command was: `%s'.\n", g_program, ps_cmd);
