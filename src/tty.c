@@ -850,9 +850,6 @@ tty_puts(buf, length)
     tty_offset = (tty_cursor_y * tty_columns) + x;
 #endif
     addnwstr(buf, length);
-#ifdef REMOVEME
-    refresh();		/* FIXME: DEBUG */
-#endif
     return length;
 }
 

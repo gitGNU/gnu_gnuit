@@ -795,23 +795,13 @@ widefit(instr, startoffset, maxlen, pad)
     int slen=min(wcslen(str), maxlen);
     wchar_t *tmp=xmalloc((max(maxlen,slen)+1)*sizeof(wchar_t)); /* upper bound */
     int next=wcwidth(str[offset]);
-#ifdef DEBUG
-/*    fprintf(stderr, "%d",next);*/
-#endif
     while((offset < slen) &&  ((cols+next) < maxlen))
     {
 	tmp[offset]=str[offset];
 	offset++;
 	cols+=next;
 	next=wcwidth(str[offset]);
-#ifdef DEBUG
-/*	fprintf(stderr," + %d",next);*/
-#endif
     }
-    /* am i passing width to this or len (wrong)? */
-#ifdef DEBUG
-/*    fprintf(stderr," = %d width (%d length)\n", cols, offset);*/
-#endif
     if(pad == 0)
 	tmp[offset]=0; /* only one null will do */
     else
@@ -820,8 +810,5 @@ widefit(instr, startoffset, maxlen, pad)
 	    tmp[offset++]=L' ';
 	tmp[offset]=0;
     }
-#ifdef DEBUG
-/*    fprintf(stderr,"len: %2d width: %2d maxlen: %2d\n", maxlen, wcslen(tmp), wcswidth(tmp,1000));*/
-#endif
     return tmp;
 }
