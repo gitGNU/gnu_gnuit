@@ -568,14 +568,12 @@ screen_refresh(signum)
     {
 	window_goto(file_window, 1, 0);
 	window_puts(file_window, info_txt, wcslen(info_txt));
-	tty_update(); /* FIXME: debug, remove */ 
    }
 
     if (tty_lines >= 6)
     {
 	window_goto(file_window, 2, 0);
 	window_puts(file_window, line_txt, wcslen(line_txt));
-	tty_update(); /* FIXME: debug, remove */
     }
 
     if (tty_lines >= 9)
@@ -588,25 +586,19 @@ screen_refresh(signum)
 
 	window_goto(file_window, SEEK_LINE, 0);
 	window_puts(file_window, seek_txt, wcslen(seek_txt));
-	tty_update(); /* FIXME: debug, remove */
 	window_goto(file_window, SEEK_LINE, wcslen(seek_txt));
 	woff=mbsduptowcs(g_offset);
 	window_puts(file_window, woff, count);
 	xfree(woff);
-	tty_update(); /* FIXME: debug, remove */
     }
     else
 	g_current_line = 0;
 
     set_title();
-    tty_update(); /* FIXME: debug, remove */
     set_status();
-    tty_update(); /* FIXME: debug, remove */
     set_header();
-    tty_update(); /* FIXME: debug, remove */
 
     update_all();
-    tty_update(); /* FIXME: debug, remove */
 
     if (tty_lines >= 9)
 	window_goto(file_window, SEEK_LINE, wcslen(seek_txt) + count);
@@ -760,6 +752,7 @@ main(argc, argv)
 
     if (fd == -1)
     {
+	endwin();
 	fprintf(stderr, "%s: cannot open file %s.\n", g_program, filename);
 	return 1;
     }

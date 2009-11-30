@@ -1922,7 +1922,6 @@ panel_update_entry(this, entry)
     namewidth=wcswidth(fitted,namelen);
     width_adjust=namewidth - namelen;
     effective_columns=this->pcolumns - width_adjust;
-
     wmemcpy(&this->temp[1], fitted, namelen);
 
     if (c != L'\0')

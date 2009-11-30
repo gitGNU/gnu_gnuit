@@ -2097,7 +2097,6 @@ main(argc, argv)
     tty_update_title(panel_get_wpath(src_panel));
 
   restart:
-    tty_update(); /* FIXME: debug, remove */
     if (wait_msg)
     {
 	alarm(0);

@@ -187,8 +187,6 @@ clock_refresh(signum)
     int hour;
     wchar_t buf[16];
     struct tm *time;
-    /* FIXME: REMOVE */
-/*    int line, column;*/
     tty_status_t status;
 
     if (in_terminal_mode())

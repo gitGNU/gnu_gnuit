@@ -376,9 +376,6 @@ signals_init()
 #endif /* SIGWINCH */
 
     /* Miscelaneous signals that we want to handle.  */
-#ifdef FIXME
-    signal(SIGSEGV, fatal_signal);
-#endif
     signal(SIGHUP,  fatal_signal);
     signal(SIGTERM, fatal_signal);
     signal(SIGQUIT, SIG_IGN);
