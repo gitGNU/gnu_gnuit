@@ -969,9 +969,9 @@ tty_brightness(status)
     int status;
 {
     if(status)
-	tty_current_attribute |= A_STANDOUT;
+	tty_current_attribute |= A_BOLD;
     else
-	tty_current_attribute &= ~A_STANDOUT;
+	tty_current_attribute &= ~A_BOLD;
     tty_update_attributes();
 }
 
@@ -984,7 +984,7 @@ tty_colors(brightness, foreground, background)
 {
     tty_current_attribute=A_NORMAL;
     if(brightness)
-	    tty_current_attribute |= A_STANDOUT;
+	    tty_current_attribute |= A_BOLD;
     tty_current_fg=foreground;
     tty_current_bg=background;
     tty_update_attributes();
@@ -1002,7 +1002,7 @@ tty_update_attributes()
     }
     else
     {
-	if(tty_current_fg != WHITE || tty_current_bg != BLACK)
+	if(((tty_current_fg != WHITE) || (tty_current_bg != BLACK)))
 	    tty_current_attribute |= A_REVERSE;
 	attrset(tty_current_attribute);
     }
