@@ -498,66 +498,9 @@ fi
 dnl Check the terminal capabilities library to use.
 AC_CHECK_LIB(
     ncursesw, tgetent,
-    AC_DEFINE(
-        [HAVE_LIBTERMINFO], 1,
-        [Define if you have a terminfo library.])
-    LIBS="$LIBS -lncursesw"
-    TERMLIB_FOUND=yes,
-    AC_CHECK_LIB(
-        ncurses, tgetent,
-        AC_DEFINE(
-            [HAVE_LIBTERMINFO], 1,
-            [Define if you have a terminfo library.])
-        LIBS="$LIBS -lncurses"
-        TERMLIB_FOUND=yes,
-        AC_CHECK_LIB(
-            termlib, tgetent,
-            AC_DEFINE(
-                [HAVE_LIBTERMINFO], 1,
-                [Define if you have a terminfo library.])
-            LIBS="$LIBS -ltermlib"
-            TERMLIB_FOUND=yes,
-            AC_CHECK_LIB(
-                curses, tgetent,
-                AC_DEFINE(
-                    [HAVE_LIBTERMINFO], 1,
-                    [Define if you have a terminfo library.])
-                LIBS="$LIBS -lcurses"
-                TERMLIB_FOUND=yes,
-                AC_CHECK_LIB(
-                    tinfo, tgetent,
-                    AC_DEFINE(
-                        [HAVE_LIBTERMINFO], 1,
-                        [Define if you have a terminfo library.])
-                    LIBS="$LIBS -ltinfo"
-                    TERMLIB_FOUND=yes,
-                    AC_CHECK_LIB(
-                        terminfo, tgetent,
-                        AC_DEFINE(
-                            [HAVE_LIBTERMINFO], 1,
-                            [Define if you have a terminfo library.])
-                        LIBS="$LIBS -lterminfo"
-                        TERMLIB_FOUND=yes,
-                        AC_CHECK_LIB(
-                            termcap, tgetent,
-                            AC_DEFINE(
-                                [HAVE_LIBTERMCAP], 1,
-                                [Define if you have a termcap library.])
-                        LIBS="$LIBS -ltermcap"
-                        TERMLIB_FOUND=yes,
-                        TERMLIB_FOUND=no
-                        )
-                    )
-                )
-            )
-        )
-    )
+    LIBS="$LIBS -lncursesw",
+    AC_MSG_ERROR([need ncurses library with wide character support])
 )
-
-
-if test "$TERMLIB_FOUND" = "no"; then
-    AC_MSG_ERROR([no library for handling terminal capabilities])
-fi
 
 dnl Check for 64bit I/O.
 AC_CACHE_CHECK(
@@ -611,14 +554,6 @@ else
     htmldocs_makeinfo=yes
 fi
 AM_CONDITIONAL(HTMLDOCS_MAKEINFO, test "$htmldocs_makeinfo" = yes)
-
-dnl According to Joachim Baumann, for Solaris 2.3 & Solaris 2.4 (at least)
-dnl -lucb should be included after -ltermcap.  This hasn't been tested!
-if test "$HAVE_LIBTERMCAP" = "yes"; then
-    if test "$host_os" = "solaris2.3" || test "$host_os" = "solaris2.4"; then
-        AC_CHECK_LIB(ucb, tgetent, , , $LIBS)
-    fi
-fi
 
 CLEANFILES="core tutu gogu *.out t tt mwatch.log mtrace.log autoscan.log autom4te.cache/*"
 

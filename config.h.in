@@ -220,15 +220,6 @@
 /* Define to 1 if you have the `sun' library (-lsun). */
 #undef HAVE_LIBSUN
 
-/* Define if you have a termcap library. */
-#undef HAVE_LIBTERMCAP
-
-/* Define if you have a terminfo library. */
-#undef HAVE_LIBTERMINFO
-
-/* Define to 1 if you have the `ucb' library (-lucb). */
-#undef HAVE_LIBUCB
-
 /* Define if your system Linux. */
 #undef HAVE_LINUX
 
