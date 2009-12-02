@@ -129,13 +129,7 @@ static int PSColors[PS_FIELDS] =
 #define StatusBackground                PSColors[10]
 #define StatusBrightness                PSColors[11]
 
-
-#ifdef HAVE_LINUX
-int AnsiColors = ON;
-#else   /* !HAVE_LINUX */
-int AnsiColors = OFF;
-#endif  /* !HAVE_LINUX */
-
+extern int AnsiColors;
 
 char color_section[]  = "[GITPS-Color]";
 char monochrome_section[] = "[GITPS-Monochrome]";
@@ -1067,9 +1061,6 @@ main(argc, argv)
     compute_directories();
     get_login_name();
 
-    if (getenv("COLORTERM") != NULL)
-	ansi_colors = ON;
-
     /* Parse the command line.  */
     while ((c = getopt(argc, argv, "hvcblpd")) != -1)
 	switch (c)
@@ -1151,10 +1142,7 @@ main(argc, argv)
     if (temporary_directory == NULL)
 	temporary_directory = "/tmp";
 
-    if (ansi_colors == -1)
-	AnsiColors = get_flag_var("AnsiColors", OFF);
-    else
-	AnsiColors = ansi_colors;
+    tty_init_colors(ansi_colors, get_flag_var("AnsiColors", OFF));
 
     if (use_last_screen_character)
 	UseLastScreenChar = get_flag_var("UseLastScreenChar",  OFF);

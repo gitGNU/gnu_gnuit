@@ -148,17 +148,10 @@ static int ViewerColors[VIEWER_FIELDS] =
 #define StatusBackground                ViewerColors[10]
 #define StatusBrightness                ViewerColors[11]
 
-
-#ifdef HAVE_LINUX
-int AnsiColors = ON;
-#else   /* !HAVE_LINUX */
-int AnsiColors = OFF;
-#endif  /* !HAVE_LINUX */
-
+extern int AnsiColors;
 
 #define VIEW_LINES (tty_lines - 9)
 #define SEEK_LINE (tty_lines - 5)
-
 
 #ifdef STAT_MACROS_BROKEN
 #ifdef S_IFREG
@@ -674,9 +667,6 @@ main(argc, argv)
     compute_directories();
     get_login_name();
 
-    if (getenv("COLORTERM") != NULL)
-	ansi_colors = ON;
-
     /* Parse the command line.  */
     while ((c = getopt(argc, argv, "hvcblpd")) != -1)
 	switch (c)
@@ -767,10 +757,7 @@ main(argc, argv)
     specific_configuration_init();
     use_section("[Setup]");
 
-    if (ansi_colors == -1)
-	AnsiColors = get_flag_var("AnsiColors", OFF);
-    else
-	AnsiColors = ansi_colors;
+    tty_init_colors(ansi_colors, get_flag_var("AnsiColors", OFF));
 
     if (use_last_screen_character)
 	UseLastScreenChar = get_flag_var("UseLastScreenChar",  OFF);

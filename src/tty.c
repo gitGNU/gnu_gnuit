@@ -147,7 +147,7 @@ static int tty_interrupt_char = key_INTERRUPT;
 
 /* These variable tells us if we should use standard ANSI color sequences.
    Its value is taken from the configuration file.  */
-extern int AnsiColors;
+int AnsiColors = ON;
 
 /* Structures for keys management.  */
 tty_key_t *key_list_head;
@@ -978,7 +978,9 @@ tty_get_color_pair(short fg, short bg)
     int i;
     int pairnum=-1;
     short thisfg, thisbg;
-    /* yuk. can we use PAIR_NUMBER instead? */
+
+    /* FIXME: This is horribly inefficient, although hopefully not
+       enough to be noticeable. Can we use PAIR_NUMBER instead? */
     for(i=0; i < tty_next_free_color_pair; i++)
     {
 	pair_content(i, &thisfg, &thisbg);
@@ -1645,8 +1647,6 @@ tty_init(kbd_mode)
     nonl();
     echo();
     tty_next_free_color_pair=1;
-    if(has_colors())
-	start_color();
 }
 
 
@@ -1698,3 +1698,17 @@ tty_is_xterm(term)
     }
     return 0;
 }
+
+void
+tty_init_colors(cmdline, configfile)
+    int cmdline, configfile;
+{
+    if(!has_colors())
+	AnsiColors=OFF;
+    else if (cmdline == -1)
+	AnsiColors = configfile;
+    else
+	AnsiColors = cmdline;
+    if(AnsiColors)
+	start_color();
+};

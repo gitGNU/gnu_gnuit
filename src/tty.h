@@ -158,5 +158,6 @@ extern tty_key_t *tty_key_search PROTO ((char *));
 extern tty_key_t *tty_get_key PROTO ((int *));
 extern char *tty_get_previous_key_seq PROTO((void));
 
+extern void tty_init_colors PROTO((int, int));
 
 #endif  /* _GIT_TTY_H */

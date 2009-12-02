@@ -92,12 +92,7 @@ Written by Tudor Hulubei and Andrei Pitis, Bucharest, Romania\n\n";
 
 #define MAX_STATIC_SIZE 50
 
-#ifdef HAVE_LINUX
-int AnsiColors = ON;
-#else   /* !HAVE_LINUX */
-int AnsiColors = OFF;
-#endif  /* !HAVE_LINUX */
-
+extern int AnsiColors;
 int TypeSensitivity = ON;
 
 /* These are the only possible values for `current_mode'. Used while
@@ -1860,9 +1855,6 @@ main(argc, argv)
     exit_msg = xmalloc(exit_msg_len * sizeof(wchar_t));
     swprintf(exit_msg, exit_msg_len, L"Exit %s? ", PRODUCT);
 
-    if (getenv("COLORTERM") != NULL)
-	ansi_colors = ON;
-
     /* Parse the command line.  */
     while ((c = getopt(argc, argv, "dhvcblp")) != -1)
 	switch (c)
@@ -1991,10 +1983,7 @@ main(argc, argv)
     *stderr_log_name    = 0;
     use_section("[Setup]");
 
-    if (ansi_colors == -1)
-	AnsiColors = get_flag_var("AnsiColors", OFF);
-    else
-	AnsiColors = ansi_colors;
+    tty_init_colors(ansi_colors, get_flag_var("AnsiColors", OFF));
 
     if (use_last_screen_character)
 	UseLastScreenChar = get_flag_var("UseLastScreenChar",  OFF);
