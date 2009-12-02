@@ -39,8 +39,9 @@
 #endif	/* HAVE_CURSES_H */
 #endif	/* HAVE_NCURSESW_CURSES_H */
 
-/* FIXME: ditch or check for in configure */
+#ifdef HAVE_TERM_H
 #include <term.h>
+#endif
 
 #ifdef HAVE_STDLIB_H
 #include <stdlib.h>

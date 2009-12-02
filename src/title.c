@@ -204,10 +204,6 @@ clock_refresh(signum)
     time = get_local_time();
 
     tty_save(&status);
-#ifdef REMOVEME
-/*    tty_get_cursor(&line, &column);*/
-#endif
-
     tty_cursor(OFF);
 
     if ((hour = time->tm_hour % 12) == 0)
