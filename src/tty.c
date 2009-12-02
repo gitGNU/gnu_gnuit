@@ -1079,7 +1079,7 @@ tty_defaults()
  * Extract the first key in the buffer.  If the 8th bit is set, return
  * an ESC char first, then the key without the 8th bit.
  *
- * FIXME: It seems that the 8th bit can be used for parity as well.
+ * OLD-FIX-ME: It seems that the 8th bit can be used for parity as well.
  * This case is not handled yet.  It should be configurable.
  */
 static int

@@ -168,7 +168,7 @@ my_system(command, hide)
 	       situations.  If stdin is closed, they default to a
 	       reasonable action.  */
 
-	    /* FIXME: rpm has an obscure bug that prevents it from
+	    /* OLD-FIX-ME: rpm has an obscure bug that prevents it from
 	       working if standard input is closed.  Until that is
 	       fixed, we need this kludge here (i.e. don't close 0
 	       for `rpm').  */

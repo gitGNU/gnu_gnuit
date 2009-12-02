@@ -499,7 +499,7 @@ resize(resize_required)
      *      3 lines:	title + header + status
      *	 >= 4 lines:	everything
      *
-     * FIXME: we need to handle the tty_columns case.
+     * OLD-FIX-ME: we need to handle the tty_columns case.
      */
 
     global_buf  = xrealloc(global_buf, ((tty_columns + 1) * sizeof(wchar_t)));

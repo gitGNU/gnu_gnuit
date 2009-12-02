@@ -875,7 +875,7 @@ panel_load_fti(this, entry)
 
     this->dir_entry[entry].fti_loaded = 1;
 
-    /* FIXME: an even better solution here would be to keep track of
+    /* OLD-FIX-ME: an even better solution here would be to keep track of
        whether or not the pattern starts with a *.  It is always
        better to match "RMAIL*" than "*.[bg]z".  */
     for (fti = fti_head; fti; fti = fti->next)
@@ -1088,7 +1088,7 @@ panel_read_directory(this, directory, verify)
 	{
 	    char *ptr;
 
-	    /* FIXME: This isn't always deallocated!  We should use
+	    /* OLD-FIX-ME: This isn't always deallocated!  We should use
 	       alloca instead...  But is ugly anyway :-( */
 	    directory = xstrdup(this->path);
 
@@ -1729,7 +1729,7 @@ panel_update_info(this)
 	}
 
 	panel_mode2string(this, this->current_entry, temp_rights);
-	maxname = this->pcolumns - 26;  /* FIXME: Huh?  */
+	maxname = this->pcolumns - 26;  /* OLD-FIX-ME: Huh?  */
 	len = min(wcslen(this->dir_entry[this->current_entry].wname), maxname);
 	wmemcpy(str, this->dir_entry[this->current_entry].wname, len);
 	wmemset(str + len, L' ', maxname - len);
@@ -2881,7 +2881,7 @@ panel_find_index(this, str)
 			min(len, strlen(this->dir_entry[entry].name))) == 0)
 	    break;
 
-    /* FIXME: We can add here as many heuristics as we want.  */
+    /* OLD-FIX-ME: We can add here as many heuristics as we want.  */
 
     if (entry == this->entries)
 	entry = 0;
