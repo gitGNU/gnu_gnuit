@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # serial 9
+=======
+# serial 8
+>>>>>>> master
 
 dnl From Jim Meyering
 dnl Replace the utime function on systems that need it.

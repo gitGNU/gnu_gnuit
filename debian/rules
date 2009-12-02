@@ -83,6 +83,7 @@ install: build
 
 	$(MAKE) install DESTDIR="$(BUILDDIR)"
 
+	rm -f $(BUILDDIR)/usr/share/info/dir $(BUILDDIR)/usr/share/info/dir.gz
 	# remove man symlinks - dh_link will recreate properly
 	rm -f $(BUILDDIR)/usr/share/man/man1/gitwhich.1
 	rm -f $(BUILDDIR)/usr/share/man/man1/gitmkdirs.1

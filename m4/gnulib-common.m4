@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # gnulib-common.m4 serial 11
+=======
+# gnulib-common.m4 serial 10
+>>>>>>> master
 dnl Copyright (C) 2007-2009 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -109,6 +113,7 @@ AC_DEFUN([gl_BIGENDIAN],
 [
   AC_C_BIGENDIAN
 ])
+<<<<<<< HEAD
 
 # gl_CACHE_VAL_SILENT(cache-id, command-to-set-it)
 # is like AC_CACHE_VAL(cache-id, command-to-set-it), except that it does not
@@ -122,3 +127,5 @@ AC_DEFUN([gl_CACHE_VAL_SILENT],
   AC_CACHE_VAL([$1], [$2])
   as_echo_n="$saved_as_echo_n"
 ])
+=======
+>>>>>>> master

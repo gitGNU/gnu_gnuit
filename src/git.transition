@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 cat >&2 << EOT
 
@@ -14,7 +14,7 @@ EOT
 # If we are attached to a terminal, run gitfm, else run git-scm
 if [ -t 0 ] && [ -t 1 ];then
    echo "Press RETURN to run gitfm" >&2
-   read
+   read dummy
    exec gitfm "$@"
 else
 	if [ -x /usr/bin/git-scm ]

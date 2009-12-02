@@ -5,7 +5,11 @@
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
 
+<<<<<<< HEAD
 # serial 7
+=======
+# serial 6
+>>>>>>> master
 
 # Written by Paul Eggert.
 
@@ -84,7 +88,10 @@ AC_DEFUN([gl_HEADER_STRING_H_DEFAULTS],
   HAVE_DECL_STRERROR=1;		AC_SUBST([HAVE_DECL_STRERROR])
   HAVE_DECL_STRSIGNAL=1;	AC_SUBST([HAVE_DECL_STRSIGNAL])
   HAVE_STRVERSCMP=1;		AC_SUBST([HAVE_STRVERSCMP])
+<<<<<<< HEAD
   REPLACE_MEMCHR=0;		AC_SUBST([REPLACE_MEMCHR])
+=======
+>>>>>>> master
   REPLACE_MEMMEM=0;		AC_SUBST([REPLACE_MEMMEM])
   REPLACE_STRDUP=0;		AC_SUBST([REPLACE_STRDUP])
   REPLACE_STRSTR=0;		AC_SUBST([REPLACE_STRSTR])

@@ -1,5 +1,5 @@
 This is gnuit.info, produced by makeinfo version 4.11 from
-gnuit.texinfo.
+/home/ianb/projects/gnuit/gnuit/doc/gnuit.texinfo.
 
 INFO-DIR-SECTION Utilities
 START-INFO-DIR-ENTRY
@@ -14,7 +14,7 @@ END-INFO-DIR-ENTRY
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
-     Version 1.2 or any later version published by the Free Software
+     Version 1.3 or any later version published by the Free Software
      Foundation; with no Invariant Sections, with no Front-Cover Texts,
      and with no Back-Cover Texts.  A copy of the license is included
      in the section entitled "Copying This Manual".
@@ -2951,10 +2951,10 @@ File: gnuit.info,  Node: Copying This Manual,  Prev: Bugs,  Up: Top
 Appendix A Copying This Manual
 ******************************
 
-                      Version 1.2, November 2002
+                     Version 1.3, 3 November 2008
 
-     Copyright (C) 2000,2001,2002 Free Software Foundation, Inc.
-     51 Franklin St, Fifth Floor, Boston, MA  02110-1301, USA
+     Copyright (C) 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
+     `http://fsf.org/'
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -3055,6 +3055,9 @@ Appendix A Copying This Manual
      works in formats which do not have any title page as such, "Title
      Page" means the text near the most prominent appearance of the
      work's title, preceding the beginning of the body of the text.
+
+     The "publisher" means any person or entity that distributes copies
+     of the Document to the public.
 
      A section "Entitled XYZ" means a named subunit of the Document
      whose title either is precisely XYZ or contains XYZ in parentheses
@@ -3321,12 +3324,29 @@ Appendix A Copying This Manual
   9. TERMINATION
 
      You may not copy, modify, sublicense, or distribute the Document
-     except as expressly provided for under this License.  Any other
-     attempt to copy, modify, sublicense or distribute the Document is
-     void, and will automatically terminate your rights under this
-     License.  However, parties who have received copies, or rights,
-     from you under this License will not have their licenses
-     terminated so long as such parties remain in full compliance.
+     except as expressly provided under this License.  Any attempt
+     otherwise to copy, modify, sublicense, or distribute it is void,
+     and will automatically terminate your rights under this License.
+
+     However, if you cease all violation of this License, then your
+     license from a particular copyright holder is reinstated (a)
+     provisionally, unless and until the copyright holder explicitly
+     and finally terminates your license, and (b) permanently, if the
+     copyright holder fails to notify you of the violation by some
+     reasonable means prior to 60 days after the cessation.
+
+     Moreover, your license from a particular copyright holder is
+     reinstated permanently if the copyright holder notifies you of the
+     violation by some reasonable means, this is the first time you have
+     received notice of violation of this License (for any work) from
+     that copyright holder, and you cure the violation prior to 30 days
+     after your receipt of the notice.
+
+     Termination of your rights under this section does not terminate
+     the licenses of parties who have received copies or rights from
+     you under this License.  If your rights have been terminated and
+     not permanently reinstated, receipt of a copy of some or all of
+     the same material does not give you any rights to use it.
 
  10. FUTURE REVISIONS OF THIS LICENSE
 
@@ -3344,7 +3364,41 @@ Appendix A Copying This Manual
      published (not as a draft) by the Free Software Foundation.  If
      the Document does not specify a version number of this License,
      you may choose any version ever published (not as a draft) by the
-     Free Software Foundation.
+     Free Software Foundation.  If the Document specifies that a proxy
+     can decide which future versions of this License can be used, that
+     proxy's public statement of acceptance of a version permanently
+     authorizes you to choose that version for the Document.
+
+ 11. RELICENSING
+
+     "Massive Multiauthor Collaboration Site" (or "MMC Site") means any
+     World Wide Web server that publishes copyrightable works and also
+     provides prominent facilities for anybody to edit those works.  A
+     public wiki that anybody can edit is an example of such a server.
+     A "Massive Multiauthor Collaboration" (or "MMC") contained in the
+     site means any set of copyrightable works thus published on the MMC
+     site.
+
+     "CC-BY-SA" means the Creative Commons Attribution-Share Alike 3.0
+     license published by Creative Commons Corporation, a not-for-profit
+     corporation with a principal place of business in San Francisco,
+     California, as well as future copyleft versions of that license
+     published by that same organization.
+
+     "Incorporate" means to publish or republish a Document, in whole or
+     in part, as part of another Document.
+
+     An MMC is "eligible for relicensing" if it is licensed under this
+     License, and if all works that were first published under this
+     License somewhere other than this MMC, and subsequently
+     incorporated in whole or in part into the MMC, (1) had no cover
+     texts or invariant sections, and (2) were thus incorporated prior
+     to November 1, 2008.
+
+     The operator of an MMC Site may republish an MMC contained in the
+     site under CC-BY-SA on the same site at any time before August 1,
+     2009, provided the MMC is eligible for relicensing.
+
 
 ADDENDUM: How to use this License for your documents
 ====================================================
@@ -3355,7 +3409,7 @@ notices just after the title page:
 
        Copyright (C)  YEAR  YOUR NAME.
        Permission is granted to copy, distribute and/or modify this document
-       under the terms of the GNU Free Documentation License, Version 1.2
+       under the terms of the GNU Free Documentation License, Version 1.3
        or any later version published by the Free Software Foundation;
        with no Invariant Sections, no Front-Cover Texts, and no Back-Cover
        Texts.  A copy of the license is included in the section entitled ``GNU
@@ -4380,134 +4434,134 @@ Concept Index
 
 
 Tag Table:
-Node: Top793
-Node: Introduction1741
-Node: Distrib3065
-Node: Description4753
-Node: gitfm5604
-Node: Conventions8128
-Node: Command line10021
-Node: Modes11080
-Node: Sorting13456
-Node: Moving14745
-Node: Selecting16353
-Node: Isearch17758
-Node: Input Line18883
-Node: Inserting Text19986
-Node: Moving Point20898
-Node: Erasing21495
-Node: Case Changes22773
-Node: History23209
-Node: Setting Mark23945
-Node: Yanking24280
-Node: Selecting Files24554
-Node: Files25471
-Node: Copying Files27200
-Node: Moving Files27568
-Node: Creating Files27957
-Node: Deleting Files28316
-Node: Linking Files28662
-Node: Renaming Files29317
-Node: Splitting Files29906
-Node: Packing Files30410
-Node: Inode31751
-Node: Editing Files33429
-Node: Viewing Files34272
-Node: Compressing Files34659
-Node: Encoding Files36060
-Node: Encrypting Files37003
-Node: Comparing Files37296
-Node: Spell Checking Files37963
-Node: Printing Files38221
-Node: Wiping Files38686
-Node: Searching Files39022
-Node: Archive Files39564
-Node: DEB Packages41396
-Node: RPM Packages44364
-Node: File Types45748
-Node: MSDOS Files45967
-Node: Actions48065
-Node: Directories48995
-Node: Creating Dirs49760
-Node: Copying Dirs50037
-Node: Deleting Dirs50519
-Node: Moving Dirs50958
-Node: Renaming Dirs51437
-Node: Comparing Dirs51880
-Node: Dirs Usage53115
-Node: Changing Dirs53391
-Node: Dirs History54069
-Node: Hot Keys55140
-Node: Compiling55769
-Node: Mail56170
-Node: Shell57326
-Node: Grep57731
-Node: Locking58159
-Node: Refreshing58557
-Node: Resetting59294
-Node: Mounting59548
-Node: Sysinfo62649
-Node: Environment64037
-Node: Processes64446
-Node: Sync66542
-Node: Documentation66795
-Node: Exit67511
-Node: gitps67731
-Node: gitview69253
-Node: gitkeys70107
-Node: gitwipe70496
-Node: gitmount71225
-Node: gitaction71989
-Node: gitunpack74124
-Node: gitrgrep74536
-Node: Customization75019
-Node: Environment Variables75322
-Node: Configuration Files76820
-Node: Key Sequences79911
-Node: Setup81244
-Node: gitfm Sections82199
-Node: GITFM-Setup82653
-Node: GITFM-Color85240
-Node: GITFM-Monochrome85609
-Node: GITFM-Keys86014
-Node: key-sequence86919
-Node: command-name87558
-Node: formatted-command88303
-Node: %s89630
-Node: %f90157
-Node: %d90402
-Node: %l90649
-Node: %t90902
-Node: %z91137
-Node: %a91368
-Node: %m91583
-Node: %g91787
-Node: %o91992
-Node: %p92197
-Node: %b92402
-Node: %i92617
-Node: %?92842
-Node: new-dir93334
-Node: save-screen93760
-Node: pause94460
-Node: hide94799
-Node: GITFM-FTI95679
-Node: gitps Sections96260
-Node: GITPS-Setup96654
-Node: GITPS-Color96894
-Node: GITPS-Monochrome97262
-Node: GITPS-Keys97667
-Node: gitview Sections97797
-Node: GITVIEW-Setup98180
-Node: GITVIEW-Color98430
-Node: GITVIEW-Monochrome98812
-Node: GITVIEW-Keys99231
-Node: Limitations99367
-Node: Bugs100777
-Node: Copying This Manual101047
-Node: Key Index123422
-Node: Command Index143334
-Node: Variable Index162604
-Node: Concept Index164808
+Node: Top829
+Node: Introduction1777
+Node: Distrib3101
+Node: Description4789
+Node: gitfm5640
+Node: Conventions8164
+Node: Command line10057
+Node: Modes11116
+Node: Sorting13492
+Node: Moving14781
+Node: Selecting16389
+Node: Isearch17794
+Node: Input Line18919
+Node: Inserting Text20022
+Node: Moving Point20934
+Node: Erasing21531
+Node: Case Changes22809
+Node: History23245
+Node: Setting Mark23981
+Node: Yanking24316
+Node: Selecting Files24590
+Node: Files25507
+Node: Copying Files27236
+Node: Moving Files27604
+Node: Creating Files27993
+Node: Deleting Files28352
+Node: Linking Files28698
+Node: Renaming Files29353
+Node: Splitting Files29942
+Node: Packing Files30446
+Node: Inode31787
+Node: Editing Files33465
+Node: Viewing Files34308
+Node: Compressing Files34695
+Node: Encoding Files36096
+Node: Encrypting Files37039
+Node: Comparing Files37332
+Node: Spell Checking Files37999
+Node: Printing Files38257
+Node: Wiping Files38722
+Node: Searching Files39058
+Node: Archive Files39600
+Node: DEB Packages41432
+Node: RPM Packages44400
+Node: File Types45784
+Node: MSDOS Files46003
+Node: Actions48101
+Node: Directories49031
+Node: Creating Dirs49796
+Node: Copying Dirs50073
+Node: Deleting Dirs50555
+Node: Moving Dirs50994
+Node: Renaming Dirs51473
+Node: Comparing Dirs51916
+Node: Dirs Usage53151
+Node: Changing Dirs53427
+Node: Dirs History54105
+Node: Hot Keys55176
+Node: Compiling55805
+Node: Mail56206
+Node: Shell57362
+Node: Grep57767
+Node: Locking58195
+Node: Refreshing58593
+Node: Resetting59330
+Node: Mounting59584
+Node: Sysinfo62685
+Node: Environment64073
+Node: Processes64482
+Node: Sync66578
+Node: Documentation66831
+Node: Exit67547
+Node: gitps67767
+Node: gitview69289
+Node: gitkeys70143
+Node: gitwipe70532
+Node: gitmount71261
+Node: gitaction72025
+Node: gitunpack74160
+Node: gitrgrep74572
+Node: Customization75055
+Node: Environment Variables75358
+Node: Configuration Files76856
+Node: Key Sequences79947
+Node: Setup81280
+Node: gitfm Sections82235
+Node: GITFM-Setup82689
+Node: GITFM-Color85276
+Node: GITFM-Monochrome85645
+Node: GITFM-Keys86050
+Node: key-sequence86955
+Node: command-name87594
+Node: formatted-command88339
+Node: %s89666
+Node: %f90193
+Node: %d90438
+Node: %l90685
+Node: %t90938
+Node: %z91173
+Node: %a91404
+Node: %m91619
+Node: %g91823
+Node: %o92028
+Node: %p92233
+Node: %b92438
+Node: %i92653
+Node: %?92878
+Node: new-dir93370
+Node: save-screen93796
+Node: pause94496
+Node: hide94835
+Node: GITFM-FTI95715
+Node: gitps Sections96296
+Node: GITPS-Setup96690
+Node: GITPS-Color96930
+Node: GITPS-Monochrome97298
+Node: GITPS-Keys97703
+Node: gitview Sections97833
+Node: GITVIEW-Setup98216
+Node: GITVIEW-Color98466
+Node: GITVIEW-Monochrome98848
+Node: GITVIEW-Keys99267
+Node: Limitations99403
+Node: Bugs100813
+Node: Copying This Manual101083
+Node: Key Index126193
+Node: Command Index146105
+Node: Variable Index165375
+Node: Concept Index167579
 
 End Tag Table

@@ -1,3 +1,28 @@
+2009-02-26  Ian Beckwith  <ianb@erislabs.net>
+
+	* gnuitrc.common.IN: show video files in grey (bright black)
+	  and encrypted files in green.
+
+2009-02-10  Ian Beckwith  <ianb@erislabs.net>
+
+	* Bumped version of Free Documentation License to 1.3 or later,
+	  still with no Invariant Sections, no Front-Cover Texts, no
+	  Back-Cover Texts.
+	* Updated gnulib to commit 69aecd33.
+	* prepare: stop importing memmove module: obsolete.
+	* Makefile.am: add m4/sockpfaf.m4 to EXTRA_DIST.
+	* .gitignore: add lib/fcntl.h and lib/signal.h.
+	* Update NEWS.
+
+2009-02-08  Ian Beckwith  <ianb@erislabs.net>
+
+	* Added filetype info for many more file extensions.
+	  Thanks to Tudor Hulubei (and Wikipedia).
+
+2009-01-12  Ian Beckwith  <ianb@erislabs.net>
+
+	* src/git.transition: remove bashisms (Thanks to Gerald Pfeifer).
+
 2008-10-24  Ian Beckwith  <ianb@erislabs.net>
 
 	* panel_fit_number(): If number with commas is too big,

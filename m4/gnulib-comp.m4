@@ -49,7 +49,11 @@ AC_DEFUN([gl_INIT],
   gl_CLOCK_TIME
   gl_DIRNAME
   gl_DOUBLE_SLASH_ROOT
+<<<<<<< HEAD
   gl_HEADER_ERRNO_H
+=======
+  AC_REQUIRE([gl_HEADER_ERRNO_H])
+>>>>>>> master
   gl_ERROR
   m4_ifdef([AM_XGETTEXT_OPTION],
     [AM_][XGETTEXT_OPTION([--flag=error:3:c-format])
@@ -84,17 +88,28 @@ AC_DEFUN([gl_INIT],
   gl_WCHAR_MODULE_INDICATOR([mbrtowc])
   gl_FUNC_MBSINIT
   gl_WCHAR_MODULE_INDICATOR([mbsinit])
+<<<<<<< HEAD
+=======
+  gl_FUNC_MBSLEN
+>>>>>>> master
   gl_STRING_MODULE_INDICATOR([mbslen])
   gl_FUNC_MBSRTOWCS
   gl_WCHAR_MODULE_INDICATOR([mbsrtowcs])
   gl_STRING_MODULE_INDICATOR([mbsstr])
   gl_MBITER
+<<<<<<< HEAD
   gl_FUNC_MEMCHR
   gl_STRING_MODULE_INDICATOR([memchr])
   gl_FUNC_MEMMOVE
   gl_FUNC_MKSTEMP
   gl_STDLIB_MODULE_INDICATOR([mkstemp])
   gl_MULTIARCH
+=======
+  gl_FUNC_MEMMOVE
+  gl_FUNC_MKSTEMP
+  gl_STDLIB_MODULE_INDICATOR([mkstemp])
+  AC_REQUIRE([gl_MULTIARCH])
+>>>>>>> master
   gl_FUNC_NANOSLEEP
   gl_FUNC_OPEN
   gl_MODULE_INDICATOR([open])
@@ -108,8 +123,11 @@ AC_DEFUN([gl_INIT],
   gl_FUNC_RENAME
   gl_SAFE_READ
   gl_SAFE_WRITE
+<<<<<<< HEAD
   gl_FUNC_SELECT
   gl_SYS_SELECT_MODULE_INDICATOR([select])
+=======
+>>>>>>> master
   gl_SIGACTION
   gl_SIGNAL_MODULE_INDICATOR([sigaction])
   gl_SIGNAL_H
@@ -144,6 +162,10 @@ AC_DEFUN([gl_INIT],
   gl_HEADER_SYS_SELECT
   AC_PROG_MKDIR_P
   gl_HEADER_SYS_SOCKET
+<<<<<<< HEAD
+=======
+  gl_MODULE_INDICATOR([sys_socket])
+>>>>>>> master
   AC_PROG_MKDIR_P
   gl_HEADER_SYS_STAT_H
   AC_PROG_MKDIR_P
@@ -350,8 +372,11 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/mbsrtowcs.c
   lib/mbsstr.c
   lib/mbuiter.h
+<<<<<<< HEAD
   lib/memchr.c
   lib/memchr.valgrind
+=======
+>>>>>>> master
   lib/memmove.c
   lib/mkstemp.c
   lib/nanosleep.c
@@ -369,7 +394,10 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/safe-read.h
   lib/safe-write.c
   lib/safe-write.h
+<<<<<<< HEAD
   lib/select.c
+=======
+>>>>>>> master
   lib/sig-handler.h
   lib/sigaction.c
   lib/signal.in.h
@@ -467,13 +495,20 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/mbiter.m4
   m4/mbrtowc.m4
   m4/mbsinit.m4
+<<<<<<< HEAD
   m4/mbsrtowcs.m4
+=======
+  m4/mbslen.m4
+  m4/mbsstr.m4
+>>>>>>> master
   m4/mbstate_t.m4
-  m4/memchr.m4
   m4/memmove.m4
   m4/mkstemp.m4
+<<<<<<< HEAD
   m4/mmap-anon.m4
   m4/mode_t.m4
+=======
+>>>>>>> master
   m4/multiarch.m4
   m4/nanosleep.m4
   m4/onceonly.m4
@@ -485,7 +520,10 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/rename.m4
   m4/safe-read.m4
   m4/safe-write.m4
+<<<<<<< HEAD
   m4/select.m4
+=======
+>>>>>>> master
   m4/sigaction.m4
   m4/signal_h.m4
   m4/signalblocking.m4

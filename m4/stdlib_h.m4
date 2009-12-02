@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # stdlib_h.m4 serial 15
+=======
+# stdlib_h.m4 serial 14
+>>>>>>> master
 dnl Copyright (C) 2007-2009 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -8,7 +12,11 @@ AC_DEFUN([gl_STDLIB_H],
 [
   AC_REQUIRE([gl_STDLIB_H_DEFAULTS])
   gl_CHECK_NEXT_HEADERS([stdlib.h])
+<<<<<<< HEAD
   AC_CHECK_HEADERS([random.h], [], [], [AC_INCLUDES_DEFAULT])
+=======
+  AC_CHECK_HEADERS([random.h])
+>>>>>>> master
   if test $ac_cv_header_random_h = yes; then
     HAVE_RANDOM_H=1
   else

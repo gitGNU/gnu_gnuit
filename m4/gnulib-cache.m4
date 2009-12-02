@@ -15,12 +15,19 @@
 
 
 # Specification in the form of a command-line invocation:
+<<<<<<< HEAD
 #   gnulib-tool --import --dir=. --lib=libgnu --source-base=lib --m4-base=m4 --doc-base=doc --tests-base=tests --aux-dir=. --no-libtool --macro-prefix=gl errno fnmatch fnmatch-gnu fsusage getopt human idcache mbsstr memmove mkstemp nanosleep putenv readlink rename strcase strcasestr utime wchar wctype xalloc
+=======
+#   gnulib-tool --import --dir=. --lib=libgnu --source-base=lib --m4-base=m4 --doc-base=doc --tests-base=tests --aux-dir=. --no-libtool --macro-prefix=gl fnmatch fnmatch-gnu fsusage getopt human idcache mbsstr memmove mkstemp nanosleep putenv readlink rename strcase strcasestr utime xalloc
+>>>>>>> master
 
 # Specification in the form of a few gnulib-tool.m4 macro invocations:
 gl_LOCAL_DIR([])
 gl_MODULES([
+<<<<<<< HEAD
   errno
+=======
+>>>>>>> master
   fnmatch
   fnmatch-gnu
   fsusage
@@ -37,8 +44,11 @@ gl_MODULES([
   strcase
   strcasestr
   utime
+<<<<<<< HEAD
   wchar
   wctype
+=======
+>>>>>>> master
   xalloc
 ])
 gl_AVOID([])

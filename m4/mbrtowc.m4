@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # mbrtowc.m4 serial 16
+=======
+# mbrtowc.m4 serial 13
+>>>>>>> master
 dnl Copyright (C) 2001-2002, 2004-2005, 2008, 2009 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -65,6 +69,7 @@ AC_DEFUN([gl_MBSTATE_T_BROKEN],
   AC_CHECK_FUNCS_ONCE([mbrtowc])
   if test $ac_cv_func_mbsinit = yes && test $ac_cv_func_mbrtowc = yes; then
     gl_MBRTOWC_INCOMPLETE_STATE
+<<<<<<< HEAD
     gl_MBRTOWC_SANITYCHECK
     REPLACE_MBSTATE_T=0
     case "$gl_cv_func_mbrtowc_incomplete_state" in
@@ -74,6 +79,11 @@ AC_DEFUN([gl_MBSTATE_T_BROKEN],
     case "$gl_cv_func_mbrtowc_sanitycheck" in
       *yes) ;;
       *) REPLACE_MBSTATE_T=1 ;;
+=======
+    case "$gl_cv_func_mbrtowc_incomplete_state" in
+      *yes) REPLACE_MBSTATE_T=0 ;;
+      *)    REPLACE_MBSTATE_T=1 ;;
+>>>>>>> master
     esac
   else
     REPLACE_MBSTATE_T=1
@@ -127,6 +137,7 @@ int main ()
 }],
           [gl_cv_func_mbrtowc_incomplete_state=yes],
           [gl_cv_func_mbrtowc_incomplete_state=no],
+<<<<<<< HEAD
           [:])
       fi
     ])
@@ -180,6 +191,9 @@ int main ()
           [gl_cv_func_mbrtowc_sanitycheck=yes],
           [gl_cv_func_mbrtowc_sanitycheck=no],
           [:])
+=======
+          [])
+>>>>>>> master
       fi
     ])
 ])
@@ -226,7 +240,11 @@ int main ()
         return 1;
     }
   return 0;
+<<<<<<< HEAD
 }], [gl_cv_func_mbrtowc_null_arg=yes], [gl_cv_func_mbrtowc_null_arg=no], [:])
+=======
+}], [gl_cv_func_mbrtowc_null_arg=yes], [gl_cv_func_mbrtowc_null_arg=no], [])
+>>>>>>> master
       fi
     ])
 ])
@@ -296,7 +314,11 @@ int main ()
 }],
           [gl_cv_func_mbrtowc_retval=yes],
           [gl_cv_func_mbrtowc_retval=no],
+<<<<<<< HEAD
           [:])
+=======
+          [])
+>>>>>>> master
       fi
     ])
 ])
@@ -316,10 +338,17 @@ AC_DEFUN([gl_MBRTOWC_NUL_RETVAL],
       dnl is present.
 changequote(,)dnl
       case "$host_os" in
+<<<<<<< HEAD
                        # Guess no on Solaris 8 and 9.
         solaris2.[89]) gl_cv_func_mbrtowc_nul_retval="guessing no" ;;
                        # Guess yes otherwise.
         *)             gl_cv_func_mbrtowc_nul_retval="guessing yes" ;;
+=======
+                    # Guess no on Solaris 9.
+        solaris2.9) gl_cv_func_mbrtowc_nul_retval="guessing no" ;;
+                    # Guess yes otherwise.
+        *)          gl_cv_func_mbrtowc_nul_retval="guessing yes" ;;
+>>>>>>> master
       esac
 changequote([,])dnl
       if test $LOCALE_ZH_CN != none; then
@@ -329,7 +358,11 @@ changequote([,])dnl
 #include <wchar.h>
 int main ()
 {
+<<<<<<< HEAD
   /* This fails on Solaris 8 and 9.  */
+=======
+  /* This fails on Solaris 9.  */
+>>>>>>> master
   if (setlocale (LC_ALL, "$LOCALE_ZH_CN") != NULL)
     {
       mbstate_t state;
@@ -343,7 +376,11 @@ int main ()
 }],
           [gl_cv_func_mbrtowc_nul_retval=yes],
           [gl_cv_func_mbrtowc_nul_retval=no],
+<<<<<<< HEAD
           [:])
+=======
+          [])
+>>>>>>> master
       fi
     ])
 ])
