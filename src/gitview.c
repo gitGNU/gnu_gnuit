@@ -123,17 +123,10 @@ static char *ViewerFields[VIEWER_FIELDS] =
     "StatusBrightness"
 };
 
-#ifdef HAVE_LINUX
 static int ViewerColors[VIEWER_FIELDS] =
 {
     CYAN, BLUE, ON, CYAN, RED, ON, BLACK, CYAN, OFF, CYAN, BLUE, ON
 };
-#else   /* !HAVE_LINUX */
-static int ViewerColors[VIEWER_FIELDS] =
-{
-    BLACK, WHITE, OFF, WHITE, BLACK, ON, WHITE, BLACK, OFF, BLACK, WHITE, OFF
-};
-#endif  /* !HAVE_LINUX */
 
 #define TitleForeground                 ViewerColors[0]
 #define TitleBackground                 ViewerColors[1]

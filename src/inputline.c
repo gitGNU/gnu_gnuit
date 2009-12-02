@@ -73,17 +73,10 @@ static char *InputLineFields[INPUTLINE_FIELDS] =
     "InputLineErrorBrightness",
 };
 
-#ifdef HAVE_LINUX
 static int InputLineColors[INPUTLINE_FIELDS] =
 {
     WHITE, BLACK, ON, RED, BLACK, ON
 };
-#else   /* !HAVE_LINUX */
-static int InputLineColors[INPUTLINE_FIELDS] =
-{
-    WHITE, BLACK, ON, WHITE, BLACK, ON
-};
-#endif  /* !HAVE_LINUX */
 
 #define InputLineForeground             InputLineColors[0]
 #define InputLineBackground             InputLineColors[1]

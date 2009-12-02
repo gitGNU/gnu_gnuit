@@ -185,19 +185,11 @@ static char *PanelFields[PANEL_FIELDS] =
     "PanelFilesInfoBrightness",
 };
 
-#ifdef HAVE_LINUX
 static int PanelColors[PANEL_FIELDS] =
 {
     WHITE, BLUE, BLACK, WHITE, OFF, YELLOW, ON, WHITE, ON, YELLOW,
     WHITE, CYAN, RED, OFF, RED, OFF, RED, OFF, BLACK, OFF,
 };
-#else   /* !HAVE_LINUX */
-static int PanelColors[PANEL_FIELDS] =
-{
-    WHITE, BLACK, BLACK, WHITE, OFF, WHITE, ON, WHITE, OFF, WHITE,
-    BLACK, WHITE, BLACK, OFF, BLACK, OFF, BLACK, OFF, BLACK, OFF
-};
-#endif  /* !HAVE_LINUX */
 
 #define PanelFrame                      PanelColors[0]
 #define PanelBackground                 PanelColors[1]

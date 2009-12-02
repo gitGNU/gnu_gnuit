@@ -104,17 +104,10 @@ static char *PSFields[PS_FIELDS] =
     "StatusBrightness"
 };
 
-#ifdef HAVE_LINUX
 static int PSColors[PS_FIELDS] =
 {
     CYAN, BLUE, ON, CYAN, RED, ON, BLACK, CYAN, OFF, CYAN, BLUE, ON
 };
-#else   /* !HAVE_LINUX */
-static int PSColors[PS_FIELDS] =
-{
-    BLACK, WHITE, OFF, WHITE, BLACK, ON, WHITE, BLACK, OFF, BLACK, WHITE, OFF
-};
-#endif  /* !HAVE_LINUX */
 
 #define TitleForeground                 PSColors[0]
 #define TitleBackground                 PSColors[1]

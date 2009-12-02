@@ -87,17 +87,10 @@ static char *StatusBarFields[STATUSBAR_FIELDS] =
     "StatusBarErrorBrightness"
 };
 
-#ifdef HAVE_LINUX
 static int StatusBarColors[STATUSBAR_FIELDS] =
 {
     BLACK, CYAN, OFF, BLACK, WHITE, OFF, WHITE, RED, ON
 };
-#else   /* !HAVE_LINUX */
-static int StatusBarColors[STATUSBAR_FIELDS] =
-{
-    BLACK, WHITE, OFF, BLACK, WHITE, OFF, BLACK, WHITE, ON
-};
-#endif  /* !HAVE_LINUX */
 
 #define StatusBarForeground             StatusBarColors[0]
 #define StatusBarBackground             StatusBarColors[1]

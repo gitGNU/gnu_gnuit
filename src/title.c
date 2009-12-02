@@ -70,17 +70,10 @@ char *TitleFields[TITLE_FIELDS] =
     "ClockBrightness",
 };
 
-#ifdef HAVE_LINUX
 int TitleColors[TITLE_FIELDS] =
 {
     CYAN, BLUE, ON, YELLOW, YELLOW
 };
-#else   /* !HAVE_LINUX */
-int TitleColors[TITLE_FIELDS] =
-{
-    WHITE, BLACK, ON, WHITE, WHITE
-};
-#endif  /* !HAVE_LINUX */
 
 #define TitleForeground TitleColors[0]
 #define TitleBackground TitleColors[1]
