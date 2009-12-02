@@ -1,4 +1,4 @@
-# serial 27
+# serial 30
 
 dnl From Jim Meyering.
 dnl Check for the nanosleep function.
@@ -17,16 +17,18 @@ AC_DEFUN([gl_FUNC_NANOSLEEP],
  AC_REQUIRE([gl_USE_SYSTEM_EXTENSIONS])
 
  AC_REQUIRE([gl_HEADER_TIME_H_DEFAULTS])
- AC_REQUIRE([gl_CLOCK_TIME])
  AC_CHECK_HEADERS_ONCE([sys/time.h])
+ AC_REQUIRE([gl_FUNC_SELECT])
 
  nanosleep_save_libs=$LIBS
 
  # Solaris 2.5.1 needs -lposix4 to get the nanosleep function.
  # Solaris 7 prefers the library name -lrt to the obsolescent name -lposix4.
+ LIB_NANOSLEEP=
+ AC_SUBST([LIB_NANOSLEEP])
  AC_SEARCH_LIBS([nanosleep], [rt posix4],
                 [test "$ac_cv_search_nanosleep" = "none required" ||
-	         LIB_NANOSLEEP=$ac_cv_search_nanosleep])
+                 LIB_NANOSLEEP=$ac_cv_search_nanosleep])
 
  AC_REQUIRE([gl_MULTIARCH])
  if test $APPLE_UNIVERSAL_BUILD = 1; then
@@ -101,18 +103,18 @@ AC_DEFUN([gl_FUNC_NANOSLEEP],
     if test "$gl_cv_func_nanosleep" = 'no (mishandles large arguments)'; then
       AC_DEFINE([HAVE_BUG_BIG_NANOSLEEP], [1],
 	[Define to 1 if nanosleep mishandles large arguments.])
-      for ac_lib in $LIB_CLOCK_GETTIME; do
-	case " $LIB_NANOSLEEP " in
-	*" $ac_lib "*) ;;
-	*) LIB_NANOSLEEP="$LIB_NANOSLEEP $ac_lib";;
-	esac
+    else
+      for ac_lib in $LIBSOCKET; do
+        case " $LIB_NANOSLEEP " in
+        *" $ac_lib "*) ;;
+        *) LIB_NANOSLEEP="$LIB_NANOSLEEP $ac_lib";;
+        esac
       done
     fi
     AC_LIBOBJ([nanosleep])
     gl_PREREQ_NANOSLEEP
   fi
 
- AC_SUBST([LIB_NANOSLEEP])
  LIBS=$nanosleep_save_libs
 ])
 

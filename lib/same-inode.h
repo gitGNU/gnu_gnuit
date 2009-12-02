@@ -1,6 +1,6 @@
-/* gettime -- get the system clock
+/* Determine whether two stat buffers refer to the same file.
 
-   Copyright (C) 2002, 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
+   Copyright (C) 2006 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -15,34 +15,11 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
-/* Written by Paul Eggert.  */
+#ifndef SAME_INODE_H
+# define SAME_INODE_H 1
 
-#include <config.h>
-
-#include "timespec.h"
-
-#include <sys/time.h>
-
-/* Get the system time into *TS.  */
-
-void
-gettime (struct timespec *ts)
-{
-#if HAVE_NANOTIME
-  nanotime (ts);
-#else
-
-# if defined CLOCK_REALTIME && HAVE_CLOCK_GETTIME
-  if (clock_gettime (CLOCK_REALTIME, ts) == 0)
-    return;
-# endif
-
-  {
-    struct timeval tv;
-    gettimeofday (&tv, NULL);
-    ts->tv_sec = tv.tv_sec;
-    ts->tv_nsec = tv.tv_usec * 1000;
-  }
+# define SAME_INODE(Stat_buf_1, Stat_buf_2) \
+   ((Stat_buf_1).st_ino == (Stat_buf_2).st_ino \
+    && (Stat_buf_1).st_dev == (Stat_buf_2).st_dev)
 
 #endif
-}

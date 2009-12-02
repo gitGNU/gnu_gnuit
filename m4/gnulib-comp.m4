@@ -46,8 +46,11 @@ AC_DEFUN([gl_INIT],
   gl_source_base='lib'
   gl_FUNC_ALLOCA
   gl_ARGMATCH
-  gl_CLOCK_TIME
-  gl_DIRNAME
+  gl_CANONICALIZE_LGPL
+  gl_MODULE_INDICATOR([canonicalize-lgpl])
+  gl_STDLIB_MODULE_INDICATOR([canonicalize_file_name])
+  gl_STDLIB_MODULE_INDICATOR([realpath])
+  gl_DIRNAME_LGPL
   gl_DOUBLE_SLASH_ROOT
   gl_HEADER_ERRNO_H
   gl_ERROR
@@ -63,11 +66,8 @@ AC_DEFUN([gl_INIT],
   gl_FUNC_GETOPT_GNU
   gl_MODULE_INDICATOR([getopt-gnu])
   gl_FUNC_GETOPT_POSIX
-  gl_FUNC_GETPAGESIZE
-  gl_UNISTD_MODULE_INDICATOR([getpagesize])
   AC_SUBST([LIBINTL])
   AC_SUBST([LTLIBINTL])
-  gl_GETTIME
   gl_FUNC_GETTIMEOFDAY
   gl_HUMAN
   gl_IDCACHE
@@ -101,6 +101,7 @@ AC_DEFUN([gl_INIT],
   gl_FUNC_OPEN
   gl_MODULE_INDICATOR([open])
   gl_FCNTL_MODULE_INDICATOR([open])
+  gl_PATHMAX
   gl_FUNC_PUTENV
   gl_STDLIB_MODULE_INDICATOR([putenv])
   gl_QUOTE
@@ -108,6 +109,9 @@ AC_DEFUN([gl_INIT],
   gl_FUNC_READLINK
   gl_UNISTD_MODULE_INDICATOR([readlink])
   gl_FUNC_RENAME
+  gl_STDIO_MODULE_INDICATOR([rename])
+  gl_FUNC_RMDIR
+  gl_UNISTD_MODULE_INDICATOR([rmdir])
   gl_SAFE_READ
   gl_SAFE_WRITE
   gl_FUNC_SELECT
@@ -118,9 +122,12 @@ AC_DEFUN([gl_INIT],
   gl_SIGNALBLOCKING
   gl_SIGNAL_MODULE_INDICATOR([sigprocmask])
   gt_TYPE_SSIZE_T
+  gl_FUNC_STAT
+  gl_SYS_STAT_MODULE_INDICATOR([stat])
   AM_STDBOOL_H
   gl_STDDEF_H
   gl_STDINT_H
+  gl_STDIO_H
   gl_STDLIB_H
   gl_STRCASE
   gl_FUNC_STRCASESTR
@@ -130,8 +137,6 @@ AC_DEFUN([gl_INIT],
   gl_STRING_MODULE_INDICATOR([strerror])
   gl_HEADER_STRING_H
   gl_HEADER_STRINGS_H
-  gl_FUNC_STRNDUP
-  gl_STRING_MODULE_INDICATOR([strndup])
   gl_FUNC_STRNLEN
   gl_STRING_MODULE_INDICATOR([strnlen])
   gl_FUNC_STRTOIMAX
@@ -154,7 +159,6 @@ AC_DEFUN([gl_INIT],
   AC_PROG_MKDIR_P
   gl_FUNC_GEN_TEMPNAME
   gl_HEADER_TIME_H
-  gl_TIMESPEC
   gl_UNISTD_H
   gl_FUNC_UTIME
   gl_WCHAR_H
@@ -164,7 +168,6 @@ AC_DEFUN([gl_INIT],
   gl_FUNC_WRITE
   gl_UNISTD_MODULE_INDICATOR([write])
   gl_XALLOC
-  gl_XSTRNDUP
   gl_XSTRTOL
   m4_ifval(gl_LIBSOURCES_LIST, [
     m4_syscmd([test ! -d ]m4_defn([gl_LIBSOURCES_DIR])[ ||
@@ -304,9 +307,10 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/alloca.in.h
   lib/argmatch.c
   lib/argmatch.h
-  lib/basename.c
+  lib/basename-lgpl.c
+  lib/canonicalize-lgpl.c
   lib/config.charset
-  lib/dirname.c
+  lib/dirname-lgpl.c
   lib/dirname.h
   lib/errno.in.h
   lib/error.c
@@ -327,9 +331,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/getopt.in.h
   lib/getopt1.c
   lib/getopt_int.h
-  lib/getpagesize.c
   lib/gettext.h
-  lib/gettime.c
   lib/gettimeofday.c
   lib/human.c
   lib/human.h
@@ -359,6 +361,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/mkstemp.c
   lib/nanosleep.c
   lib/open.c
+  lib/pathmax.h
   lib/putenv.c
   lib/quote.c
   lib/quote.h
@@ -368,18 +371,23 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/ref-add.sin
   lib/ref-del.sin
   lib/rename.c
+  lib/rmdir.c
   lib/safe-read.c
   lib/safe-read.h
   lib/safe-write.c
   lib/safe-write.h
+  lib/same-inode.h
   lib/select.c
   lib/sig-handler.h
   lib/sigaction.c
   lib/signal.in.h
   lib/sigprocmask.c
+  lib/stat.c
   lib/stdbool.in.h
   lib/stddef.in.h
   lib/stdint.in.h
+  lib/stdio-write.c
+  lib/stdio.in.h
   lib/stdlib.in.h
   lib/str-kmp.h
   lib/str-two-way.h
@@ -391,7 +399,6 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/strings.in.h
   lib/stripslash.c
   lib/strncasecmp.c
-  lib/strndup.c
   lib/strnlen.c
   lib/strnlen1.c
   lib/strnlen1.h
@@ -408,7 +415,6 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/tempname.c
   lib/tempname.h
   lib/time.in.h
-  lib/timespec.h
   lib/unistd.in.h
   lib/unitypes.h
   lib/uniwidth.h
@@ -423,8 +429,6 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/xalloc-die.c
   lib/xalloc.h
   lib/xmalloc.c
-  lib/xstrndup.c
-  lib/xstrndup.h
   lib/xstrtol-error.c
   lib/xstrtol.c
   lib/xstrtol.h
@@ -433,7 +437,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/00gnulib.m4
   m4/alloca.m4
   m4/argmatch.m4
-  m4/clock_time.m4
+  m4/canonicalize.m4
   m4/codeset.m4
   m4/dirname.m4
   m4/dos.m4
@@ -448,8 +452,6 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/fnmatch.m4
   m4/fsusage.m4
   m4/getopt.m4
-  m4/getpagesize.m4
-  m4/gettime.m4
   m4/gettimeofday.m4
   m4/glibc21.m4
   m4/gnulib-common.m4
@@ -482,12 +484,13 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/nanosleep.m4
   m4/onceonly.m4
   m4/open.m4
-  m4/openat.m4
+  m4/pathmax.m4
   m4/putenv.m4
   m4/quote.m4
   m4/quotearg.m4
   m4/readlink.m4
   m4/rename.m4
+  m4/rmdir.m4
   m4/safe-read.m4
   m4/safe-write.m4
   m4/select.m4
@@ -496,16 +499,17 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/signalblocking.m4
   m4/sockpfaf.m4
   m4/ssize_t.m4
+  m4/stat.m4
   m4/stdbool.m4
   m4/stddef_h.m4
   m4/stdint.m4
+  m4/stdio_h.m4
   m4/stdlib_h.m4
   m4/strcase.m4
   m4/strcasestr.m4
   m4/strerror.m4
   m4/string_h.m4
   m4/strings_h.m4
-  m4/strndup.m4
   m4/strnlen.m4
   m4/strtoimax.m4
   m4/strtol.m4
@@ -519,7 +523,6 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/sys_time_h.m4
   m4/tempname.m4
   m4/time_h.m4
-  m4/timespec.m4
   m4/unistd_h.m4
   m4/utimbuf.m4
   m4/utime.m4
@@ -532,6 +535,5 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/wint_t.m4
   m4/write.m4
   m4/xalloc.m4
-  m4/xstrndup.m4
   m4/xstrtol.m4
 ])
