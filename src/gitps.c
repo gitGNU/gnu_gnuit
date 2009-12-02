@@ -161,8 +161,8 @@ window_t *il_window; /* Not used but needed by tty.c */
 static wchar_t *title_text;
 static int title_len;
 static wchar_t *help;
-static wchar_t no_perm[] = L"not owner !";
-static wchar_t no_proc[] = L"no such process ! (REFRESH recommended)";
+static wchar_t no_perm[] = L"not owner!";
+static wchar_t no_proc[] = L"no such process! (REFRESH recommended)";
 
 
 typedef struct
