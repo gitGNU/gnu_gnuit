@@ -27,9 +27,6 @@
 #endif
 #include <sys/types.h>
 
-/* FIXME: Remove, only needed for wpe (debugging) */
-#include <stdio.h>
-
 #include <limits.h>
 
 #ifdef HAVE_STDDEF_H
@@ -402,32 +399,4 @@ wcsduptombs(src)
     dest=xmalloc((len+1) * sizeof(char));
     wcstombs(dest,src,len+1);
     return dest;
-}
-
-/* FIXME: debug, remove */
-/* less typing in gdb */
-extern char *wp(wchar_t *str);
-extern void wpe(wchar_t *str);
-extern void wpen(wchar_t *str, int n);
-
-char *
-wp(wchar_t *str)
-{
-    return wcsduptombs(str);
-}
-
-void
-wpe(wchar_t *str)
-{
-    fprintf(stderr,"<%ls>\n",str);
-}
-
-void
-wpen(wchar_t *str, int n)
-{
-    wchar_t *tmp=xmalloc((n+1) * sizeof(wchar_t));
-    wcsncpy(tmp,str,n);
-    tmp[n]=0;
-    fprintf(stderr,"<%ls>\n",tmp);
-    xfree(tmp);
 }
