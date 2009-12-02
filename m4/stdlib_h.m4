@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-# stdlib_h.m4 serial 15
-=======
-# stdlib_h.m4 serial 14
->>>>>>> master
+# stdlib_h.m4 serial 16
 dnl Copyright (C) 2007-2009 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -12,11 +8,7 @@ AC_DEFUN([gl_STDLIB_H],
 [
   AC_REQUIRE([gl_STDLIB_H_DEFAULTS])
   gl_CHECK_NEXT_HEADERS([stdlib.h])
-<<<<<<< HEAD
   AC_CHECK_HEADERS([random.h], [], [], [AC_INCLUDES_DEFAULT])
-=======
-  AC_CHECK_HEADERS([random.h])
->>>>>>> master
   if test $ac_cv_header_random_h = yes; then
     HAVE_RANDOM_H=1
   else
@@ -48,6 +40,7 @@ AC_DEFUN([gl_STDLIB_H_DEFAULTS],
   GNULIB_GETLOADAVG=0;    AC_SUBST([GNULIB_GETLOADAVG])
   GNULIB_GETSUBOPT=0;     AC_SUBST([GNULIB_GETSUBOPT])
   GNULIB_MKDTEMP=0;       AC_SUBST([GNULIB_MKDTEMP])
+  GNULIB_MKOSTEMP=0;      AC_SUBST([GNULIB_MKOSTEMP])
   GNULIB_MKSTEMP=0;       AC_SUBST([GNULIB_MKSTEMP])
   GNULIB_PUTENV=0;        AC_SUBST([GNULIB_PUTENV])
   GNULIB_RANDOM_R=0;      AC_SUBST([GNULIB_RANDOM_R])
@@ -63,6 +56,7 @@ AC_DEFUN([gl_STDLIB_H_DEFAULTS],
   HAVE_GETSUBOPT=1;          AC_SUBST([HAVE_GETSUBOPT])
   HAVE_MALLOC_POSIX=1;       AC_SUBST([HAVE_MALLOC_POSIX])
   HAVE_MKDTEMP=1;            AC_SUBST([HAVE_MKDTEMP])
+  HAVE_MKOSTEMP=1;           AC_SUBST([HAVE_MKOSTEMP])
   HAVE_REALLOC_POSIX=1;      AC_SUBST([HAVE_REALLOC_POSIX])
   HAVE_RANDOM_R=1;           AC_SUBST([HAVE_RANDOM_R])
   HAVE_RPMATCH=1;            AC_SUBST([HAVE_RPMATCH])

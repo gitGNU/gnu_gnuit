@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 # stdint.m4 serial 34
-=======
-# stdint.m4 serial 33
->>>>>>> master
 dnl Copyright (C) 2001-2009 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,

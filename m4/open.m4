@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-# open.m4 serial 6
-=======
-# open.m4 serial 5
->>>>>>> master
+# open.m4 serial 7
 dnl Copyright (C) 2007-2009 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -55,20 +51,15 @@ changequote([,])dnl
 AC_DEFUN([gl_REPLACE_OPEN],
 [
   AC_REQUIRE([gl_FCNTL_H_DEFAULTS])
-  if test $REPLACE_OPEN != 1; then
-    AC_LIBOBJ([open])
-    gl_PREREQ_OPEN
-  fi
   REPLACE_OPEN=1
+  AC_LIBOBJ([open])
+  gl_PREREQ_OPEN
 ])
 
 # Prerequisites of lib/open.c.
 AC_DEFUN([gl_PREREQ_OPEN],
 [
   AC_REQUIRE([AC_C_INLINE])
-<<<<<<< HEAD
   AC_REQUIRE([gl_PROMOTED_TYPE_MODE_T])
-=======
->>>>>>> master
   :
 ])

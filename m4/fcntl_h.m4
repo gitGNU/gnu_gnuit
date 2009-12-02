@@ -1,3 +1,4 @@
+# serial 2
 # Configure fcntl.h.
 dnl Copyright (C) 2006, 2007, 2009 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
@@ -9,11 +10,8 @@ dnl Written by Paul Eggert.
 AC_DEFUN([gl_FCNTL_H],
 [
   AC_REQUIRE([gl_FCNTL_H_DEFAULTS])
-<<<<<<< HEAD
   dnl Persuade glibc <fcntl.h> to define O_NOATIME and O_NOFOLLOW.
   AC_REQUIRE([AC_USE_SYSTEM_EXTENSIONS])
-=======
->>>>>>> master
   AC_CACHE_CHECK([for working fcntl.h], [gl_cv_header_working_fcntl_h],
     [AC_RUN_IFELSE(
        [AC_LANG_PROGRAM(
@@ -93,6 +91,7 @@ AC_DEFUN([gl_FCNTL_MODULE_INDICATOR],
 
 AC_DEFUN([gl_FCNTL_H_DEFAULTS],
 [
+  AC_REQUIRE([gl_OPENAT_DEFAULTS]) dnl for GNULIB_OPENAT
   GNULIB_OPEN=0;  AC_SUBST([GNULIB_OPEN])
   dnl Assume proper GNU behavior unless another module says otherwise.
   REPLACE_OPEN=0; AC_SUBST([REPLACE_OPEN])
