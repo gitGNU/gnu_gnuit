@@ -54,16 +54,3 @@ xfree(pointer)
     else
 	fatal("xfree: trying to free NULL");
 }
-
-#if 0
-void *xmalloc(size_t size)
-{
-    void *ptr=malloc(size);
-    if(ptr)
-	return ptr;
-    fatal("XMALLOC FAIL\n");
-    /* NOTREACHED */
-    abort();
-}
-
-#endif
