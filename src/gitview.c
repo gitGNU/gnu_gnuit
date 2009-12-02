@@ -742,7 +742,7 @@ main(argc, argv)
 
     if (fd == -1)
     {
-	endwin();
+	tty_end_cursorapp();
 	fprintf(stderr, "%s: cannot open file %s.\n", g_program, filename);
 	return 1;
     }
