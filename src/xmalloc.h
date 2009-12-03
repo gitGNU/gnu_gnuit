@@ -1,6 +1,6 @@
 /* xmalloc.h -- Prototypes for the functions in xmalloc.c.  */
 
-/* Copyright (C) 1993-1999 Free Software Foundation, Inc.
+/* Copyright (C) 1993-1999, 2009 Free Software Foundation, Inc.
 
  This file is part of gnuit.
 

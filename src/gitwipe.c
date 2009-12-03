@@ -1,7 +1,7 @@
 /* gitwipe.c -- An utility that deletes the contents of a file in order to
    make it impossible for someone to recover it.  */
 
-/* Copyright (C) 1993-2000, 2006-2007 Free Software Foundation, Inc.
+/* Copyright (C) 1993-2000, 2006-2009 Free Software Foundation, Inc.
 
  This file is part of gnuit.
 

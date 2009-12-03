@@ -1,6 +1,6 @@
 /* history.c -- Standalone history library.  */
 
-/* Copyright (C) 1989, 1992 Free Software Foundation, Inc.
+/* Copyright (C) 1989, 1992, 2009 Free Software Foundation, Inc.
 
  This file is part of gnuit.
 

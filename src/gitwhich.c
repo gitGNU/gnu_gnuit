@@ -1,6 +1,6 @@
 /* gitwhich.c -- A simplified version of `which'.  */
 
-/* Copyright (C) 1999, 2006-2007 Free Software Foundation, Inc.
+/* Copyright (C) 1999, 2006-2009 Free Software Foundation, Inc.
 
  This file is part of gnuit.
 

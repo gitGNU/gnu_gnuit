@@ -1,6 +1,6 @@
 /* status.h -- The #defines and function prototypes used in status.c.  */
 
-/* Copyright (C) 1993-1999, 2006-2007 Free Software Foundation, Inc.
+/* Copyright (C) 1993-1999, 2006-2009 Free Software Foundation, Inc.
 
  This file is part of gnuit.
 

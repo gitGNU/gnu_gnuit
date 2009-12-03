@@ -1,6 +1,6 @@
 /* history.h -- The names of functions that you can call in history.  */
 
-/* Copyright (C) 1989, 1992 Free Software Foundation, Inc.
+/* Copyright (C) 1989, 1992, 2009 Free Software Foundation, Inc.
 
  This file is part of gnuit.
 

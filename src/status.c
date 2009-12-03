@@ -1,6 +1,6 @@
 /* status.c -- A simple status line management file.  */
 
-/* Copyright (C) 1993-1999, 2006-2007 Free Software Foundation, Inc.
+/* Copyright (C) 1993-1999, 2006-2009 Free Software Foundation, Inc.
 
  This file is part of gnuit.
 
