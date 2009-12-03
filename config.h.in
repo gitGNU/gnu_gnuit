@@ -12,6 +12,9 @@
    platforms at once. */
 #undef AA_APPLE_UNIVERSAL_BUILD
 
+/* Define if building universal (internal helper macro) */
+#undef AC_APPLE_UNIVERSAL_BUILD
+
 /* Define to the number of bits in type 'ptrdiff_t'. */
 #undef BITSIZEOF_PTRDIFF_T
 
@@ -30,6 +33,23 @@
 /* Define if you have a broken sys/filesys.h header file. */
 #undef BROKEN_SYS_FILSYS_H
 
+/* Define if you wish *printf() functions that have a safe handling of
+   non-IEEE-754 'long double' values. */
+#undef CHECK_PRINTF_SAFE
+
+/* Define to 1 if chown fails to change ctime when at least one argument was
+   not -1. */
+#undef CHOWN_CHANGE_TIME_BUG
+
+/* Define if chown is not POSIX compliant regarding IDs of -1. */
+#undef CHOWN_FAILS_TO_HONOR_ID_OF_NEGATIVE_ONE
+
+/* Define if chown modifies symlinks. */
+#undef CHOWN_MODIFIES_SYMLINK
+
+/* Define to 1 if chown mishandles trailing slash. */
+#undef CHOWN_TRAILING_SLASH_BUG
+
 /* Define to one of `_getb67', `GETB67', `getb67' for Cray-2 and Cray-YMP
    systems. This function is required for `alloca.c' support on those systems.
    */
@@ -38,8 +58,38 @@
 /* Define to 1 if using `alloca.c'. */
 #undef C_ALLOCA
 
+/* Define as the bit index in the word where to find bit 0 of the exponent of
+   'double'. */
+#undef DBL_EXPBIT0_BIT
+
+/* Define as the word index where to find the exponent of 'double'. */
+#undef DBL_EXPBIT0_WORD
+
+/* Define as the bit index in the word where to find the sign of 'double'. */
+#undef DBL_SIGNBIT_BIT
+
+/* Define as the word index where to find the sign of 'double'. */
+#undef DBL_SIGNBIT_WORD
+
+/* the name of the file descriptor member of DIR */
+#undef DIR_FD_MEMBER_NAME
+
+#ifdef DIR_FD_MEMBER_NAME
+# define DIR_TO_FD(Dir_p) ((Dir_p)->DIR_FD_MEMBER_NAME)
+#else
+# define DIR_TO_FD(Dir_p) -1
+#endif
+
+
 /* Define to 1 if // is a file system root distinct from /. */
 #undef DOUBLE_SLASH_IS_DISTINCT_ROOT
+
+/* Define if struct dirent has a member d_ino that actually works. */
+#undef D_INO_IN_DIRENT
+
+/* Define to 1 if your platform has fchownat, but it cannot perform lchown
+   tasks. */
+#undef FCHOWNAT_NOFOLLOW_BUG
 
 /* Define on systems for which file names may have a so-called `drive letter'
    prefix, define this to compute the length of that prefix, including the
@@ -63,6 +113,26 @@
    MSVC and with C++ compilers. */
 #undef FLEXIBLE_ARRAY_MEMBER
 
+/* Define as the bit index in the word where to find bit 0 of the exponent of
+   'float'. */
+#undef FLT_EXPBIT0_BIT
+
+/* Define as the word index where to find the exponent of 'float'. */
+#undef FLT_EXPBIT0_WORD
+
+/* Define as the bit index in the word where to find the sign of 'float'. */
+#undef FLT_SIGNBIT_BIT
+
+/* Define as the word index where to find the sign of 'float'. */
+#undef FLT_SIGNBIT_WORD
+
+/* Define to 1 if fopen() fails to recognize a trailing slash. */
+#undef FOPEN_TRAILING_SLASH_BUG
+
+/* Define to 1 if mkdir mistakenly creates a directory given with a trailing
+   dot component. */
+#undef FUNC_MKDIR_DOT_BUG
+
 /* Define to 1 if realpath() can malloc memory, always gives an absolute path,
    and handles trailing slash correctly. */
 #undef FUNC_REALPATH_WORKS
@@ -76,11 +146,26 @@
 /* Define to 1 when using the gnulib module canonicalize-lgpl. */
 #undef GNULIB_CANONICALIZE_LGPL
 
+/* Define to 1 when using the gnulib module fseek. */
+#undef GNULIB_FSEEK
+
 /* Define to 1 when using the gnulib module getopt-gnu. */
 #undef GNULIB_GETOPT_GNU
 
+/* Define to 1 when using the gnulib module ioctl. */
+#undef GNULIB_IOCTL
+
+/* Define to indicate the 'malloc' module. */
+#undef GNULIB_MALLOC_GNU
+
 /* Define to 1 when using the gnulib module open. */
 #undef GNULIB_OPEN
+
+/* Define to indicate the 'realloc' module. */
+#undef GNULIB_REALLOC_GNU
+
+/* Define to 1 when using the gnulib module unistd-safer. */
+#undef GNULIB_UNISTD_SAFER
 
 /* Define if you have the Unix 64bit I/O API. */
 #undef HAVE_64BIT_IO
@@ -104,11 +189,60 @@
 /* Define to 1 if nanosleep mishandles large arguments. */
 #undef HAVE_BUG_BIG_NANOSLEEP
 
+/* Define to 1 if your system has a GNU libc compatible `calloc' function, and
+   to 0 otherwise. */
+#undef HAVE_CALLOC
+
+/* Define if the 'calloc' function is POSIX compliant. */
+#undef HAVE_CALLOC_POSIX
+
 /* Define to 1 if you have the `canonicalize_file_name' function. */
 #undef HAVE_CANONICALIZE_FILE_NAME
 
+/* Define to 1 if you have the `chown' function. */
+#undef HAVE_CHOWN
+
+/* Define if the copysignf function is declared in <math.h> and available in
+   libc. */
+#undef HAVE_COPYSIGNF_IN_LIBC
+
+/* Define if the copysignl function is declared in <math.h> and available in
+   libc. */
+#undef HAVE_COPYSIGNL_IN_LIBC
+
+/* Define if the copysign function is declared in <math.h> and available in
+   libc. */
+#undef HAVE_COPYSIGN_IN_LIBC
+
+/* Define to 1 if you have the <ctype.h> header file. */
+#undef HAVE_CTYPE_H
+
 /* Define to 1 if you have the <curses.h> header file. */
 #undef HAVE_CURSES_H
+
+/* Define to 1 if you have the declaration of `copysign', and to 0 if you
+   don't. */
+#undef HAVE_DECL_COPYSIGN
+
+/* Define to 1 if you have the declaration of `copysignf', and to 0 if you
+   don't. */
+#undef HAVE_DECL_COPYSIGNF
+
+/* Define to 1 if you have the declaration of `copysignl', and to 0 if you
+   don't. */
+#undef HAVE_DECL_COPYSIGNL
+
+/* Define to 1 if you have the declaration of `dirfd', and to 0 if you don't.
+   */
+#undef HAVE_DECL_DIRFD
+
+/* Define to 1 if you have the declaration of `fpurge', and to 0 if you don't.
+   */
+#undef HAVE_DECL_FPURGE
+
+/* Define to 1 if you have the declaration of `getcwd', and to 0 if you don't.
+   */
+#undef HAVE_DECL_GETCWD
 
 /* Define to 1 if you have the declaration of `getc_unlocked', and to 0 if you
    don't. */
@@ -130,9 +264,21 @@
    don't. */
 #undef HAVE_DECL_ISBLANK
 
+/* Define to 1 if you have the declaration of `memrchr', and to 0 if you
+   don't. */
+#undef HAVE_DECL_MEMRCHR
+
 /* Define to 1 if you have the declaration of `optreset', and to 0 if you
    don't. */
 #undef HAVE_DECL_OPTRESET
+
+/* Define to 1 if you have the declaration of `sleep', and to 0 if you don't.
+   */
+#undef HAVE_DECL_SLEEP
+
+/* Define to 1 if you have the declaration of `strdup', and to 0 if you don't.
+   */
+#undef HAVE_DECL_STRDUP
 
 /* Define to 1 if you have the declaration of `strerror', and to 0 if you
    don't. */
@@ -170,12 +316,22 @@
    don't. */
 #undef HAVE_DECL_WCWIDTH
 
+/* Define to 1 if you have the declaration of `_snprintf', and to 0 if you
+   don't. */
+#undef HAVE_DECL__SNPRINTF
+
 /* Define to 1 if you have the <dirent.h> header file, and it defines `DIR'.
    */
 #undef HAVE_DIRENT_H
 
+/* Define to 1 if you have the `dirfd' function. */
+#undef HAVE_DIRFD
+
 /* Define if you have a dumb C compiler (e.g. B.O.S.). */
 #undef HAVE_DUMB_CC
+
+/* Define to 1 if you have the `dup2' function. */
+#undef HAVE_DUP2
 
 /* Define to 1 if you have the <dustat.h> header file. */
 #undef HAVE_DUSTAT_H
@@ -183,8 +339,38 @@
 /* Define to 1 if you have the <errno.h> header file. */
 #undef HAVE_ERRNO_H
 
+/* Define to 1 if you have the `fchdir' function. */
+#undef HAVE_FCHDIR
+
+/* Define to 1 if you have the `fchmodat' function. */
+#undef HAVE_FCHMODAT
+
+/* Define to 1 if you have the `fchown' function. */
+#undef HAVE_FCHOWN
+
 /* Define to 1 if you have the <fcntl.h> header file. */
 #undef HAVE_FCNTL_H
+
+/* Define to 1 if you have the `fdopendir' function. */
+#undef HAVE_FDOPENDIR
+
+/* Define to 1 if you have the <float.h> header file. */
+#undef HAVE_FLOAT_H
+
+/* Define to 1 if you have the `fpurge' function. */
+#undef HAVE_FPURGE
+
+/* Define if the frexpl function is available in libc. */
+#undef HAVE_FREXPL_IN_LIBC
+
+/* Define if the frexp function is available in libc. */
+#undef HAVE_FREXP_IN_LIBC
+
+/* Define to 1 if fseeko (and presumably ftello) exists and is declared. */
+#undef HAVE_FSEEKO
+
+/* Define to 1 if you have the `fstatat' function. */
+#undef HAVE_FSTATAT
 
 /* Define if the compiler used is GNU CC. */
 #undef HAVE_GCC
@@ -192,11 +378,17 @@
 /* Define to 1 if you have the `getcwd' function. */
 #undef HAVE_GETCWD
 
+/* Define to 1 if you have the `gethostname' function. */
+#undef HAVE_GETHOSTNAME
+
 /* Define to 1 if you have the <getopt.h> header file. */
 #undef HAVE_GETOPT_H
 
 /* Define to 1 if you have the `getopt_long_only' function. */
 #undef HAVE_GETOPT_LONG_ONLY
+
+/* Define to 1 if you have the `getpagesize' function. */
+#undef HAVE_GETPAGESIZE
 
 /* Define to 1 if you have the `gettimeofday' function. */
 #undef HAVE_GETTIMEOFDAY
@@ -206,11 +398,27 @@
    */
 #undef HAVE_INLINE
 
+/* Define if you have the 'intmax_t' type in <stdint.h> or <inttypes.h>. */
+#undef HAVE_INTMAX_T
+
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
+/* Define if <inttypes.h> exists, doesn't clash with <sys/types.h>, and
+   declares uintmax_t. */
+#undef HAVE_INTTYPES_H_WITH_UINTMAX
+
 /* Define to 1 if you have the `isblank' function. */
 #undef HAVE_ISBLANK
+
+/* Define if the isnan(double) function is available in libc. */
+#undef HAVE_ISNAND_IN_LIBC
+
+/* Define if the isnan(float) function is available in libc. */
+#undef HAVE_ISNANF_IN_LIBC
+
+/* Define if the isnan(long double) function is available in libc. */
+#undef HAVE_ISNANL_IN_LIBC
 
 /* Define to 1 if you have the `iswcntrl' function. */
 #undef HAVE_ISWCNTRL
@@ -221,8 +429,23 @@
 /* Define if you have <langinfo.h> and nl_langinfo(CODESET). */
 #undef HAVE_LANGINFO_CODESET
 
+/* Define to 1 if you have the `lchmod' function. */
+#undef HAVE_LCHMOD
+
+/* Define to 1 if you have the `lchown' function. */
+#undef HAVE_LCHOWN
+
+/* Define if the ldexpl function is available in libc. */
+#undef HAVE_LDEXPL_IN_LIBC
+
+/* Define if the ldexp function is available in libc. */
+#undef HAVE_LDEXP_IN_LIBC
+
 /* Define to 1 if you have the `sun' library (-lsun). */
 #undef HAVE_LIBSUN
+
+/* Define to 1 if you have the `link' function. */
+#undef HAVE_LINK
 
 /* Define if your system Linux. */
 #undef HAVE_LINUX
@@ -239,12 +462,19 @@
 /* Define to 1 if you have the `lstat' function. */
 #undef HAVE_LSTAT
 
+/* Define to 1 if your system has a GNU libc compatible `malloc' function, and
+   to 0 otherwise. */
+#undef HAVE_MALLOC
+
 /* Define if the 'malloc' function is POSIX compliant. */
 #undef HAVE_MALLOC_POSIX
 
 /* Define to 1 if mmap()'s MAP_ANONYMOUS flag is available after including
    config.h and <sys/mman.h>. */
 #undef HAVE_MAP_ANONYMOUS
+
+/* Define to 1 if you have the <math.h> header file. */
+#undef HAVE_MATH_H
 
 /* Define to 1 if mbrtowc and mbstate_t are properly declared. */
 #undef HAVE_MBRTOWC
@@ -270,6 +500,12 @@
 /* Define to 1 if you have the `mempcpy' function. */
 #undef HAVE_MEMPCPY
 
+/* Define to 1 if you have the `memrchr' function. */
+#undef HAVE_MEMRCHR
+
+/* Define to 1 if you have the `mkdirat' function. */
+#undef HAVE_MKDIRAT
+
 /* Define to 1 if you have the `mprotect' function. */
 #undef HAVE_MPROTECT
 
@@ -279,8 +515,26 @@
 /* Define to 1 if you have the <ndir.h> header file, and it defines `DIR'. */
 #undef HAVE_NDIR_H
 
+/* Define to 1 if you have the <netdb.h> header file. */
+#undef HAVE_NETDB_H
+
+/* Define to 1 if you have the `nl_langinfo' function. */
+#undef HAVE_NL_LANGINFO
+
+/* Define to 1 if you have the `openat' function. */
+#undef HAVE_OPENAT
+
+/* Define to 1 if getcwd works, except it sometimes fails when it shouldn't,
+   setting errno to ERANGE, ENAMETOOLONG, or ENOENT. If __GETCWD_PREFIX is not
+   defined, it doesn't matter whether HAVE_PARTLY_WORKING_GETCWD is defined.
+   */
+#undef HAVE_PARTLY_WORKING_GETCWD
+
 /* Define to 1 if you have the `pathconf' function. */
 #undef HAVE_PATHCONF
+
+/* Define to 1 if you have the `pipe' function. */
+#undef HAVE_PIPE
 
 /* Define if you have POSIX compatible terminal interface. */
 #undef HAVE_POSIX_TTY
@@ -293,6 +547,13 @@
 
 /* Define to 1 if you have the `readlink' function. */
 #undef HAVE_READLINK
+
+/* Define to 1 if your system has a GNU libc compatible `realloc' function,
+   and to 0 otherwise. */
+#undef HAVE_REALLOC
+
+/* Define if the 'realloc' function is POSIX compliant. */
+#undef HAVE_REALLOC_POSIX
 
 /* Define to 1 if you have the `realpath' function. */
 #undef HAVE_REALPATH
@@ -342,6 +603,12 @@
 /* Define to 1 if the system has the type `sigset_t'. */
 #undef HAVE_SIGSET_T
 
+/* Define to 1 if you have the `sleep' function. */
+#undef HAVE_SLEEP
+
+/* Define to 1 if you have the `snprintf' function. */
+#undef HAVE_SNPRINTF
+
 /* Define to 1 if you have the `statvfs' function. */
 #undef HAVE_STATVFS
 
@@ -354,6 +621,10 @@
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
 
+/* Define if <stdint.h> exists, doesn't clash with <sys/types.h>, and declares
+   uintmax_t. */
+#undef HAVE_STDINT_H_WITH_UINTMAX
+
 /* Define to 1 if you have the <stdio.h> header file. */
 #undef HAVE_STDIO_H
 
@@ -365,6 +636,9 @@
 
 /* Define to 1 if you have the `strcasestr' function. */
 #undef HAVE_STRCASESTR
+
+/* Define to 1 if you have the `strdup' function. */
+#undef HAVE_STRDUP
 
 /* Define to 1 if you have the `strerror' function. */
 #undef HAVE_STRERROR
@@ -380,6 +654,9 @@
 
 /* Define to 1 if you have the `strncasecmp' function. */
 #undef HAVE_STRNCASECMP
+
+/* Define to 1 if you have the `strnlen' function. */
+#undef HAVE_STRNLEN
 
 /* Define to 1 if you have the `strstr' function. */
 #undef HAVE_STRSTR
@@ -440,6 +717,9 @@
 /* Define to 1 if you have the <sys/inttypes.h> header file. */
 #undef HAVE_SYS_INTTYPES_H
 
+/* Define to 1 if you have the <sys/ioctl.h> header file. */
+#undef HAVE_SYS_IOCTL_H
+
 /* Define to 1 if you have the <sys/mman.h> header file. */
 #undef HAVE_SYS_MMAN_H
 
@@ -480,6 +760,9 @@
 /* Define to 1 if you have the <sys/types.h> header file. */
 #undef HAVE_SYS_TYPES_H
 
+/* Define to 1 if you have the <sys/utsname.h> header file. */
+#undef HAVE_SYS_UTSNAME_H
+
 /* Define to 1 if you have the <sys/vfs.h> header file. */
 #undef HAVE_SYS_VFS_H
 
@@ -492,8 +775,14 @@
 /* Define to 1 if you have the <time.h> header file. */
 #undef HAVE_TIME_H
 
+/* Define to 1 if you have the `uname' function. */
+#undef HAVE_UNAME
+
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
+
+/* Define to 1 if you have the `unlinkat' function. */
+#undef HAVE_UNLINKAT
 
 /* Define to 1 if the system has the type `unsigned long long int'. */
 #undef HAVE_UNSIGNED_LONG_LONG_INT
@@ -513,11 +802,26 @@
 /* Define to 1 if you have the <values.h> header file. */
 #undef HAVE_VALUES_H
 
+/* Define to 1 if you have the `vasnprintf' function. */
+#undef HAVE_VASNPRINTF
+
 /* Define to 1 if you have the <wchar.h> header file. */
 #undef HAVE_WCHAR_H
 
 /* Define if you have the 'wchar_t' type. */
 #undef HAVE_WCHAR_T
+
+/* Define to 1 if you have the `wcrtomb' function. */
+#undef HAVE_WCRTOMB
+
+/* Define to 1 if you have the `wcslen' function. */
+#undef HAVE_WCSLEN
+
+/* Define to 1 if you have the `wcsnlen' function. */
+#undef HAVE_WCSNLEN
+
+/* Define to 1 if you have the `wcsnrtombs' function. */
+#undef HAVE_WCSNRTOMBS
 
 /* Define to 1 if you have the <wctype.h> header file. */
 #undef HAVE_WCTYPE_H
@@ -549,17 +853,46 @@
 /* Define to 1 if you have the <ws2tcpip.h> header file. */
 #undef HAVE_WS2TCPIP_H
 
+/* Define to 1 if you have the <xlocale.h> header file. */
+#undef HAVE_XLOCALE_H
+
 /* Define to 1 if the system has the type `_Bool'. */
 #undef HAVE__BOOL
 
 /* Define to 1 if you have the `_ftime' function. */
 #undef HAVE__FTIME
 
+/* Define to 1 if you have the `__fpurge' function. */
+#undef HAVE___FPURGE
+
+/* Define to 1 if you have the `__freading' function. */
+#undef HAVE___FREADING
+
+/* Define HOST_NAME_MAX when <limits.h> does not define it. */
+#undef HOST_NAME_MAX
+
 #if FILE_SYSTEM_BACKSLASH_IS_FILE_NAME_SEPARATOR
 # define ISSLASH(C) ((C) == '/' || (C) == '\\')
 #else
 # define ISSLASH(C) ((C) == '/')
 #endif
+
+/* Define as the bit index in the word where to find bit 0 of the exponent of
+   'long double'. */
+#undef LDBL_EXPBIT0_BIT
+
+/* Define as the word index where to find the exponent of 'long double'. */
+#undef LDBL_EXPBIT0_WORD
+
+/* Define as the bit index in the word where to find the sign of 'long
+   double'. */
+#undef LDBL_SIGNBIT_BIT
+
+/* Define as the word index where to find the sign of 'long double'. */
+#undef LDBL_SIGNBIT_WORD
+
+/* Define to 1 if lseek does not detect pipes. */
+#undef LSEEK_PIPE_BROKEN
 
 /* Define to 1 if `lstat' dereferences a symlink specified with a trailing
    slash. */
@@ -582,6 +915,54 @@
 
 /* Define if you want to disable various consistency checkings. */
 #undef NDEBUG
+
+/* Define if the vasnprintf implementation needs special code for the 'a' and
+   'A' directives. */
+#undef NEED_PRINTF_DIRECTIVE_A
+
+/* Define if the vasnprintf implementation needs special code for the 'F'
+   directive. */
+#undef NEED_PRINTF_DIRECTIVE_F
+
+/* Define if the vasnprintf implementation needs special code for the 'ls'
+   directive. */
+#undef NEED_PRINTF_DIRECTIVE_LS
+
+/* Define if the vasnprintf implementation needs special code for 'double'
+   arguments. */
+#undef NEED_PRINTF_DOUBLE
+
+/* Define if the vasnprintf implementation needs special code for surviving
+   out-of-memory conditions. */
+#undef NEED_PRINTF_ENOMEM
+
+/* Define if the vasnprintf implementation needs special code for the ' flag.
+   */
+#undef NEED_PRINTF_FLAG_GROUPING
+
+/* Define if the vasnprintf implementation needs special code for the '-'
+   flag. */
+#undef NEED_PRINTF_FLAG_LEFTADJUST
+
+/* Define if the vasnprintf implementation needs special code for the 0 flag.
+   */
+#undef NEED_PRINTF_FLAG_ZERO
+
+/* Define if the vasnprintf implementation needs special code for infinite
+   'double' arguments. */
+#undef NEED_PRINTF_INFINITE_DOUBLE
+
+/* Define if the vasnprintf implementation needs special code for infinite
+   'long double' arguments. */
+#undef NEED_PRINTF_INFINITE_LONG_DOUBLE
+
+/* Define if the vasnprintf implementation needs special code for 'long
+   double' arguments. */
+#undef NEED_PRINTF_LONG_DOUBLE
+
+/* Define if the vasnprintf implementation needs special code for supporting
+   large precisions without arbitrary bounds. */
+#undef NEED_PRINTF_UNBOUNDED_PRECISION
 
 /* Define to 1 if your C compiler doesn't accept -c and -o together. */
 #undef NO_MINUS_C_MINUS_O
@@ -640,6 +1021,16 @@
    such as on Solaris 9 or cygwin 1.5. */
 #undef RENAME_TRAILING_SLASH_SOURCE_BUG
 
+/* Define to 1 if dup2 returns 0 instead of the target fd. */
+#undef REPLACE_DUP2
+
+/* Define to 1 if gnulib's fchdir() replacement is used. */
+#undef REPLACE_FCHDIR
+
+/* Define if fprintf is overridden by a POSIX compliant gnulib implementation.
+   */
+#undef REPLACE_FPRINTF_POSIX
+
 /* Define to 1 if stat needs help when passed a directory name with a trailing
    slash */
 #undef REPLACE_FUNC_STAT_DIR
@@ -648,8 +1039,23 @@
    slash */
 #undef REPLACE_FUNC_STAT_FILE
 
+/* Define to 1 if open() should work around the inability to open a directory.
+   */
+#undef REPLACE_OPEN_DIRECTORY
+
+/* Define if printf is overridden by a POSIX compliant gnulib implementation.
+   */
+#undef REPLACE_PRINTF_POSIX
+
 /* Define this to 1 if strerror is broken. */
 #undef REPLACE_STRERROR
+
+/* Define if vasnprintf exists but is overridden by gnulib. */
+#undef REPLACE_VASNPRINTF
+
+/* Define if vfprintf is overridden by a POSIX compliant gnulib
+   implementation. */
+#undef REPLACE_VFPRINTF_POSIX
 
 /* Define as the return type of signal handlers (`int' or `void'). */
 #undef RETSIGTYPE
@@ -657,6 +1063,12 @@
 /* Define to l, ll, u, ul, ull, etc., as suitable for constants of type
    'sig_atomic_t'. */
 #undef SIG_ATOMIC_T_SUFFIX
+
+/* Define as the maximum value of type 'size_t', if the system doesn't define
+   it. */
+#ifndef SIZE_MAX
+# undef SIZE_MAX
+#endif
 
 /* Define to l, ll, u, ul, ull, etc., as suitable for constants of type
    'size_t'. */
@@ -719,12 +1131,30 @@
    'wchar_t'. */
 #undef WCHAR_T_SUFFIX
 
+/* Define if WSAStartup is needed. */
+#undef WINDOWS_SOCKETS
+
 /* Define to l, ll, u, ul, ull, etc., as suitable for constants of type
    'wint_t'. */
 #undef WINT_T_SUFFIX
 
+/* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
+   significant byte first (like Motorola and SPARC, unlike Intel). */
+#if defined AC_APPLE_UNIVERSAL_BUILD
+# if defined __BIG_ENDIAN__
+#  define WORDS_BIGENDIAN 1
+# endif
+#else
+# ifndef WORDS_BIGENDIAN
+#  undef WORDS_BIGENDIAN
+# endif
+#endif
+
 /* Number of bits in a file offset, on hosts where this is settable. */
 #undef _FILE_OFFSET_BITS
+
+/* Define to 1 to make fseeko visible on some hosts (e.g. glibc 2.2). */
+#undef _LARGEFILE_SOURCE
 
 /* Define for large files, on AIX-style hosts. */
 #undef _LARGE_FILES
@@ -775,6 +1205,9 @@
 #endif
 
 
+/* Define to rpl_calloc if the replacement function should be used. */
+#undef calloc
+
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
 
@@ -793,6 +1226,9 @@
 #undef inline
 #endif
 
+/* Define to long or long long if <stdint.h> and <inttypes.h> don't define. */
+#undef intmax_t
+
 /* Work around a bug in Apple GCC 4.0.1 build 5465: In C99 mode, it supports
    the ISO C 99 semantics of 'extern inline' (unlike the GNU C semantics of
    earlier versions), but does not display it by setting __GNUC_STDC_INLINE__.
@@ -806,8 +1242,14 @@
 /* Define to rpl_localtime if the replacement function should be used. */
 #undef localtime
 
+/* Define to rpl_malloc if the replacement function should be used. */
+#undef malloc
+
 /* Define to a type if <wchar.h> does not define. */
 #undef mbstate_t
+
+/* Define to rpl_memcmp if the replacement function should be used. */
+#undef memcmp
 
 /* Define to `int' if <sys/types.h> does not define. */
 #undef mode_t
@@ -820,6 +1262,13 @@
 
 /* Define to `int' if <sys/types.h> does not define. */
 #undef pid_t
+
+/* Define as the type of the result of subtracting two pointers, if the system
+   doesn't define it. */
+#undef ptrdiff_t
+
+/* Define to rpl_realloc if the replacement function should be used. */
+#undef realloc
 
 /* Define to the equivalent of the C99 'restrict' keyword, or to
    nothing if this is not supported.  Do not define if restrict is

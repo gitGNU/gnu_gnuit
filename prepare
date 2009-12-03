@@ -1,13 +1,23 @@
 #! /bin/sh
 
 # Prepare a freshly checked out copy of
-# the CVS tree for compilation.
+# the git tree for compilation.
 
 AMFLAGS=
 
+GNULIB_MODULES="fpieee sockets calloc chown close ctype dirent errno error
+                fclose fcntl-h fflush fnmatch fnmatch-gnu fopen fprintf-posix
+                fseek fsusage ftell getcwd getopt human idcache inttypes
+                ioctl link locale lseek malloc mbrtowc mbsinit mbsstr memcmp
+                mkdir mkstemp nanosleep printf-posix putenv readlink realloc
+                rename rmdir signal sleep sprintf-posix stat stddef stdint
+                stdio stdlib strcase strcasestr string strings strtoumax
+                sys_stat sys_time sys_wait time uname unistd unlink utime
+                wchar wcsnrtombs wctype write xalloc"
+
 if [ "$1" = "-a" ]
 then
-    ../../gnulib/gnulib/gnulib-tool --import errno fnmatch fnmatch-gnu fsusage getopt human idcache mbsstr memmove mkstemp nanosleep putenv readlink rename strcase strcasestr utime wchar wctype xalloc; echo -n .
+    ../../gnulib/gnulib/gnulib-tool --import $GNULIB_MODULES ; echo -n .
 #    gnulib-tool --update; echo -n .
 #    patch -p0 < lib-Makefile.am.patch ; echo -n .
     AMFLAGS="--add-missing --force-missing --copy"
