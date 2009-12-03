@@ -1817,7 +1817,7 @@ main(argc, argv)
     int entry, key, app_end = 0, first_time = 1, errors = 0;
     char *left_panel_path, *right_panel_path;
     char *scmdln=NULL, *soutput_string;
-    wchar_t *cmdln = NULL, *output_string, *wptr, *wsrcptr, *input = NULL;
+    wchar_t *cmdln = NULL, *output_string=L"", *wptr, *wsrcptr, *input = NULL;
     wchar_t *search_string = NULL;
     int exit_msg_len, wptrlen;
     int left_panel_columns, right_panel_columns;
