@@ -7,12 +7,12 @@ AMFLAGS=
 
 GNULIB_MODULES="fpieee sockets calloc chown close ctype dirent errno error
                 fclose fcntl-h fflush fnmatch fnmatch-gnu fopen fprintf-posix
-                fseek fsusage ftell getcwd getopt human idcache inttypes
-                ioctl link locale lseek malloc mbrtowc mbsinit mbsstr memcmp
+                fseek fsusage ftell getcwd getopt-gnu human idcache inttypes
+                ioctl link locale lseek malloc mbrtowc mbsinit mbsstr
                 mkdir mkstemp nanosleep printf-posix putenv readlink realloc
                 rename rmdir signal sleep sprintf-posix stat stddef stdint
                 stdio stdlib strcase strcasestr string strings strtoumax
-                sys_stat sys_time sys_wait time uname unistd unlink utime
+                sys_stat sys_time sys_wait time uname unistd unlink
                 wchar wcsnrtombs wctype write xalloc"
 
 if [ "$1" = "-a" ]
