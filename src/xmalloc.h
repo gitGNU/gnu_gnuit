@@ -23,8 +23,9 @@
 #ifndef _GIT_XMALLOC_H
 #define _GIT_XMALLOC_H
 
-
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
+#endif /* HAVE_SYS_TYPE_H */
 #include <stddef.h>
 #include <stdlib.h>
 #include "stdc.h"

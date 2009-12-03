@@ -27,22 +27,20 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#endif /* HAVE_UNISTD_H */
 
 #include "xtime.h"
 
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-
-#ifdef HAVE_STDDEF_H
+#endif /* HAVE_SYS_TYPE_H */
 #include <stddef.h>
-#endif
 
 #include "file.h"
 #include <fcntl.h>
+#ifdef HAVE_LIMITS_H
 #include <limits.h>
-
+#endif /* HAVE_LIMITS_H */
 
 #define WIPE_BUFFER_SIZE        64*1024
 #undef min

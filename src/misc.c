@@ -25,23 +25,19 @@
 #endif
 
 #include <stdio.h>
-
 #include <wchar.h>
 #include <stdlib.h>
 #include <signal.h>
 #include <ctype.h>
 #include <wctype.h>
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-
-#ifdef HAVE_STDDEF_H
+#endif /* HAVE_SYS_TYPE_H */
 #include <stddef.h>
-#endif
-
+#ifdef HAVE_PWD_H
 #include <pwd.h>
-
-#ifdef HAVE_UNISTD_H
+#endif /* HAVE_PWD_H */
 #include <unistd.h>
-#endif /* HAVE_UNISTD_H */
 
 #include "xstring.h"
 #include "xmalloc.h"

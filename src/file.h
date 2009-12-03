@@ -27,8 +27,9 @@
 #include <config.h>
 #endif
 
+#ifdef HAVE_SYS_FILE_H
 #include <sys/file.h>
-
+#endif	/* HAVE_SYS_FILE_H */
 
 /* Older BSD systems need this. */
 

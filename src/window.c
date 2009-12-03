@@ -26,13 +26,13 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-
-#ifdef HAVE_STDDEF_H
+#endif /* HAVE_SYS_TYPE_H */
 #include <stddef.h>
-#endif
-
+#ifdef HAVE_ASSERT_H
 #include <assert.h>
+#endif /* HAVE_ASSERT_H */
 #include "window.h"
 #include "xmalloc.h"
 #include "tty.h"

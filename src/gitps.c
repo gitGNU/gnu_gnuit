@@ -28,19 +28,16 @@
 #include <wchar.h>
 #include <wctype.h>
 #include <stdlib.h>
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-
-#ifdef HAVE_STDDEF_H
+#endif /* HAVE_SYS_TYPE_H */
 #include <stddef.h>
-#endif
 #include <inttypes.h>
-
-#ifdef HAVE_LOCALE_H
 #include <locale.h>
-#endif
-
 #include <ctype.h>
+#ifdef HAVE_LIMITS_H
 #include <limits.h>
+#endif /* HAVE_LIMITS_H */
 #include "file.h"
 #include <fcntl.h>
 #include <signal.h>
@@ -51,10 +48,7 @@
 #define SIGCHLD	SIGCLD
 #endif
 
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#endif /* HAVE_UNISTD_H */
-
 #include <errno.h>
 
 /* Not all systems declare ERRNO in errno.h... and some systems #define it! */
@@ -62,8 +56,9 @@
 extern int errno;
 #endif /* !errno */
 
+#ifdef HAVE_ASSERT_H
 #include <assert.h>
-
+#endif /* HAVE_ASSERT_H */
 #include "stdc.h"
 #include "xstring.h"
 #include "xmalloc.h"

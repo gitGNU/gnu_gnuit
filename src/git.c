@@ -26,33 +26,28 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-
-#ifdef HAVE_STDDEF_H
+#endif /* HAVE_SYS_TYPE_H */
 #include <stddef.h>
-#endif
 
 #include "file.h"
 #include <ctype.h>
 #include <signal.h>
+#ifdef HAVE_PWD_H
 #include <pwd.h>
+#endif /* HAVE_PWD_H */
+#ifdef HAVE_GRP_H
 #include <grp.h>
+#endif /* HAVE_GRP_H */
+#ifdef HAVE_LIMITS_H
 #include <limits.h>
-
-#ifdef HAVE_UNISTD_H
+#endif /* HAVE_LIMITS_H */
 #include <unistd.h>
-#endif /* HAVE_UNISTD_H */
-
-#ifdef HAVE_LOCALE_H
 #include <locale.h>
-#endif
-
+#ifdef HAVE_ASSERT_H
 #include <assert.h>
-
-/* FIXME: use gnulib */
-#ifndef _ISOC99_SOURCE
-#define _ISOC99_SOURCE
-#endif
+#endif /* HAVE_ASSERT_H */
 #include <wchar.h>
 #include <wctype.h>
 

@@ -29,27 +29,21 @@
 #include <stdio.h>
 #include <wchar.h>
 #include <stdlib.h>
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-
-#ifdef HAVE_STDDEF_H
+#endif /* HAVE_SYS_TYPE_H */
 #include <stddef.h>
-#endif
-
-#ifdef HAVE_LOCALE_H
 #include <locale.h>
-#endif
-
+#ifdef HAVE_LIMITS_H
 #include <limits.h>
+#endif /* HAVE_LIMITS_H */
 #include "file.h"
 #include <signal.h>
 #include <ctype.h>
-
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#endif /* HAVE_UNISTD_H */
-
+#ifdef HAVE_ASSERT_H
 #include <assert.h>
-
+#endif /* HAVE_ASSERT_H */
 #include "stdc.h"
 #include "xstring.h"
 #include "xmalloc.h"

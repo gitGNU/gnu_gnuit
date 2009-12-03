@@ -26,27 +26,18 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
+#endif /* HAVE_SYS_TYPE_H */
+#include <inttypes.h>
+#include <stdint.h>
+#include <unistd.h>
 
-#if HAVE_INTTYPES_H
-# include <inttypes.h>
-#endif
-#if HAVE_STDINT_H
-# include <stdint.h>
-#endif
-#if HAVE_UNISTD_H
-# include <unistd.h>
-#endif
 #ifndef UINTMAX_MAX
 # define UINTMAX_MAX ((uintmax_t) -1)
 #endif
 
-
-
-#ifdef HAVE_STDDEF_H
 #include <stddef.h>
-#endif
-
 #include <ctype.h>
 #include "file.h"
 
@@ -54,7 +45,9 @@
 #include <values.h>
 #endif /* HAVE_VALUES_H */
 
+#ifdef HAVE_LIMITS_H
 #include <limits.h>
+#endif /* HAVE_LIMITS_H */
 
 #ifndef INT_MAX
 #define INT_MAX 2147483647
@@ -72,12 +65,8 @@
 #define MAXFILESIZE INT_MAX
 #endif /* !HAVE_64BIT_IO */
 
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#endif /* HAVE_UNISTD_H */
-
 #include "xtime.h"
-
 #include <errno.h>
 
 /* Not all systems declare ERRNO in errno.h... and some systems #define it! */
@@ -86,13 +75,15 @@ extern int errno;
 #endif /* !errno */
 
 /* Get the statfs() prototipe from sys/vfs.h.  */
-#ifdef HAVE_LINUX
+#ifdef HAVE_SYS_VFS_H
 #include <sys/vfs.h>
-#endif  /* HAVE_LINUX */
+#endif  /* HAVE_HAVE_SYS_VFS_H */
 
+#ifdef HAVE_ASSERT_H
 #include <assert.h>
+#endif /* HAVE_ASSERT_H */
 
-#include <human.h>
+#include "human.h"
 
 #include "stdc.h"
 #include "xstring.h"

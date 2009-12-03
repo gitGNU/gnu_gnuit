@@ -25,18 +25,17 @@
 #endif
 
 #include <stdio.h>
-
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-
+#endif /* HAVE_SYS_TYPE_H */
 #include <wchar.h>
 #include <wctype.h>
-
-#ifdef HAVE_STDDEF_H
 #include <stddef.h>
-#endif
 #include <stdlib.h>
 #include <ctype.h>
+#ifdef HAVE_ASSERT_H
 #include <assert.h>
+#endif /* HAVE_ASSERT_H */
 
 #include "xstring.h"
 #include "xmalloc.h"
@@ -50,11 +49,7 @@
 #include "xio.h"
 
 extern int AnsiColors;
-
-
 #define MAX_INPUT_HISTORY       512     /* big enough I suppose ... */
-
-
 #define INPUTLINE_FIELDS        6
 
 static char *InputLineFields[INPUTLINE_FIELDS] =

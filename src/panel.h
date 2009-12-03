@@ -23,9 +23,12 @@
 #ifndef _GIT_PANEL_H
 #define _GIT_PANEL_H
 
-
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
+#endif /* HAVE_SYS_TYPE_H */
+#ifdef HAVE_LIMITS_H
 #include <limits.h>
+#endif /* HAVE_LIMITS_H */
 #include <wchar.h>
 #include <stddef.h>
 #include <unistd.h>

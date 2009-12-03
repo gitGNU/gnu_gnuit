@@ -28,9 +28,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
+#endif /* HAVE_SYS_TYPE_H */
 #include <sys/ioctl.h>
-
 
 #ifdef HAVE_POSIX_TTY
 #include <termios.h>
@@ -43,10 +44,7 @@
 #endif
 
 #include <signal.h>
-
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#endif /* HAVE_UNISTD_H */
 
 #include "stdc.h"
 #include "xio.h"

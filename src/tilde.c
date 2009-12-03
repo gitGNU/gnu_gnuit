@@ -23,12 +23,13 @@
 #include <config.h>
 #endif
 #include <stdlib.h>
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
+#endif /* HAVE_SYS_TYPE_H */
+#ifdef HAVE_PWD_H
 #include <pwd.h>
-
-#ifdef HAVE_UNISTD_H
+#endif /* HAVE_PWD_H */
 #include <unistd.h>
-#endif /* HAVE_UNISTD_H */
 
 #include "xmalloc.h"
 #include "xstring.h"

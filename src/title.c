@@ -27,7 +27,9 @@
 #include <stdio.h>
 #include <wchar.h>
 #include <stdlib.h>
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
+#endif /* HAVE_SYS_TYPE_H */
 
 #if HAVE_UTIME_H
 #include <utime.h>
@@ -35,11 +37,10 @@
 #include <sys/utime.h>
 #endif /* !HAVE_UTIME_H */
 
-#ifdef HAVE_STDDEF_H
 #include <stddef.h>
-#endif
-
+#ifdef HAVE_ASSERT_H
 #include <assert.h>
+#endif /* HAVE_ASSERT_H */
 #include <ctype.h>
 
 #include "window.h"

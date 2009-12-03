@@ -41,23 +41,20 @@
 
 #ifdef HAVE_TERM_H
 #include <term.h>
-#endif
+#endif	/* HAVE_TERM_H */
 #include <stdlib.h>
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-
-#ifdef HAVE_STDDEF_H
+#endif /* HAVE_SYS_TYPE_H */
 #include <stddef.h>
-#endif
-
 #include <ctype.h>
 #include "file.h"
 #include <sys/ioctl.h>
-
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#endif /* HAVE_UNISTD_H */
 
+#ifdef HAVE_ASSERT_H
 #include <assert.h>
+#endif /* HAVE_ASSERT_H */
 #include "stdc.h"
 #include "xstring.h"
 #include "xmalloc.h"

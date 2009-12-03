@@ -23,8 +23,9 @@
 #ifndef _GIT_XIO_H
 #define _GIT_XIO_H
 
-
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
+#endif /* HAVE_SYS_TYPE_H */
 #include <stddef.h>
 
 #include "stat.h"

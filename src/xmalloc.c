@@ -25,19 +25,17 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-
-#ifdef HAVE_STDDEF_H
+#endif /* HAVE_SYS_TYPE_H */
 #include <stddef.h>
-#endif
-
-#include "wchar.h"
+#include <wchar.h>
 
 #include "xmalloc.h"
 
 extern void fatal PROTO ((char *));
 
-void 
+void
 xalloc_die(void)
 {
     fatal("virtual memory exhausted");

@@ -25,18 +25,15 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
+#endif /* HAVE_SYS_TYPE_H */
 
+#ifdef HAVE_LIMITS_H
 #include <limits.h>
-
-#ifdef HAVE_STDDEF_H
+#endif /* HAVE_LIMITS_H */
 #include <stddef.h>
-#endif
-
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#endif /* HAVE_UNISTD_H */
-
 #ifndef HAVE_GETCWD
 #include <sys/param.h>
 #ifdef MAXPATHLEN

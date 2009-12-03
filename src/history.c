@@ -29,13 +29,13 @@
 #endif
 
 #include <stdio.h>
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
+#endif /* HAVE_SYS_TYPE_H */
 #include "file.h"
 #include "xio.h"
 #include <stdlib.h>
-#if defined (HAVE_UNISTD_H)
-#  include <unistd.h>
-#endif
+#include <unistd.h>
 
 #include "xstring.h"
 

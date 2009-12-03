@@ -26,14 +26,12 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <ctype.h>
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
+#endif /* HAVE_SYS_TYPE_H */
 #include "file.h"
 #include <ctype.h>
-
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#endif /* HAVE_UNISTD_H */
 
 #include "xstring.h"
 #include "tty.h"

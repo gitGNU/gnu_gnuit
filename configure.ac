@@ -147,11 +147,9 @@ AC_CHECK_LIB(sun, getpwnam)
 dnl Check for standard C as well as system dependent header files.
 AC_HEADER_STDC
 
-AC_CHECK_HEADERS(
-    unistd.h stdlib.h string.h memory.h values.h\
-    sys/param.h sys/vfs.h sys/filsys.h fcntl.h sys/statfs.h\
-    sys/dustat.h sys/statvfs.h sys/sioctl.h stddef.h \
-    locale.h ncursesw/curses.h curses.h term.h)
+AC_CHECK_HEADERS(memory.h values.h sys/param.h sys/vfs.h sys/filsys.h \
+    sys/statfs.h sys/statvfs.h ncursesw/curses.h curses.h term.h     \
+    pwd.h limits.h sys/types.h sys/file.h grp.h assert.h)
 
 dnl freebsd needs sys/param.h included before sys/mount.h
 AC_CHECK_HEADERS([sys/mount.h],[],[],

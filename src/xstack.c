@@ -26,7 +26,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
+#endif /* HAVE_SYS_TYPE_H */
 
 #include "xmalloc.h"
 #include "xstring.h"
