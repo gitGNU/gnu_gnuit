@@ -207,17 +207,8 @@ static tty_capability_t tty_capability[TTY_CAPABILITIES_USED] =
     { "k;", NULL, 0, 0, "F10" },	/* (F10) */
 };
 
-#ifdef HAVE_LIBTERMCAP
-
-static char term_database[] = "termcap";
-static char term_env[]      = "TERMCAP";
-
-#else   /* !HAVE_LIBTERMCAP */
-
 static char term_database[] = "terminfo";
 static char term_env[]      = "TERMINFO";
-
-#endif  /* !HAVE_LIBTERMCAP */
 
 static int  tty_is_xterm PROTO ((char *));
 static int tty_get_color_pair PROTO ((short, short));
