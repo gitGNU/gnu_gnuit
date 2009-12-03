@@ -1043,13 +1043,9 @@ main(argc, argv)
     get_login_name();
 
     /* Parse the command line.  */
-    while ((c = getopt(argc, argv, "hvcblpd")) != -1)
+    while ((c = getopt(argc, argv, "hvcblp")) != -1)
 	switch (c)
 	{
-	    case 'd':
-		printf("PID: %d\n",getpid());
-		sleep(10);
-		break;
 	    case 'h':
 		/* Help request.  */
 		usage();

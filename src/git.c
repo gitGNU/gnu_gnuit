@@ -1845,7 +1845,7 @@ main(argc, argv)
     swprintf(exit_msg, exit_msg_len, L"Exit %s? ", PRODUCT);
 
     /* Parse the command line.  */
-    while ((c = getopt(argc, argv, "dhvcblp")) != -1)
+    while ((c = getopt(argc, argv, "hvcblp")) != -1)
 	switch (c)
 	{
 	    case 'h':
@@ -1857,11 +1857,6 @@ main(argc, argv)
 		/* Version number request.  */
 		printf("%s %s\n", PRODUCT, VERSION);
 		return 0;
-
-	    case 'd':
-		printf("%d\n", getpid());
-		sleep(10);
-		break;
 
 	    case 'c':
 		/* Force git to use ANSI color sequences.  */

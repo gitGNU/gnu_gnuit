@@ -649,18 +649,13 @@ main(argc, argv)
     get_login_name();
 
     /* Parse the command line.  */
-    while ((c = getopt(argc, argv, "hvcblpd")) != -1)
+    while ((c = getopt(argc, argv, "hvcblp")) != -1)
 	switch (c)
 	{
 	    case 'h':
 		/* Help request.  */
 		usage();
 		return 0;
-
-	    case 'd':
-		printf("%d\n", getpid());
-		sleep(10);
-		break;
 
 	    case 'v':
 		/* Version number request.  */
