@@ -6,8 +6,8 @@
 AMFLAGS=
 
 GNULIB_MODULES="fpieee sockets calloc chown close ctype dirent errno error
-                fclose fcntl-h fflush fnmatch fnmatch-gnu fopen fprintf-posix
-                fseek fsusage ftell getcwd getopt-gnu human idcache inttypes
+                fclose fcntl-h fdl fflush fnmatch fnmatch-gnu fopen fprintf-posix
+                fseek fsusage ftell getcwd getopt-gnu gpl-3.0 human idcache inttypes
                 ioctl link locale lseek malloc mbrtowc mbsinit mbsstr
                 mkdir mkstemp nanosleep printf-posix putenv readlink realloc
                 rename rmdir signal sleep sprintf-posix stat stddef stdint
@@ -30,6 +30,6 @@ autoheader && echo -n "."
 aclocal -I m4 && echo -n "."
 automake --foreign $AMFLAGS && echo -n "."
 autoconf && echo -n "."
-rm -rf autom4te.cache config.cache `find lib m4 -name .gitignore` ; echo -n "."
+rm -rf autom4te.cache config.cache `find lib m4 doc -name .gitignore` ; echo -n "."
 mv .gitignore.gnulib-backup .gitignore
 echo " done"

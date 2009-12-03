@@ -15,7 +15,7 @@
 
 
 # Specification in the form of a command-line invocation:
-#   gnulib-tool --import --dir=. --lib=libgnu --source-base=lib --m4-base=m4 --doc-base=doc --tests-base=tests --aux-dir=. --no-libtool --macro-prefix=gl calloc chown close ctype dirent errno error fclose fcntl-h fflush fnmatch fnmatch-gnu fopen fpieee fprintf-posix fseek fsusage ftell getcwd getopt getopt-gnu human idcache inttypes ioctl link locale lseek malloc mbrtowc mbsinit mbsstr memcmp memmove mkdir mkstemp nanosleep printf-posix putenv readlink realloc rename rmdir signal sleep sockets sprintf-posix stat stddef stdint stdio stdlib strcase strcasestr string strings strtoumax sys_stat sys_time sys_wait time uname unistd unlink utime wchar wcsnrtombs wctype write xalloc
+#   gnulib-tool --import --dir=. --lib=libgnu --source-base=lib --m4-base=m4 --doc-base=doc --tests-base=tests --aux-dir=. --no-libtool --macro-prefix=gl calloc chown close ctype dirent errno error fclose fcntl-h fdl fflush fnmatch fnmatch-gnu fopen fpieee fprintf-posix fseek fsusage ftell getcwd getopt getopt-gnu gpl-3.0 human idcache inttypes ioctl link locale lseek malloc mbrtowc mbsinit mbsstr memcmp memmove mkdir mkstemp nanosleep printf-posix putenv readlink realloc rename rmdir signal sleep sockets sprintf-posix stat stddef stdint stdio stdlib strcase strcasestr string strings strtoumax sys_stat sys_time sys_wait time uname unistd unlink utime wchar wcsnrtombs wctype write xalloc
 
 # Specification in the form of a few gnulib-tool.m4 macro invocations:
 gl_LOCAL_DIR([])
@@ -29,6 +29,7 @@ gl_MODULES([
   error
   fclose
   fcntl-h
+  fdl
   fflush
   fnmatch
   fnmatch-gnu
@@ -41,6 +42,7 @@ gl_MODULES([
   getcwd
   getopt
   getopt-gnu
+  gpl-3.0
   human
   idcache
   inttypes

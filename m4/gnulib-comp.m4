@@ -425,6 +425,8 @@ AC_DEFUN([gltests_LIBSOURCES], [
 # gnulib-tool and may be removed by future gnulib-tool invocations.
 AC_DEFUN([gl_FILE_LIST], [
   build-aux/link-warning.h
+  doc/fdl.texi
+  doc/gpl-3.0.texi
   lib/alignof.h
   lib/alloca.c
   lib/alloca.in.h
