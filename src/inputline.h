@@ -25,11 +25,7 @@
 
 
 #include <sys/types.h>
-
-#ifdef HAVE_STDDEF_H
 #include <stddef.h>
-#endif
-
 #include "stdc.h"
 #include "window.h"
 

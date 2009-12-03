@@ -25,10 +25,7 @@
 
 
 #include <sys/types.h>
-
-#ifdef HAVE_STDDEF_H
 #include <stddef.h>
-#endif
 
 #ifdef HAVE_POSIX_TTY
 #include <termios.h>

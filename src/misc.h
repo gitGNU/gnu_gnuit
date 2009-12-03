@@ -25,19 +25,11 @@
 
 
 #include <sys/types.h>
-
-#ifdef HAVE_STDDEF_H
 #include <stddef.h>
-#endif
-
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#endif /* HAVE_UNISTD_H */
 
 #include "xtime.h"
-
 #include "stdc.h"
-
 #include "file.h"
 
 extern char *g_home;

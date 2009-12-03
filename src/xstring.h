@@ -25,40 +25,24 @@
 
 
 #include <sys/types.h>
-
-#ifdef HAVE_STDDEF_H
 #include <stddef.h>
-#endif
 
-#if defined(STDC_HEADERS) || defined(HAVE_STRING_H)
+#if defined(STDC_HEADERS)
 
 #include <string.h>
 /* An ANSI string.h and pre-ANSI memory.h might conflict.  */
 
-#if !defined(STDC_HEADERS) && defined(HAVE_MEMORY_H)
+#else /* !STDC_HEADERS  */
+
+#if defined(HAVE_MEMORY_H)
 #include <memory.h>
-#endif /* !STDC_HEADERS and HAVE_MEMORY_H */
-
-#else /* !STDC_HEADERS and !HAVE_STRING_H */
-
-#include <strings.h>
+#else /* !HAVE_MEMORY_H */
 /* memory.h and strings.h conflict on some systems.  */
-#endif /* !STDC_HEADERS and !HAVE_STRING_H */
-
+#include <strings.h>
+#endif /* !HAVE_MEMORY_H */
+#endif /* !STDC_HEADERS */
 
 #include "stdc.h"
 #include "xalloc.h"
-
-#ifndef HAVE_STRCASECMP
-#include "strcase.h"
-#endif /* !HAVE_STRCASECMP */
-
-#ifndef HAVE_STRNCASECMP
-#include "strcase.h"
-#endif /* !HAVE_STRNCASECMP */
-
-#ifndef HAVE_STRSTR
-#include "strstr.h"
-#endif /* !HAVE_STRSTR */
 
 #endif  /* _GIT_XSTRING_H */

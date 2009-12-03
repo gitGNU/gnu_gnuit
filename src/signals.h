@@ -23,18 +23,11 @@
 #ifndef _GIT_SIGNAL_H
 #define _GIT_SIGNAL_H
 
-
 #include <signal.h>
-
-#ifdef HAVE_STDDEF_H
 #include <stddef.h>
-#endif
-
 #include "stdc.h"
 
-
 extern int user_heart_attack;
-
 
 extern void signals_init PROTO ((void));
 extern void signal_handlers PROTO ((int));

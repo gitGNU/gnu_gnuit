@@ -25,11 +25,7 @@
 
 
 #include <sys/types.h>
-
-#ifdef HAVE_STDDEF_H
 #include <stddef.h>
-#endif
-
 #include "stdc.h"
 
 #ifndef _XOPEN_SOURCE_EXTENDED
@@ -65,6 +61,5 @@ extern int window_x PROTO ((window_t *));
 extern int window_y PROTO ((window_t *));
 extern int window_lines PROTO ((window_t *));
 extern int window_columns PROTO ((window_t *));
-
 
 #endif  /* _GIT_WINDOW_H */

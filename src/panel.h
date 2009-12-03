@@ -27,32 +27,10 @@
 #include <sys/types.h>
 #include <limits.h>
 #include <wchar.h>
-
-#ifdef HAVE_STDDEF_H
 #include <stddef.h>
-#endif
-
-
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#endif
-
-#if HAVE_DIRENT_H
 #include <dirent.h>
 #define NAMLEN(dirent) strlen((dirent)->d_name)
-#else /* !HAVE_DIRENT_H */
-#define dirent direct
-#define NAMLEN(dirent) (dirent)->d_namlen
-#ifdef HAVE_SYS_NDIR_H
-#include <sys/ndir.h>
-#endif /* HAVE_SYS_NDIR_H */
-#ifdef HAVE_SYS_DIR_H
-#include <sys/dir.h>
-#endif /* HAVE_SYS_DIR_H */
-#ifdef HAVE_NDIR_H
-#include <ndir.h>
-#endif /* HAVE_NDIR_H */
-#endif /* !HAVE_DIRENT_H */
 
 #include "stdc.h"
 #include "xstack.h"

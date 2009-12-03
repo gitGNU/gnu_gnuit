@@ -25,10 +25,7 @@
 
 
 #include <sys/types.h>
-
-#ifdef HAVE_STDDEF_H
 #include <stddef.h>
-#endif
 
 #include "stat.h"
 #include "stdc.h"
