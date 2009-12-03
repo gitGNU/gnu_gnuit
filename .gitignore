@@ -61,3 +61,9 @@ lib/sys/stat.h
 lib/unistd.h
 lib/uniwidth/.dirstamp
 lib/time.h
+lib/dirent.h
+lib/math.h
+lib/stdio.h
+lib/sys/stat.h
+lib/sys/wait.h
+lib/sys/

@@ -154,7 +154,7 @@ am__DEPENDENCIES_1 =
 gitfm_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_gitkeys_OBJECTS = gitkeys.$(OBJEXT)
 gitkeys_OBJECTS = $(am_gitkeys_OBJECTS)
-gitkeys_LDADD = $(LDADD)
+gitkeys_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_gitps_OBJECTS = gitps.$(OBJEXT) tty.$(OBJEXT) window.$(OBJEXT) \
 	misc.$(OBJEXT) configure.$(OBJEXT) signals.$(OBJEXT) \
 	xio.$(OBJEXT) xmalloc.$(OBJEXT)
@@ -164,13 +164,13 @@ am_gitview_OBJECTS = gitview.$(OBJEXT) tty.$(OBJEXT) window.$(OBJEXT) \
 	misc.$(OBJEXT) configure.$(OBJEXT) signals.$(OBJEXT) \
 	xio.$(OBJEXT) xmalloc.$(OBJEXT)
 gitview_OBJECTS = $(am_gitview_OBJECTS)
-gitview_DEPENDENCIES = $(am__DEPENDENCIES_1)
+gitview_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_gitwhich_OBJECTS = gitwhich.$(OBJEXT) xmalloc.$(OBJEXT)
 gitwhich_OBJECTS = $(am_gitwhich_OBJECTS)
 gitwhich_DEPENDENCIES = $(am__DEPENDENCIES_1)
 am_gitwipe_OBJECTS = gitwipe.$(OBJEXT)
 gitwipe_OBJECTS = $(am_gitwipe_OBJECTS)
-gitwipe_LDADD = $(LDADD)
+gitwipe_DEPENDENCIES = $(am__DEPENDENCIES_1)
 binSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 SCRIPTS = $(bin_SCRIPTS)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
@@ -947,9 +947,11 @@ gitwipe_SOURCES = gitwipe.c
 gitkeys_SOURCES = gitkeys.c
 gitwhich_SOURCES = gitwhich.c xmalloc.c xmalloc.h
 gitfm_LDADD = -L../lib -lgnu $(LIB_CLOCK_GETTIME) $(LIB_NANOSLEEP) $(LIBINTL)
-gitps_LDADD = -L../lib -lgnu $(LIB_CLOCK_GETTIME) $(LIB_NANOSLEEP) $(LIBINTL) 
-gitview_LDADD = -L../lib -lgnu $(LIBINTL)
+gitps_LDADD = -L../lib -lgnu $(LIB_CLOCK_GETTIME) $(LIB_NANOSLEEP) $(LIBINTL)
+gitview_LDADD = -L../lib -lgnu $(LIBINTL) $(LIB_NANOSLEEP)
 gitwhich_LDADD = -L../lib -lgnu $(LIBINTL)
+gitwipe_LDADD = -L../lib -lgnu $(LIBINTL)
+gitkeys_LDADD = -L../lib -lgnu $(LIBINTL)
 AM_CPPFLAGS = -I$(srcdir)/.. -I.. -I$(top_srcdir)/lib \
 	-I$(top_srcdir)/src $(am__append_1)
 @DEBIAN_TRUE@gitfm_LDFLAGS = -Wl,-z,defs -Wl,--as-needed

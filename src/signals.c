@@ -25,13 +25,7 @@
 #endif
 
 #include <stdio.h>
-
-#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
-#else /* !HAVE_STDLIB_H */
-#include "ansi_stdlib.h"
-#endif /* !HAVE_STDLIB_H */
-
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif /* HAVE_UNISTD_H */

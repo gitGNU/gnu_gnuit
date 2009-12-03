@@ -32,13 +32,7 @@
 #include <sys/types.h>
 #include "file.h"
 #include "xio.h"
-
-#if defined (HAVE_STDLIB_H)
-#  include <stdlib.h>
-#else
-#  include "ansi_stdlib.h"
-#endif /* HAVE_STDLIB_H */
-
+#include <stdlib.h>
 #if defined (HAVE_UNISTD_H)
 #  include <unistd.h>
 #endif

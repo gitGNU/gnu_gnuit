@@ -29,13 +29,7 @@
 #ifdef HAVE_STDDEF_H
 #include <stddef.h>
 #endif
-
-#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
-#else /* !HAVE_STDLIB_H */
-#include "ansi_stdlib.h"
-#endif /* !HAVE_STDLIB_H */
-
 #include "stdc.h"
 
 #include "xalloc.h"

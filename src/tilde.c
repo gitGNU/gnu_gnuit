@@ -22,13 +22,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #endif
-
-#if defined (HAVE_STDLIB_H)
-#  include <stdlib.h>
-#else
-#  include "ansi_stdlib.h"
-#endif /* HAVE_STDLIB_H */
-
+#include <stdlib.h>
 #include <sys/types.h>
 #include <pwd.h>
 

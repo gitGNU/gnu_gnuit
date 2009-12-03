@@ -28,13 +28,7 @@
 
 #include <stdio.h>
 #include <wchar.h>
-
-#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
-#else /* !HAVE_STDLIB_H */
-#include "ansi_stdlib.h"
-#endif /* !HAVE_STDLIB_H */
-
 #include <sys/types.h>
 
 #ifdef HAVE_STDDEF_H

@@ -26,9 +26,11 @@ gitkeys_SOURCES = gitkeys.c
 gitwhich_SOURCES = gitwhich.c xmalloc.c xmalloc.h
 
 gitfm_LDADD = -L../lib -lgnu $(LIB_CLOCK_GETTIME) $(LIB_NANOSLEEP) $(LIBINTL)
-gitps_LDADD = -L../lib -lgnu $(LIB_CLOCK_GETTIME) $(LIB_NANOSLEEP) $(LIBINTL) 
-gitview_LDADD = -L../lib -lgnu $(LIBINTL)
+gitps_LDADD = -L../lib -lgnu $(LIB_CLOCK_GETTIME) $(LIB_NANOSLEEP) $(LIBINTL)
+gitview_LDADD = -L../lib -lgnu $(LIBINTL) $(LIB_NANOSLEEP)
 gitwhich_LDADD = -L../lib -lgnu $(LIBINTL)
+gitwipe_LDADD = -L../lib -lgnu $(LIBINTL)
+gitkeys_LDADD = -L../lib -lgnu $(LIBINTL)
 
 AM_CPPFLAGS = -I$(srcdir)/.. -I.. -I$(top_srcdir)/lib -I$(top_srcdir)/src
 
