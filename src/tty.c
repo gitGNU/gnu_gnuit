@@ -373,7 +373,7 @@ tty_set_mode(mode)
     /* ^G ^Z and ixoff */
     if (mode == TTY_NONCANONIC)
     {
-	raw();
+	cbreak();
 #ifdef HAVE_POSIX_TTY
 	new_term = old_term;
 	new_term.c_iflag &= ~(IXON | ICRNL | IGNCR | INLCR | IGNBRK | BRKINT);
@@ -573,7 +573,7 @@ tty_set_mode(mode)
     }
     else
     {
-	noraw();
+	nocbreak();
 #ifdef HAVE_POSIX_TTY
 	tcsetattr(TTY_OUTPUT, TCSADRAIN, &old_term);
 #else
