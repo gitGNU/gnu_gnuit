@@ -171,21 +171,21 @@ char *screen;
 char *filename;
 int count;
 off64_t g_size;
-char g_offset[16];
+char g_offset[32];
 wchar_t *header_text;
 int  UseLastScreenChar;
 wchar_t *global_buf;
 char color_section[]  = "[GITVIEW-Color]";
 char monochrome_section[] = "[GITVIEW-Monochrome]";
 int fd, regular_file;
-long long g_current_line, g_lines;
+unsigned long long g_current_line, g_lines;
 static wchar_t *title_text;
 static wchar_t *g_help;
 static wchar_t info_txt[] =
-    L"   Offset     00 01 02 03 04 05 06 07  08 09 0A 0B 0C 0D 0E 0F       \
+    L"  Offset   00 01 02 03 04 05 06 07  08 09 0A 0B 0C 0D 0E 0F       \
 Ascii       ";
 static wchar_t line_txt[]    =
-    L"---------------------------------------------------------------------\
+    L"------------------------------------------------------------------\
 ----------- ";
 static wchar_t seek_txt[]    = L" Seek at: ";
 
@@ -305,7 +305,7 @@ char_to_print(c, index, total)
 
 static void
 update_line(line)
-    long long line;
+    unsigned long long line;
 {
     ssize_t r;
     unsigned char buf[16];
@@ -319,10 +319,10 @@ update_line(line)
 
     if ((r = read(fd, buf, sizeof(buf))))
     {
-	swprintf(line_string, line_len, L"%011X0  %02X %02X %02X %02X %02X %02X %02X\
+	swprintf(line_string, line_len, L" %07llX0  %02X %02X %02X %02X %02X %02X %02X\
  %02X  %02X %02X %02X %02X %02X %02X %02X %02X  \
 %c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c ",
-		(unsigned int)(line & 0xFFFFFFFF),
+		(line & 0xFFFFFFF),
 		buf[0], buf[1], buf[2], buf[3],
 		buf[4], buf[5], buf[6], buf[7],
 		buf[8], buf[9], buf[10], buf[11],
@@ -352,18 +352,61 @@ update_line(line)
     xfree(line_string);
 }
 
+static void
+update_offset_line(line)
+    unsigned long long line;
+{
+    int line_len=max(tty_columns, 80) + 1;
+    wchar_t *line_string = xmalloc(line_len * sizeof(wchar_t));
+
+    wmemset(line_string, L' ', line_len-1);
+    line_string[line_len-1]='\0';
+    swprintf(line_string, line_len, L" %08llX", (line >> 28));
+    line_string[wcslen(line_string)] = L' ';
+    window_puts(file_window, line_string, tty_columns);
+    xfree(line_string);
+}
+
+
+static void
+clear_line()
+{
+    int line_len=max(tty_columns, 80) + 1;
+    wchar_t *line_string = xmalloc(line_len * sizeof(wchar_t));
+    wmemset(line_string, L' ', line_len-1);
+    line_string[line_len-1]='\0';
+    window_puts(file_window, line_string, tty_columns);
+    xfree(line_string);
+}
 
 static void
 update_all()
 {
-    long long i;
+    unsigned long long fileline=g_current_line;
+    unsigned long long scrline;
 
     tty_colors(ScreenBrightness, ScreenForeground, ScreenBackground);
 
-    for (i = g_current_line; i < g_current_line + VIEW_LINES; i++)
+    for(scrline=0; scrline < VIEW_LINES; scrline++, fileline++)
     {
-	window_goto(file_window, 3 + i - g_current_line, 0);
-	update_line(i);
+	if(fileline & 0xFFFFFFFFF0000000ULL)
+	{
+	    window_goto(file_window, scrline+3, 0);
+	    if(scrline < (VIEW_LINES - 1))
+	    {
+		update_offset_line(fileline);
+	    }
+	    else
+	    {
+		/* avoid a dangling offset */
+		clear_line();
+		break;
+	    }
+	    scrline++;
+	}
+	window_goto(file_window, scrline+3, 0);
+	update_line(fileline);
+	tty_update();
     }
 }
 
@@ -893,7 +936,7 @@ main(argc, argv)
 	    case '6': case '7': case '8': case '9': case 'A': case 'B':
 	    case 'C': case 'D': case 'E': case 'F': case 'a': case 'b':
 	    case 'c': case 'd': case 'e': case 'f':
-		if (count < 8)
+		if (count < 16)
 		{
 		    if (tty_lines >= 9)
 		    {
@@ -919,22 +962,20 @@ main(argc, argv)
 		{
 		    if (tty_lines >= 9)
 		    {
+			unsigned long long newoffset;
 			g_offset[count] = 0;
 
-			sscanf(g_offset, "%x", &count);
+			sscanf(g_offset, "%llx", &newoffset);
 			tty_colors(ScreenBrightness,
 				   ScreenForeground,
 				   ScreenBackground);
 			window_goto(file_window, SEEK_LINE, wcslen(seek_txt));
-			window_puts(file_window, L"        ", 8);
+			window_puts(file_window, L"                ", 16);
 
-			if (count < 0)
-			    count = 0;
+			if (newoffset > g_size)
+			    newoffset = g_size;
 
-			if (count > g_size)
-			    count = g_size;
-
-			g_current_line = count >> 4;
+			g_current_line = newoffset >> 4;
 			update_all();
 			count = 0;
 		    }
