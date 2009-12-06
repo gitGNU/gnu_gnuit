@@ -88,29 +88,6 @@ extern window_t *title_window, *status_window;
    which has no command line.  */
 static int tty_kbdmode;
 
-#ifdef HAVE_POSIX_TTY
-static struct termios old_term;
-static struct termios new_term;
-#else
-#ifdef HAVE_SYSTEMV_TTY
-static struct termio old_term;
-static struct termio new_term;
-#else
-static struct sgttyb  old_arg;
-static struct tchars  old_targ;
-static struct ltchars old_ltarg;
-static struct sgttyb  new_arg;
-static struct tchars  new_targ;
-static struct ltchars new_ltarg;
-
-/* NextStep doesn't define TILDE.  */
-#ifndef TILDE
-#define TILDE 0
-#endif
-
-#endif /* HAVE_SYSTEMV_TTY */
-#endif /* HAVE_POSIX_TTY */
-
 int tty_lines;
 int tty_columns;
 wchar_t *tty_device;
@@ -155,12 +132,6 @@ static char vt100[] = "vt100";
 int tty_mode = TTY_CANONIC;
 
 char *tty_type;
-
-#ifdef HAVE_LINUX
-speed_t ospeed;
-#else /* !HAVE_LINUX */
-short ospeed;
-#endif /* !HAVE_LINUX */
 
 /* A structure describing some attributes we need to know about each
    capability. See below for greater detail.  */
@@ -369,204 +340,63 @@ void
 tty_set_mode(mode)
     int mode;
 {
-    /* Leave this code for now, we still need: */
-    /* ^G ^Z and ixoff */
-    if (mode == TTY_NONCANONIC)
-    {
-	cbreak();
 #ifdef HAVE_POSIX_TTY
-	new_term = old_term;
-	new_term.c_iflag &= ~(IXON | ICRNL | IGNCR | INLCR | IGNBRK | BRKINT);
-	new_term.c_oflag &= ~OPOST;
-	new_term.c_lflag |= ISIG | NOFLSH;
-	new_term.c_lflag &= ~(ICANON | ECHO);
-
-	/* I think we will always have these ones:  */
-
-	new_term.c_cc[VINTR] = key_INTERRUPT;		/* Ctrl-G */
-	new_term.c_cc[VQUIT] = CDISABLE;
-
-#ifdef VSTART
-	new_term.c_cc[VSTART] = CDISABLE;		/* START (^Q) */
-#endif
-
-#ifdef VSTOP
-	new_term.c_cc[VSTOP] = CDISABLE;		/* STOP (^S) */
-#endif
-
-	new_term.c_cc[VMIN] = 1;
-	new_term.c_cc[VTIME] = 0;
-
-	/* ... but not always these ones: (in fact I am not sure if I
-	   really need to overwrite all these, but just in case... */
-
-#ifdef VERASE
-	new_term.c_cc[VERASE] = CDISABLE;
-#endif
-
-#ifdef VKILL
-	new_term.c_cc[VKILL] = CDISABLE;
-#endif
-
-#ifdef VEOL
-	new_term.c_cc[VEOL] = CDISABLE;
-#endif
-
-#ifdef VEOL2
-	new_term.c_cc[VEOL2] = CDISABLE;
-#endif
-
-#ifdef VSWTCH
-	new_term.c_cc[VSWTCH] = CDISABLE;
-#endif
-
-#ifdef VSUSP
-	new_term.c_cc[VSUSP] = key_SUSPEND;             /* Ctrl-Z */
-#endif
-
-#ifdef VDSUSP
-	new_term.c_cc[VDSUSP] = CDISABLE;
-#endif
-
-#ifdef VREPRINT
-	new_term.c_cc[VREPRINT] = CDISABLE;
-#endif
-
-#ifdef VDISCARD
-	new_term.c_cc[VDISCARD] = CDISABLE;
-#endif
-
-#ifdef VWERASE
-	new_term.c_cc[VWERASE] = CDISABLE;
-#endif
-
-#ifdef VLNEXT
-	new_term.c_cc[VLNEXT] = CDISABLE;
-#endif
-
-	tcsetattr(TTY_OUTPUT, TCSADRAIN, &new_term);
-	ospeed = cfgetospeed(&new_term);
+    static struct termios current_term;
 #else
 #ifdef HAVE_SYSTEMV_TTY
-	new_term = old_term;
-	new_term.c_iflag &= ~(IXON | ICRNL | IGNCR | INLCR);
-	new_term.c_oflag = 0;
-	new_term.c_lflag = 0;
-
-	/* I think we will always have these:  */
-
-	new_term.c_cc[VINTR] = key_INTERRUPT;	/* Ctrl-G */
-	new_term.c_cc[VQUIT] = CDISABLE;
-
-#ifdef VSTART
-	new_term.c_cc[VSTART] = CDISABLE;	/* START (^Q) */
-#endif
-
-#ifdef VSTOP
-	new_term.c_cc[VSTOP] = CDISABLE;	/* STOP (^S) */
-#endif
-
-	new_term.c_cc[VMIN] = 1;
-	new_term.c_cc[VTIME] = 0;
-
-	/* ... but not always these:  (in fact I am not sure if I really
-	   need to overwrite all these, but just in case... */
-
-#ifdef VERASE
-	new_term.c_cc[VERASE] = CDISABLE;
-#endif
-
-#ifdef VKILL
-	new_term.c_cc[VKILL] = CDISABLE;
-#endif
-
-#ifdef VEOL
-	new_term.c_cc[VEOL] = CDISABLE;
-#endif
-
-#ifdef VEOL2
-	new_term.c_cc[VEOL2] = CDISABLE;
-#endif
-
-#ifdef VSWTCH
-	new_term.c_cc[VSWTCH] = CDISABLE;
-#endif
-
-#ifdef VSUSP
-	new_term.c_cc[VSUSP] = key_SUSPEND;             /* Ctrl-Z */
-#endif
-
-#ifdef VDSUSP
-	new_term.c_cc[VDSUSP] = CDISABLE;
-#endif
-
-#ifdef VREPRINT
-	new_term.c_cc[VREPRINT] = CDISABLE;
-#endif
-
-#ifdef VDISCARD
-	new_term.c_cc[VDISCARD] = CDISABLE;
-#endif
-
-#ifdef VWERASE
-	new_term.c_cc[VWERASE] = CDISABLE;
-#endif
-
-#ifdef VLNEXT
-	new_term.c_cc[VLNEXT] = CDISABLE;
-#endif
-
-	ioctl(TTY_OUTPUT, TCSETAW, &new_term);
-	ospeed = new_term.c_cflag & CBAUD;
+    static struct termio current_term;
 #else
-	new_arg   = old_arg;
-	new_targ  = old_targ;
-	new_ltarg = old_ltarg;
-	new_arg.sg_flags = ((old_arg.sg_flags &
-			 ~(ECHO | CRMOD | XTABS | ALLDELAY | TILDE)) | CBREAK);
-	new_targ.t_intrc   = key_INTERRUPT;     /* Ctrl-G */
-	new_targ.t_quitc   = CDISABLE;
-	new_targ.t_stopc   = CDISABLE;
-	new_targ.t_startc  = CDISABLE;
-	new_targ.t_eofc    = CDISABLE;
-	new_targ.t_brkc    = CDISABLE;
-	new_ltarg.t_lnextc = CDISABLE;
-	new_ltarg.t_flushc = CDISABLE;
-	new_ltarg.t_werasc = CDISABLE;
-	new_ltarg.t_rprntc = CDISABLE;
-	new_ltarg.t_dsuspc = CDISABLE;   	/* DSUSPC (delayed SUSPC,^Y) */
-	new_ltarg.t_suspc  = key_SUSPEND;	/* Ctrl-Z */
-
-	ioctl(TTY_OUTPUT, TIOCSETN, &new_arg);
-	ioctl(TTY_OUTPUT, TIOCSETC, &new_targ);
-	ioctl(TTY_OUTPUT, TIOCSLTC, &new_ltarg);
-	ospeed = new_arg.sg_ospeed;
+    static struct tchars  current_targ;
+    static struct ltchars current_ltarg;
 #endif /* HAVE_SYSTEMV_TTY */
 #endif /* HAVE_POSIX_TTY */
 
-/* Try to make sure the terminal is not locked.  */
-#ifdef TCXONC
-#ifdef __QNX__
-	{
-	    int value = 1;
-	    ioctl (TTY_OUTPUT, TCXONC, &value);
-	}
-#else
-	ioctl(TTY_OUTPUT, TCXONC, 1);
-#endif
-#endif
+    if (mode == TTY_NONCANONIC)
+    {
+	cbreak();
 
-#ifndef APOLLO
-#ifdef TIOCSTART
-	ioctl(TTY_OUTPUT, TIOCSTART, 0);
-#endif
-#endif
-
+	/* explicitly set ^G & ^Z and disable ^S & ^Q */
+	/* and let curses do everything else */
 #ifdef HAVE_POSIX_TTY
-#ifdef TCOON
-	tcflow(TTY_OUTPUT, TCOON);
+	tcgetattr(TTY_OUTPUT, &current_term);
+	current_term.c_cc[VINTR] = key_INTERRUPT;		/* Ctrl-G */
+	current_term.c_cc[VQUIT] = CDISABLE;
+#ifdef VSTART
+	current_term.c_cc[VSTART] = CDISABLE;		/* START (^Q) */
 #endif
+#ifdef VSTOP
+	current_term.c_cc[VSTOP] = CDISABLE;		/* STOP (^S) */
 #endif
+#ifdef VSUSP
+	current_term.c_cc[VSUSP] = key_SUSPEND;             /* Ctrl-Z */
+#endif
+	tcsetattr(TTY_OUTPUT, TCSADRAIN, &current_term);
+#else
+
+#ifdef HAVE_SYSTEMV_TTY
+	ioctl(TTY_OUTPUT, TCGETA, &current_term);
+	current_term.c_cc[VINTR] = key_INTERRUPT;	/* Ctrl-G */
+	current_term.c_cc[VQUIT] = CDISABLE;
+#ifdef VSTART
+	current_term.c_cc[VSTART] = CDISABLE;	/* START (^Q) */
+#endif
+#ifdef VSTOP
+	current_term.c_cc[VSTOP] = CDISABLE;	/* STOP (^S) */
+#endif
+	ioctl(TTY_OUTPUT, TCSETAW, &current_term);
+#else
+	ioctl(TTY_OUTPUT, TIOCGETC, &current_targ);
+	ioctl(TTY_OUTPUT, TIOCGLTC, &current_ltarg);
+	current_targ.t_intrc   = key_INTERRUPT;     /* Ctrl-G */
+	current_targ.t_quitc   = CDISABLE;
+	current_targ.t_stopc   = CDISABLE;
+	current_targ.t_startc  = CDISABLE;
+	current_ltarg.t_suspc  = key_SUSPEND;	/* Ctrl-Z */
+	ioctl(TTY_OUTPUT, TIOCSETC, &current_targ);
+	ioctl(TTY_OUTPUT, TIOCSLTC, &current_ltarg);
+#endif /* HAVE_SYSTEMV_TTY */
+#endif /* HAVE_POSIX_TTY */
+
 	/* Make sure we restore the interrupt character that was in
 	   use last time when we used NONCANONICAL mode.  */
 	tty_set_interrupt_char(tty_interrupt_char);
@@ -574,17 +404,6 @@ tty_set_mode(mode)
     else
     {
 	nocbreak();
-#ifdef HAVE_POSIX_TTY
-	tcsetattr(TTY_OUTPUT, TCSADRAIN, &old_term);
-#else
-#ifdef HAVE_SYSTEMV_TTY
-	ioctl(TTY_OUTPUT, TCSETAW, &old_term);
-#else
-	ioctl(TTY_OUTPUT, TIOCSETN, &old_arg);
-	ioctl(TTY_OUTPUT, TIOCSETC, &old_targ);
-	ioctl(TTY_OUTPUT, TIOCSLTC, &old_ltarg);
-#endif /* HAVE_SYSTEMV_TTY */
-#endif /* HAVE_POSIX_TTY */
     }
 
     tty_mode = mode;
@@ -649,12 +468,14 @@ void
 tty_start_cursorapp()
 {
     tty_update();
+    tty_set_mode(tty_mode);
 }
 
 void
 tty_end_cursorapp()
 {
     endwin();
+    tty_set_mode(tty_mode);
 }
 
 
@@ -1418,6 +1239,7 @@ tty_resize()
 {
     endwin();
     refresh();
+    tty_set_mode(tty_mode);
     tty_columns=COLS;
     tty_lines=LINES;
 }
@@ -1600,21 +1422,6 @@ tty_init(kbd_mode)
 	exit(1);
     }
     tty_device=mbsduptowcs(tty_device_str);
-
-    /* Store the terminal settings in old_term. it will be used to restore
-       them later.  */
-    /* FIXME: are they still used? */
-#ifdef HAVE_POSIX_TTY
-    tcgetattr(TTY_OUTPUT, &old_term);
-#else
-#ifdef HAVE_SYSTEMV_TTY
-    ioctl(TTY_OUTPUT, TCGETA, &old_term);
-#else
-    ioctl(TTY_OUTPUT, TIOCGETP, &old_arg);
-    ioctl(TTY_OUTPUT, TIOCGETC, &old_targ);
-    ioctl(TTY_OUTPUT, TIOCGLTC, &old_ltarg);
-#endif /* HAVE_SYSTEMV_TTY */
-#endif /* HAVE_POSIX_TTY */
 
     default_key.key_seq  = tty_key_seq = (unsigned char *)xmalloc(64);
     default_key.aux_data = NULL;
