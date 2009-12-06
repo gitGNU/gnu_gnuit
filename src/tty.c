@@ -452,18 +452,12 @@ tty_set_interrupt_char(c)
     tty_interrupt_char = c;
 }
 
-
-/*
- * Flush the tty cache.
- */
 void
 tty_flush()
 {
     refresh();
 }
 
-/* uses the ti/te capability to signal we are entering/exiting a cursor */
-/* addressable app (which saves/restores the screen, at least on xterm) */
 void
 tty_start_cursorapp()
 {
@@ -684,11 +678,6 @@ tty_fill()
 }
 
 
-/*
- * Touch the tty, getting rid of any possible optimization.  The
- * current content of the screen will be completely different at
- * update time so that the entire screen will be updated.
- */
 void
 tty_touch()
 {
@@ -730,7 +719,7 @@ tty_background(color)
 
 
 /*
- * Set the brightness status. See the comment below.
+ * Set the brightness status.
  */
 void
 tty_brightness(status)
@@ -1223,17 +1212,6 @@ tty_get_previous_key_seq()
 #define columns_ok(x) (((x) > 0) && ((x) <= MAX_TTY_COLUMNS))
 #define lines_ok(x)   (((x) > 0) && ((x) <= MAX_TTY_LINES))
 
-
-/*
- * Retrieve the screen size.  The default is to use the number of
- * lines and columns specified in the environment.  If the values are
- * not acceptable, default to the value returned by the winsz ioctl()
- * call.  If these ones are not valid (or the ioctl() call to get the
- * window size is not supported), just default to the values specified
- * in the termcap description.  If this fails too, default to 80x24.
- * Note that we try to get the best value separately for lines and for
- * columns.
- */
 void
 tty_resize()
 {
@@ -1246,8 +1224,7 @@ tty_resize()
 
 
 /*
- * Restore the screen. If the terminal is not a Linux virtual console, just
- * restore it to the default state.
+ * Restore the screen.
  */
 
 void
@@ -1273,7 +1250,6 @@ tty_get_color_index(colorname)
 
     return -1;
 }
-
 
 /*
  * Get the capability of a given termcap symbol.  Return NULL if there
