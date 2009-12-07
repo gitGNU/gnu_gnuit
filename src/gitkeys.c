@@ -99,7 +99,7 @@ static struct ltchars new_ltarg;
 
 char *copyright =
 "%s %s - Display key sequence utility\n\
-GIT is free software; you can redistribute it and/or modify it under the\n\
+GNUIT is free software; you can redistribute it and/or modify it under the\n\
 terms of the GNU General Public License as published by the Free Software\n\
 Foundation; either version 2, or (at your option) any later version.\n\
 Copyright (C) 1993-1998 Free Software Foundation, Inc.\n\
