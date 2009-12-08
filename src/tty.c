@@ -88,6 +88,24 @@ extern window_t *title_window, *status_window;
    which has no command line.  */
 static int tty_kbdmode;
 
+#ifdef HAVE_POSIX_TTY
+static struct termios old_term;
+#else
+#ifdef HAVE_SYSTEMV_TTY
+static struct termio old_term;
+#else
+static struct sgttyb  old_arg;
+static struct tchars  old_targ;
+static struct ltchars old_ltarg;
+
+/* NextStep doesn't define TILDE.  */
+#ifndef TILDE
+#define TILDE 0
+#endif
+
+#endif /* HAVE_SYSTEMV_TTY */
+#endif /* HAVE_POSIX_TTY */
+
 int tty_lines;
 int tty_columns;
 wchar_t *tty_device;
@@ -333,12 +351,11 @@ tty_set_last_char_flag(last_char_flag)
 
 
 /*
- * This function is used to switch between canonical and noncanonical
- * terminal modes.
+ * Set up term settings for keys in noncanonic mode
+ * that aren't handled by curses
  */
 void
-tty_set_mode(mode)
-    int mode;
+tty_noncanonic_keys()
 {
 #ifdef HAVE_POSIX_TTY
     static struct termios current_term;
@@ -351,61 +368,68 @@ tty_set_mode(mode)
 #endif /* HAVE_SYSTEMV_TTY */
 #endif /* HAVE_POSIX_TTY */
 
-    if (mode == TTY_NONCANONIC)
-    {
-	cbreak();
-
-	/* explicitly set ^G & ^Z and disable ^S & ^Q */
-	/* and let curses do everything else */
 #ifdef HAVE_POSIX_TTY
-	tcgetattr(TTY_OUTPUT, &current_term);
-	current_term.c_cc[VINTR] = key_INTERRUPT;		/* Ctrl-G */
-	current_term.c_cc[VQUIT] = CDISABLE;
+    tcgetattr(TTY_OUTPUT, &current_term);
+    current_term.c_cc[VINTR] = key_INTERRUPT;		/* Ctrl-G */
+    current_term.c_cc[VQUIT] = CDISABLE;
 #ifdef VSTART
-	current_term.c_cc[VSTART] = CDISABLE;		/* START (^Q) */
+    current_term.c_cc[VSTART] = CDISABLE;		/* START (^Q) */
 #endif
 #ifdef VSTOP
-	current_term.c_cc[VSTOP] = CDISABLE;		/* STOP (^S) */
+    current_term.c_cc[VSTOP] = CDISABLE;		/* STOP (^S) */
 #endif
 #ifdef VSUSP
-	current_term.c_cc[VSUSP] = key_SUSPEND;             /* Ctrl-Z */
+    current_term.c_cc[VSUSP] = key_SUSPEND;             /* Ctrl-Z */
 #endif
-	tcsetattr(TTY_OUTPUT, TCSADRAIN, &current_term);
+    tcsetattr(TTY_OUTPUT, TCSADRAIN, &current_term);
 #else
 
 #ifdef HAVE_SYSTEMV_TTY
-	ioctl(TTY_OUTPUT, TCGETA, &current_term);
-	current_term.c_cc[VINTR] = key_INTERRUPT;	/* Ctrl-G */
-	current_term.c_cc[VQUIT] = CDISABLE;
+    ioctl(TTY_OUTPUT, TCGETA, &current_term);
+    current_term.c_cc[VINTR] = key_INTERRUPT;	/* Ctrl-G */
+    current_term.c_cc[VQUIT] = CDISABLE;
 #ifdef VSTART
-	current_term.c_cc[VSTART] = CDISABLE;	/* START (^Q) */
+    current_term.c_cc[VSTART] = CDISABLE;	/* START (^Q) */
 #endif
 #ifdef VSTOP
-	current_term.c_cc[VSTOP] = CDISABLE;	/* STOP (^S) */
+    current_term.c_cc[VSTOP] = CDISABLE;	/* STOP (^S) */
 #endif
-	ioctl(TTY_OUTPUT, TCSETAW, &current_term);
+    ioctl(TTY_OUTPUT, TCSETAW, &current_term);
 #else
-	ioctl(TTY_OUTPUT, TIOCGETC, &current_targ);
-	ioctl(TTY_OUTPUT, TIOCGLTC, &current_ltarg);
-	current_targ.t_intrc   = key_INTERRUPT;     /* Ctrl-G */
-	current_targ.t_quitc   = CDISABLE;
-	current_targ.t_stopc   = CDISABLE;
-	current_targ.t_startc  = CDISABLE;
-	current_ltarg.t_suspc  = key_SUSPEND;	/* Ctrl-Z */
-	ioctl(TTY_OUTPUT, TIOCSETC, &current_targ);
-	ioctl(TTY_OUTPUT, TIOCSLTC, &current_ltarg);
+    ioctl(TTY_OUTPUT, TIOCGETC, &current_targ);
+    ioctl(TTY_OUTPUT, TIOCGLTC, &current_ltarg);
+    current_targ.t_intrc   = key_INTERRUPT;     /* Ctrl-G */
+    current_targ.t_quitc   = CDISABLE;
+    current_targ.t_stopc   = CDISABLE;
+    current_targ.t_startc  = CDISABLE;
+    current_ltarg.t_suspc  = key_SUSPEND;	/* Ctrl-Z */
+    ioctl(TTY_OUTPUT, TIOCSETC, &current_targ);
+    ioctl(TTY_OUTPUT, TIOCSLTC, &current_ltarg);
 #endif /* HAVE_SYSTEMV_TTY */
 #endif /* HAVE_POSIX_TTY */
 
-	/* Make sure we restore the interrupt character that was in
-	   use last time when we used NONCANONICAL mode.  */
-	tty_set_interrupt_char(tty_interrupt_char);
+    /* Make sure we restore the interrupt character that was in
+       use last time when we used NONCANONICAL mode.  */
+    tty_set_interrupt_char(tty_interrupt_char);
+}
+
+/*
+ * This function is used to switch between canonical and noncanonical
+ * terminal modes.
+ */
+void
+tty_set_mode(mode)
+    int mode;
+{
+    if (mode == TTY_NONCANONIC)
+    {
+	cbreak();
+	tty_noncanonic_keys();
     }
     else
     {
 	nocbreak();
     }
-
     tty_mode = mode;
 }
 
@@ -415,6 +439,23 @@ tty_get_mode()
 {
     return tty_mode;
 }
+
+/* restore original tty settings */
+void tty_restore_term()
+{
+#ifdef HAVE_POSIX_TTY
+        tcsetattr(TTY_OUTPUT, TCSADRAIN, &old_term);
+#else
+#ifdef HAVE_SYSTEMV_TTY
+        ioctl(TTY_OUTPUT, TCSETAW, &old_term);
+#else
+        ioctl(TTY_OUTPUT, TIOCSETN, &old_arg);
+        ioctl(TTY_OUTPUT, TIOCSETC, &old_targ);
+        ioctl(TTY_OUTPUT, TIOCSLTC, &old_ltarg);
+#endif /* HAVE_SYSTEMV_TTY */
+#endif /* HAVE_POSIX_TTY */
+}
+
 
 
 /*
@@ -462,14 +503,14 @@ void
 tty_start_cursorapp()
 {
     tty_update();
-    tty_set_mode(tty_mode);
+    tty_noncanonic_keys();
 }
 
 void
 tty_end_cursorapp()
 {
     endwin();
-    tty_set_mode(tty_mode);
+    tty_restore_term();
 }
 
 
@@ -635,14 +676,12 @@ tty_putc(c)
 /*
  * Read data from the terminal.
  */
-static int
+int
 tty_read(buf, length)
     char *buf;
     int length;
 {
     int bytes;
-
-    tty_update();
 
     if (tty_enter_idle_hook)
 	(*tty_enter_idle_hook)();
@@ -910,8 +949,9 @@ tty_getc()
     signals(ON);
 
     keyindex = 0;
-    while ((keyno = tty_read(keybuf, 1024)) < 0)
-	;
+    do
+	tty_update();
+    while ((keyno = tty_read(keybuf, 1024)) < 0);
 
     /* Prevent signals from suspending/resizing git.  */
     signals(OFF);
@@ -1398,6 +1438,21 @@ tty_init(kbd_mode)
 	exit(1);
     }
     tty_device=mbsduptowcs(tty_device_str);
+
+
+    /* Store the terminal settings in old_term. it will be used to restore
+       them later.  */
+#ifdef HAVE_POSIX_TTY
+    tcgetattr(TTY_OUTPUT, &old_term);
+#else
+#ifdef HAVE_SYSTEMV_TTY
+    ioctl(TTY_OUTPUT, TCGETA, &old_term);
+#else
+    ioctl(TTY_OUTPUT, TIOCGETP, &old_arg);
+    ioctl(TTY_OUTPUT, TIOCGETC, &old_targ);
+    ioctl(TTY_OUTPUT, TIOCGLTC, &old_ltarg);
+#endif /* HAVE_SYSTEMV_TTY */
+#endif /* HAVE_POSIX_TTY */
 
     default_key.key_seq  = tty_key_seq = (unsigned char *)xmalloc(64);
     default_key.aux_data = NULL;

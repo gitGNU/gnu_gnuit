@@ -2072,14 +2072,19 @@ main(argc, argv)
   restart:
     if (wait_msg)
     {
+	char dummy;
 	alarm(0);
 	fprintf(stdout, "Press almost any key to continue\n");
+	fflush(stdout);
+	tty_read(&dummy,1);
 #ifdef REMOVEME
 	/* FIXME */
 	tty_goto(tty_lines - 1, 0);
 #endif
-	tty_get_key(NULL);
 	wait_msg = 0;
+	tty_set_mode(TTY_NONCANONIC);
+	tty_defaults();
+	tty_update();
     }
 
     tty_update_title(panel_get_wpath(src_panel));
@@ -3265,6 +3270,7 @@ main(argc, argv)
 				pager="more";
 			    cmd=xmalloc(strlen(pager)+strlen(tmpfn)+1+1);
 			    sprintf(cmd,"%s %s",pager,tmpfn);
+			    tty_end_cursorapp();
 			    start(cmd,0);
 			    xfree(cmd);
 			    wait_msg=1;

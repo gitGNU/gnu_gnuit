@@ -215,18 +215,20 @@ start(command, hide)
     }
     else
     {
-	tty_set_mode(TTY_CANONIC);
 	tty_defaults();
 	tty_put_screen(screen);
 
 	signal_handlers(OFF);
+	tty_end_cursorapp();
 	child_exit_code = my_system(command, hide);
 	signal_handlers(ON);
 
 	xwrite(1, "\n\n", 2);
+#ifdef REMOVEME
 	tty_set_mode(TTY_NONCANONIC);
 	tty_defaults();
 	resize(0);
+#endif
     }
 
     return child_exit_code;

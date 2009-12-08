@@ -109,6 +109,7 @@ extern void tty_end PROTO ((char *));
 
 extern void tty_resize PROTO ((void));
 
+extern void tty_noncanonic_keys PROTO ((void));
 extern void tty_set_mode PROTO ((int));
 extern int tty_get_mode PROTO ((void));
 extern void tty_set_interrupt_char PROTO ((int));
@@ -154,8 +155,11 @@ extern void tty_key_list_delete PROTO ((void));
 
 extern tty_key_t *tty_key_search PROTO ((char *));
 extern tty_key_t *tty_get_key PROTO ((int *));
+extern int tty_read PROTO ((char *, int));
+
 extern char *tty_get_previous_key_seq PROTO((void));
 
 extern void tty_init_colors PROTO((int, int));
+extern void tty_restore_term PROTO((void));
 
 #endif  /* _GIT_TTY_H */
