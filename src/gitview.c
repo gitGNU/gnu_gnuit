@@ -169,6 +169,7 @@ char *g_program;
 char *program_name;
 char *screen;
 char *filename;
+int wait_msg = 0;
 int count;
 off64_t g_size;
 char g_offset[32];
@@ -674,7 +675,6 @@ main(argc, argv)
     int keys, repeat_count, need_update;
     int c, ansi_colors = -1, use_last_screen_character = ON;
     int title_text_len;
-    int wait_msg = 0;
     char * s_help;
 
 #ifdef HAVE_SETLOCALE

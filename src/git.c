@@ -1942,15 +1942,14 @@ main(argc, argv)
     add_to_environment("GNUIT_VMSTAT",  "GIT_VMSTAT",   "free");
 
     tty_init(TTY_RESTRICTED_INPUT);
+    /* Even though we just set up curses, drop out of curses
+       mode so error messages from config show up ok*/
+    tty_end_cursorapp();
 
     common_configuration_init();
 
     use_section("[GITFM-FTI]");
     get_file_type_info();
-
-    /* Even though we just set up curses, drop out of curses
-       mode so error messages from config show up ok*/
-    tty_end_cursorapp();
 
     use_section("[GITFM-Keys]");
     keys = read_keys(0, &errors);
@@ -2027,13 +2026,6 @@ main(argc, argv)
     if (current_path == NULL)
 	fatal("`getcwd' failed: permission denied");
 
-    if (wait_msg)
-    {
-	tty_wait_for_keypress();
-	wait_msg = 0;
-    }
-
-    tty_start_cursorapp();
     title_init();
     il_init();
     status_init(NormalModeHelp);
@@ -2073,6 +2065,13 @@ main(argc, argv)
     src_panel = left_panel;
     dst_panel = right_panel;
 
+    if (wait_msg)
+    {
+	tty_wait_for_keypress();
+	wait_msg = 0;
+    }
+
+    tty_start_cursorapp();
     resize(0);
 
     dir_history       = NULL;

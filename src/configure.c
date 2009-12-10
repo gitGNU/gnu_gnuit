@@ -38,6 +38,7 @@
 #include "configure.h"
 #include "misc.h"
 
+extern int wait_msg;
 
 static FILE *fileptr;
 static int   sectionptr;
@@ -87,6 +88,7 @@ configuration_getline()
 	{
 	    fprintf(stderr, "%s: configuration: line too long. Truncated.\n",
 		    g_program);
+	    wait_msg++;
 
 	    /* Search the end of this big line.  */
 	    for (;;)
