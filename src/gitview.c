@@ -426,10 +426,10 @@ fatal(postmsg)
     exit(1);
 }
 
-
 static int
-read_keys(keys)
+read_keys(keys, errors)
     int keys;
+    int *errors;
 {
     char *contents;
     char key_seq[80];
@@ -485,8 +485,11 @@ read_keys(keys)
 		tty_key_list_insert((unsigned char *)key_seq,  built_in[-j-1]);
 	}
 	else
+	{
 	    fprintf(stderr, "%s: invalid built-in operation: %s.\n",
 		    g_program, contents);
+	    (*errors)++;
+	}
     }
 
     return i;
@@ -671,6 +674,7 @@ main(argc, argv)
     int keys, repeat_count, need_update;
     int c, ansi_colors = -1, use_last_screen_character = ON;
     int title_text_len;
+    int wait_msg = 0;
     char * s_help;
 
 #ifdef HAVE_SETLOCALE
@@ -737,14 +741,15 @@ main(argc, argv)
     }
 
     if (optind < argc)
+    {
 	fprintf(stderr, "%s: warning: invalid extra options ignored\n",
 		g_program);
+	wait_msg++;
+    }
 
     title_text_len=strlen(PRODUCT) + strlen(VERSION) + 64;
     title_text = xmalloc(title_text_len * sizeof(wchar_t));
     swprintf(title_text, title_text_len, L" %s %s - Hex/Ascii File Viewer", PRODUCT, VERSION);
-
-    tty_init(TTY_RESTRICTED_INPUT);
 
     xstat(filename, &s);
 
@@ -760,16 +765,22 @@ main(argc, argv)
 
     if (fd == -1)
     {
-	tty_end_cursorapp();
 	fprintf(stderr, "%s: cannot open file %s.\n", g_program, filename);
 	return 1;
     }
 
     regular_file = S_ISREG(s.st_mode);
 
+    tty_init(TTY_RESTRICTED_INPUT);
+
+    /* Even though we just set up curses, drop out of curses
+       mode so error messages from config show up ok*/
+    tty_end_cursorapp();
+
     common_configuration_init();
     use_section("[GITVIEW-Keys]");
-    keys = read_keys(0);
+    keys = read_keys(0, &wait_msg);
+
     configuration_end();
 
     specific_configuration_init();
@@ -792,14 +803,22 @@ main(argc, argv)
     get_colorset_var(ViewerColors, ViewerFields, VIEWER_FIELDS);
 
     use_section("[GITVIEW-Keys]");
-    keys = read_keys(keys);
+    keys = read_keys(keys, &wait_msg);
 
     if (keys == MAX_KEYS)
+    {
 	fprintf(stderr, "%s: too many key sequences; only %d are allowed.\n",
 		g_program, MAX_KEYS);
+	wait_msg++;
+    }
 
     configuration_end();
 
+    if (wait_msg)
+    {
+	tty_wait_for_keypress();
+	wait_msg = 0;
+    }
     tty_start_cursorapp();
 
     title_window  = window_init(1, COLS, 0, 0);
