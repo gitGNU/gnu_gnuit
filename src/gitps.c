@@ -1149,8 +1149,11 @@ main(argc, argv)
     keys = read_keys(keys, &wait_msg);
 
     if (keys == MAX_KEYS)
+    {
 	fprintf(stderr, "%s: too many key sequences; only %d are allowed.\n",
 		g_program, MAX_KEYS);
+	wait_msg++;
+    }
 
     configuration_end();
 
@@ -1158,6 +1161,7 @@ main(argc, argv)
     fprintf(stderr,
 	    "%s: warning: your system doesn't support long file names.",
 	    g_program);
+    wait_msg++;
 #endif /* !HAVE_LONG_FILE_NAMES */
 
     stdout_log_template = xmalloc(32 + strlen(temporary_directory) + 1);
