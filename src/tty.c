@@ -351,25 +351,29 @@ tty_set_last_char_flag(last_char_flag)
 
 
 /*
- * Set up term settings for keys in noncanonic mode
- * that aren't handled by curses
+ * Set up term settings for keys in noncanonic mode that aren't
+ * handled by curses.  Also turn off canonical mode so we can have
+ * single-char input outside curses (for "press almost any key to
+ * continue" message)
  */
 void
-tty_noncanonic_keys()
+tty_noncanonic()
 {
 #ifdef HAVE_POSIX_TTY
-    static struct termios current_term;
+    struct termios current_term;
 #else
 #ifdef HAVE_SYSTEMV_TTY
-    static struct termio current_term;
+    struct termio current_term;
 #else
-    static struct tchars  current_targ;
-    static struct ltchars current_ltarg;
+    struct sgttyb current_arg;
+    struct tchars  current_targ;
+    struct ltchars current_ltarg;
 #endif /* HAVE_SYSTEMV_TTY */
 #endif /* HAVE_POSIX_TTY */
 
 #ifdef HAVE_POSIX_TTY
     tcgetattr(TTY_OUTPUT, &current_term);
+    current_term.c_lflag &= ~(ICANON | ECHO);
     current_term.c_cc[VINTR] = key_INTERRUPT;		/* Ctrl-G */
     current_term.c_cc[VQUIT] = CDISABLE;
 #ifdef VSTART
@@ -386,6 +390,7 @@ tty_noncanonic_keys()
 
 #ifdef HAVE_SYSTEMV_TTY
     ioctl(TTY_OUTPUT, TCGETA, &current_term);
+    current_term.c_lflag &= ~(ICANON | ECHO);
     current_term.c_cc[VINTR] = key_INTERRUPT;	/* Ctrl-G */
     current_term.c_cc[VQUIT] = CDISABLE;
 #ifdef VSTART
@@ -398,11 +403,13 @@ tty_noncanonic_keys()
 #else
     ioctl(TTY_OUTPUT, TIOCGETC, &current_targ);
     ioctl(TTY_OUTPUT, TIOCGLTC, &current_ltarg);
+    current_arg.sg_flags   &= ~(ECHO | CBREAK);
     current_targ.t_intrc   = key_INTERRUPT;     /* Ctrl-G */
     current_targ.t_quitc   = CDISABLE;
     current_targ.t_stopc   = CDISABLE;
     current_targ.t_startc  = CDISABLE;
     current_ltarg.t_suspc  = key_SUSPEND;	/* Ctrl-Z */
+    ioctl(TTY_OUTPUT, TIOCSETN, &current_arg);
     ioctl(TTY_OUTPUT, TIOCSETC, &current_targ);
     ioctl(TTY_OUTPUT, TIOCSLTC, &current_ltarg);
 #endif /* HAVE_SYSTEMV_TTY */
@@ -424,7 +431,7 @@ tty_set_mode(mode)
     if (mode == TTY_NONCANONIC)
     {
 	cbreak();
-	tty_noncanonic_keys();
+	tty_noncanonic();
     }
     else
     {
@@ -503,7 +510,7 @@ void
 tty_start_cursorapp()
 {
     tty_update();
-    tty_noncanonic_keys();
+    tty_noncanonic();
 }
 
 void
@@ -1541,5 +1548,6 @@ tty_wait_for_keypress()
     alarm(0);
     fprintf(stdout, "Press almost any key to continue\n");
     fflush(stdout);
+    tty_noncanonic();
     tty_read(&dummy,1);
 }
