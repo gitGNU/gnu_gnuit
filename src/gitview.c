@@ -406,7 +406,6 @@ update_all()
 	}
 	window_goto(file_window, scrline+3, 0);
 	update_line(fileline);
-	tty_update();
     }
 }
 
