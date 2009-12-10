@@ -814,8 +814,9 @@ ps(args)
 
 
 static int
-read_keys(keys)
+read_keys(keys, errors)
     int keys;
+    int *errors;
 {
     char *contents;
     char key_seq[80];
@@ -871,8 +872,11 @@ read_keys(keys)
 		tty_key_list_insert((unsigned char *)key_seq, built_in[j]);
 	}
 	else
+	{
 	    fprintf(stderr, "%s: invalid built-in operation: %s.\n",
 		    g_program, contents);
+	    (*errors)++;
+	}
     }
 
     return i;
@@ -1025,6 +1029,7 @@ main(argc, argv)
     int i, no_of_arguments, exit_code = 0;
     int need_update, need_update_all, old_current_process;
     int c, ansi_colors = -1, use_last_screen_character = ON;
+    int wait_msg = 0;
 
 #ifdef HAVE_SETLOCALE
     setlocale(LC_ALL,"");
@@ -1105,10 +1110,13 @@ main(argc, argv)
     swprintf(title_text, title_len, L" %s %s - Process Viewer/Killer", PRODUCT, VERSION);
 
     tty_init(TTY_FULL_INPUT);
+    /* Even though we just set up curses, drop out of curses
+       mode so error messages from config show up ok */
+    tty_end_cursorapp();
 
     common_configuration_init();
     use_section("[GITPS-Keys]");
-    keys = read_keys(0);
+    keys = read_keys(0, &wait_msg);
     configuration_end();
 
     specific_configuration_init();
@@ -1138,7 +1146,7 @@ main(argc, argv)
     get_colorset_var(PSColors, PSFields, PS_FIELDS);
 
     use_section("[GITPS-Keys]");
-    keys = read_keys(keys);
+    keys = read_keys(keys, &wait_msg);
 
     if (keys == MAX_KEYS)
 	fprintf(stderr, "%s: too many key sequences; only %d are allowed.\n",
@@ -1164,6 +1172,11 @@ main(argc, argv)
     if (ps(arguments) == 0)
 	return 1;
 
+    if (wait_msg)
+    {
+	tty_wait_for_keypress();
+	wait_msg = 0;
+    }
     tty_start_cursorapp();
 
     title_window  = window_init(1, COLS, 0, 0);
