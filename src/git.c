@@ -1902,8 +1902,11 @@ main(argc, argv)
     }
 
     if (optind < argc)
+    {
 	fprintf(stderr, "%s: warning: invalid extra options ignored\n",
 		g_program);
+	wait_msg++;
+    }
 
     printf("\n");
 
@@ -1944,6 +1947,10 @@ main(argc, argv)
 
     use_section("[GITFM-FTI]");
     get_file_type_info();
+
+    /* Even though we just set up curses, drop out of curses
+       mode so error messages from config show up ok*/
+    tty_end_cursorapp();
 
     use_section("[GITFM-Keys]");
     keys = read_keys(0, &errors);
@@ -1999,13 +2006,17 @@ main(argc, argv)
     wait_msg += errors;
 
     if (keys == MAX_KEYS)
+    {
 	fprintf(stderr, "%s: too many key sequences; only %d are allowed.\n",
 		g_program, MAX_KEYS);
+	wait_msg++;
+    }
 
 #ifndef HAVE_LONG_FILE_NAMES
     fprintf(stderr,
-	    "%s: warning: your system doesn't support long file names.",
+	    "%s: warning: your system doesn't support long file names.\n",
 	    g_program);
+    wait_msg++;
 #endif /* !HAVE_LONG_FILE_NAMES */
 
     if (getuid() == 0)
@@ -2015,6 +2026,12 @@ main(argc, argv)
 
     if (current_path == NULL)
 	fatal("`getcwd' failed: permission denied");
+
+    if (wait_msg)
+    {
+	tty_wait_for_keypress();
+	wait_msg = 0;
+    }
 
     tty_start_cursorapp();
     title_init();
@@ -2058,9 +2075,6 @@ main(argc, argv)
 
     resize(0);
 
-    tty_set_mode(TTY_NONCANONIC);
-    tty_defaults();
-
     dir_history       = NULL;
     dir_history_count = 0;
     dir_history_point = 0;
@@ -2072,20 +2086,13 @@ main(argc, argv)
   restart:
     if (wait_msg)
     {
-	char dummy;
-	alarm(0);
-	fprintf(stdout, "Press almost any key to continue\n");
-	fflush(stdout);
-	tty_read(&dummy,1);
-#ifdef REMOVEME
-	/* FIXME */
-	tty_goto(tty_lines - 1, 0);
-#endif
+	tty_wait_for_keypress();
 	wait_msg = 0;
-	tty_set_mode(TTY_NONCANONIC);
-	tty_defaults();
-	tty_update();
     }
+
+    tty_set_mode(TTY_NONCANONIC);
+    tty_defaults();
+    tty_update();
 
     tty_update_title(panel_get_wpath(src_panel));
     alarm(60 - get_local_time()->tm_sec);

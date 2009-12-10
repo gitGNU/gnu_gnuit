@@ -161,5 +161,5 @@ extern char *tty_get_previous_key_seq PROTO((void));
 
 extern void tty_init_colors PROTO((int, int));
 extern void tty_restore_term PROTO((void));
-
+extern void tty_wait_for_keypress PROTO((void));
 #endif  /* _GIT_TTY_H */

@@ -1532,4 +1532,14 @@ tty_init_colors(cmdline, configfile)
 	AnsiColors = cmdline;
     if(AnsiColors)
 	start_color();
-};
+}
+
+void
+tty_wait_for_keypress()
+{
+    char dummy;
+    alarm(0);
+    fprintf(stdout, "Press almost any key to continue\n");
+    fflush(stdout);
+    tty_read(&dummy,1);
+}
