@@ -1564,19 +1564,31 @@ void
 ttymode_colors(brightness, fg, bg)
     int brightness, fg, bg;
 {
-    int cp=tty_get_color_pair(fg,bg);
+    int cp;
     int attr=WA_NORMAL;
-    if(brightness)
-	attr |= WA_BOLD;
-    /* FIXME: reversevid logic */
-    vid_puts(attr, cp, NULL, putchar);
+    if(AnsiColors == ON)
+    {
+	cp=tty_get_color_pair(fg,bg);
+	if(brightness)
+	    attr |= WA_BOLD;
+	vid_puts(attr, cp, NULL, putchar);
+    }
+    else
+    {
+	if(((fg != WHITE) || (bg != BLACK)))
+	    attr |= WA_REVERSE;
+	vidputs(attr, putchar);
+    }
     fflush(stdout);
 }
 
 void
 ttymode_defaults()
 {
-    vid_puts(WA_NORMAL, COLOR_PAIR(0), NULL, putchar);
+    if(AnsiColors == ON)
+	vid_puts(WA_NORMAL, COLOR_PAIR(0), NULL, putchar);
+    else
+	vidputs(WA_NORMAL, putchar);
     fflush(stdout);
 }
 
