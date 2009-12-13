@@ -2494,6 +2494,7 @@ main(argc, argv)
 		    {
 			il_free(saved_il);
 			saved_il = il_save();
+			status_ttymode_erase();
 			break;
 		    }
 
