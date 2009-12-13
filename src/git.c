@@ -2471,6 +2471,7 @@ main(argc, argv)
 
 		while (1)
 		{
+		    tty_noncanonic();
 		    il_restore(saved_il);
 		    saved_il = il_save();
 		    il_ttymode_update();
