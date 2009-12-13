@@ -43,6 +43,7 @@ extern void status PROTO ((wchar_t *, int, int));
 extern void status_default PROTO ((void));
 
 extern void status_ttymode_update PROTO ((void));
+extern void status_ttymode_erase PROTO ((void));
 extern void status_ttymode PROTO ((wchar_t *, int, int));
 
 #endif  /* _GIT_STATUS_H */

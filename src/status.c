@@ -347,6 +347,17 @@ status_ttymode(message, type, alignment)
     status_ttymode_update();
 }
 
+void
+status_ttymode_erase()
+{
+    wchar_t *buf;
+    buf=xmalloc((status_window->wcolumns+1) * sizeof(wchar_t));
+    wmemset(buf, L' ', status_window->wcolumns);
+    buf[status_window->wcolumns]='\0';
+    ttymode_goto(status_window->x, status_window->y);
+    ttymode_defaults();
+    ttymode_puts(buf, status_window->wcolumns);
+}
 
 void
 status_default()

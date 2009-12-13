@@ -2581,6 +2581,7 @@ main(argc, argv)
 			    if (ConfirmOnExit == OFF ||
 				il_read_char(exit_msg,L"yn",IL_FREEZED) == 'y')
 			    {
+				status_ttymode_erase();
 				app_end = 1;
 				goto end_tty_mode;
 			    }

@@ -1573,7 +1573,7 @@ ttymode_colors(brightness, fg, bg)
     fflush(stdout);
 }
 
-static void
+void
 ttymode_defaults()
 {
     vid_puts(WA_NORMAL, COLOR_PAIR(0), NULL, putchar);
