@@ -1566,11 +1566,11 @@ ttymode_colors(brightness, fg, bg)
 {
     int cp;
     int attr=WA_NORMAL;
+    if(brightness)
+	attr |= WA_BOLD;
     if(AnsiColors == ON)
     {
 	cp=tty_get_color_pair(fg,bg);
-	if(brightness)
-	    attr |= WA_BOLD;
 	vid_puts(attr, cp, NULL, putchar);
     }
     else
