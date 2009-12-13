@@ -2467,16 +2467,14 @@ main(argc, argv)
 		alarm(0);
 		tty_put_screen(screen);
 		tty_end_cursorapp();
-		status(CommandLineModeHelp, STATUS_OK, STATUS_CENTERED);
-		tty_update();
+		status_ttymode(CommandLineModeHelp, STATUS_OK, STATUS_CENTERED);
 
 		while (1)
 		{
 		    il_restore(saved_il);
 		    saved_il = il_save();
-		    il_update();
-		    il_update_point();
-		    tty_update();
+		    il_ttymode_update();
+		    il_ttymode_update_point();
 		    il_get_contents(&cmdln);
 
 		    current_mode = GIT_TERMINAL_MODE;
@@ -2529,16 +2527,17 @@ main(argc, argv)
 				il_kill_line(IL_DONT_STORE);
 				il_insert_text(output_string);
 				tty_update_title(output_string);
+
 				start(soutput_string, 0);
+
 				xfree(soutput_string);
 				xfree(output_string);
 				il_history(IL_RECORD);
-				status(CommandLineModeHelp,
+				status_ttymode(CommandLineModeHelp,
 				       STATUS_OK, STATUS_CENTERED);
 				il_kill_line(IL_DONT_STORE);
 				saved_il = il_save();
 				tty_update_title(panel_get_wpath(src_panel));
-				tty_update();
 			    }
 
 			    break;
@@ -2604,7 +2603,7 @@ main(argc, argv)
 			    break;
 		    }
 
-		    status_update();
+		    status_ttymode_update();
 		}
 
 	      end_tty_mode:

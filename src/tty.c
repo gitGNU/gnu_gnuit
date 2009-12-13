@@ -956,8 +956,8 @@ tty_getc()
     signals(ON);
 
     keyindex = 0;
-    do
-	tty_update();
+    do /* FIXME: reinstate */
+	/*tty_update()*/; 
     while ((keyno = tty_read(keybuf, 1024)) < 0);
 
     /* Prevent signals from suspending/resizing git.  */
@@ -1550,4 +1550,52 @@ tty_wait_for_keypress()
     fflush(stdout);
     tty_noncanonic();
     tty_read(&dummy,1);
+}
+
+/* tty mode (^O) in gitfm can't use curses so
+   needs to handle terminfo stuff directly */
+
+void
+ttymode_init()
+{
+}
+
+void
+ttymode_colors(brightness, fg, bg)
+    int brightness, fg, bg;
+{
+    int cp=tty_get_color_pair(fg,bg);
+    int attr=WA_NORMAL;
+    if(brightness)
+	attr |= WA_BOLD;
+    /* FIXME: reversevid logic */
+    vid_puts(attr, cp, NULL, putchar);
+    fflush(stdout);
+}
+
+static void
+ttymode_defaults()
+{
+    vid_puts(WA_NORMAL, COLOR_PAIR(0), NULL, putchar);
+    fflush(stdout);
+}
+
+void
+ttymode_puts(str, len)
+    wchar_t *str;
+    int len;
+{
+    wchar_t *msg;
+    msg=xmalloc((len+1) * sizeof(wchar_t));
+    wmemcpy(msg, str, len);
+    msg[len]='\0';
+    printf("%ls", msg);
+    fflush(stdout);
+    ttymode_defaults();
+}
+
+void ttymode_goto(x,y)
+{
+    mvcur(-1, -1, y, x);
+    fflush(stdout);
 }

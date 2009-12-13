@@ -284,9 +284,38 @@ status_update()
     tty_restore(&status);
 }
 
-
 void
-status(message, type, alignment)
+status_ttymode_update()
+{
+    build_message();
+
+    switch (status_type)
+    {
+	case STATUS_WARNING:
+	    ttymode_colors(StatusBarWarningBrightness,
+			   StatusBarWarningForeground,
+			   StatusBarWarningBackground);
+	    break;
+
+	case STATUS_ERROR:
+	    ttymode_colors(StatusBarErrorBrightness,
+			   StatusBarErrorForeground,
+			   StatusBarErrorBackground);
+	    break;
+
+	default:
+	    ttymode_colors(StatusBarBrightness,
+			   StatusBarForeground,
+			   StatusBarBackground);
+	    break;
+    }
+    ttymode_goto(status_window->x,status_window->y);
+    ttymode_puts(status_buffer, status_window->wcolumns);
+}
+
+
+static void
+status_prepare(message, type, alignment)
     wchar_t *message;
     int type, alignment;
 {
@@ -297,8 +326,25 @@ status(message, type, alignment)
     toprintable(status_message, wcslen(status_message));
     status_type = type;
     status_alignment = alignment;
+}
 
+
+void
+status(message, type, alignment)
+    wchar_t *message;
+    int type, alignment;
+{
+    status_prepare(message, type, alignment);
     status_update();
+}
+
+void
+status_ttymode(message, type, alignment)
+    wchar_t *message;
+    int type, alignment;
+{
+    status_prepare(message, type, alignment);
+    status_ttymode_update();
 }
 
 

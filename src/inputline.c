@@ -932,20 +932,11 @@ il_restore_static(normal_static_length)
 /*
  * Update the point.
  */
-void
-il_update_point()
+static int
+il_calc_point_offset()
 {
     int scroll;
     size_t len;
-    size_t normal_static_length = 0;
-    int il_too_small = il->ilcolumns < il->static_length + 3;
-
-    tty_colors(il->error ? InputLineErrorBrightness : InputLineBrightness,
-	       il->error ? InputLineErrorForeground : InputLineForeground,
-	       il->error ? InputLineErrorBackground : InputLineBackground);
-
-    if (il_too_small)
-	normal_static_length = il_hide_static();
 
     scroll = il_compute_scroll();
 
@@ -953,6 +944,23 @@ il_update_point()
 	   il->point - il->ilcolumns + 1 +
 	   (scroll - 1) - ((il->point - il->ilcolumns) % scroll) : 0);
 
+    return len;
+}
+
+void
+il_update_point()
+{
+    size_t len;
+    size_t normal_static_length = 0;
+    int il_too_small = il->ilcolumns < il->static_length + 3;
+
+    if (il_too_small)
+	normal_static_length = il_hide_static();
+
+    len=il_calc_point_offset();
+    tty_colors(il->error ? InputLineErrorBrightness : InputLineBrightness,
+	       il->error ? InputLineErrorForeground : InputLineForeground,
+	       il->error ? InputLineErrorBackground : InputLineBackground);
     window_goto(il->window, 0, il->point - len);
 
     if (il_too_small)
@@ -960,45 +968,76 @@ il_update_point()
 }
 
 
+void
+il_ttymode_update_point()
+{
+    size_t len;
+    size_t normal_static_length = 0;
+    int il_too_small = il->ilcolumns < il->static_length + 3;
+
+    if (il_too_small)
+	normal_static_length = il_hide_static();
+
+    len=il_calc_point_offset();
+    ttymode_colors(il->error ? InputLineErrorBrightness : InputLineBrightness,
+		   il->error ? InputLineErrorForeground : InputLineForeground,
+		   il->error ? InputLineErrorBackground : InputLineBackground);
+    ttymode_goto((il->window->x + il->point - len), il->window->y);
+
+    if (il_too_small)
+	il_restore_static(normal_static_length);
+}
+
+
+static wchar_t *
+il_prepare_update(len)
+    int *len;
+{
+    wchar_t *temp;
+    int scroll;
+
+    scroll = il_compute_scroll();
+
+    *len = ((il->point >= il->ilcolumns) ?
+	    il->point - il->ilcolumns + 1 +
+	    (scroll - 1) - ((il->point - il->ilcolumns) % scroll) : 0);
+
+    temp = xmalloc(il->ilcolumns * sizeof(wchar_t));
+    wmemset(temp, L' ', il->ilcolumns);
+
+    if (il->echo)
+	wmemcpy(temp, il->buffer + il->static_length + *len,
+		min(il->length   - il->static_length - *len,
+		    il->ilcolumns  - il->static_length));
+    else
+	wmemset(temp, L'*',
+	       min(il->length   - il->static_length - *len,
+		   il->ilcolumns  - il->static_length));
+    return temp;
+}
+
 /*
  * Update the entire input line.
  */
 void
 il_update()
 {
-    int scroll;
     wchar_t *temp;
-    unsigned len;
-    tty_status_t status;
+    int len;
     size_t normal_static_length = 0;
     int il_too_small = il->ilcolumns < il->static_length + 3;
+    tty_status_t status;
 
     tty_save(&status);
 
-    tty_colors(il->error ? InputLineErrorBrightness : InputLineBrightness,
-	       il->error ? InputLineErrorForeground : InputLineForeground,
-	       il->error ? InputLineErrorBackground : InputLineBackground);
+    temp=il_prepare_update(&len);
 
     if (il_too_small)
 	normal_static_length = il_hide_static();
 
-    scroll = il_compute_scroll();
-
-    len = ((il->point >= il->ilcolumns) ?
-	   il->point - il->ilcolumns + 1 +
-	   (scroll - 1) - ((il->point - il->ilcolumns) % scroll) : 0);
-
-    temp = xmalloc(il->ilcolumns * sizeof(wchar_t));
-    wmemset(temp, L' ', il->ilcolumns);
-
-    if (il->echo)
-	wmemcpy(temp, il->buffer + il->static_length + len,
-		min(il->length   - il->static_length - len,
-		    il->ilcolumns  - il->static_length));
-    else
-	wmemset(temp, L'*',
-	       min(il->length   - il->static_length - len,
-		   il->ilcolumns  - il->static_length));
+    tty_colors(il->error ? InputLineErrorBrightness : InputLineBrightness,
+	       il->error ? InputLineErrorForeground : InputLineForeground,
+	       il->error ? InputLineErrorBackground : InputLineBackground);
 
     window_goto(il->window, 0, 0);
 
@@ -1015,8 +1054,44 @@ il_update()
 	il_restore_static(normal_static_length);
 
     xfree(temp);
+
     tty_restore(&status);
 }
+
+void
+il_ttymode_update()
+{
+    wchar_t *temp;
+    int len;
+    size_t normal_static_length = 0;
+    int il_too_small = il->ilcolumns < il->static_length + 3;
+
+    temp=il_prepare_update(&len);
+
+    if (il_too_small)
+	normal_static_length = il_hide_static();
+
+    ttymode_colors(il->error ? InputLineErrorBrightness : InputLineBrightness,
+		   il->error ? InputLineErrorForeground : InputLineForeground,
+		   il->error ? InputLineErrorBackground : InputLineBackground);
+
+    ttymode_goto(il->window->x, il->window->y);
+    if (!il_too_small)
+	ttymode_puts(il->buffer, il->static_length);
+
+    ttymode_puts(temp, il->ilcolumns - il->static_length);
+
+    /* If we don't do this, the screen cursor will annoyingly jump to
+       the left margin of the command line.  */
+    ttymode_goto(il->point - len, il->window->x);
+
+    if (il_too_small)
+	il_restore_static(normal_static_length);
+
+    xfree(temp);
+}
+
+
 
 
 /*
