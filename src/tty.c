@@ -1606,8 +1606,25 @@ ttymode_puts(str, len)
     ttymode_defaults();
 }
 
-void ttymode_goto(x,y)
+void
+ttymode_goto(x,y)
 {
     mvcur(-1, -1, y, x);
     fflush(stdout);
+}
+
+void
+ttymode_clrscr()
+{
+    int i;
+    wchar_t *buf;
+    buf=xmalloc((tty_columns+1) * sizeof(wchar_t));
+    wmemset(buf, L' ', tty_columns);
+    buf[tty_columns]='\0';
+    mvcur(-1,-1,0,0);
+    ttymode_defaults();
+    for(i=0; i < tty_lines; i++)
+    {
+	printf("%ls", buf);
+    }
 }

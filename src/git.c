@@ -2572,11 +2572,11 @@ main(argc, argv)
 			    break;
 
 			case BUILTIN_refresh:
-			    screen_refresh(0);
-			    tty_put_screen(screen);
-			    status(CommandLineModeHelp,
+			    ttymode_clrscr();
+			    status_ttymode(CommandLineModeHelp,
 				   STATUS_OK, STATUS_CENTERED);
-			    tty_update();
+			    il_ttymode_update();
+			    il_ttymode_update_point();
 			    break;
 
 			case BUILTIN_exit:
