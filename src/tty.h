@@ -144,6 +144,7 @@ extern void tty_key_print PROTO ((char *));
 extern void tty_key_print_async PROTO ((void));
 extern char *tty_get_symbol_key_seq PROTO ((char *));
 extern void tty_set_last_char_flag PROTO ((int));
+extern int tty_get_last_char_flag PROTO ((void));
 extern int tty_set_optimization_level PROTO ((int));
 extern void tty_update_title PROTO ((wchar_t *));
 

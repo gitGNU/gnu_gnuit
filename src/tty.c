@@ -349,6 +349,12 @@ tty_set_last_char_flag(last_char_flag)
     tty_last_char_flag = last_char_flag;
 }
 
+int
+tty_get_last_char_flag()
+{
+    return tty_last_char_flag;
+}
+
 
 /*
  * Set up term settings for keys in noncanonic mode that aren't

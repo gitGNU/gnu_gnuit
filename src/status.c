@@ -287,6 +287,7 @@ status_update()
 void
 status_ttymode_update()
 {
+    int len;
     build_message();
 
     switch (status_type)
@@ -310,7 +311,10 @@ status_ttymode_update()
 	    break;
     }
     ttymode_goto(status_window->x,status_window->y);
-    ttymode_puts(status_buffer, status_window->wcolumns);
+    len=status_window->wcolumns;
+    if(tty_get_last_char_flag() == OFF)
+	len--;
+    ttymode_puts(status_buffer, len);
     fflush(stdout);
 }
 
@@ -352,9 +356,12 @@ void
 status_ttymode_erase()
 {
     wchar_t *buf;
-    buf=xmalloc((status_window->wcolumns+1) * sizeof(wchar_t));
-    wmemset(buf, L' ', status_window->wcolumns);
-    buf[status_window->wcolumns]='\0';
+    int len=status_window->wcolumns;
+    if(tty_get_last_char_flag() == OFF)
+	len--;
+    buf=xmalloc((len+1) * sizeof(wchar_t));
+    wmemset(buf, L' ', len);
+    buf[len]='\0';
     ttymode_goto(status_window->x, status_window->y);
     ttymode_defaults();
     ttymode_puts(buf, status_window->wcolumns);
