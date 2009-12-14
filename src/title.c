@@ -203,6 +203,7 @@ clock_refresh(signum)
     tty_colors(ClockBrightness, ClockForeground, ClockBackground);
     window_puts(title_window, buf, wcslen(buf));
 
+    tty_cursor(ON);
     tty_restore(&status);
 
     if (signum)

@@ -2478,13 +2478,13 @@ main(argc, argv)
 		{
 		    tty_noncanonic();
 		    tty_current_mode = GIT_TERMINAL_MODE;
+		    status(CommandLineModeHelp, STATUS_OK, STATUS_CENTERED);
 		    il_restore(saved_il);
 		    saved_il = il_save();
 		    il_ttymode_update();
 		    il_ttymode_update_point();
 		    il_get_contents(&cmdln);
 
-		    status(CommandLineModeHelp, STATUS_OK, STATUS_CENTERED);
 		    while ((ks = tty_get_key(&repeat_count)) == NULL)
 		    {
 			report_undefined_key(CommandLineModeHelp);
