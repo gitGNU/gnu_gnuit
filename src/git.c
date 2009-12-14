@@ -2258,17 +2258,14 @@ main(argc, argv)
 			}
 			else
 			{
-			    wchar_t *key=mbsduptowcs((char *)ks->key_seq);
-			    int len=80+wcslen(key)+1;
+			    int len=80+wcslen(command->sequence)+1;
 			    wchar_t *msg=xmalloc(len * sizeof(wchar_t));
-			    /* FIXME: command->sequence? shouldnt it be ks->key_seq? */
 			    swprintf(msg, len,
 				    L"%s: invalid command on key sequence %ls!",
 				    command->name, command->sequence);
 			    il_read_char(msg, NULL,
 					 IL_FREEZED|IL_BEEP|IL_SAVE|IL_ERROR);
 			    xfree(msg);
-			    xfree(key);
 			    continue;
 			}
 		    }
