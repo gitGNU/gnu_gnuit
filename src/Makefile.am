@@ -7,7 +7,7 @@ bin_SCRIPTS = gitaction gitmkdirs gitmount gitrgrep gitunpack gitxgrep\
 
 # We're not including tilde.c & tilde.h here because they are
 # automagically detected (configure.in includes them in LIBOBJS).
-EXTRA_gitfm_SOURCES = ansi_stdlib.h file.h stat.h stdc.h xtime.h
+EXTRA_gitfm_SOURCES = file.h stat.h stdc.h xtime.h
 
 gitfm_SOURCES = git.c tty.c tty.h window.c window.h inputline.c inputline.h\
 	      status.c status.h panel.c panel.h title.c title.h\
