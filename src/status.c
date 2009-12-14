@@ -318,9 +318,8 @@ status_ttymode_update()
     fflush(stdout);
 }
 
-
-static void
-status_prepare(message, type, alignment)
+void
+status(message, type, alignment)
     wchar_t *message;
     int type, alignment;
 {
@@ -331,25 +330,11 @@ status_prepare(message, type, alignment)
     toprintable(status_message, wcslen(status_message));
     status_type = type;
     status_alignment = alignment;
-}
 
-
-void
-status(message, type, alignment)
-    wchar_t *message;
-    int type, alignment;
-{
-    status_prepare(message, type, alignment);
-    status_update();
-}
-
-void
-status_ttymode(message, type, alignment)
-    wchar_t *message;
-    int type, alignment;
-{
-    status_prepare(message, type, alignment);
-    status_ttymode_update();
+    if(tty_current_mode == GIT_SCREEN_MODE)
+	status_update();
+    else
+	status_ttymode_update();
 }
 
 void

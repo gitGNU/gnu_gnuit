@@ -36,6 +36,8 @@
 #include "tty.h"
 #include "misc.h"
 #include "common.h"
+#include "status.h"
+#include "inputline.h"
 
 /* Set on SIGINT.  Should be reset when detected.  */
 int user_heart_attack;
@@ -73,9 +75,12 @@ service_pending_signals()
 #ifdef SIGWINCH
     if (refresh_requested)
     {
-	tty_defaults();
-	tty_clear();
-	screen_refresh(SIGWINCH);
+	if(tty_current_mode == GIT_SCREEN_MODE)
+	{
+	    tty_defaults();
+	    tty_clear();
+	    screen_refresh(SIGWINCH);
+	}
 	refresh_requested = 0;
 	alarm_requested = 0;
 	return;
@@ -141,8 +146,11 @@ window_change(signum)
 {
     if (signals_allowed)
     {
-	tty_defaults();
-	tty_clear();
+	if(tty_current_mode == GIT_SCREEN_MODE)
+	{
+	    tty_defaults();
+	    tty_clear();
+	}
 	screen_refresh(signum);
 	refresh_requested = 0;
     }
@@ -164,7 +172,8 @@ resume(signum)
 {
     if (refresh_at_SIGCONT)
     {
-	screen_refresh(signum);
+	if(tty_current_mode == GIT_SCREEN_MODE)
+	    screen_refresh(signum);
 	refresh_requested = 0;
     }
 
@@ -181,8 +190,9 @@ time_change(signum)
 {
     if (signals_allowed)
     {
-	if (get_local_time()->tm_sec == 0)
-	    clock_refresh(signum);
+	if(tty_current_mode == GIT_SCREEN_MODE)
+	    if (get_local_time()->tm_sec == 0)
+		clock_refresh(signum);
 	tty_key_print_async();
 	alarm_requested = 0;
     }

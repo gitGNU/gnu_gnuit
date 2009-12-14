@@ -110,7 +110,7 @@ int tty_lines;
 int tty_columns;
 wchar_t *tty_device;
 static char *tty_device_str;
-
+int tty_current_mode = GIT_SCREEN_MODE;
 static unsigned char *tty_key_seq;
 
 static int tty_device_length;
@@ -202,6 +202,8 @@ static char term_env[]      = "TERMINFO";
 static int  tty_is_xterm PROTO ((char *));
 static int tty_get_color_pair PROTO ((short, short));
 static void tty_update_attributes PROTO ((void));
+
+static void ttymode_key_print PROTO ((char *));
 
 extern void fatal PROTO ((char *));
 
@@ -962,8 +964,11 @@ tty_getc()
     signals(ON);
 
     keyindex = 0;
-    do /* FIXME: reinstate */
-	/*tty_update()*/; 
+    do
+    {
+	if(tty_current_mode == GIT_SCREEN_MODE)
+	    tty_update();
+    }
     while ((keyno = tty_read(keybuf, 1024)) < 0);
 
     /* Prevent signals from suspending/resizing git.  */
@@ -1212,7 +1217,12 @@ tty_get_key(repeat_count)
 	    /* Schedule an alarm in 1 second, to display the key
 	       sequence if still incomplete by that time.  */
 	    if (key_on_display)
-		tty_key_print((char *)tty_key_seq);
+	    {
+		if(tty_current_mode == GIT_TERMINAL_MODE)
+		    ttymode_key_print((char *)tty_key_seq);
+		else
+		    tty_key_print((char *)tty_key_seq);
+	    }
 	    else
 		alarm(1);
 	    partial = 1;
@@ -1243,13 +1253,15 @@ tty_get_key(repeat_count)
     return key;
 }
 
-
 void
 tty_key_print_async()
 {
     if (partial)
     {
-	tty_key_print((char *)tty_key_seq);
+	if(tty_current_mode == GIT_SCREEN_MODE)
+	    tty_key_print((char *)tty_key_seq);
+	else
+	    ttymode_key_print((char *)tty_key_seq);
 	key_on_display = 1;
     }
 }
@@ -1601,7 +1613,6 @@ ttymode_puts(str, len)
     wmemcpy(msg, str, len);
     msg[len]='\0';
     printf("%ls", msg);
-    ttymode_defaults();
 }
 
 void
@@ -1626,3 +1637,35 @@ ttymode_clrscr()
     }
     fflush(stdout);
 }
+
+static void
+ttymode_key_print(key_seq)
+    char *key_seq;
+{
+    wchar_t *typed = L"Keys typed so far: ";
+    wchar_t *incomplete = L" ";
+    wchar_t *spaces;
+    wchar_t *wkey;
+
+    ttymode_goto(0, tty_lines - 1);
+    ttymode_colors(OFF, BLACK, WHITE);
+
+    spaces = xmalloc( (tty_columns+1) * sizeof(wchar_t));
+    wmemset(spaces, L' ', tty_columns);
+    spaces[tty_columns] = '\0';
+    ttymode_puts(spaces, tty_columns);
+    fflush(stdout);
+    xfree(spaces);
+    ttymode_goto(0, tty_lines - 1);
+
+    tty_key_machine2human(key_seq);
+
+    ttymode_puts(typed, wcslen(typed));
+    wkey=mbsduptowcs((char *)keystr);
+    ttymode_puts(wkey, wcslen(wkey));
+    xfree(wkey);
+    ttymode_puts(incomplete, wcslen(incomplete));
+    ttymode_defaults();
+    fflush(stdout);
+}
+

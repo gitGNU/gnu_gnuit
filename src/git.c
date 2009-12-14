@@ -84,19 +84,12 @@ Written by Tudor Hulubei and Andrei Pitis, Bucharest, Romania\n\n";
 extern int AnsiColors;
 int TypeSensitivity = ON;
 
-/* These are the only possible values for `current_mode'. Used while
-   resuming from suspended mode in order to correctly refresh the
-   display. */
-#define GIT_SCREEN_MODE         0
-#define GIT_TERMINAL_MODE       1
-
 char *g_home;
 char *g_program;
 /* for gnulib lib/error.c */
 char *program_name;
 char *version = VERSION;
 int two_panel_mode = 1;
-int current_mode = GIT_SCREEN_MODE;
 int panel_no;
 int wait_msg;
 
@@ -114,7 +107,7 @@ wchar_t PS1[4] = L" $ ";
 panel_t *left_panel, *right_panel, *src_panel, *dst_panel, *tmp_panel;
 
 static wchar_t *NormalModeHelp      = L"";
-static wchar_t *CommandLineModeHelp = L"";
+wchar_t *CommandLineModeHelp = L"";
 static int ConfirmOnExit;
 
 /* Directory history stuff.  */
@@ -362,7 +355,7 @@ panels_can_be_displayed()
 int
 in_terminal_mode()
 {
-    return (current_mode == GIT_TERMINAL_MODE);
+    return (tty_current_mode == GIT_TERMINAL_MODE);
 }
 
 
@@ -473,7 +466,7 @@ screen_refresh(signum)
     panel_center_current_entry(src_panel);
     panel_center_current_entry(dst_panel);
 
-    if (current_mode == GIT_SCREEN_MODE)
+    if (tty_current_mode == GIT_SCREEN_MODE)
     {
 	if (!panels_can_be_displayed())
 	{
@@ -518,12 +511,18 @@ report_undefined_key(status_message)
 	status(buf, STATUS_ERROR, STATUS_LEFT);
 	xfree(buf);
 
-	tty_beep();
-	tty_update();
+	if(tty_current_mode == GIT_SCREEN_MODE)
+	{
+	    tty_beep();
+	    tty_update();
+	}
 	sleep(1);
     }
     else
-	tty_beep();
+    {
+	if(tty_current_mode == GIT_SCREEN_MODE)
+	    tty_beep();
+    }
 
     if (status_message)
     {
@@ -533,8 +532,13 @@ report_undefined_key(status_message)
     }
     else
 	status_default();
-    il_update_point();
-    tty_update();
+    if(tty_current_mode == GIT_SCREEN_MODE)
+    {
+	il_update_point();
+	tty_update();
+    }
+    else
+	il_ttymode_update_point();
 }
 
 
@@ -2467,21 +2471,25 @@ main(argc, argv)
 		alarm(0);
 		tty_put_screen(screen);
 		tty_end_cursorapp();
-		status_ttymode(CommandLineModeHelp, STATUS_OK, STATUS_CENTERED);
+		tty_current_mode = GIT_TERMINAL_MODE;
+		status(CommandLineModeHelp, STATUS_OK, STATUS_CENTERED);
 
 		while (1)
 		{
 		    tty_noncanonic();
+		    tty_current_mode = GIT_TERMINAL_MODE;
 		    il_restore(saved_il);
 		    saved_il = il_save();
 		    il_ttymode_update();
 		    il_ttymode_update_point();
 		    il_get_contents(&cmdln);
 
-		    current_mode = GIT_TERMINAL_MODE;
-
+		    status(CommandLineModeHelp, STATUS_OK, STATUS_CENTERED);
 		    while ((ks = tty_get_key(&repeat_count)) == NULL)
+		    {
 			report_undefined_key(CommandLineModeHelp);
+			status(CommandLineModeHelp, STATUS_OK, STATUS_CENTERED);
+		    }
 
 		    key = ks->key_seq[0];
 		    command = (command_t *)ks->aux_data;
@@ -2536,7 +2544,7 @@ main(argc, argv)
 				xfree(soutput_string);
 				xfree(output_string);
 				il_history(IL_RECORD);
-				status_ttymode(CommandLineModeHelp,
+				status(CommandLineModeHelp,
 				       STATUS_OK, STATUS_CENTERED);
 				il_kill_line(IL_DONT_STORE);
 				saved_il = il_save();
@@ -2573,7 +2581,7 @@ main(argc, argv)
 
 			case BUILTIN_refresh:
 			    ttymode_clrscr();
-			    status_ttymode(CommandLineModeHelp,
+			    status(CommandLineModeHelp,
 				   STATUS_OK, STATUS_CENTERED);
 			    il_ttymode_update();
 			    il_ttymode_update_point();
@@ -2590,7 +2598,6 @@ main(argc, argv)
 
 			    status(CommandLineModeHelp,
 				   STATUS_OK, STATUS_CENTERED);
-			    tty_update();
 			    break;
 
 			default:
@@ -2619,7 +2626,7 @@ main(argc, argv)
 		tty_update();
 		alarm(60 - get_local_time()->tm_sec);
 
-		current_mode = GIT_SCREEN_MODE;
+		tty_current_mode = GIT_SCREEN_MODE;
 
 		if (app_end)
 		    continue;

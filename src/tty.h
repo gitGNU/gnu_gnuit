@@ -79,6 +79,11 @@
 #define TTY_RESTRICTED_INPUT    0
 #define TTY_FULL_INPUT          1
 
+/* These are the only possible values for `current_mode'. Used while
+   resuming from suspended mode in order to correctly refresh the
+   display. */
+#define GIT_SCREEN_MODE         0
+#define GIT_TERMINAL_MODE       1
 
 extern void (* tty_enter_idle_hook) PROTO ((void));
 extern void (* tty_exit_idle_hook) PROTO ((void));
@@ -103,6 +108,7 @@ extern int tty_lines;
 extern int tty_columns;
 extern char *tty_type;
 extern wchar_t *tty_device;
+extern int tty_current_mode;
 
 extern void tty_init PROTO ((int));
 extern void tty_end PROTO ((char *));
@@ -171,4 +177,6 @@ extern void ttymode_colors PROTO((int, int, int));
 extern void ttymode_defaults PROTO((void));
 extern void ttymode_puts PROTO((wchar_t *, int));
 extern void ttymode_clrscr PROTO((void));
+extern void ttymode_key_print_async PROTO ((void));
+
 #endif  /* _GIT_TTY_H */
