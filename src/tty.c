@@ -1493,6 +1493,7 @@ tty_init(kbd_mode)
     nonl();
     echo();
     tty_next_free_color_pair=1;
+    tty_cursor(ON);
 }
 
 

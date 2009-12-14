@@ -211,10 +211,12 @@ file_length()
 static void
 cursor_update()
 {
+    tty_cursor(ON);
     if (tty_lines >= 9)
 	window_goto(file_window, SEEK_LINE, wcslen(seek_txt) + count);
     else
 	window_goto(file_window, tty_lines - 1, tty_columns - 1);
+    tty_update();
 }
 
 
@@ -677,6 +679,7 @@ main(argc, argv)
     int title_text_len;
     char * s_help;
 
+    sleep(10);
 #ifdef HAVE_SETLOCALE
     setlocale(LC_ALL,"");
 #endif
@@ -826,7 +829,6 @@ main(argc, argv)
     file_window = window_init(LINES-4, COLS, 2, 0);
     status_window = window_init(1, COLS, LINES-1, 0);
 
-    curs_set(0);
     resize(0);
 
     tty_set_mode(TTY_NONCANONIC);
