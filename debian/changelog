@@ -5,6 +5,13 @@ gnuit (4.9.6-1) unstable; urgency=low
 
  -- Ian Beckwith <ianb@debian.org>  Wed, 02 Dec 2009 22:28:11 +0000
 
+gnuit (4.9.5-3) unstable; urgency=low
+
+  * Build-Depend on libreadline-dev instead of libreadline5-dev
+    (Closes: #553773).
+
+ -- Ian Beckwith <ianb@debian.org>  Wed, 11 Nov 2009 01:22:34 +0000
+
 gnuit (4.9.5-2) unstable; urgency=low
 
   * debian/control:
