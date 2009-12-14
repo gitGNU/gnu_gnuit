@@ -224,11 +224,6 @@ start(command, hide)
 	signal_handlers(ON);
 
 	xwrite(1, "\n\n", 2);
-#ifdef REMOVEME
-	tty_set_mode(TTY_NONCANONIC);
-	tty_defaults();
-	resize(0);
-#endif
     }
 
     return child_exit_code;
