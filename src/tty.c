@@ -1201,7 +1201,7 @@ tty_get_key(repeat_count)
 		/* tty_key_print((char *)tty_key_seq); */
 		/* tty_update(); */
 		/* Small delay for displaying the selected sequence.  */
-		/* FIXME: 1 second is way too much!  */
+		/* OLD-FIX-ME: 1 second is way too much!  */
 		/* sleep(1);  */
 	    }
 	    break;

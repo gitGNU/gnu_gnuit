@@ -84,7 +84,7 @@ service_pending_signals()
 
     if (alarm_requested)
     {
-	/* FIXME: do something.  */
+	/* OLD-FIX-ME: do something.  */
 	/* clock_refresh(SIGALRM); ??? */
 	alarm_requested = 0;
 	return;
