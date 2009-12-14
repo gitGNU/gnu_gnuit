@@ -2552,7 +2552,7 @@ main(argc, argv)
 			    for (i = 0; i < repeat_count; i++)
 			    {
 				il_history(IL_PREVIOUS);
-				tty_update();
+				il_ttymode_update();
 			    }
 
 			    saved_il = il_save();
@@ -2565,7 +2565,7 @@ main(argc, argv)
 			    for (i = 0; i < repeat_count; i++)
 			    {
 				il_history(IL_NEXT);
-				tty_update();
+				il_ttymode_update();
 			    }
 
 			    saved_il = il_save();
@@ -2765,6 +2765,7 @@ main(argc, argv)
 		for (i = 0; i < repeat_count; i++)
 		{
 		    il_history(IL_PREVIOUS);
+		    il_update();
 		    tty_update();
 		}
 
@@ -2777,6 +2778,7 @@ main(argc, argv)
 		for (i = 0; i < repeat_count; i++)
 		{
 		    il_history(IL_NEXT);
+		    il_update();
 		    tty_update();
 		}
 

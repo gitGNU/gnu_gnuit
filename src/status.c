@@ -311,6 +311,7 @@ status_ttymode_update()
     }
     ttymode_goto(status_window->x,status_window->y);
     ttymode_puts(status_buffer, status_window->wcolumns);
+    fflush(stdout);
 }
 
 
@@ -357,6 +358,7 @@ status_ttymode_erase()
     ttymode_goto(status_window->x, status_window->y);
     ttymode_defaults();
     ttymode_puts(buf, status_window->wcolumns);
+    fflush(stdout);
 }
 
 void

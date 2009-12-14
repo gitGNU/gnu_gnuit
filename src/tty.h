@@ -165,7 +165,6 @@ extern void tty_restore_term PROTO((void));
 extern void tty_wait_for_keypress PROTO((void));
 
 
-extern void ttymode_init PROTO((void));
 extern void ttymode_goto PROTO((int, int));
 extern void ttymode_colors PROTO((int, int, int));
 extern void ttymode_defaults PROTO((void));

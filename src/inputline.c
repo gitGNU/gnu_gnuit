@@ -986,6 +986,7 @@ il_ttymode_update_point()
 
     if (il_too_small)
 	il_restore_static(normal_static_length);
+    fflush(stdout);
 }
 
 
@@ -1088,6 +1089,7 @@ il_ttymode_update()
     if (il_too_small)
 	il_restore_static(normal_static_length);
 
+    fflush(stdout);
     xfree(temp);
 }
 
@@ -1162,7 +1164,6 @@ il_history(dir)
 
 		wcscpy(il->buffer + il->static_length, line);
 		xfree(line);
-		il_update();
 	    }
 
 	    break;
@@ -1190,7 +1191,6 @@ il_history(dir)
 	    else
 		il_kill_line(IL_DONT_STORE);
 
-	    il_update();
 	    break;
 
 	case IL_RECORD:

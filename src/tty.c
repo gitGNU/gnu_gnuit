@@ -1556,11 +1556,6 @@ tty_wait_for_keypress()
    needs to handle terminfo stuff directly */
 
 void
-ttymode_init()
-{
-}
-
-void
 ttymode_colors(brightness, fg, bg)
     int brightness, fg, bg;
 {
@@ -1579,7 +1574,6 @@ ttymode_colors(brightness, fg, bg)
 	    attr |= WA_REVERSE;
 	vidputs(attr, putchar);
     }
-    fflush(stdout);
 }
 
 void
@@ -1589,7 +1583,6 @@ ttymode_defaults()
 	vid_puts(WA_NORMAL, COLOR_PAIR(0), NULL, putchar);
     else
 	vidputs(WA_NORMAL, putchar);
-    fflush(stdout);
 }
 
 void
@@ -1602,7 +1595,6 @@ ttymode_puts(str, len)
     wmemcpy(msg, str, len);
     msg[len]='\0';
     printf("%ls", msg);
-    fflush(stdout);
     ttymode_defaults();
 }
 
@@ -1610,7 +1602,6 @@ void
 ttymode_goto(x,y)
 {
     mvcur(-1, -1, y, x);
-    fflush(stdout);
 }
 
 void
@@ -1627,4 +1618,5 @@ ttymode_clrscr()
     {
 	printf("%ls", buf);
     }
+    fflush(stdout);
 }
