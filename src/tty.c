@@ -116,6 +116,9 @@ static unsigned char *tty_key_seq;
 static int tty_device_length;
 static int tty_last_char_flag;
 
+static int tty_cursor_x;
+static int tty_cursor_y;
+
 /*
  * tty_*_current_attribute:
  *   bit 7:		reverse video
@@ -656,8 +659,10 @@ tty_puts(buf, length)
     wchar_t *buf;
     int length;
 {
-#ifdef REMOVEME
-    /* FIXME: what about bounds checking? */
+    int x = tty_cursor_x;
+
+    tty_cursor_x += length;
+
     if (x >= tty_columns)
 	return 0;
 
@@ -668,8 +673,6 @@ tty_puts(buf, length)
     if (x + length > tty_columns)
 	length = tty_columns - x;
 
-    tty_offset = (tty_cursor_y * tty_columns) + x;
-#endif
     addnwstr(buf, length);
     return length;
 }
@@ -745,6 +748,8 @@ void
 tty_goto(y, x)
     int y, x;
 {
+    tty_cursor_x=x;
+    tty_cursor_y=y;
     move(y, x);
 }
 
