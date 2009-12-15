@@ -604,11 +604,12 @@ build_ps_list(ps_output)
 {
     int i;
     char line[MAX_LINE];
+    wchar_t *wline;
 
-    for (i = 0; read_ps_line(ps_output, line); i++)
+    for (i = 0; (wline=read_ps_line(ps_output, line)) != NULL; i++)
     {
 	ps_vect = (wchar_t **)xrealloc(ps_vect, (i + 1) * sizeof(wchar_t *));
-	ps_vect[i] = mbsduptowcs(line);
+	ps_vect[i] = wline;
     }
 
     processes = i;
