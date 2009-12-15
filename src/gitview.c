@@ -390,6 +390,8 @@ update_all()
 
     tty_colors(ScreenBrightness, ScreenForeground, ScreenBackground);
 
+    if(tty_lines < 9)
+	return;
     for(scrline=0; scrline < VIEW_LINES; scrline++, fileline++)
     {
 	if(fileline & 0xFFFFFFFFF0000000ULL)
