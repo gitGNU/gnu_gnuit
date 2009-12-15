@@ -516,6 +516,8 @@ report_undefined_key(status_message)
 	    tty_beep();
 	    tty_update();
 	}
+	else
+	    il_ttymode_update_point();
 	sleep(1);
     }
     else
@@ -2486,6 +2488,7 @@ main(argc, argv)
 		    {
 			report_undefined_key(CommandLineModeHelp);
 			status(CommandLineModeHelp, STATUS_OK, STATUS_CENTERED);
+			il_ttymode_update_point();
 		    }
 
 		    key = ks->key_seq[0];

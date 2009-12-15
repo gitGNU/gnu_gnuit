@@ -1637,10 +1637,12 @@ ttymode_clrscr()
     buf[tty_columns]='\0';
     mvcur(-1,-1,0,0);
     ttymode_defaults();
-    for(i=0; i < tty_lines; i++)
-    {
+    for(i=0; i < (tty_lines-1); i++)
 	printf("%ls", buf);
-    }
+    /* handle last line separately due to last char flag */
+    if(tty_get_last_char_flag() == OFF)
+	buf[tty_columns-1]='\0';
+    printf("%ls", buf);
     fflush(stdout);
 }
 
@@ -1652,14 +1654,18 @@ ttymode_key_print(key_seq)
     wchar_t *incomplete = L" ";
     wchar_t *spaces;
     wchar_t *wkey;
+    int len;
 
     ttymode_goto(0, tty_lines - 1);
     ttymode_colors(OFF, BLACK, WHITE);
 
-    spaces = xmalloc( (tty_columns+1) * sizeof(wchar_t));
-    wmemset(spaces, L' ', tty_columns);
-    spaces[tty_columns] = '\0';
-    ttymode_puts(spaces, tty_columns);
+    len=tty_columns;
+    if(tty_get_last_char_flag() == OFF)
+	len--;
+    spaces = xmalloc( (len+1) * sizeof(wchar_t));
+    wmemset(spaces, L' ', len);
+    spaces[len] = '\0';
+    ttymode_puts(spaces, len);
     fflush(stdout);
     xfree(spaces);
     ttymode_goto(0, tty_lines - 1);
