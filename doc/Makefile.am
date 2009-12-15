@@ -7,7 +7,7 @@ html_DATA = gnuit.html
 pkgdata_DATA = dpkg-help.txt
 EXTRA_DIST = gitfm.1 gitaction.1 gitkeys.1 gitmount.1 gitrgrep.1 gitunpack.1\
 	     gnuit.html git.1 gitps.1 gitview.1 gitwipe.1 gitinternal.1 \
-	     gitdpkgname.1 dpkg-help.txt fdl.texi
+	     gitdpkgname.1 dpkg-help.txt fdl.texi gpl-3.0.texi
 
 if TRANSITION
 man_MANS += git.1
