@@ -679,7 +679,6 @@ main(argc, argv)
     int title_text_len;
     char * s_help;
 
-    sleep(10);
 #ifdef HAVE_SETLOCALE
     setlocale(LC_ALL,"");
 #endif
