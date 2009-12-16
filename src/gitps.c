@@ -125,7 +125,7 @@ char *g_program;
 char *program_name;
 char *ps_cmd;
 char *temporary_directory;
-wchar_t *header_text;
+wchar_t *header_text = NULL;
 int UseLastScreenChar;
 int StartupScrollStep;
 int RefreshAfterKill;
@@ -503,7 +503,7 @@ free_ps_list()
 }
 
 
-static wchar_t *
+static char *
 read_ps_line(ps_output, line)
     FILE *ps_output;
     char *line;
@@ -523,7 +523,7 @@ read_ps_line(ps_output, line)
 	while ((c = fgetc(ps_output)) != '\n' && c != EOF)
 	    ;
 
-    return mbsduptowcs(ok);
+    return ok;
 }
 
 
@@ -535,8 +535,14 @@ get_PID_index(ps_output)
     wchar_t *h;
     char buf[MAX_LINE];
 
-    if ((header_text=read_ps_line(ps_output, buf)) == NULL)
+    if (read_ps_line(ps_output, buf) == NULL)
+    {
+	header_text=NULL;
 	return -1;
+    }
+    if(header_text)
+	xfree(header_text);
+    header_text=mbsduptowcs(buf);
     h=header_text;
     if (wcsstr(h, L"PID") == NULL)
 	return -1;
@@ -605,12 +611,11 @@ build_ps_list(ps_output)
 {
     int i;
     char line[MAX_LINE];
-    wchar_t *wline;
 
-    for (i = 0; (wline=read_ps_line(ps_output, line)) != NULL; i++)
+    for (i = 0; read_ps_line(ps_output, line) != NULL; i++)
     {
 	ps_vect = (wchar_t **)xrealloc(ps_vect, (i + 1) * sizeof(wchar_t *));
-	ps_vect[i] = wline;
+	ps_vect[i] = mbsduptowcs(line);
     }
 
     processes = i;
