@@ -1403,6 +1403,7 @@ panel_update_entries(this)
     }
 
     this->on_screen = this->entries;
+    tty_update();
     tty_restore(&status);
 }
 
@@ -2031,7 +2032,6 @@ panel_update_entry(this, entry)
 	window_goto(this->window, entry - this->first_on_screen + 1, 1);
 	window_puts(this->window, this->temp, effective_columns - 2);
     }
-    tty_update();
 }
 
 
@@ -2099,6 +2099,7 @@ panel_set_focus(this, status)
 	    panel_recover(this);
 	    panel_update(this);
 	}
+    tty_update();
 }
 
 
@@ -4582,6 +4583,7 @@ panel_action(this, action, other, aux_info, repeat_count)
 		this->selected_entries +=
 		    this->dir_entry[this->current_entry].selected ? 1 : -1;
 		panel_update_entry(this, this->current_entry);
+		tty_update();
 	    }
 
 	    panel_action(this, act_DOWN, other, (void *)NULL, repeat_count);
@@ -4641,7 +4643,10 @@ panel_action(this, action, other, aux_info, repeat_count)
 		else
 		{
 		    if (!need_update)
+		    {
 			panel_update_entry(this, this->current_entry + 1);
+			tty_update();
+		    }
 
 		    need_update = 1;
 		}
@@ -4651,7 +4656,10 @@ panel_action(this, action, other, aux_info, repeat_count)
 		panel_update_entries(this);
 	    else
 		if (need_update)
+		{
 		    panel_update_entry(this, this->current_entry);
+		    tty_update();
+		}
 
 	    panel_update_info(this);
 	    break;
@@ -4678,7 +4686,10 @@ panel_action(this, action, other, aux_info, repeat_count)
 		}
 
 		if (!need_update)
+		{
 		    panel_update_entry(this, this->current_entry - 1);
+		    tty_update();
+		}
 
 		need_update = 1;
 	    }
@@ -4687,7 +4698,10 @@ panel_action(this, action, other, aux_info, repeat_count)
 		panel_update_entries(this);
 	    else
 		if (need_update)
+		{
 		    panel_update_entry(this, this->current_entry);
+		    tty_update();
+		}
 
 	    panel_update_info(this);
 	    break;
@@ -4711,6 +4725,7 @@ panel_action(this, action, other, aux_info, repeat_count)
 		panel_update_entry(this, old_current_entry);
 		panel_update_entry(this, this->current_entry);
 	    }
+	    tty_update();
 
 	    panel_update_info(this);
 	    break;
@@ -4738,6 +4753,7 @@ panel_action(this, action, other, aux_info, repeat_count)
 		panel_update_entry(this, this->current_entry);
 	    }
 
+	    tty_update();
 	    panel_update_info(this);
 	    break;
 
