@@ -394,8 +394,9 @@ static void
 set_header()
 {
     wmemset(global_buf, L' ', tty_columns);
-    wmemcpy(global_buf + 2, header_text,
-	   min(tty_columns - 2, wcslen(header_text)));
+    if(tty_columns > 3)
+	wmemcpy(global_buf + 2, header_text,
+		min(tty_columns - 2, wcslen(header_text)));
     tty_colors(HeaderBrightness, HeaderForeground, HeaderBackground);
 
     window_goto(header_window, 0, 0);
@@ -418,7 +419,7 @@ set_status(what)
 
     window_goto(status_window, 0, 0);
 
-    if (tty_columns < ((wcslen(sigdesc[0].signame) - 1) + 1))
+    if (tty_columns < (wcslen(sigdesc[0].signame) + 1 + 1))
 	window_puts(status_window, global_buf, tty_columns);
     else
     {
@@ -630,10 +631,13 @@ update_process(process, update_color)
     else
 	offset=min(horizontal_offset, (ps_length-visible_length));
     wmemset(global_buf, L' ', tty_columns);
-    wmemcpy(global_buf + 2, (ps_vect[process]+offset),
-	   min(visible_length,wcslen(ps_vect[process]+offset)));
-    global_buf[0] = (process == current_process) ? L'>' : L' ';
-    global_buf[1] = L' ';
+    if(tty_columns > 2)
+    {
+	wmemcpy(global_buf + 2, (ps_vect[process]+offset),
+		min(visible_length,wcslen(ps_vect[process]+offset)));
+	global_buf[0] = (process == current_process) ? L'>' : L' ';
+	global_buf[1] = L' ';
+    }
 
     if (update_color)
     {
