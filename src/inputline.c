@@ -991,28 +991,28 @@ il_ttymode_update_point()
 
 
 static wchar_t *
-il_prepare_update(len)
-    int *len;
+il_prepare_update(offset)
+    int *offset;
 {
     wchar_t *temp;
     int scroll;
 
     scroll = il_compute_scroll();
 
-    *len = ((il->point >= il->ilcolumns) ?
-	    il->point - il->ilcolumns + 1 +
-	    (scroll - 1) - ((il->point - il->ilcolumns) % scroll) : 0);
+    *offset = ((il->point >= il->ilcolumns) ?
+	       il->point - il->ilcolumns + 1 +
+	       (scroll - 1) - ((il->point - il->ilcolumns) % scroll) : 0);
 
     temp = xmalloc(il->ilcolumns * sizeof(wchar_t));
     wmemset(temp, L' ', il->ilcolumns);
 
     if (il->echo)
-	wmemcpy(temp, il->buffer + il->static_length + *len,
-		min(il->length   - il->static_length - *len,
+	wmemcpy(temp, il->buffer + il->static_length + *offset,
+		min(il->length   - il->static_length - *offset,
 		    il->ilcolumns  - il->static_length));
     else
 	wmemset(temp, L'*',
-	       min(il->length   - il->static_length - *len,
+	       min(il->length   - il->static_length - *offset,
 		   il->ilcolumns  - il->static_length));
     return temp;
 }
@@ -1024,14 +1024,14 @@ void
 il_update()
 {
     wchar_t *temp;
-    int len;
+    int offset;
     size_t normal_static_length = 0;
     int il_too_small = il->ilcolumns < il->static_length + 3;
     tty_status_t status;
 
     tty_save(&status);
 
-    temp=il_prepare_update(&len);
+    temp=il_prepare_update(&offset);
 
     if (il_too_small)
 	normal_static_length = il_hide_static();
@@ -1049,7 +1049,7 @@ il_update()
 
     /* If we don't do this, the screen cursor will annoyingly jump to
        the left margin of the command line.  */
-    window_goto(il->window, 0, il->point - len);
+    window_goto(il->window, 0, il->point - offset);
 
     if (il_too_small)
 	il_restore_static(normal_static_length);
