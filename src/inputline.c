@@ -223,7 +223,6 @@ il_compute_scroll()
     return max((il->ilcolumns - il->static_length) / 4,  1);
 }
 
-extern window_t *il_window;
 /*
  * The input_line constructor.
  */
@@ -242,7 +241,6 @@ il_init()
     il->illine = 0;
     il_reset_line();
     il->window = window_init(1, COLS, LINES-2, 0);
-    il_window=il->window; /* hack: so tty.c can see it  */
     use_section("[GITFM-Setup]");
 
     configuration_getvarinfo("HistoryFile", &data, 1, DO_SEEK);

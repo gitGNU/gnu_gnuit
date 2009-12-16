@@ -191,7 +191,6 @@ static wchar_t line_txt[]    =
 static wchar_t seek_txt[]    = L" Seek at: ";
 
 window_t *title_window, *header_window, *status_window, *file_window;
-window_t *il_window; /* Not used but needed by tty.c */
 
 static off64_t
 file_length()

@@ -139,7 +139,6 @@ wchar_t *global_buf;
 int first_on_screen, current_process, scroll_step;
 static int horizontal_offset=0;
 window_t *title_window, *header_window, *processes_window, *status_window;
-window_t *il_window; /* Not used but needed by tty.c */
 
 static wchar_t *title_text;
 static int title_len;
