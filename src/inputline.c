@@ -218,6 +218,8 @@ il_free(some_il)
 static size_t
 il_compute_scroll()
 {
+    if(il->ilcolumns < il->static_length)
+	return 1;
     return max((il->ilcolumns - il->static_length) / 4,  1);
 }
 
