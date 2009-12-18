@@ -342,7 +342,7 @@ status_ttymode_erase()
 {
     wchar_t *buf;
     int len=status_window->wcolumns;
-    if(tty_get_last_char_flag() == OFF)
+    if((len > 0) && (tty_get_last_char_flag() == OFF))
 	len--;
     buf=xmalloc((len+1) * sizeof(wchar_t));
     wmemset(buf, L' ', len);
