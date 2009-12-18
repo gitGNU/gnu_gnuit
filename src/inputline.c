@@ -992,7 +992,7 @@ il_ttymode_update_point()
 
 static wchar_t *
 il_prepare_update(offset)
-    int *offset;
+    unsigned *offset;
 {
     wchar_t *temp;
     int scroll;
@@ -1008,8 +1008,9 @@ il_prepare_update(offset)
 
     if (il->echo)
 	wmemcpy(temp, il->buffer + il->static_length + *offset,
-		min(il->length   - il->static_length - *offset,
-		    il->ilcolumns  - il->static_length));
+		max(0,
+		    (min(il->length   - il->static_length - *offset,
+			 il->ilcolumns  - il->static_length))));
     else
 	wmemset(temp, L'*',
 	       min(il->length   - il->static_length - *offset,
@@ -1024,17 +1025,17 @@ void
 il_update()
 {
     wchar_t *temp;
-    int offset;
+    unsigned offset;
     size_t normal_static_length = 0;
     int il_too_small = il->ilcolumns < il->static_length + 3;
     tty_status_t status;
 
     tty_save(&status);
 
-    temp=il_prepare_update(&offset);
-
     if (il_too_small)
 	normal_static_length = il_hide_static();
+
+    temp=il_prepare_update(&offset);
 
     tty_colors(il->error ? InputLineErrorBrightness : InputLineBrightness,
 	       il->error ? InputLineErrorForeground : InputLineForeground,
@@ -1063,14 +1064,14 @@ void
 il_ttymode_update()
 {
     wchar_t *temp;
-    int len;
+    unsigned offset;
     size_t normal_static_length = 0;
     int il_too_small = il->ilcolumns < il->static_length + 3;
 
-    temp=il_prepare_update(&len);
-
     if (il_too_small)
 	normal_static_length = il_hide_static();
+
+    temp=il_prepare_update(&offset);
 
     ttymode_colors(il->error ? InputLineErrorBrightness : InputLineBrightness,
 		   il->error ? InputLineErrorForeground : InputLineForeground,
@@ -1084,7 +1085,7 @@ il_ttymode_update()
 
     /* If we don't do this, the screen cursor will annoyingly jump to
        the left margin of the command line.  */
-    ttymode_goto(il->point - len, il->window->x);
+    ttymode_goto(il->point - offset, il->window->x);
 
     if (il_too_small)
 	il_restore_static(normal_static_length);
