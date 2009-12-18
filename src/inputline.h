@@ -120,8 +120,6 @@ extern void il_set_static_text PROTO ((wchar_t *));
 extern void il_insert_text PROTO ((wchar_t *));
 extern void il_update_point PROTO ((void));
 extern void il_update PROTO ((void));
-extern void il_ttymode_update_point PROTO ((void));
-extern void il_ttymode_update PROTO ((void));
 extern int il_get_contents PROTO ((wchar_t **));
 extern void il_message PROTO ((wchar_t *));
 extern void il_set_error_flag PROTO ((int));

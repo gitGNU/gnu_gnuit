@@ -517,7 +517,7 @@ report_undefined_key(status_message)
 	    tty_update();
 	}
 	else
-	    il_ttymode_update_point();
+	    il_update_point();
 	sleep(1);
     }
     else
@@ -540,7 +540,7 @@ report_undefined_key(status_message)
 	tty_update();
     }
     else
-	il_ttymode_update_point();
+	il_update_point();
 }
 
 
@@ -2480,15 +2480,15 @@ main(argc, argv)
 		    status(CommandLineModeHelp, STATUS_OK, STATUS_CENTERED);
 		    il_restore(saved_il);
 		    saved_il = il_save();
-		    il_ttymode_update();
-		    il_ttymode_update_point();
+		    il_update();
+		    il_update_point();
 		    il_get_contents(&cmdln);
 
 		    while ((ks = tty_get_key(&repeat_count)) == NULL)
 		    {
 			report_undefined_key(CommandLineModeHelp);
 			status(CommandLineModeHelp, STATUS_OK, STATUS_CENTERED);
-			il_ttymode_update_point();
+			il_update_point();
 		    }
 
 		    key = ks->key_seq[0];
@@ -2560,7 +2560,7 @@ main(argc, argv)
 			    for (i = 0; i < repeat_count; i++)
 			    {
 				il_history(IL_PREVIOUS);
-				il_ttymode_update();
+				il_update();
 			    }
 
 			    saved_il = il_save();
@@ -2573,7 +2573,7 @@ main(argc, argv)
 			    for (i = 0; i < repeat_count; i++)
 			    {
 				il_history(IL_NEXT);
-				il_ttymode_update();
+				il_update();
 			    }
 
 			    saved_il = il_save();
@@ -2583,8 +2583,8 @@ main(argc, argv)
 			    ttymode_clrscr();
 			    status(CommandLineModeHelp,
 				   STATUS_OK, STATUS_CENTERED);
-			    il_ttymode_update();
-			    il_ttymode_update_point();
+			    il_update();
+			    il_update_point();
 			    break;
 
 			case BUILTIN_exit:
