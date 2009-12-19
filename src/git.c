@@ -372,6 +372,8 @@ resize(resize_required)
     int old_tty_columns = tty_columns;
 
     tty_resize();
+    if(tty_current_mode == GIT_TERMINAL_MODE)
+	tty_end_cursorapp();
 
     /* Don't resize, unless absolutely necessary.  */
     if (!resize_required)
@@ -448,13 +450,18 @@ void
 screen_refresh(signum)
     int signum;
 {
-    tty_touch();
+    if(tty_current_mode == GIT_SCREEN_MODE)
+	tty_touch();
+
     resize(0);
 
     if (signum == SIGCONT)
     {
 	/* We were suspended.  Switch back to noncanonical mode.  */
-	tty_set_mode(TTY_NONCANONIC);
+	if(tty_current_mode == GIT_SCREEN_MODE)
+	    tty_set_mode(TTY_NONCANONIC);
+	else
+	    tty_noncanonic();
 	tty_defaults();
     }
 
@@ -481,14 +488,19 @@ screen_refresh(signum)
 
 	if (two_panel_mode)
 	    panel_update(dst_panel);
+	status_update();
     }
     else
-	tty_put_screen(screen);
+    {
+	ttymode_clrscr();
+	tty_noncanonic();
+	status_ttymode_update();
+    }
 
-    status_update();
     il_update();
     il_update_point();
-    tty_update();
+    if(tty_current_mode == GIT_SCREEN_MODE)
+	tty_update();
 
     if (signum == SIGCONT)
 	tty_update_title(panel_get_wpath(src_panel));
