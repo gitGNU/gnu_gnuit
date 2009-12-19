@@ -282,7 +282,7 @@ if whichlist file; then
     fi
 fi
 
-lcfile="$(echo "$file"|tr [:upper:] [:lower:])"
+lcfile="$(echo "$file"|tr '[:upper:]' '[:lower:]')"
 
 # Handle listing compressed archives first, to avoid decompressing
 # them to disk just to list them
