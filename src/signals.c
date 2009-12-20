@@ -172,8 +172,7 @@ resume(signum)
 {
     if (refresh_at_SIGCONT)
     {
-	if(tty_current_mode == GIT_SCREEN_MODE)
-	    screen_refresh(signum);
+	unhide(signum);
 	refresh_requested = 0;
     }
 

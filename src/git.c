@@ -1769,11 +1769,37 @@ read_keys(keys, errors)
 void
 hide()
 {
+    if(tty_current_mode == GIT_SCREEN_MODE)
+    {
+	tty_goto(tty_lines - 1 , tty_columns - 1);
+	tty_update();
+    }
+    else
+    {
+	status_ttymode_erase();
+	fflush(stdout);
+    }
+    printf("\n");
     tty_set_mode(TTY_CANONIC);
     tty_defaults();
     tty_put_screen(screen);
 }
 
+
+void unhide(signum)
+    int signum;
+{
+    if(tty_current_mode == GIT_SCREEN_MODE)
+	screen_refresh(signum);
+    else
+    {
+	tty_set_mode(TTY_NONCANONIC);
+	tty_noncanonic();
+	status_ttymode_update();
+	il_update();
+	il_update_point();
+    }
+}
 
 /*
  * Set the git prompt.

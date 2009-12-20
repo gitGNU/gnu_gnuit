@@ -27,6 +27,7 @@
 extern void clean_up PROTO ((void));
 extern void fatal PROTO ((char *));
 extern void clock_refresh(int signum);
+extern void unhide PROTO ((int signum));
 extern void hide PROTO ((void));
 
 #endif  /* _GIT_COMMON_H */

@@ -638,9 +638,18 @@ screen_refresh(signum)
 void
 hide()
 {
+    tty_goto(tty_lines - 1 , tty_columns - 1);
+    tty_update();
     tty_set_mode(TTY_CANONIC);
     tty_defaults();
     tty_put_screen(screen);
+    printf("\n");
+}
+
+void unhide(signum)
+    int signum;
+{
+    screen_refresh(signum);
 }
 
 
