@@ -735,7 +735,7 @@ panel_set_wrapped_isearch_flag(this, value)
 static int
 panel_isearch_backward(this, string, len, start_entry)
     panel_t *this;
-    char *string;
+    wchar_t *string;
     size_t len;
     int start_entry;
 {
@@ -743,7 +743,7 @@ panel_isearch_backward(this, string, len, start_entry)
 
     for (i = start_entry; i >= 0; i--)
     {
-	if (strncasecmp(string, this->dir_entry[i].name, len) == 0)
+	if (wcsncasecmp(string, this->dir_entry[i].wname, len) == 0)
 	{
 	    /* Success, return the entry just found.  */
 	    return i;
@@ -758,14 +758,14 @@ panel_isearch_backward(this, string, len, start_entry)
 static int
 panel_isearch_forward(this, string, len, start_entry)
     panel_t *this;
-    char *string;
+    wchar_t *string;
     size_t len;
     int start_entry;
 {
     int entry;
 
     for (entry = start_entry; entry < this->entries; entry++)
-	if (strncasecmp(string, this->dir_entry[entry].name, len) == 0)
+	if (wcsncasecmp(string, this->dir_entry[entry].wname, len) == 0)
 	{
 	    /* Success, return the entry just found.  */
 	    return entry;
