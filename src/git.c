@@ -2156,6 +2156,7 @@ main(argc, argv)
 	saved_il = il_save();
 	il_update();
 	il_update_point();
+	tty_cursor(ON);
 	tty_update();
 	il_get_contents(&cmdln);
 
@@ -2163,7 +2164,8 @@ main(argc, argv)
 	while ((ks = tty_get_key(&repeat_count)) == NULL)
 	    report_undefined_key(NULL);
 	status_update();
-
+	tty_cursor(OFF);
+	tty_update();
 	key = ks->key_seq[0];
 	command = (command_t *)ks->aux_data;
 

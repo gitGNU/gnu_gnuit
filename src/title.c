@@ -175,6 +175,7 @@ clock_refresh(signum)
     int hour;
     wchar_t buf[16];
     struct tm *time;
+    int oldline, oldcolumn;
     tty_status_t status;
 
     if (in_terminal_mode())
@@ -192,7 +193,7 @@ clock_refresh(signum)
     time = get_local_time();
 
     tty_save(&status);
-    tty_cursor(OFF);
+    tty_get_cursor(&oldline, &oldcolumn);
 
     if ((hour = time->tm_hour % 12) == 0)
 	hour = 12;
@@ -203,7 +204,7 @@ clock_refresh(signum)
     tty_colors(ClockBrightness, ClockForeground, ClockBackground);
     window_puts(title_window, buf, wcslen(buf));
 
-    tty_cursor(ON);
+    tty_goto(oldline, oldcolumn);
     tty_restore(&status);
 
     if (signum)

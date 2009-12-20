@@ -131,6 +131,7 @@ extern void tty_foreground PROTO ((int));
 extern void tty_background PROTO ((int));
 extern void tty_colors PROTO ((int, int, int));
 extern void tty_cursor PROTO ((int));
+extern int  tty_cursor_visible PROTO ((void));
 extern void tty_beep PROTO ((void));
 extern void tty_defaults PROTO ((void));
 extern void tty_save PROTO ((tty_status_t *));

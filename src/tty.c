@@ -87,6 +87,7 @@ extern window_t *title_window, *status_window;
    are inserted into the linked list.  This feature is used by gitps
    which has no command line.  */
 static int tty_kbdmode;
+static int tty_cursor_is_visible = OFF;
 
 #ifdef HAVE_POSIX_TTY
 static struct termios old_term;
@@ -346,6 +347,8 @@ static int key_on_display = 0;
 void (* tty_enter_idle_hook)();
 void (* tty_exit_idle_hook)();
 
+static void tty_cursor_on PROTO((void));
+static void tty_cursor_off PROTO((void));
 
 void
 tty_set_last_char_flag(last_char_flag)
@@ -753,6 +756,19 @@ tty_goto(y, x)
     move(y, x);
 }
 
+
+/*
+ * Return the current coordinates of the cursor (line/column).
+ */
+void
+tty_get_cursor(y, x)
+    int *y, *x;
+{
+    *y = tty_cursor_y;
+    *x = tty_cursor_x;
+}
+
+
 /*
  * Set the foreground color.
  */
@@ -869,11 +885,36 @@ tty_cursor(status)
     int status;
 {
     if (status)
+    {
+	tty_cursor_is_visible=ON;
 	curs_set(1);
+    }
     else
+    {
+	tty_cursor_is_visible=OFF;
 	curs_set(0);
+    }
 }
 
+/* used by tty_{enter,exit}_idle_hook */
+static void
+tty_cursor_on()
+{
+    tty_cursor(ON);
+}
+
+static void
+tty_cursor_off()
+{
+    tty_cursor(OFF);
+}
+
+
+int
+tty_cursor_visible()
+{
+    return tty_cursor_is_visible;
+}
 
 /*
  * Store the software terminal status in a tty_status_t structure.
@@ -1498,7 +1539,9 @@ tty_init(kbd_mode)
     nonl();
     echo();
     tty_next_free_color_pair=1;
-    tty_cursor(ON);
+    tty_cursor(OFF);
+    tty_enter_idle_hook=tty_cursor_on;
+    tty_exit_idle_hook=tty_cursor_off;
 }
 
 
