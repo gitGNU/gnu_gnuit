@@ -3710,7 +3710,7 @@ panel_compare(this, this_entry, this_size, other, other_entry, other_size)
 
     if(IS_SPECIAL(this->dir_entry[this_entry].mode))
 	is_special1=1;
-    if(IS_SPECIAL(other->dir_entry[this_entry].mode))
+    if(IS_SPECIAL(other->dir_entry[other_entry].mode))
 	is_special2=1;
 
     /* If either is a special file, use the length of the other. */
