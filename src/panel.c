@@ -1099,7 +1099,7 @@ panel_read_directory(this, directory, verify)
     strcpy(old_path, this->path);
 
     if (directory[0] == '/')
-	panel_set_path(this, xstrdup(directory));
+	panel_set_path(this, directory);
     else
     {
 	/* There is definitely a reason why this code is here, but I
@@ -1116,6 +1116,7 @@ panel_read_directory(this, directory, verify)
 	    xfree(this->path);
 	    this->path=NULL;
 	    panel_set_path(this,path);
+	    xfree(path);
 	}
 	else
 	{
@@ -1183,6 +1184,16 @@ panel_read_directory(this, directory, verify)
 		{
 		    xfree(this->dir_entry[entry].wname);
 		    this->dir_entry[entry].wname = NULL;
+		}
+		if (this->dir_entry[entry].owner)
+		{
+		    xfree(this->dir_entry[entry].owner);
+		    this->dir_entry[entry].owner = NULL;
+		}
+		if (this->dir_entry[entry].group)
+		{
+		    xfree(this->dir_entry[entry].group);
+		    this->dir_entry[entry].group = NULL;
 		}
 	    }
 
@@ -1905,6 +1916,7 @@ panel_update_entry(this, entry)
 	this->temp[namelen + 1] = c;
 
     xfree(fitted);
+    xfree(name);
 
     if (this->pcolumns >= 40)
 	switch (this->display_mode)
