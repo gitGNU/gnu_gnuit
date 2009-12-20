@@ -5092,7 +5092,7 @@ panel_action(this, action, other, aux_info, repeat_count)
 
 	case act_BIN_PACKING:
 	    panel_act_BIN_PACKING(
-                this, other, (off64_t)atoi((char *)aux_info));
+                this, other, (off64_t)wcstoull((wchar_t *)aux_info,NULL,0));
 	    break;
 
 	case act_HORIZONTAL_SCROLL_LEFT:
