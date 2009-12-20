@@ -552,7 +552,7 @@ il_delete_char()
 {
     if (il->point < il->length)
     {
-	wmemcpy(il->buffer + il->point,
+	wmemmove(il->buffer + il->point,
 		il->buffer + il->point + 1,
 		il->length - il->point + 1);
 
@@ -575,9 +575,9 @@ il_backward_delete_char()
 {
     if (il->point > il->static_length)
     {
-	wmemcpy(il->buffer + il->point - 1,
-		il->buffer + il->point,
-		il->length - il->point + 1);
+	wmemmove(il->buffer + il->point - 1,
+		 il->buffer + il->point,
+		 il->length - il->point + 1);
 
 	il->point--;
 	il->length--;
