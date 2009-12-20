@@ -118,6 +118,7 @@ extern void tty_resize PROTO ((void));
 extern void tty_noncanonic_keys PROTO ((void));
 extern void tty_set_mode PROTO ((int));
 extern void tty_noncanonic PROTO ((void));
+extern void tty_disable_intrkeys PROTO ((void));
 extern int tty_get_mode PROTO ((void));
 extern void tty_set_interrupt_char PROTO ((int));
 

@@ -3164,6 +3164,7 @@ main(argc, argv)
 		    break;
 		}
 
+		tty_disable_intrkeys();
 		for (unlock_password = NULL;;)
 		{
 		    il_read_line(L"Enter password to unlock: ",
@@ -3181,6 +3182,7 @@ main(argc, argv)
 		    sleep(2);
 		}
 
+		tty_set_mode(TTY_NONCANONIC);
 		tty_update();
 		xfree(lock_password);
 		xfree(unlock_password);

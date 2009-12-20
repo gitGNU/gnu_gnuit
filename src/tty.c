@@ -400,7 +400,7 @@ tty_noncanonic()
     current_term.c_cc[VSUSP] = key_SUSPEND;             /* Ctrl-Z */
 #endif
     tcsetattr(TTY_OUTPUT, TCSADRAIN, &current_term);
-#else
+#else  /* !HAVE_POSIX_TTY */
 
 #ifdef HAVE_SYSTEMV_TTY
     ioctl(TTY_OUTPUT, TCGETA, &current_term);
@@ -414,7 +414,8 @@ tty_noncanonic()
     current_term.c_cc[VSTOP] = CDISABLE;	/* STOP (^S) */
 #endif
     ioctl(TTY_OUTPUT, TCSETAW, &current_term);
-#else
+#else  /* !HAVE_SYSTEMV_TTY */
+    ioctl(TTY_OUTPUT, TIOCGETP, &current_arg);
     ioctl(TTY_OUTPUT, TIOCGETC, &current_targ);
     ioctl(TTY_OUTPUT, TIOCGLTC, &current_ltarg);
     current_arg.sg_flags   &= ~(ECHO | CBREAK);
@@ -426,13 +427,66 @@ tty_noncanonic()
     ioctl(TTY_OUTPUT, TIOCSETN, &current_arg);
     ioctl(TTY_OUTPUT, TIOCSETC, &current_targ);
     ioctl(TTY_OUTPUT, TIOCSLTC, &current_ltarg);
-#endif /* HAVE_SYSTEMV_TTY */
-#endif /* HAVE_POSIX_TTY */
+#endif /* !HAVE_SYSTEMV_TTY */
+#endif /* !HAVE_POSIX_TTY */
 
     /* Make sure we restore the interrupt character that was in
        use last time when we used NONCANONICAL mode.  */
     tty_set_interrupt_char(tty_interrupt_char);
 }
+
+
+/* disable suspend/intr key (for locking term */
+void
+tty_disable_intrkeys()
+{
+#ifdef HAVE_POSIX_TTY
+    struct termios current_term;
+#else
+#ifdef HAVE_SYSTEMV_TTY
+    struct termio current_term;
+#else
+    struct sgttyb current_arg;
+    struct tchars  current_targ;
+    struct ltchars current_ltarg;
+#endif /* HAVE_SYSTEMV_TTY */
+#endif /* HAVE_POSIX_TTY */
+
+#ifdef HAVE_POSIX_TTY
+    tcgetattr(TTY_OUTPUT, &current_term);
+    current_term.c_cc[VINTR] = CDISABLE;
+    current_term.c_cc[VQUIT] = CDISABLE;
+#ifdef VSUSP
+    current_term.c_cc[VSUSP] = CDISABLE;
+#endif
+    tcsetattr(TTY_OUTPUT, TCSADRAIN, &current_term);
+#else  /* !HAVE_POSIX_TTY */
+
+#ifdef HAVE_SYSTEMV_TTY
+    ioctl(TTY_OUTPUT, TCGETA, &current_term);
+    current_term.c_cc[VINTR] = CDISABLE;
+    current_term.c_cc[VQUIT] = CDISABLE;
+    ioctl(TTY_OUTPUT, TCSETAW, &current_term);
+#else  /* !HAVE_SYSTEMV_TTY */
+    ioctl(TTY_OUTPUT, TIOCGETC, &current_targ);
+    ioctl(TTY_OUTPUT, TIOCGLTC, &current_ltarg);
+    current_targ.t_intrc   = CDISABLE;
+    current_targ.t_quitc   = CDISABLE;
+    current_targ.t_stopc   = CDISABLE;
+    current_targ.t_startc  = CDISABLE;
+    current_ltarg.t_suspc  = CDISABLE;
+    ioctl(TTY_OUTPUT, TIOCSETC, &current_targ);
+    ioctl(TTY_OUTPUT, TIOCSLTC, &current_ltarg);
+#endif /* !HAVE_SYSTEMV_TTY */
+#endif /* !HAVE_POSIX_TTY */
+}
+
+
+
+
+
+
+
 
 /*
  * This function is used to switch between canonical and noncanonical
