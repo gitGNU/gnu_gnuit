@@ -388,9 +388,9 @@ panel_init(path, lines, cols, y, x)
     get_colorset_var(PanelColors, PanelFields, PANEL_FIELDS);
 
 
-    copy_history  = xstack_init(sizeof(char *));
-    move_history  = xstack_init(sizeof(char *));
-    mkdir_history = xstack_init(sizeof(char *));
+    copy_history  = xstack_init(sizeof(wchar_t *));
+    move_history  = xstack_init(sizeof(wchar_t *));
+    mkdir_history = xstack_init(sizeof(wchar_t *));
 
     configured = 1;
     return this;
@@ -4484,13 +4484,15 @@ panel_act_BIN_PACKING(this, other, bin_size)
  * \ itself can be used if inserted twice.
  */
 static char **
-panel_parse_patterns(string)
-    char *string;
+panel_parse_patterns(wstring)
+    wchar_t *wstring;
 {
     char c;
     int i = 0;
     int index = 0;
     int escaping = 0;
+    char *cstring=wcsduptombs(wstring);
+    char *string=cstring;
     char *pattern = xmalloc(strlen(string) + 1);
     char **patterns = (char **)xcalloc(2, sizeof(char *));
 
@@ -4535,6 +4537,7 @@ panel_parse_patterns(string)
 	}
 
   done:
+    xfree(cstring);
     xfree(pattern);
     return patterns;
 }
@@ -4875,7 +4878,7 @@ panel_action(this, action, other, aux_info, repeat_count)
 	case act_PATTERN_SELECT:
 	case act_PATTERN_UNSELECT:
 	    /* Create a list with all the shell patterns.  */
-	    safe_patterns = panel_parse_patterns((char *)aux_info);
+	    safe_patterns = panel_parse_patterns((wchar_t *)aux_info);
 
 	    for (patterns = safe_patterns; *patterns; patterns++)
 		for (entry = 0; entry < this->entries; entry++)

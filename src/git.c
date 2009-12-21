@@ -1700,7 +1700,7 @@ read_keys(keys, errors)
 	    continue;
 	}
 
-	command->history = xstack_init(sizeof(char *));
+	command->history = xstack_init(sizeof(wchar_t *));
 
 	if (contents[2])
 	    command->new_dir = xstrdup(contents[2]);
