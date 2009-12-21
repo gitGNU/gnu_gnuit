@@ -1653,6 +1653,7 @@ panel_update_info(this)
     size_t len, maxname;
     off64_t total_size = 0;
     wchar_t str[1024];
+    wchar_t extrainfo[50];
     char temp_rights[16];
 
     assert(this->current_entry < this->entries);
@@ -1723,7 +1724,7 @@ panel_update_info(this)
 	wmemset(str + len, L' ', maxname - len);
 
 	if (this->dir_entry[this->current_entry].type == DIR_ENTRY)
-	    swprintf(str + maxname, 25, L" %10s %10s",
+	    swprintf(extrainfo, 25, L" %10s %10s",
 		    (strcmp(this->dir_entry[this->current_entry].name, "..") ==
 		     0) ?
 		    " UP-DIR" : "SUB-DIR", temp_rights);
@@ -1731,13 +1732,32 @@ panel_update_info(this)
 	{
 	    char size[LONGEST_HUMAN_READABLE+1];
 	    panel_fit_number(size,this->dir_entry[this->current_entry].size,0,10);
-	    swprintf(str + maxname, 25, L" %10s %10s",size,temp_rights);
+	    swprintf(extrainfo, 25, L" %10s %10s",size,temp_rights);
 	}
 
-      skip_info_display:
 	tty_brightness(PanelFileInfoBrightness);
 	tty_foreground(PanelFileInfo);
+	wmemcpy(this->temp, str, len = wcslen(str));
+	if( (len+2) < this->pcolumns)
+	    wmemset(this->temp + len, L' ', this->pcolumns - 2 - len);
+	toprintable(this->temp, len);
+	tty_background(PanelFrame);
+	window_goto(this->window, this->plines - 1, 2);
+	tty_update();
+	window_puts(this->window, this->temp, this->pcolumns - 4);
+	tty_update();
+	window_goto(this->window, this->plines - 1, this->pcolumns - 24);
+	tty_update();
+	window_puts(this->window, extrainfo , wcslen(extrainfo));
+	tty_update();
+	tty_restore(&status);
+
+	return;
     }
+    /* FIXME: this logic is getting convoluted, could do with a rewrite */
+skip_info_display:
+    tty_brightness(PanelFileInfoBrightness);
+    tty_foreground(PanelFileInfo);
     wmemcpy(this->temp, str, len = wcslen(str));
     if( (len+2) < this->pcolumns)
 	wmemset(this->temp + len, L' ', this->pcolumns - 2 - len);
