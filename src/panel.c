@@ -2042,7 +2042,10 @@ panel_update_entry(this, entry)
 	tty_colors(brightness, foreground, background);
 
 	window_goto(this->window, entry - this->first_on_screen + 1, 1);
-	window_puts(this->window, this->temp, effective_columns - 2);
+	window_puts(this->window, this->temp, namelen + 2);
+	window_goto(this->window, entry - this->first_on_screen + 1, namewidth + 3);
+	window_puts(this->window, this->temp + 1 + namelen + 1,
+		    effective_columns - namelen - 2 - 2);
     }
 }
 
