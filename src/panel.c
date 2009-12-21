@@ -4813,6 +4813,7 @@ panel_action(this, action, other, aux_info, repeat_count)
 	case act_ENABLE_OWNER_GROUP:
 	case act_ENABLE_DATE_TIME:
 	case act_ENABLE_SIZE:
+	case act_ENABLE_ABBREVSIZE:
 	case act_ENABLE_MODE:
 	case act_ENABLE_FULL_NAME:
 	case act_ENABLE_ALL:

@@ -117,7 +117,7 @@ int dir_history_point;
 
 window_t *title_window, *status_window, *il_window;
 
-#define BUILTIN_OPERATIONS                       89
+#define BUILTIN_OPERATIONS                       90
 
 #define BUILTIN_copy				 -1
 #define BUILTIN_move				 -2
@@ -136,78 +136,79 @@ window_t *title_window, *status_window, *il_window;
 #define BUILTIN_panel_enable_abbrevsize		-15
 #define BUILTIN_panel_enable_mode		-16
 #define BUILTIN_panel_enable_full_name		-17
-#define BUILTIN_panel_sort_next_method		-18
-#define BUILTIN_panel_sort_by_name		-19
-#define BUILTIN_panel_sort_by_extension		-20
-#define BUILTIN_panel_sort_by_size		-21
-#define BUILTIN_panel_sort_by_date		-22
-#define BUILTIN_panel_sort_by_mode		-23
-#define BUILTIN_panel_sort_by_owner_id		-24
-#define BUILTIN_panel_sort_by_group_id		-25
-#define BUILTIN_panel_sort_by_owner_name	-26
-#define BUILTIN_panel_sort_by_group_name	-27
-#define BUILTIN_select_entry			-28
-#define BUILTIN_entry_to_input_line		-29
-#define BUILTIN_beginning_of_panel		-30
-#define BUILTIN_end_of_panel			-31
-#define BUILTIN_scroll_down			-32
-#define BUILTIN_scroll_up			-33
-#define BUILTIN_previous_line			-34
-#define BUILTIN_next_line			-35
-#define BUILTIN_other_panel			-36
-#define BUILTIN_change_directory		-37
-#define BUILTIN_select_files_matching_pattern	-38
-#define BUILTIN_unselect_files_matching_pattern	-39
-#define BUILTIN_adapt_current_directory		-40
-#define BUILTIN_adapt_other_directory		-41
-#define BUILTIN_other_path_to_input_line	-42
-#define BUILTIN_selected_entries_to_input_line	-43
-#define BUILTIN_backward_char			-44
-#define BUILTIN_forward_char			-45
-#define BUILTIN_backward_word			-46
-#define BUILTIN_forward_word			-47
-#define BUILTIN_beginning_of_line		-48
-#define BUILTIN_end_of_line			-49
-#define BUILTIN_delete_char			-50
-#define BUILTIN_backward_delete_char		-51
-#define BUILTIN_kill_word			-52
-#define BUILTIN_backward_kill_word		-53
-#define BUILTIN_kill_line			-54
-#define BUILTIN_kill_to_beginning_of_line	-55
-#define BUILTIN_kill_to_end_of_line		-56
-#define BUILTIN_just_one_space			-57
-#define BUILTIN_delete_horizontal_space		-58
-#define BUILTIN_downcase_word			-59
-#define BUILTIN_upcase_word			-60
-#define BUILTIN_capitalize_word			-61
-#define BUILTIN_action				-62
-#define BUILTIN_set_mark			-63
-#define BUILTIN_kill_region			-64
-#define BUILTIN_kill_ring_save			-65
-#define BUILTIN_yank				-66
-#define BUILTIN_exchange_point_and_mark		-67
-#define BUILTIN_set_scroll_step			-68
-#define BUILTIN_isearch_backward		-69
-#define BUILTIN_isearch_forward			-70
-#define BUILTIN_previous_directory		-71
-#define BUILTIN_next_directory			-72
-#define BUILTIN_reset_directory_history		-73
-#define BUILTIN_enlarge_panel			-74
-#define BUILTIN_enlarge_other_panel		-75
-#define BUILTIN_two_panels			-76
-#define BUILTIN_lock				-77
-#define BUILTIN_quick_compare_panels		-78
-#define BUILTIN_thorough_compare_panels		-79
-#define BUILTIN_name_downcase			-80
-#define BUILTIN_name_upcase			-81
-#define BUILTIN_up_one_dir			-82
-#define BUILTIN_compare				-83
-#define BUILTIN_bin_packing			-84
-#define BUILTIN_horizontal_scroll_left		-85
-#define BUILTIN_horizontal_scroll_right		-86
-#define BUILTIN_select_extension		-87
-#define BUILTIN_unselect_extension		-88
-#define BUILTIN_apropos				-89
+#define BUILTIN_panel_enable_all		-18
+#define BUILTIN_panel_sort_next_method		-19
+#define BUILTIN_panel_sort_by_name		-20
+#define BUILTIN_panel_sort_by_extension		-21
+#define BUILTIN_panel_sort_by_size		-22
+#define BUILTIN_panel_sort_by_date		-23
+#define BUILTIN_panel_sort_by_mode		-24
+#define BUILTIN_panel_sort_by_owner_id		-25
+#define BUILTIN_panel_sort_by_group_id		-26
+#define BUILTIN_panel_sort_by_owner_name	-27
+#define BUILTIN_panel_sort_by_group_name	-28
+#define BUILTIN_select_entry			-29
+#define BUILTIN_entry_to_input_line		-30
+#define BUILTIN_beginning_of_panel		-31
+#define BUILTIN_end_of_panel			-32
+#define BUILTIN_scroll_down			-33
+#define BUILTIN_scroll_up			-34
+#define BUILTIN_previous_line			-35
+#define BUILTIN_next_line			-36
+#define BUILTIN_other_panel			-37
+#define BUILTIN_change_directory		-38
+#define BUILTIN_select_files_matching_pattern	-39
+#define BUILTIN_unselect_files_matching_pattern	-40
+#define BUILTIN_adapt_current_directory		-41
+#define BUILTIN_adapt_other_directory		-42
+#define BUILTIN_other_path_to_input_line	-43
+#define BUILTIN_selected_entries_to_input_line	-44
+#define BUILTIN_backward_char			-45
+#define BUILTIN_forward_char			-46
+#define BUILTIN_backward_word			-47
+#define BUILTIN_forward_word			-48
+#define BUILTIN_beginning_of_line		-49
+#define BUILTIN_end_of_line			-50
+#define BUILTIN_delete_char			-51
+#define BUILTIN_backward_delete_char		-52
+#define BUILTIN_kill_word			-53
+#define BUILTIN_backward_kill_word		-54
+#define BUILTIN_kill_line			-55
+#define BUILTIN_kill_to_beginning_of_line	-56
+#define BUILTIN_kill_to_end_of_line		-57
+#define BUILTIN_just_one_space			-58
+#define BUILTIN_delete_horizontal_space		-59
+#define BUILTIN_downcase_word			-60
+#define BUILTIN_upcase_word			-61
+#define BUILTIN_capitalize_word			-62
+#define BUILTIN_action				-63
+#define BUILTIN_set_mark			-64
+#define BUILTIN_kill_region			-65
+#define BUILTIN_kill_ring_save			-66
+#define BUILTIN_yank				-67
+#define BUILTIN_exchange_point_and_mark		-68
+#define BUILTIN_set_scroll_step			-69
+#define BUILTIN_isearch_backward		-70
+#define BUILTIN_isearch_forward			-71
+#define BUILTIN_previous_directory		-72
+#define BUILTIN_next_directory			-73
+#define BUILTIN_reset_directory_history		-74
+#define BUILTIN_enlarge_panel			-75
+#define BUILTIN_enlarge_other_panel		-76
+#define BUILTIN_two_panels			-77
+#define BUILTIN_lock				-78
+#define BUILTIN_quick_compare_panels		-79
+#define BUILTIN_thorough_compare_panels		-80
+#define BUILTIN_name_downcase			-81
+#define BUILTIN_name_upcase			-82
+#define BUILTIN_up_one_dir			-83
+#define BUILTIN_compare				-84
+#define BUILTIN_bin_packing			-85
+#define BUILTIN_horizontal_scroll_left		-86
+#define BUILTIN_horizontal_scroll_right		-87
+#define BUILTIN_select_extension		-88
+#define BUILTIN_unselect_extension		-89
+#define BUILTIN_apropos				-90
 
 #define MAX_BUILTIN_NAME			 35
 
@@ -231,6 +232,7 @@ char builtin[BUILTIN_OPERATIONS][MAX_BUILTIN_NAME] =
     "panel-enable-abbrevsize",
     "panel-enable-mode",
     "panel-enable-full-name",
+    "panel-enable-all",
     "panel-sort-next-method",
     "panel-sort-by-name",
     "panel-sort-by-extension",
@@ -2697,6 +2699,7 @@ main(argc, argv)
 	    case BUILTIN_panel_enable_size:
 	    case BUILTIN_panel_enable_mode:
 	    case BUILTIN_panel_enable_full_name:
+	    case BUILTIN_panel_enable_all:
 		panel_action(src_panel,
 			     act_ENABLE_NEXT_MODE -
 			     (key - BUILTIN_panel_enable_next_mode),

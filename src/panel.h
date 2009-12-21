@@ -55,54 +55,55 @@
 #define act_ENABLE_OWNER_GROUP		 9
 #define act_ENABLE_DATE_TIME		10
 #define act_ENABLE_SIZE			11
-#define act_ENABLE_MODE			12
-#define act_ENABLE_FULL_NAME		13
-#define act_ENABLE_ALL			14
+#define act_ENABLE_ABBREVSIZE		12
+#define act_ENABLE_MODE			13
+#define act_ENABLE_FULL_NAME		14
+#define act_ENABLE_ALL			15
 
-#define act_SORT_NEXT_METHOD		15
-#define act_SORT_BY_NAME		16
-#define act_SORT_BY_EXTENSION		17
-#define act_SORT_BY_SIZE		18
-#define act_SORT_BY_DATE		19
-#define act_SORT_BY_MODE		20
-#define act_SORT_BY_OWNER_ID		21
-#define act_SORT_BY_GROUP_ID		22
-#define act_SORT_BY_OWNER_NAME		23
-#define act_SORT_BY_GROUP_NAME		24
+#define act_SORT_NEXT_METHOD		16
+#define act_SORT_BY_NAME		17
+#define act_SORT_BY_EXTENSION		18
+#define act_SORT_BY_SIZE		19
+#define act_SORT_BY_DATE		20
+#define act_SORT_BY_MODE		21
+#define act_SORT_BY_OWNER_ID		22
+#define act_SORT_BY_GROUP_ID		23
+#define act_SORT_BY_OWNER_NAME		24
+#define act_SORT_BY_GROUP_NAME		25
 
-#define act_MKDIR			25
-#define act_MOVE			26
-#define act_UP				27
-#define act_DOWN			28
-#define act_PGUP			29
-#define act_PGDOWN			30
-#define act_HOME			31
-#define act_END				32
-#define act_CHDIR			33
-#define act_REGET			34
-#define act_SWITCH			35
+#define act_MKDIR			26
+#define act_MOVE			27
+#define act_UP				28
+#define act_DOWN			29
+#define act_PGUP			30
+#define act_PGDOWN			31
+#define act_HOME			32
+#define act_END				33
+#define act_CHDIR			34
+#define act_REGET			35
+#define act_SWITCH			36
 
-#define act_PATTERN_SELECT		36
-#define act_PATTERN_UNSELECT		37
+#define act_PATTERN_SELECT		37
+#define act_PATTERN_UNSELECT		38
 
-#define act_SET_SCROLL_STEP		38
+#define act_SET_SCROLL_STEP		39
 
-#define act_ISEARCH_BEGIN		39
-#define act_ISEARCH_BACKWARD		40
-#define act_ISEARCH_FORWARD		41
-#define act_ISEARCH_END			42
+#define act_ISEARCH_BEGIN		40
+#define act_ISEARCH_BACKWARD		41
+#define act_ISEARCH_FORWARD		42
+#define act_ISEARCH_END			43
 
-#define act_CMPDIR			43
-#define act_CASE			44
-#define act_UP_ONE_DIR			45
-#define act_COMPARE			46
-#define act_BIN_PACKING			47
+#define act_CMPDIR			44
+#define act_CASE			45
+#define act_UP_ONE_DIR			46
+#define act_COMPARE			47
+#define act_BIN_PACKING			48
 
-#define act_HORIZONTAL_SCROLL_LEFT	48
-#define act_HORIZONTAL_SCROLL_RIGHT	49
+#define act_HORIZONTAL_SCROLL_LEFT	49
+#define act_HORIZONTAL_SCROLL_RIGHT	50
 
-#define act_SELECT_EXTENSION		50
-#define act_UNSELECT_EXTENSION		51
+#define act_SELECT_EXTENSION		51
+#define act_UNSELECT_EXTENSION		52
 
 /* File sort methods.  */
 #define SORT_BY_NAME		0
