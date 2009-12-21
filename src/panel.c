@@ -1872,7 +1872,6 @@ panel_update_entry(this, entry)
     if (!this->visible)
 	return;
 
-    wmemset(this->temp, L' ', this->pcolumns);
     reserved = panel_get_reserved_characters(this);
     if ((entry > 0) || rootdir())
 	switch (this->dir_entry[entry].type)
@@ -1910,6 +1909,7 @@ panel_update_entry(this, entry)
     namewidth=wcswidth(fitted,namelen);
     width_adjust=namewidth - namelen;
     effective_columns=this->pcolumns - width_adjust;
+    wmemset(this->temp, L' ', effective_columns);
     wmemcpy(&this->temp[1], fitted, namelen);
 
     if (c != L'\0')
@@ -2010,7 +2010,7 @@ panel_update_entry(this, entry)
 	}
 
 	window_puts(this->window, this->temp + 1, namelen + 1);
-
+	window_goto(this->window, entry - this->first_on_screen + 1, namewidth + 3);
 	/* Display the end of the entry (the part after the file name).  */
 	window_puts(this->window,
 		    this->temp + 1 + namelen + 1,
