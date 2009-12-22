@@ -72,6 +72,7 @@ process viewer/killer and an ASCII/HEX file viewer.  This is edition
 * Customization::               How to customize GNUIT.
 * Limitations::                 Known GNUIT limitations.
 * Bugs::                        How to report a bug.
+* Copying This Software::       The GNU General Public License.
 * Copying This Manual::         The GNU Free Documentation License.
 * Key Index::                   An item for each standard GNUIT key sequence.
 * Command Index::               An item for each command name.
@@ -115,9 +116,8 @@ in the public domain; it is copyrighted and there are restrictions on
 its distribution, but these restrictions are designed to permit
 everything that a good cooperating citizen would want to do.  What is
 not allowed is to try to prevent others from further sharing any version
-of @code{GNUIT} that they might get from you.  The precise conditions are
-found in the GNU General Public License that comes with @code{GNUIT} and
-also appears following this section.
+of @code{GNUIT} that they might get from you.
+@xref{Copying This Software} for the precise conditions.
 
 The easiest way to get a copy of @code{GNUIT} is from someone else who has
 it.  You need not ask for our permission to do so, or tell any one else;
@@ -3974,23 +3974,6 @@ the normal @file{.gnuitrc.TERM} configuration file, the later one defining
 only those keys that are terminal specific.  However, if a key binding
 is redefined in the @file{gnuitrc.TERM} file, that binding will be used.
 
-If the @code{GNUIT} package have been compiled without passing the
-@samp{--enable-terminfo} option to the @code{configure} script and your
-system has a huge @samp{termcap} database (@file{/etc/termcap}), you can
-copy the termcap definition(s) of your terminal(s) in a file called,
-lets say @file{.termcap} and put it in your home directory.  After that,
-set your @var{TERMCAP} environment variable to point to it.  You should
-add something like this to your @file{.profile}:
-
-@display
-@var{TERMCAP}=@file{/home/mike/.termcap}
-@end display
-
-The interactive programs in the @code{GNUIT} package can run without such
-a file, but on systems with huge @samp{termcap} databases, copying the
-definitions of the most used terminals in a local @file{.termcap} file
-will lead to a faster start.
-
 The @file{.gnuitrc.TERM} is first searched for in the home directory then,
 if not found, in the directory @file{/usr/share/gnuit/}).
 (without the leading ``.'').
@@ -4627,14 +4610,19 @@ There is no support for appearance modes on magic-cookie terminals.
 
 
 
-@node Bugs, Copying This Manual, Limitations, Top
+@node Bugs, Copying This Software, Limitations, Top
 @chapter GNU Interactive Tools bugs
 
 Any questions, comments, or bug reports, should be emailed to
 @samp{gnuit-dev@@gnu.org}.  Please include the
 version number.
 
-@node Copying This Manual, , Bugs, Top
+@node Copying This Software, Copying This Manual, Bugs, Top
+@appendix Copying This Software
+
+@include gpl-3.0.texi
+
+@node Copying This Manual, , Copying This Software, Top
 @appendix Copying This Manual
 
 @include fdl.texi
