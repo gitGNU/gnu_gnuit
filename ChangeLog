@@ -1,3 +1,19 @@
+2009-12-22  Ian Beckwith  <ianb@erislabs.net>
+
+	* Merged 'curses' branch:
+	  + gnuit now uses curses for display, and supports displaying
+	    wide characters (eg unicode).
+	    As a consequence, gnuit now depends on GNU ncurses with wide
+ 	    character support (ncursesw), or other curses implementations
+	    using the same wide-character API (if such things exist).
+	  + gitview now supports displaying and seeking to 64-bit
+	    offsets. Offsets above 0xFFFFFFFF are displayed split
+	    over two lines so the screen still fits in 80 characters.
+	  + Single panel mode defaults to enable-all mode (like ls -l).
+	    This has been the default in the code for ages, but a bug
+	    prevented it from working.
+	  + Version bumped to 4.9.6
+
 2009-02-26  Ian Beckwith  <ianb@erislabs.net>
 
 	* gnuitrc.common.IN: show video files in grey (bright black)

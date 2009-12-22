@@ -3,7 +3,7 @@ gnuit (4.9.6-1) unstable; urgency=low
   * New upstream version.
   * debian/rules: drop obsolete --with-terminfo configure arg.
 
- -- Ian Beckwith <ianb@debian.org>  Wed, 02 Dec 2009 22:28:11 +0000
+ -- Ian Beckwith <ianb@debian.org>  Tue, 22 Dec 2009 02:47:58 +0000
 
 gnuit (4.9.5-3) unstable; urgency=low
 
