@@ -897,9 +897,13 @@ panel_load_inode(this, entry)
     panel_t *this;
     int entry;
 {
-    int sz, hour;
+    int sz;
     struct stat s;
     struct tm *time;
+#define TIMEBUFLEN 16
+    char timestr[TIMEBUFLEN+2];
+    wchar_t *wtimestr;
+    int len;
     char *owner;
     char *group;
 
@@ -1016,12 +1020,18 @@ panel_load_inode(this, entry)
     this->dir_entry[entry].mtime = s.st_mtime;
     time = localtime(&s.st_mtime);
 
-    if ((hour = time->tm_hour % 12) == 0)
-	hour = 12;
-
-    swprintf(this->dir_entry[entry].date, 16, L"%2d-%02d-%02d %2d:%02d%c",
-	    time->tm_mon + 1, time->tm_mday, time->tm_year % 100,
-	    hour, time->tm_min, (time->tm_hour < 12) ? 'a' : 'p');
+    /* +1 for 'm' of am or pm, which we ignore */
+    if(!strftime(timestr, TIMEBUFLEN+1, "%x %I:%M%P", time))
+    {
+	/* fallback if locale-version doesn't fit */
+	strftime(timestr, TIMEBUFLEN, "%m/%d/%y %H:%M", time);
+    }
+    wtimestr=mbsduptowcs(timestr);
+    len=wcslen(wtimestr);
+    if(len < TIMEBUFLEN)
+	wmemset(wtimestr+len, L' ', TIMEBUFLEN-len);
+    wmemcpy(this->dir_entry[entry].date, wtimestr, TIMEBUFLEN);
+    xfree(wtimestr);
 }
 
 

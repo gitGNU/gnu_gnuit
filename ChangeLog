@@ -13,6 +13,7 @@
 	    This has been the default in the code for ages, but a bug
 	    prevented it from working.
 	  + Version bumped to 4.9.6
+	* Use locale for date formats in panel.
 
 2009-02-26  Ian Beckwith  <ianb@erislabs.net>
 
