@@ -66,6 +66,7 @@ typedef struct
     int echo;			/* The echo flag.  */
     int error;			/* Use error-like output.  */
     int last_operation;		/* The last basic edit operation performed.  */
+    int wcadjust;		/* adjustment for zero/double-width wide chars */
     size_t point;		/* The point position.  */
     size_t mark;		/* The mark position.  */
     size_t ilcolumns;		/* The number of columns.  */

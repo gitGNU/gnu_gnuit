@@ -855,7 +855,7 @@ il_set_static_text(static_text)
     wmemcpy(il->buffer, static_text, len);
 
     toprintable(il->buffer, len);
-
+    il->wcadjust=len - wcswidth(static_text, len);
     il->length = (il->static_length = len) + il->dynamic_length;
     il->last_operation = IL_SET_STATIC_TEXT;
 }
@@ -955,14 +955,14 @@ il_update_point()
 	tty_colors(il->error ? InputLineErrorBrightness : InputLineBrightness,
 		   il->error ? InputLineErrorForeground : InputLineForeground,
 		   il->error ? InputLineErrorBackground : InputLineBackground);
-	window_goto(il->window, 0, il->point - len);
+	window_goto(il->window, 0, il->point - len - il->wcadjust);
     }
     else
     {
 	ttymode_colors(il->error ? InputLineErrorBrightness : InputLineBrightness,
 		       il->error ? InputLineErrorForeground : InputLineForeground,
 		       il->error ? InputLineErrorBackground : InputLineBackground);
-	ttymode_goto((il->window->x + il->point - len), il->window->y);
+	ttymode_goto((il->window->x + il->point - len - il->wcadjust), il->window->y);
 	fflush(stdout);
     }
 
@@ -1023,7 +1023,7 @@ il_update()
 
 	/* If we don't do this, the screen cursor will annoyingly jump to
 	   the left margin of the command line.  */
-	window_goto(il->window, 0, il->point - len);
+	window_goto(il->window, 0, il->point - len - il->wcadjust);
     }
     else
     {
