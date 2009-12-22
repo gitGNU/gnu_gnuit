@@ -1021,7 +1021,17 @@ panel_load_inode(this, entry)
     time = localtime(&s.st_mtime);
 
     /* +1 for 'm' of am or pm, which we ignore */
-    if(!strftime(timestr, TIMEBUFLEN+1, "%x %I:%M%P", time))
+    if(strftime(timestr, TIMEBUFLEN+1, "%x %I:%M%p", time))
+    {
+	char *ptr;
+	if((ptr=strstr(timestr, "AM")) != NULL)
+	    memcpy(ptr, "am", 2);
+	else if ((ptr=strstr(timestr, "PM")) != NULL)
+	{
+	    memcpy(ptr, "pm", 2);
+	}
+    }
+    else
     {
 	/* fallback if locale-version doesn't fit */
 	strftime(timestr, TIMEBUFLEN, "%m/%d/%y %H:%M", time);
