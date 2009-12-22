@@ -178,7 +178,7 @@ int  UseLastScreenChar;
 wchar_t *global_buf;
 char color_section[]  = "[GITVIEW-Color]";
 char monochrome_section[] = "[GITVIEW-Monochrome]";
-int fd, regular_file;
+int fd;
 unsigned long long g_current_line, g_lines;
 static wchar_t *title_text;
 static wchar_t *g_help;
@@ -196,9 +196,6 @@ static off64_t
 file_length()
 {
     off64_t current, length;
-
-    if (!regular_file)
-	return 0x7FFFFFFF;
 
     current = lseek64(fd, 0, SEEK_CUR);
     length  = lseek64(fd, 0, SEEK_END);
@@ -781,8 +778,6 @@ main(argc, argv)
 	return 1;
     }
 
-    regular_file = S_ISREG(s.st_mode);
-
     tty_init(TTY_RESTRICTED_INPUT);
 
     /* Even though we just set up curses, drop out of curses
@@ -949,7 +944,7 @@ main(argc, argv)
 		break;
 
 	    case BUILTIN_end_of_file:
-		if (regular_file && g_current_line < g_lines - VIEW_LINES)
+		if (g_current_line < g_lines - VIEW_LINES)
 		{
 		    g_current_line = g_lines - VIEW_LINES;
 		    update_all();
