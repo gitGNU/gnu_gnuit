@@ -1721,7 +1721,7 @@ panel_update_info(this)
 	maxname = this->pcolumns - 26;  /* OLD-FIX-ME: Huh?  */
 	len = min(wcslen(this->dir_entry[this->current_entry].wname), maxname);
 	wmemcpy(str, this->dir_entry[this->current_entry].wname, len);
-	wmemset(str + len, L' ', maxname - len);
+	wmemset(str + len, L' ', this->pcolumns - len);
 
 	if (this->dir_entry[this->current_entry].type == DIR_ENTRY)
 	    swprintf(extrainfo, 25, L" %10s %10s",
@@ -1737,21 +1737,15 @@ panel_update_info(this)
 
 	tty_brightness(PanelFileInfoBrightness);
 	tty_foreground(PanelFileInfo);
-	wmemcpy(this->temp, str, len = wcslen(str));
-	if( (len+2) < this->pcolumns)
-	    wmemset(this->temp + len, L' ', this->pcolumns - 2 - len);
+
 	toprintable(this->temp, len);
 	tty_background(PanelFrame);
 	window_goto(this->window, this->plines - 1, 2);
-	tty_update();
 	window_puts(this->window, this->temp, this->pcolumns - 4);
-	tty_update();
 	window_goto(this->window, this->plines - 1, this->pcolumns - 24);
-	tty_update();
 	window_puts(this->window, extrainfo , wcslen(extrainfo));
-	tty_update();
 	tty_restore(&status);
-
+	tty_update();
 	return;
     }
     /* FIXME: this logic is getting convoluted, could do with a rewrite */
@@ -1765,7 +1759,7 @@ skip_info_display:
     tty_background(PanelFrame);
     window_goto(this->window, this->plines - 1, 2);
     window_puts(this->window, this->temp, this->pcolumns - 4);
-
+    tty_update();
     tty_restore(&status);
 }
 
