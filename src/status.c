@@ -312,7 +312,7 @@ status_ttymode_update()
     }
     ttymode_goto(status_window->x,status_window->y);
     len=status_window->wcolumns;
-    if(tty_get_last_char_flag() == OFF)
+    if((len > 0) && tty_get_last_char_flag() == OFF)
 	len--;
     ttymode_puts(status_buffer, len);
     fflush(stdout);
