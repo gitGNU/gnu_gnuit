@@ -23,7 +23,7 @@
 	  + Version bumped to 4.9.6.
 	  + Disable ^Z when keyboard locked.
 	  + gitaction: quotes args to tr.
-	  + import gnulib 563c7796.
+	  + import gnulib 563c7796, including more portability modules.
 	* Use locale for date formats in panel.
 	* gitview: don't special-case non-regular files.
 
