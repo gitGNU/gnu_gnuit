@@ -1,3 +1,7 @@
+2009-12-23  Ian Beckwith  <ianb@erislabs.net>
+
+	* gitaction: .lzma support and better .7z support.
+
 2009-12-22  Ian Beckwith  <ianb@erislabs.net>
 
 	* Merged 'curses' branch:

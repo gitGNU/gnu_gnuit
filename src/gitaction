@@ -296,12 +296,28 @@ case "$lcfile" in
 				  bunzip2 -c -- "$file" | tar tvf -    | "$GNUIT_PAGER"
 				  doexit
 			      fi ;;
+    *.tar.7z)                 if whichlist 7z tar; then
+				  7z x -y  -so -- "$file" | tar tvf -    | "$GNUIT_PAGER"
+				  doexit
+			      fi ;;
+    *.tar.lzma)               if whichlist lzma tar; then
+				  lzma -c -d -- "$file" | tar tvf -    | "$GNUIT_PAGER"
+				  doexit
+			      fi ;;
     *.cpio.gz)                if whichlist gunzip cpio; then
 				  gunzip  -c -- "$file" | cpio -t 2>&1 | "$GNUIT_PAGER"
 				  doexit
 			      fi ;;
     *.cpio.bz2)               if whichlist bunzip2 cpio; then
 				  bunzip2 -c -- "$file" | cpio -t 2>&1 | "$GNUIT_PAGER"
+				  doexit
+			      fi ;;
+    *.cpio.7z)                if whichlist 7z cpio; then
+				  7z x -y -so -- "$file" | cpio -t 2>&1 | "$GNUIT_PAGER"
+				  doexit
+			      fi ;;
+    *.cpio.lzma)              if whichlist lzma cpio; then
+				  lzma -c -d -- "$file" | cpio -t 2>&1 | "$GNUIT_PAGER"
 				  doexit
 			      fi ;;
 esac
@@ -327,7 +343,7 @@ if test $istext -eq 0 ; then
     if test `uname -s` = "Darwin"; then
         # Macos: don't run open(1) on archives, it uncompresses them
 	case "$lcfile" in
-	    *.7z|*.arj|*.cpio|*.rar|*.tar|*.zip|*.zoo) ;;
+	    *.lzma|*.7z|*.arj|*.cpio|*.rar|*.tar|*.zip|*.zoo) ;;
 	    *)   dotry $TRY_X open "$file" ;;
 	esac
     elif whichlist xdg-open; then
@@ -582,8 +598,10 @@ wtmp | wtmp.[0-9]*)
 *.arj |\
 *.a[0-9][1-9])	trypaged unarj l        -- "$file" ;;
 
-*.7z)		trypaged 7z  l          -- "$file"
-		trypaged 7za l          -- "$file" ;;
+*.7z)		trypaged 7z  x -y -so   -- "$file"
+		trypaged 7za x -y -so   -- "$file" ;;
+
+*.lzma)		trypaged lzma -c -d     -- "$file" ;;
 
 *.deb)		if whichlist dpkg; then
 		    (echo "$file"; dpkg --info -- "$file";
