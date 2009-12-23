@@ -4,6 +4,23 @@
 			      GNU Interactive Tools
 			      =====================
 
+* Version 4.9.6
+================
+
+** Support displaying non-ASCII Unicode/wide characters.
+
+** GNUIT now depends on GNU ncurses with wide character
+   support (ncursesw). Termcap or terminfo support are
+   no longer sufficient.
+
+** gitview supports displaying and seeking to 64-bit offsets.
+
+** Use locale for panel date formats.
+
+** Single-panel mode now defaults to enable-all mode (like ls -l).
+
+** gitaction support for 7z and lzma files.
+
 * Version 4.9.5
 ================
 

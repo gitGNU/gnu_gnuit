@@ -3,7 +3,7 @@
 	* gitaction: .lzma support and better .7z support.
 	* lib/mbslen.c: Apply patch from Nelson H. F. Beebe
 	  to fix compilation on MirOS. Until this fix makes its
-	  way upstream the patch will need reapply every time
+	  way upstream the patch will need reapplying every time
 	  './prepare -a' is run.
 
 2009-12-22  Ian Beckwith  <ianb@erislabs.net>
@@ -20,7 +20,10 @@
 	  + Single panel mode defaults to enable-all mode (like ls -l).
 	    This has been the default in the code for ages, but a bug
 	    prevented it from working.
-	  + Version bumped to 4.9.6
+	  + Version bumped to 4.9.6.
+	  + Disable ^Z when keyboard locked.
+	  + gitaction: quotes args to tr.
+	  + import gnulib 563c7796.
 	* Use locale for date formats in panel.
 	* gitview: don't special-case non-regular files.
 
