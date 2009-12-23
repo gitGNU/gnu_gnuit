@@ -1,6 +1,10 @@
 2009-12-23  Ian Beckwith  <ianb@erislabs.net>
 
 	* gitaction: .lzma support and better .7z support.
+	* lib/mbslen.c: Apply patch from Nelson H. F. Beebe
+	  to fix compilation on MirOS. Until this fix makes its
+	  way upstream the patch will need reapply every time
+	  './prepare -a' is run.
 
 2009-12-22  Ian Beckwith  <ianb@erislabs.net>
 
