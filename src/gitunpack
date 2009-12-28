@@ -33,6 +33,7 @@ if test "$#" -lt 2; then
 fi
 
 destdir="$1"
+shift
 srcdir=`pwd`
 
 cd "$destdir" 2> /dev/null
@@ -49,11 +50,12 @@ if test "$?" -ne 0; then
 fi
 
 exit_code=0
-while true; do
-    archive=$2
-    lcarchive="$(echo "$archive"|tr '[:upper:]' '[:lower:]')"
+while [ $# -gt 0 ] ; do
+    archive=$1
 
-    if test -d "$archive"; then
+    if [ ! -e "$archive" ] ; then
+	echo "$0: $archive: not found"
+    elif [ -d "$archive" ] ; then
 	echo "$0: $archive: not a regular file" >&2
 	exit_code=1
     else
@@ -61,6 +63,7 @@ while true; do
 	ln -s "$srcdir/$archive" "$archive" 2> /dev/null
 	link_created=$?
 
+	lcarchive="$(echo "$archive"|tr '[:upper:]' '[:lower:]')"
 	case "$lcarchive" in
         *.tar)                      tar -xvf "$archive";;
         *.tar.bz)                   bzip -dc "$archive"|tar -xvf -;;
@@ -102,7 +105,6 @@ while true; do
     fi
 
     shift
-    if test $# -eq 1; then
-	exit $exit_code
-    fi
 done
+
+exit $exit_code
