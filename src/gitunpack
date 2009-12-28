@@ -65,22 +65,29 @@ while [ $# -gt 0 ] ; do
 
 	lcarchive="$(echo "$archive"|tr '[:upper:]' '[:lower:]')"
 	case "$lcarchive" in
-        *.tar)                      tar -xvf "$archive";;
+        *.tar|*.cbt)                tar -xvf "$archive";;
         *.tar.bz)                   bzip -dc "$archive"|tar -xvf -;;
         *.tar.bz2)                  bzip2 -dc "$archive"|tar -xvf -;;
         *.tar.gz)                   gzip -dc -- "$archive"|tar -xvf -;;
         *.tar.z)                    uncompress -dc "$archive"|tar -xvf -;;
+        *.tar.z)                    uncompress -dc "$archive"|tar -xvf -;;
+	*.tar.7z)                   7z x -y -so -- "$archive" | tar -xvf -;;
+	*.tar.lzma)                 lzma -c -d -- "$archive" | tar -xvf -;;
         *.cpio)                     cat "$archive"|cpio -i -d;;
         *.cpio.bz)                  bzip -dc "$archive"|cpio -i -d;;
         *.cpio.bz2)                 bzip2 -dc "$archive"|cpio -i -d;;
         *.cpio.gz)                  gzip -dc -- "$archive"|cpio -i -d;;
         *.cpio.z)                   uncompress -dc "$archive"|cpio -i -d;;
+	*.cpio.7z)                  7z x -y -so -- "$archive" | cpio -i -d;;
+	*.cpio.lzma)                lzma -c -d -- "$archive" | cpio -i -d;;
+	*.7z)                       7z x -- "$archive";;
+	*.lzma)                     lzma -d -- "$archive";;
         *.tgz)                      gzip -dc -- "$archive"|tar -xvf -;;
         *.t[ar]z)                   uncompress -dc "$archive"|tar -xvf -;;
         *.jar)                      jar -xvf "$archive";;
-        *.zip)                      unzip -o "$archive";;
+        *.zip|*.cbz)                unzip -o "$archive";;
         *.arj|*.a[0-9][0-9])        unarj x "$archive";;
-        *.rar|*.r[0-9][0-9])        rar x -y -r -v "$archive";;
+        *.rar|*.cbr|*.r[0-9][0-9])  rar x -y -r -v "$archive";;
         *.lha|*.lzh)                lha -xvf "$archive";;
         *.z)                        uncompress "$archive";;
         *.bz)                       bzip -d "$archive";;
@@ -91,6 +98,7 @@ while [ $# -gt 0 ] ; do
         *.rpm)                      rpm2cpio "$archive"|cpio -v -i -d;;
         *.deb)                      ar -xv "$archive";;
         *.a)                        ar -xv "$archive";;
+	*.zoo)                      zoo --extract "$archive";;
         *) echo "$0: $archive: unknown archive type" >&2
            exit_code=1
         esac

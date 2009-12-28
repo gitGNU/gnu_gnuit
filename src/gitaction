@@ -598,8 +598,8 @@ wtmp | wtmp.[0-9]*)
 *.arj |\
 *.a[0-9][1-9])	trypaged unarj l        -- "$file" ;;
 
-*.7z)		trypaged 7z  x -y -so   -- "$file"
-		trypaged 7za x -y -so   -- "$file" ;;
+*.7z)		trypaged 7z  l -y       -- "$file"
+		trypaged 7za l -y       -- "$file" ;;
 
 *.lzma)		trypaged lzma -c -d     -- "$file" ;;
 
