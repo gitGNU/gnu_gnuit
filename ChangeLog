@@ -1,3 +1,9 @@
+2010-01-08  Ian Beckwith  <ianb@erislabs.net>
+
+	* macos has no wcsdup or wcsncasecmp, adapt the
+	  versions from eglibc, renamed to xwcsncasecmp
+	  and xxwcsdup.
+
 2009-12-23  Ian Beckwith  <ianb@erislabs.net>
 
 	* gitaction: .lzma support and better .7z support.

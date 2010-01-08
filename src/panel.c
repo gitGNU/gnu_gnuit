@@ -743,7 +743,7 @@ panel_isearch_backward(this, string, len, start_entry)
 
     for (i = start_entry; i >= 0; i--)
     {
-	if (wcsncasecmp(string, this->dir_entry[i].wname, len) == 0)
+	if (xwcsncasecmp(string, this->dir_entry[i].wname, len) == 0)
 	{
 	    /* Success, return the entry just found.  */
 	    return i;
@@ -765,7 +765,7 @@ panel_isearch_forward(this, string, len, start_entry)
     int entry;
 
     for (entry = start_entry; entry < this->entries; entry++)
-	if (wcsncasecmp(string, this->dir_entry[entry].wname, len) == 0)
+	if (xwcsncasecmp(string, this->dir_entry[entry].wname, len) == 0)
 	{
 	    /* Success, return the entry just found.  */
 	    return entry;

@@ -56,4 +56,7 @@ extern char *xgetcwd PROTO ((void));
 extern char *xdirname PROTO ((char *));
 extern char *xbasename PROTO ((char *));
 
+wchar_t *xxwcsdup PROTO((const wchar_t *));
+int xwcsncasecmp PROTO((const wchar_t *, const wchar_t *, size_t));
+
 #endif /* _GIT_XIO_H */

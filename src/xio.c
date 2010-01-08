@@ -34,6 +34,9 @@
 #endif /* HAVE_LIMITS_H */
 #include <stddef.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <wctype.h>
+
 #ifndef HAVE_GETCWD
 #include <sys/param.h>
 #ifdef MAXPATHLEN
@@ -328,7 +331,7 @@ xwcsdup(wstr)
     wchar_t *ptr;
     if(!wstr)
 	return NULL;
-    ptr=wcsdup(wstr);
+    ptr=xxwcsdup(wstr);
     if(!ptr)
 	xalloc_die();
     return ptr;
@@ -389,4 +392,47 @@ wcsduptombs(src)
     dest=xmalloc((len+1) * sizeof(char));
     wcstombs(dest,src,len+1);
     return dest;
+}
+
+/* taken from debian eglibc 2.11~0exp1-0exp1 */
+/* Duplicate S, returning an identical malloc'd string.	 */
+wchar_t *
+xxwcsdup (s)
+     const wchar_t *s;
+{
+  size_t len = (wcslen (s) + 1) * sizeof (wchar_t);
+  void *new = malloc (len);
+
+  if (new == NULL)
+    return NULL;
+
+  return (wchar_t *) memcpy (new, (void *) s, len);
+}
+
+
+/* adapted from debian eglibc 2.11~0exp1-0exp1 */
+/* Compare no more than N wide characters of S1 and S2,
+   ignoring case, returning less than, equal to or
+   greater than zero if S1 is lexicographically less
+   than, equal to or greater than S2.  */
+int
+xwcsncasecmp (s1, s2, n)
+     const wchar_t *s1;
+     const wchar_t *s2;
+     size_t n;
+{
+  wint_t c1, c2;
+
+  if (s1 == s2 || n == 0)
+    return 0;
+
+  do
+    {
+      c1 = (wint_t) towlower (*s1++);
+      c2 = (wint_t) towlower (*s2++);
+      if (c1 == L'\0' || c1 != c2)
+	return c1 - c2;
+    } while (--n > 0);
+
+  return c1 - c2;
 }
