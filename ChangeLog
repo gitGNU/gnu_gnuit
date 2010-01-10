@@ -3,6 +3,8 @@
 	* Update to gnulib stable 20100109.
 	* In mono mode, explicitly turn off reverse video
 	  when not needed.
+	* Convert all filetype matches that use black foreground
+	  to use red foreground.
 
 2010-01-08  Ian Beckwith  <ianb@erislabs.net>
 
