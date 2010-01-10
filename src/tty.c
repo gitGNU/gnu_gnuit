@@ -396,6 +396,9 @@ tty_noncanonic()
 #ifdef VSTOP
     current_term.c_cc[VSTOP] = CDISABLE;		/* STOP (^S) */
 #endif
+#ifdef VDISCARD
+    current_term.c_cc[VDISCARD] = CDISABLE;		/* DISCARD (^O) */
+#endif
 #ifdef VSUSP
     current_term.c_cc[VSUSP] = key_SUSPEND;             /* Ctrl-Z */
 #endif
@@ -412,6 +415,9 @@ tty_noncanonic()
 #endif
 #ifdef VSTOP
     current_term.c_cc[VSTOP] = CDISABLE;	/* STOP (^S) */
+#endif
+#ifdef VDISCARD
+    current_term.c_cc[VDISCARD] = CDISABLE;	/* DISCARD (^O) */
 #endif
     ioctl(TTY_OUTPUT, TCSETAW, &current_term);
 #else  /* !HAVE_SYSTEMV_TTY */

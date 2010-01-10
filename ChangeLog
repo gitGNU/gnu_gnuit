@@ -5,6 +5,8 @@
 	  when not needed.
 	* Convert all filetype matches that use black foreground
 	  to use red foreground.
+	* tty_noncanonic(): disable VDISCARD (on macs it takes up ^O).
+	* git.c: fix printf format warning.
 
 2010-01-08  Ian Beckwith  <ianb@erislabs.net>
 
