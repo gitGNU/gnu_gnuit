@@ -1,5 +1,5 @@
 # DO NOT EDIT! GENERATED AUTOMATICALLY!
-# Copyright (C) 2002-2009 Free Software Foundation, Inc.
+# Copyright (C) 2002-2010 Free Software Foundation, Inc.
 #
 # This file is free software, distributed under the terms of the GNU
 # General Public License.  As a special exception to the GNU General
@@ -60,6 +60,7 @@ AC_DEFUN([gl_INIT],
   gl_FUNC_CHDIR_LONG
   gl_FUNC_CHOWN
   gl_UNISTD_MODULE_INDICATOR([chown])
+  gl_CLOCK_TIME
   gl_FUNC_CLOSE
   gl_UNISTD_MODULE_INDICATOR([close])
   gl_CTYPE_H
@@ -120,6 +121,7 @@ AC_DEFUN([gl_INIT],
   gl_FUNC_GETOPT_POSIX
   AC_SUBST([LIBINTL])
   AC_SUBST([LTLIBINTL])
+  gl_GETTIME
   gl_FUNC_GETTIMEOFDAY
   gl_HUMAN
   gl_IDCACHE
@@ -267,6 +269,7 @@ AC_DEFUN([gl_INIT],
   AC_PROG_MKDIR_P
   gl_FUNC_GEN_TEMPNAME
   gl_HEADER_TIME_H
+  gl_TIMESPEC
   gl_FUNC_UNAME
   gl_SYS_UTSNAME_MODULE_INDICATOR([uname])
   gl_UNISTD_H
@@ -314,7 +317,7 @@ AC_DEFUN([gl_INIT],
     if test -n "$gl_LIBOBJS"; then
       # Remove the extension.
       sed_drop_objext='s/\.o$//;s/\.obj$//'
-      for i in `for i in $gl_LIBOBJS; do echo "$i"; done | sed "$sed_drop_objext" | sort | uniq`; do
+      for i in `for i in $gl_LIBOBJS; do echo "$i"; done | sed -e "$sed_drop_objext" | sort | uniq`; do
         gl_libobjs="$gl_libobjs $i.$ac_objext"
         gl_ltlibobjs="$gl_ltlibobjs $i.lo"
       done
@@ -353,7 +356,7 @@ AC_DEFUN([gl_INIT],
     if test -n "$gltests_LIBOBJS"; then
       # Remove the extension.
       sed_drop_objext='s/\.o$//;s/\.obj$//'
-      for i in `for i in $gltests_LIBOBJS; do echo "$i"; done | sed "$sed_drop_objext" | sort | uniq`; do
+      for i in `for i in $gltests_LIBOBJS; do echo "$i"; done | sed -e "$sed_drop_objext" | sort | uniq`; do
         gltests_libobjs="$gltests_libobjs $i.$ac_objext"
         gltests_ltlibobjs="$gltests_ltlibobjs $i.lo"
       done
@@ -498,6 +501,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/getopt1.c
   lib/getopt_int.h
   lib/gettext.h
+  lib/gettime.c
   lib/gettimeofday.c
   lib/human.c
   lib/human.h
@@ -630,6 +634,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/tempname.c
   lib/tempname.h
   lib/time.in.h
+  lib/timespec.h
   lib/uname.c
   lib/unistd--.h
   lib/unistd-safer.h
@@ -671,6 +676,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/canonicalize.m4
   m4/chdir-long.m4
   m4/chown.m4
+  m4/clock_time.m4
   m4/close.m4
   m4/codeset.m4
   m4/ctype.m4
@@ -714,6 +720,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/getcwd.m4
   m4/gethostname.m4
   m4/getopt.m4
+  m4/gettime.m4
   m4/gettimeofday.m4
   m4/glibc21.m4
   m4/gnulib-common.m4
@@ -818,6 +825,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/sys_wait_h.m4
   m4/tempname.m4
   m4/time_h.m4
+  m4/timespec.m4
   m4/uname.m4
   m4/unistd-safer.m4
   m4/unistd_h.m4

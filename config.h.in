@@ -37,18 +37,11 @@
    non-IEEE-754 'long double' values. */
 #undef CHECK_PRINTF_SAFE
 
-/* Define to 1 if chown fails to change ctime when at least one argument was
-   not -1. */
-#undef CHOWN_CHANGE_TIME_BUG
-
 /* Define if chown is not POSIX compliant regarding IDs of -1. */
 #undef CHOWN_FAILS_TO_HONOR_ID_OF_NEGATIVE_ONE
 
 /* Define if chown modifies symlinks. */
 #undef CHOWN_MODIFIES_SYMLINK
-
-/* Define to 1 if chown mishandles trailing slash. */
-#undef CHOWN_TRAILING_SLASH_BUG
 
 /* Define to one of `_getb67', `GETB67', `getb67' for Cray-2 and Cray-YMP
    systems. This function is required for `alloca.c' support on those systems.
@@ -86,10 +79,6 @@
 
 /* Define if struct dirent has a member d_ino that actually works. */
 #undef D_INO_IN_DIRENT
-
-/* Define to 1 if your platform has fchownat, but it cannot perform lchown
-   tasks. */
-#undef FCHOWNAT_NOFOLLOW_BUG
 
 /* Define on systems for which file names may have a so-called `drive letter'
    prefix, define this to compute the length of that prefix, including the
@@ -271,10 +260,6 @@
    don't. */
 #undef HAVE_DECL_MEMRCHR
 
-/* Define to 1 if you have the declaration of `optreset', and to 0 if you
-   don't. */
-#undef HAVE_DECL_OPTRESET
-
 /* Define to 1 if you have the declaration of `sleep', and to 0 if you don't.
    */
 #undef HAVE_DECL_SLEEP
@@ -347,9 +332,6 @@
 
 /* Define to 1 if you have the `fchmodat' function. */
 #undef HAVE_FCHMODAT
-
-/* Define to 1 if you have the `fchown' function. */
-#undef HAVE_FCHOWN
 
 /* Define to 1 if you have the <fcntl.h> header file. */
 #undef HAVE_FCNTL_H
@@ -615,9 +597,6 @@
 /* Define to 1 if the system has the type `sigset_t'. */
 #undef HAVE_SIGSET_T
 
-/* Define to 1 if you have the `sleep' function. */
-#undef HAVE_SLEEP
-
 /* Define to 1 if you have the `snprintf' function. */
 #undef HAVE_SNPRINTF
 
@@ -861,9 +840,6 @@
 
 /* Define to 1 if you have the <ws2tcpip.h> header file. */
 #undef HAVE_WS2TCPIP_H
-
-/* Define to 1 if you have the <xlocale.h> header file. */
-#undef HAVE_XLOCALE_H
 
 /* Define to 1 if the system has the type `_Bool'. */
 #undef HAVE__BOOL

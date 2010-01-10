@@ -23,32 +23,19 @@
 /* Specification.  */
 #include <unistd.h>
 
-#include <errno.h>
-#include <fcntl.h>
 #include <stdbool.h>
-#include <string.h>
+#include <sys/types.h>
 #include <sys/stat.h>
-
-#if !HAVE_CHOWN
-
-/* Simple stub that always fails with ENOSYS, for mingw.  */
-int
-chown (const char *file _UNUSED_PARAMETER_, uid_t uid _UNUSED_PARAMETER_,
-       gid_t gid _UNUSED_PARAMETER_)
-{
-  errno = ENOSYS;
-  return -1;
-}
-
-#else /* HAVE_CHOWN */
+#include <fcntl.h>
+#include <errno.h>
 
 /* Below we refer to the system's chown().  */
-# undef chown
+#undef chown
 
 /* The results of open() in this file are not used with fchdir,
    therefore save some unnecessary work in fchdir.c.  */
-# undef open
-# undef close
+#undef open
+#undef close
 
 /* Provide a more-closely POSIX-conforming version of chown on
    systems with one or both of the following problems:
@@ -59,29 +46,21 @@ chown (const char *file _UNUSED_PARAMETER_, uid_t uid _UNUSED_PARAMETER_,
 int
 rpl_chown (const char *file, uid_t uid, gid_t gid)
 {
-  struct stat st;
-  bool stat_valid = false;
-  int result;
-
-# if CHOWN_CHANGE_TIME_BUG
-  if (gid != (gid_t) -1 || uid != (uid_t) -1)
-    {
-      if (stat (file, &st))
-        return -1;
-      stat_valid = true;
-    }
-# endif
-
+#if HAVE_CHOWN
 # if CHOWN_FAILS_TO_HONOR_ID_OF_NEGATIVE_ONE
   if (gid == (gid_t) -1 || uid == (uid_t) -1)
     {
+      struct stat file_stats;
+
       /* Stat file to get id(s) that should remain unchanged.  */
-      if (!stat_valid && stat (file, &st))
-        return -1;
+      if (stat (file, &file_stats))
+	return -1;
+
       if (gid == (gid_t) -1)
-        gid = st.st_gid;
+	gid = file_stats.st_gid;
+
       if (uid == (uid_t) -1)
-        uid = st.st_uid;
+	uid = file_stats.st_uid;
     }
 # endif
 
@@ -95,62 +74,36 @@ rpl_chown (const char *file, uid_t uid, gid_t gid)
     int open_flags = O_NONBLOCK | O_NOCTTY;
     int fd = open (file, O_RDONLY | open_flags);
     if (0 <= fd
-        || (errno == EACCES
-            && 0 <= (fd = open (file, O_WRONLY | open_flags))))
+	|| (errno == EACCES
+	    && 0 <= (fd = open (file, O_WRONLY | open_flags))))
       {
-        int saved_errno;
-        bool fchown_socket_failure;
+	int result = fchown (fd, uid, gid);
+	int saved_errno = errno;
 
-        result = fchown (fd, uid, gid);
-        saved_errno = errno;
+	/* POSIX says fchown can fail with errno == EINVAL on sockets,
+	   so fall back on chown in that case.  */
+	struct stat sb;
+	bool fchown_socket_failure =
+	  (result != 0 && saved_errno == EINVAL
+	   && fstat (fd, &sb) == 0 && S_ISFIFO (sb.st_mode));
 
-        /* POSIX says fchown can fail with errno == EINVAL on sockets
-           and pipes, so fall back on chown in that case.  */
-        fchown_socket_failure =
-          (result != 0 && saved_errno == EINVAL
-           && fstat (fd, &st) == 0
-           && (S_ISFIFO (st.st_mode) || S_ISSOCK (st.st_mode)));
+	close (fd);
 
-        close (fd);
-
-        if (! fchown_socket_failure)
-          {
-            errno = saved_errno;
-            return result;
-          }
+	if (! fchown_socket_failure)
+	  {
+	    errno = saved_errno;
+	    return result;
+	  }
       }
     else if (errno != EACCES)
       return -1;
   }
 # endif
 
-# if CHOWN_TRAILING_SLASH_BUG
-  if (!stat_valid)
-    {
-      size_t len = strlen (file);
-      if (len && file[len - 1] == '/' && stat (file, &st))
-        return -1;
-    }
-# endif
+  return chown (file, uid, gid);
 
-  result = chown (file, uid, gid);
-
-# if CHOWN_CHANGE_TIME_BUG
-  if (result == 0 && stat_valid
-      && (uid == st.st_uid || uid == (uid_t) -1)
-      && (gid == st.st_gid || gid == (gid_t) -1))
-    {
-      /* No change in ownership, but at least one argument was not -1,
-         so we are required to update ctime.  Since chown succeeded,
-         we assume that chmod will do likewise.  Fortunately, on all
-         known systems where a 'no-op' chown skips the ctime update, a
-         'no-op' chmod still does the trick.  */
-      result = chmod (file, st.st_mode & (S_IRWXU | S_IRWXG | S_IRWXO
-                                          | S_ISUID | S_ISGID | S_ISVTX));
-    }
-# endif
-
-  return result;
+#else /* !HAVE_CHOWN */
+  errno = ENOSYS;
+  return -1;
+#endif
 }
-
-#endif /* HAVE_CHOWN */

@@ -1,5 +1,4 @@
 # Detect some bugs in glibc's implementation of utimes.
-# serial 2
 
 dnl Copyright (C) 2003, 2004, 2005, 2009 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
@@ -20,8 +19,8 @@ dnl with or without modifications, as long as this notice is preserved.
 
 AC_DEFUN([gl_FUNC_UTIMES],
 [
-  AC_CACHE_CHECK([whether the utimes function works],
-		 [gl_cv_func_working_utimes],
+  AC_CACHE_CHECK([determine whether the utimes function works],
+		 gl_cv_func_working_utimes,
   [
   AC_RUN_IFELSE([AC_LANG_SOURCE([[
 #include <sys/types.h>

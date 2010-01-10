@@ -1,5 +1,6 @@
-/* A POSIX <locale.h>.
-   Copyright (C) 2007-2009 Free Software Foundation, Inc.
+/* timespec -- System time interface
+
+   Copyright (C) 2000, 2002, 2004, 2005, 2007, 2009 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -14,26 +15,24 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
-#ifndef _GL_LOCALE_H
+#if ! defined TIMESPEC_H
+# define TIMESPEC_H
 
-#if __GNUC__ >= 3
-@PRAGMA_SYSTEM_HEADER@
+# include <time.h>
+
+/* Return negative, zero, positive if A < B, A == B, A > B, respectively.
+   Assume the nanosecond components are in range, or close to it.  */
+static inline int
+timespec_cmp (struct timespec a, struct timespec b)
+{
+  return (a.tv_sec < b.tv_sec ? -1
+	  : a.tv_sec > b.tv_sec ? 1
+	  : a.tv_nsec < b.tv_nsec ? -1
+	  : a.tv_nsec > b.tv_nsec ? 1
+	  : 0);
+}
+
+void gettime (struct timespec *);
+int settime (struct timespec const *);
+
 #endif
-
-/* The include_next requires a split double-inclusion guard.  */
-#@INCLUDE_NEXT@ @NEXT_LOCALE_H@
-
-#ifndef _GL_LOCALE_H
-#define _GL_LOCALE_H
-
-/* NetBSD 5.0 mis-defines NULL.  */
-#include <stddef.h>
-
-/* The LC_MESSAGES locale category is specified in POSIX, but not in ISO C.
-   On systems that don't define it, use the same value as GNU libintl.  */
-#if !defined LC_MESSAGES
-# define LC_MESSAGES 1729
-#endif
-
-#endif /* _GL_LOCALE_H */
-#endif /* _GL_LOCALE_H */

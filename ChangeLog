@@ -1,3 +1,7 @@
+2010-01-10  Ian Beckwith  <ianb@erislabs.net>
+
+	* update to gnulib stable 20100110.
+
 2010-01-08  Ian Beckwith  <ianb@erislabs.net>
 
 	* macos has no wcsdup or wcsncasecmp, adapt the

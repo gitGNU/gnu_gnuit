@@ -261,10 +261,10 @@ decimal_point_char (void)
 {
   const char *point;
   /* Determine it in a multithread-safe way.  We know nl_langinfo is
-     multithread-safe on glibc systems and MacOS X systems, but is not required
-     to be multithread-safe by POSIX.  sprintf(), however, is multithread-safe.
-     localeconv() is rarely multithread-safe.  */
-#  if HAVE_NL_LANGINFO && (__GLIBC__ || (defined __APPLE__ && defined __MACH__))
+     multithread-safe on glibc systems, but is not required to be multithread-
+     safe by POSIX.  sprintf(), however, is multithread-safe.  localeconv()
+     is rarely multithread-safe.  */
+#  if HAVE_NL_LANGINFO && __GLIBC__
   point = nl_langinfo (RADIXCHAR);
 #  elif 1
   char pointbuf[5];
@@ -2375,16 +2375,16 @@ VASNPRINTF (DCHAR_T *resultbuf, size_t *lengthp,
 		      characters = 0;
 		      while (precision > 0)
 			{
-			  char cbuf[64]; /* Assume MB_CUR_MAX <= 64.  */
+			  char buf[64]; /* Assume MB_CUR_MAX <= 64.  */
 			  int count;
 
 			  if (*arg_end == 0)
 			    /* Found the terminating null wide character.  */
 			    break;
 #  if HAVE_WCRTOMB
-			  count = wcrtomb (cbuf, *arg_end, &state);
+			  count = wcrtomb (buf, *arg_end, &state);
 #  else
-			  count = wctomb (cbuf, *arg_end);
+			  count = wctomb (buf, *arg_end);
 #  endif
 			  if (count < 0)
 			    {
@@ -2420,16 +2420,16 @@ VASNPRINTF (DCHAR_T *resultbuf, size_t *lengthp,
 		      characters = 0;
 		      for (;;)
 			{
-			  char cbuf[64]; /* Assume MB_CUR_MAX <= 64.  */
+			  char buf[64]; /* Assume MB_CUR_MAX <= 64.  */
 			  int count;
 
 			  if (*arg_end == 0)
 			    /* Found the terminating null wide character.  */
 			    break;
 #  if HAVE_WCRTOMB
-			  count = wcrtomb (cbuf, *arg_end, &state);
+			  count = wcrtomb (buf, *arg_end, &state);
 #  else
-			  count = wctomb (cbuf, *arg_end);
+			  count = wctomb (buf, *arg_end);
 #  endif
 			  if (count < 0)
 			    {
@@ -2470,20 +2470,20 @@ VASNPRINTF (DCHAR_T *resultbuf, size_t *lengthp,
 #   endif
 		    for (remaining = characters; remaining > 0; )
 		      {
-			char cbuf[64]; /* Assume MB_CUR_MAX <= 64.  */
+			char buf[64]; /* Assume MB_CUR_MAX <= 64.  */
 			int count;
 
 			if (*arg == 0)
 			  abort ();
 #   if HAVE_WCRTOMB
-			count = wcrtomb (cbuf, *arg, &state);
+			count = wcrtomb (buf, *arg, &state);
 #   else
-			count = wctomb (cbuf, *arg);
+			count = wctomb (buf, *arg);
 #   endif
 			if (count <= 0)
 			  /* Inconsistency.  */
 			  abort ();
-			memcpy (tmpptr, cbuf, count);
+			memcpy (tmpptr, buf, count);
 			tmpptr += count;
 			arg++;
 			remaining -= count;
@@ -2552,20 +2552,20 @@ VASNPRINTF (DCHAR_T *resultbuf, size_t *lengthp,
 		      ENSURE_ALLOCATION (xsum (length, characters));
 		      for (remaining = characters; remaining > 0; )
 			{
-			  char cbuf[64]; /* Assume MB_CUR_MAX <= 64.  */
+			  char buf[64]; /* Assume MB_CUR_MAX <= 64.  */
 			  int count;
 
 			  if (*arg == 0)
 			    abort ();
 #   if HAVE_WCRTOMB
-			  count = wcrtomb (cbuf, *arg, &state);
+			  count = wcrtomb (buf, *arg, &state);
 #   else
-			  count = wctomb (cbuf, *arg);
+			  count = wctomb (buf, *arg);
 #   endif
 			  if (count <= 0)
 			    /* Inconsistency.  */
 			    abort ();
-			  memcpy (result + length, cbuf, count);
+			  memcpy (result + length, buf, count);
 			  length += count;
 			  arg++;
 			  remaining -= count;
@@ -2581,21 +2581,21 @@ VASNPRINTF (DCHAR_T *resultbuf, size_t *lengthp,
 #   endif
 		      while (arg < arg_end)
 			{
-			  char cbuf[64]; /* Assume MB_CUR_MAX <= 64.  */
+			  char buf[64]; /* Assume MB_CUR_MAX <= 64.  */
 			  int count;
 
 			  if (*arg == 0)
 			    abort ();
 #   if HAVE_WCRTOMB
-			  count = wcrtomb (cbuf, *arg, &state);
+			  count = wcrtomb (buf, *arg, &state);
 #   else
-			  count = wctomb (cbuf, *arg);
+			  count = wctomb (buf, *arg);
 #   endif
 			  if (count <= 0)
 			    /* Inconsistency.  */
 			    abort ();
 			  ENSURE_ALLOCATION (xsum (length, count));
-			  memcpy (result + length, cbuf, count);
+			  memcpy (result + length, buf, count);
 			  length += count;
 			  arg++;
 			}

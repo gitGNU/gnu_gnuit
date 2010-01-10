@@ -26,7 +26,7 @@
 
 /* Return the number of multibyte characters in the character string STRING.  */
 size_t
-(mbslen) (const char *string)
+mbslen (const char *string)
 {
   if (MB_CUR_MAX > 1)
     {

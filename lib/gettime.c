@@ -1,5 +1,6 @@
-/* A POSIX <locale.h>.
-   Copyright (C) 2007-2009 Free Software Foundation, Inc.
+/* gettime -- get the system clock
+
+   Copyright (C) 2002, 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -14,26 +15,34 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
-#ifndef _GL_LOCALE_H
+/* Written by Paul Eggert.  */
 
-#if __GNUC__ >= 3
-@PRAGMA_SYSTEM_HEADER@
+#include <config.h>
+
+#include "timespec.h"
+
+#include <sys/time.h>
+
+/* Get the system time into *TS.  */
+
+void
+gettime (struct timespec *ts)
+{
+#if HAVE_NANOTIME
+  nanotime (ts);
+#else
+
+# if defined CLOCK_REALTIME && HAVE_CLOCK_GETTIME
+  if (clock_gettime (CLOCK_REALTIME, ts) == 0)
+    return;
+# endif
+
+  {
+    struct timeval tv;
+    gettimeofday (&tv, NULL);
+    ts->tv_sec = tv.tv_sec;
+    ts->tv_nsec = tv.tv_usec * 1000;
+  }
+
 #endif
-
-/* The include_next requires a split double-inclusion guard.  */
-#@INCLUDE_NEXT@ @NEXT_LOCALE_H@
-
-#ifndef _GL_LOCALE_H
-#define _GL_LOCALE_H
-
-/* NetBSD 5.0 mis-defines NULL.  */
-#include <stddef.h>
-
-/* The LC_MESSAGES locale category is specified in POSIX, but not in ISO C.
-   On systems that don't define it, use the same value as GNU libintl.  */
-#if !defined LC_MESSAGES
-# define LC_MESSAGES 1729
-#endif
-
-#endif /* _GL_LOCALE_H */
-#endif /* _GL_LOCALE_H */
+}

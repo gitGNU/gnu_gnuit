@@ -126,16 +126,18 @@ extern "C" {
 
 #if @GNULIB_CHOWN@
 # if @REPLACE_CHOWN@
-#  undef chown
-#  define chown rpl_chown
-# endif
-# if !@HAVE_CHOWN@ || @REPLACE_CHOWN@
+#  ifndef REPLACE_CHOWN
+#   define REPLACE_CHOWN 1
+#  endif
+#  if REPLACE_CHOWN
 /* Change the owner of FILE to UID (if UID is not -1) and the group of FILE
    to GID (if GID is not -1).  Follow symbolic links.
    Return 0 if successful, otherwise -1 and errno set.
    See the POSIX:2001 specification
    <http://www.opengroup.org/susv3xsh/chown.html>.  */
+#   define chown rpl_chown
 extern int chown (const char *file, uid_t uid, gid_t gid);
+#  endif
 # endif
 #elif defined GNULIB_POSIXCHECK
 # undef chown
@@ -415,7 +417,7 @@ extern int getdtablesize (void);
    If N is 0, return the group count; otherwise, N describes how many
    entries are available in GROUPS.  Return -1 and set errno if N is
    not 0 and not large enough.  Fails with ENOSYS on some systems.  */
-int getgroups (int n, gid_t *groups);
+int getgroups (int n, GETGROUPS_T *groups);
 # endif
 #elif defined GNULIB_POSIXCHECK
 # undef getgroups
@@ -565,15 +567,12 @@ extern void endusershell (void);
 
 #if @GNULIB_LCHOWN@
 # if @REPLACE_LCHOWN@
-#  undef lchown
-#  define lchown rpl_lchown
-# endif
-# if !@HAVE_LCHOWN@ || @REPLACE_LCHOWN@
 /* Change the owner of FILE to UID (if UID is not -1) and the group of FILE
    to GID (if GID is not -1).  Do not follow symbolic links.
    Return 0 if successful, otherwise -1 and errno set.
    See the POSIX:2001 specification
    <http://www.opengroup.org/susv3xsh/lchown.html>.  */
+#  define lchown rpl_lchown
 extern int lchown (char const *file, uid_t owner, gid_t group);
 # endif
 #elif defined GNULIB_POSIXCHECK
@@ -664,26 +663,6 @@ extern int pipe2 (int fd[2], int flags);
 #endif
 
 
-#if @GNULIB_PREAD@
-# if @REPLACE_PREAD@
-#  define pread rpl_pread
-# endif
-/* Read at most BUFSIZE bytes from FD into BUF, starting at OFFSET.
-   Return the number of bytes placed into BUF if successful, otherwise
-   set errno and return -1.  0 indicates EOF.  See the POSIX:2001
-   specification <http://www.opengroup.org/susv3xsh/pread.html>.  */
-# if !@HAVE_PREAD@ || @REPLACE_PREAD@
-  extern ssize_t pread (int fd, void *buf, size_t bufsize, off_t offset);
-# endif
-#elif defined GNULIB_POSIXCHECK
-# undef pread
-# define pread(f,b,s,o)			       \
-    (GL_LINK_WARNING ("pread is unportable - " \
-                      "use gnulib module pread for portability"), \
-     pread (f, b, s, o))
-#endif
-
-
 #if @GNULIB_READLINK@
 # if @REPLACE_READLINK@
 #  define readlink rpl_readlink
@@ -734,15 +713,11 @@ extern int rmdir (char const *name);
 
 
 #if @GNULIB_SLEEP@
-# if @REPLACE_SLEEP@
-#  undef sleep
-#  define sleep rpl_sleep
-# endif
 /* Pause the execution of the current thread for N seconds.
    Returns the number of seconds left to sleep.
    See the POSIX:2001 specification
    <http://www.opengroup.org/susv3xsh/sleep.html>.  */
-# if !@HAVE_SLEEP@ || @REPLACE_SLEEP@
+# if !@HAVE_SLEEP@
 extern unsigned int sleep (unsigned int n);
 # endif
 #elif defined GNULIB_POSIXCHECK
@@ -813,27 +788,6 @@ extern int unlinkat (int fd, char const *file, int flag);
     (GL_LINK_WARNING ("unlinkat is not portable - " \
                       "use gnulib module openat for portability"), \
      unlinkat (d, n, f))
-#endif
-
-
-#if @GNULIB_USLEEP@
-# if @REPLACE_USLEEP@
-#  undef usleep
-#  define usleep rpl_usleep
-# endif
-# if !@HAVE_USLEEP@ || @REPLACE_USLEEP@
-/* Pause the execution of the current thread for N microseconds.
-   Returns 0 on completion, or -1 on range error.
-   See the POSIX:2001 specification
-   <http://www.opengroup.org/susv3xsh/sleep.html>.  */
-extern int usleep (useconds_t n);
-# endif
-#elif defined GNULIB_POSIXCHECK
-# undef usleep
-# define usleep(n) \
-    (GL_LINK_WARNING ("usleep is unportable - " \
-                      "use gnulib module usleep for portability"), \
-     usleep (n))
 #endif
 
 
