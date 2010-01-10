@@ -1,6 +1,8 @@
 2010-01-10  Ian Beckwith  <ianb@erislabs.net>
 
-	* update to gnulib stable 20100110.
+	* Update to gnulib stable 20100109.
+	* In mono mode, explicitly turn off reverse video
+	  when not needed.
 
 2010-01-08  Ian Beckwith  <ianb@erislabs.net>
 

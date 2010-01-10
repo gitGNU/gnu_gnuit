@@ -890,6 +890,8 @@ tty_update_attributes()
     {
 	if(((tty_current_fg != WHITE) || (tty_current_bg != BLACK)))
 	    tty_current_attribute |= A_REVERSE;
+	else
+	    tty_current_attribute &= ~A_REVERSE;
 	attrset(tty_current_attribute);
     }
 }
